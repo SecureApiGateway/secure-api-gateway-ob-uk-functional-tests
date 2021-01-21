@@ -26,7 +26,7 @@ import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.datamodel.service.converter.payment.OBDomesticScheduledConverter.toOBDomesticScheduled2
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory.*
 
-@Tags(Tag("paymentTest-xx"))
+@Tags(Tag("paymentTest"))
 class DomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfOpenBankingVersion(type = "payments", version = "v3.1.2", apis = ["domestic-scheduled-payment-consents"])
