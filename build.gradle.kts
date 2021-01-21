@@ -6,11 +6,36 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  * This generated file contains a sample Kotlin library project to get you started.
  */
 
+/*
+ * Global Variables
+ */
+// project version
+version = "1.0.0"
+
+val jaxbVersion = "2.2.11"
+
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
     id("org.jetbrains.kotlin.jvm") version "1.4.20"
     // https://github.com/edeandrea/xjc-generation-gradle-plugin
     id("com.github.edeandrea.xjc-generation") version "1.6"
+    id("maven-publish")
+}
+
+/*
+ * In case that we publish the artifact
+ */
+publishing {
+    publications {
+        register("securebanking-openbanking-uk-functional-tests", MavenPublication::class) {
+            pom {
+                name.set("securebanking-openbanking-uk-functional-tests")
+                groupId = "com.forgerock.securebanking.test"
+                artifactId = "securebanking-openbanking-uk-functional-tests"
+                version = project.version.toString()
+            }
+        }
+    }
 }
 
 repositories {
@@ -20,8 +45,6 @@ repositories {
     maven("https://maven.forgerock.org:443/repo/community")
     jcenter()
 }
-
-val jaxbVersion = "2.2.11"
 
 dependencies {
     // xjc generation plugin dependencies
@@ -38,15 +61,8 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     testImplementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
 
-
-
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-
-    // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
     // Test libraries
     testImplementation("com.github.kittinunf.fuel:fuel:2.2.1")
@@ -70,6 +86,9 @@ dependencies {
     testImplementation("com.forgerock.openbanking:forgerock-openbanking-uk-extensions:1.0.24")
 }
 
+/*
+ * Generate the payment objects from defined schema
+ */
 xjcGeneration {
     defaultBindingFile = null
     schemas.register("schema-pain.001.001.08")
@@ -86,36 +105,148 @@ xjcGeneration {
     }
 }
 
-java {                                      
+/*
+ * Java definitions
+ */
+java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-tasks.register("serviceHealthCheck", Test::class)
+/*
+ ********************************************************************
+ * TASKS
+ ********************************************************************
+ */
 
+// scope generic tasks
 tasks {
     compileKotlin {
         dependsOn("xjcGeneration")
     }
     test {
-        environment("DOMAIN","master.forgerock.financial")
+        //named<Test>("allTests")
         useJUnitPlatform()
         dependsOn("serviceHealthCheck")
-        // Use the built-in JUnit support of Gradle.
-        group = "openbanking"
-        description = "Runs ALL open banking functional tests"
-        failFast = true
-        testLogging.showStandardStreams = true
-        testLogging.exceptionFormat = TestExceptionFormat.FULL
-        systemProperty("junit.platform.output.capture.stdout", "true")
-        systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
-    }
-    "serviceHealthCheck"(Test::class) {
-        useJUnitPlatform() {
-            includeTags("servicesCheck")
-        }
-        group = "openbanking"
-        description = "Runs the test to check the service status"
+        description = "Runs ALL tests"
     }
 }
 
+/* specific common definition for all test withType tasks */
+// default domain
+val domain = "master.forgerock.financial"
+// val domain = "dev-ob.forgerock.financial:8074"
+
+tasks.withType<Test>().configureEach {
+    // use by command line i.e: gradle payments -Pdomain="mydomain"
+    if (project.hasProperty("domain")) {
+        environment("DOMAIN", project.property("domain").toString())
+    } else {
+        environment("DOMAIN", domain)
+    }
+    println("RUNNING ["+name+"] tests, DOMAIN --> " + environment["DOMAIN"])
+    group = "forgerock-tests"
+    failFast = true
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = TestExceptionFormat.FULL
+    // execution conditions (see readme file)
+    systemProperty("junit.platform.output.capture.stdout", "true")
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
+}
+
+// To generate the tests library
+tasks.register<Jar>("generateTestJar") {
+    group = "forgerock"
+    description = "Generate a non-executable jar library tests"
+    archiveClassifier.set("tests")
+    archiveFileName.set("${project.name}-${project.version}.jar")
+    from(sourceSets.test.get().allSource)
+    from(sourceSets.main.get().allSource)
+    dependsOn("testClasses")
+    manifest {
+        attributes(
+            mapOf(
+                "Specification-Title" to "Secure Banking Accelerator Functional Tests",
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version,
+                "Created-by" to "${project.version} (forgerock)",
+                "Built-by" to System.getProperty("user.name"),
+                "Build-Jdk" to JavaVersion.current(),
+                "Source-Compatibility" to project.properties["sourceCompatibility"],
+                "Target-Compatibility" to project.properties["targetCompatibility"]
+            )
+        )
+    }
+}
+
+/* TEST TASKS */
+tasks.register<Test>("serviceHealthCheck"){
+    useJUnitPlatform {
+        includeTags("servicesCheck")
+    }
+    description = "Runs the test to check the service status"
+}
+// payments
+tasks.register<Test>("payment"){
+    description = "Runs the payment tests"
+    useJUnitPlatform {
+        includeTags("paymentTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// account
+tasks.register<Test>("account"){
+    description = "Runs the account tests"
+    useJUnitPlatform {
+        includeTags("accountTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// access token
+tasks.register<Test>("accessToken"){
+    description = "Runs the access token tests"
+    useJUnitPlatform {
+        includeTags("accessTokenTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// bank
+tasks.register<Test>("bank"){
+    description = "Runs the bank tests"
+    useJUnitPlatform {
+        includeTags("bankTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// directory
+tasks.register<Test>("directory"){
+    description = "Runs the directory tests"
+    useJUnitPlatform {
+        includeTags("directoryTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// events
+tasks.register<Test>("event"){
+    description = "Runs the event tests"
+    useJUnitPlatform {
+        includeTags("eventTest")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// matls
+tasks.register<Test>("matls"){
+    description = "Runs the matls tests"
+    useJUnitPlatform {
+        includeTags("matlsTests")
+    }
+    dependsOn("serviceHealthCheck")
+}
+// on boarding / registration
+tasks.register<Test>("dynamicRegistration"){
+    description = "Runs the dynamic registration tests"
+    useJUnitPlatform {
+        includeTags("dynamicRegistrationTests")
+    }
+    dependsOn("serviceHealthCheck")
+}

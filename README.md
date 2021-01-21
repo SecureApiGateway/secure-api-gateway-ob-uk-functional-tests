@@ -27,6 +27,32 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 1. Add FQN of ExecutionCondition class to [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension)
 1. Add your annotations to classes
 
+## tasks
+![tasks](docs/assets/img/tasks.png)
+
+| Code Generation | Description |
+|---|---|
+| gen-pain00100108-source | Generate sources for the schema schema-pain.001.001.08 |
+| xjcGeneration | Run all XJC tasks |
+
+| Forgerock | Description |
+| --- | --- |
+| generateTestJar | Generate a non-executable jar library tests |
+
+| Forgerock-tests | Description |
+| --- | --- |
+| accessToken | Runs the access token tests |
+| account | Runs the account tests |
+| bank | Runs the bank tests |
+| directory | Runs the directory tests |
+| dynamicRegistration | Runs the dynamic registration tests |
+| event | Runs the event tests |
+| matls | Runs the matls tests |
+| payment | Runs the payment tests |
+| serviceHealthCheck | Runs the test to check the service status |
+| test | Runs ALL tests |
+
+
 ## Run single Test on Intellij using JUnit platform
 1. Go to `IntelliJ IDEA > preferences > build, execution, deployment > build tools > Gradle`
 1. Set `Run tests using` to `IntelliJ IDEA`
@@ -49,20 +75,35 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 ![run-gradle-task](docs/assets/img/run-gradle-task.png)
 
 ## Run gradle tests manually
-- All test
+### All test
   ```bash
-  DOMAIN=the.domain gradle clean [build | test]
+  gradle test [-Pdomain]
   ``` 
+  Examples
+  ```bash
+  gradle test
+  # The default 'DOMAIN' value has been set in the variable 'domain' defined on the 'build.gradle.kts' file
+  ```
+  ```bash
+  gradle test -Pdomain="dev-ob.forgerock.financial:8074"
+  ```
+### A Specific task, set of tests
+  ```bash
+  gradle <TASK> [-Pdomain]
+  ``` 
+  Examples
+  ```bash
+  gradle payment
+  # The default 'DOMAIN' value has been set in the variable 'domain' defined on the 'build.gradle.kts' file
+  ```
+  ```bash
+  gradle payment -Pdomain="dev-ob.forgerock.financial:8074"
+  ```
+### Single test 
+  ```bash
+  gradle test --tests "x.x.y.y.TestClass.testMethod" [-Pdomain]
+  ```
   Example 
   ```bash
-  DOMAIN=master.forgerock.financial gradle clean build
-  ```
-
-- Single test 
-  ```bash
-  DOMAIN=the.domain gradle test --tests "x.x.y.y.TestClass.testMethod"
-  ```
-  Example 
-  ```bash
-  DOMAIN=master.forgerock.financial gradle test --tests "com.forgerock.openbanking.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2"
+  gradle test --tests "com.forgerock.securebanking.openbanking.uk.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pdomain="dev-ob.forgerock.financial:8074"
   ```
