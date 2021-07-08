@@ -11,7 +11,8 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  */
 // project version
 version = "1.0.0"
-
+// commit hash or release name to find the proper library aligned with the services deployed on a cluster
+val release = "1.0.0"
 val jaxbVersion = "2.2.11"
 
 plugins {
@@ -20,7 +21,12 @@ plugins {
     // https://github.com/edeandrea/xjc-generation-gradle-plugin
     id("com.github.edeandrea.xjc-generation") version "1.6"
     id("maven-publish")
+    //id("jacoco")
 }
+
+/*
+* skip unused tasks
+*/
 
 /*
  * In case that we publish the artifact
@@ -43,7 +49,6 @@ repositories {
     mavenCentral()
     maven("https://www.jitpack.io")
     maven("https://maven.forgerock.org:443/repo/community")
-    jcenter()
 }
 
 dependencies {
@@ -82,8 +87,8 @@ dependencies {
     testImplementation("javax.validation:validation-api:2.0.1.Final")
     testImplementation("commons-io:commons-io:2.6")
     testImplementation("com.nimbusds:nimbus-jose-jwt:9.0.1")
-    testImplementation("com.forgerock.openbanking.uk:openbanking-uk-datamodel:3.1.2.26:tests")
-    testImplementation("com.forgerock.openbanking:forgerock-openbanking-uk-extensions:1.0.24")
+    testImplementation("com.forgerock.openbanking.uk:openbanking-uk-datamodel:3.1.8.0:tests")
+    testImplementation("com.forgerock.openbanking:forgerock-openbanking-uk-extensions:1.4.4")
 }
 
 /*
@@ -95,7 +100,7 @@ xjcGeneration {
     schemas {
         "schema-pain.001.001.08"{
             taskName = "gen-pain00100108-source"
-            schemaRootDir = "src/test/resources/com/forgerock/openbanking/payment/file"
+            schemaRootDir = "src/test/resources/com/forgerock/securebanking/payment/file"
             schemaFile = "pain.001.001.08.xsd"
             // In local environment run first the task schemaGen-xxx or xjcGeneration to generate the objects
             // Remember use this package in kotlin test to resolve the object reference
@@ -118,40 +123,18 @@ java {
  * TASKS
  ********************************************************************
  */
-
-// scope generic tasks
+/*
+ * scope generic tasks
+ */
 tasks {
-    compileKotlin {
+    compileTestKotlin {
         dependsOn("xjcGeneration")
     }
     test {
-        //named<Test>("allTests")
         useJUnitPlatform()
         dependsOn("serviceHealthCheck")
         description = "Runs ALL tests"
     }
-}
-
-/* specific common definition for all test withType tasks */
-// default domain
-val domain = "master.forgerock.financial"
-// val domain = "dev-ob.forgerock.financial:8074"
-
-tasks.withType<Test>().configureEach {
-    // use by command line i.e: gradle payments -Pdomain="mydomain"
-    if (project.hasProperty("domain")) {
-        environment("DOMAIN", project.property("domain").toString())
-    } else {
-        environment("DOMAIN", domain)
-    }
-    println("RUNNING ["+name+"] tests, DOMAIN --> " + environment["DOMAIN"])
-    group = "forgerock-tests"
-    failFast = true
-    testLogging.showStandardStreams = true
-    testLogging.exceptionFormat = TestExceptionFormat.FULL
-    // execution conditions (see readme file)
-    systemProperty("junit.platform.output.capture.stdout", "true")
-    systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
 }
 
 // To generate the tests library
@@ -159,7 +142,7 @@ tasks.register<Jar>("generateTestJar") {
     group = "forgerock"
     description = "Generate a non-executable jar library tests"
     archiveClassifier.set("tests")
-    archiveFileName.set("${project.name}-${project.version}.jar")
+    archiveFileName.set("${project.name}-${project.version}-$release.jar")
     from(sourceSets.test.get().allSource)
     from(sourceSets.main.get().allSource)
     dependsOn("testClasses")
@@ -179,74 +162,184 @@ tasks.register<Jar>("generateTestJar") {
     }
 }
 
-/* TEST TASKS */
-tasks.register<Test>("serviceHealthCheck"){
-    useJUnitPlatform {
-        includeTags("servicesCheck")
+/* ************************************************* */
+/* specific common definition for all task test type */
+/* ************************************************* */
+// default domain and optional domains
+val domain = "master.forgerock.financial"
+// val domain = "dev-ob.forgerock.financial:8074"
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    // use by command line i.e: gradle payments -Pdomain="mydomain"
+    if (project.hasProperty("domain")) {
+        environment("DOMAIN", project.property("domain").toString())
+    } else {
+        environment("DOMAIN", domain)
+    }
+    println("RUNNING [" + name + "] tests, DOMAIN --> " + environment["DOMAIN"])
+
+    // all task to run all tests depends of check service except the health check task
+    if (name != "serviceHealthCheck") {
+        dependsOn("serviceHealthCheck")
+    }
+
+    group = "forgerock-tests"
+
+    // execution conditions (see readme file)
+    systemProperty("junit.platform.output.capture.stdout", "true")
+    systemProperty("junit.jupiter.extensions.autodetection.enabled", "true")
+
+    /* execution properties */
+    // Indicates if this task will fail on the first failed test
+    failFast = true
+    minHeapSize = "512M"
+    maxHeapSize = "2G"
+    // You can run your tests in parallel by setting this property to a value greater than 1
+    // default value when isn't set in the task
+    maxParallelForks = 1
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = TestExceptionFormat.FULL
+}
+/* ********************************************* */
+/*                 TEST TASKS                    */
+/* ********************************************* */
+// tests properties
+val packagePrefix = "com.forgerock.securebanking."
+val suffixPattern = ".*"
+
+tasks.register<Test>("serviceHealthCheck") {
+    filter {
+        includeTestsMatching(packagePrefix + "servicecheck" + suffixPattern)
     }
     description = "Runs the test to check the service status"
 }
-// payments
-tasks.register<Test>("payment"){
+
+/* PAYMENTS */
+tasks.register<Test>("all.payments") {
+    group = "forgerock-tests-payments"
     description = "Runs the payment tests"
-    useJUnitPlatform {
-        includeTags("paymentTest")
+    filter {
+        includeTestsMatching(packagePrefix + "payment" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// account
-tasks.register<Test>("account"){
+
+tasks.register<Test>("domesticPayments") {
+    group = "forgerock-tests-payments"
+    description = "Runs the payment tests"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("filePayments") {
+    group = "forgerock-tests-payments"
+    description = "Runs the payment tests"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.file" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("internationalPayments") {
+    group = "forgerock-tests-payments"
+    description = "Runs the payment tests"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.international" + suffixPattern)
+    }
+}
+
+/* ACCOUNTS */
+tasks.register<Test>("accounts") {
     description = "Runs the account tests"
-    useJUnitPlatform {
-        includeTags("accountTest")
+    filter {
+        includeTestsMatching(packagePrefix + "account" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// access token
-tasks.register<Test>("accessToken"){
+
+tasks.register<Test>("accessToken") {
     description = "Runs the access token tests"
-    useJUnitPlatform {
-        includeTags("accessTokenTest")
+    filter {
+        includeTestsMatching(packagePrefix + "as" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// bank
-tasks.register<Test>("bank"){
+
+tasks.register<Test>("bank") {
     description = "Runs the bank tests"
-    useJUnitPlatform {
-        includeTags("bankTest")
+    filter {
+        includeTestsMatching(packagePrefix + "bank" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// directory
-tasks.register<Test>("directory"){
+
+tasks.register<Test>("directory") {
     description = "Runs the directory tests"
-    useJUnitPlatform {
-        includeTags("directoryTest")
+    filter {
+        includeTestsMatching(packagePrefix + "directory" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// events
-tasks.register<Test>("event"){
+
+/* EVENTS */
+
+tasks.register<Test>("all.events") {
+    group = "forgerock-tests-events"
     description = "Runs the event tests"
-    useJUnitPlatform {
-        includeTags("eventTest")
+    filter {
+        includeTestsMatching(packagePrefix + "event" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// matls
-tasks.register<Test>("matls"){
+
+tasks.register<Test>("aggregatedpolling") {
+    group = "forgerock-tests-events"
+    description = "Runs the event tests"
+    filter {
+        includeTestsMatching(packagePrefix + "event.aggregatedpolling" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("callbacks") {
+    group = "forgerock-tests-events"
+    description = "Runs the event tests"
+    filter {
+        includeTestsMatching(packagePrefix + "event.callback" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("subscriptions") {
+    group = "forgerock-tests-events"
+    description = "Runs the event tests"
+    filter {
+        includeTestsMatching(packagePrefix + "event.sub" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("fundsConfirmation") {
+    description = "Runs the funds confirmation tests"
+    filter {
+        includeTestsMatching(packagePrefix + "funds" + suffixPattern)
+    }
+}
+
+tasks.register<Test>("matls") {
     description = "Runs the matls tests"
-    useJUnitPlatform {
-        includeTags("matlsTests")
+    filter {
+        includeTestsMatching(packagePrefix + "mtls" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
 }
-// on boarding / registration
-tasks.register<Test>("dynamicRegistration"){
-    description = "Runs the dynamic registration tests"
-    useJUnitPlatform {
-        includeTags("dynamicRegistrationTests")
+
+tasks.register<Test>("registration") {
+    description = "Runs the registration tests"
+    filter {
+        includeTestsMatching(packagePrefix + "onboarding" + suffixPattern)
     }
-    dependsOn("serviceHealthCheck")
+}
+
+// recomended use that task only on local
+tasks.register<Test>("all") {
+    description = "Runs all tests"
+    filter {
+        includeTestsMatching("$packagePrefix*")
+        // to avoid run twice the same tests, the serviceCheckHealth task will run before this task
+        // such as a dependency
+        excludeTestsMatching(packagePrefix + "servicecheck" + suffixPattern)
+    }
+    failFast = false
 }
