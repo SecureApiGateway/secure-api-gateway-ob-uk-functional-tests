@@ -1,2 +1,2 @@
-com.forgerock.openbanking.junit.EnabledIfOpenBankingVersionCondition
-com.forgerock.openbanking.junit.CreateTppCallback
+com.forgerock.securebanking.junit.EnabledIfVersionCondition
+com.forgerock.securebanking.junit.CreateTppCallback

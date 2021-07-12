@@ -10,7 +10,7 @@
 Software testing to validate and coverage the implemented open banking functionalities and ensure that these satisfies the functional requirements.
 
 ## Setup
-- Gradle 6.8
+- Gradle 7.1.1
 - Kotlin 1.4.20
 - Java 14
 
@@ -45,13 +45,25 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 | account | Runs the account tests |
 | bank | Runs the bank tests |
 | directory | Runs the directory tests |
-| dynamicRegistration | Runs the dynamic registration tests |
-| event | Runs the event tests |
+| registration | Runs the dynamic registration tests |
 | matls | Runs the matls tests |
 | payment | Runs the payment tests |
 | serviceHealthCheck | Runs the test to check the service status |
-| test | Runs ALL tests |
+| all | Runs ALL tests |
 
+| Forgerock-tests-events | Description |
+| --- | --- |
+| all.events | Runs all event tests |
+| aggregatedpolling | Runs the aggregated polling tests |
+| callbacks | Runs the callback tests |
+| subscriptions | Runs the subscription tests |
+
+| Forgerock-tests-payments | Description |
+| --- | --- |
+| all.payments | Runs all payment tests |
+| domesticPayments | Runs the domestic payment tests |
+| filePayments | Runs the file payment tests |
+| internationalPayments | Runs the international payment tests |
 
 ## Run single Test on Intellij using JUnit platform
 1. Go to `IntelliJ IDEA > preferences > build, execution, deployment > build tools > Gradle`
@@ -75,17 +87,23 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 ![run-gradle-task](docs/assets/img/run-gradle-task.png)
 
 ## Run gradle tests manually
+> When a task has been run and you want to run again the test task you need use the flag `--rerun-tasks` to avoid
+> the UP-TO-DATE gradle check
+   
+```bash
+gradle all [--rerun-tasks] [-Pdomain]
+  ``` 
 ### All test
   ```bash
-  gradle test [-Pdomain]
+  gradle all [-Pdomain]
   ``` 
   Examples
   ```bash
-  gradle test
+  gradle all
   # The default 'DOMAIN' value has been set in the variable 'domain' defined on the 'build.gradle.kts' file
   ```
   ```bash
-  gradle test -Pdomain="dev-ob.forgerock.financial:8074"
+  gradle all -Pdomain="dev-ob.forgerock.financial:8074"
   ```
 ### A Specific task, set of tests
   ```bash
