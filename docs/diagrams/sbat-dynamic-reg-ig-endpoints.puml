@@ -1,0 +1,188 @@
+@startuml
+title <font color=orangered>SBAT Dynamic registration: JWKMS IG endpoints
+' config '
+skinparam backgroundColor #snow
+skinparam sequenceArrowThickness 3
+skinparam roundcorner 20
+skinparam sequenceMessageAlign direction
+skinparam sequence {
+    ParticipantBorderColor gold
+}
+box "Services" #whitesmoke
+    participant IG #gold
+    participant AM #gold
+    participant IDM #gold
+end box
+
+autonumber "<font color=grey>  (##)"
+
+group get certificate and private key for an organisation
+    hnote over IG #papayawhip
+        **<font color=grey>(Content-Type: application/json)</font>**
+        {
+            "org_name": "Acme Fintech",
+            "org_id": "PSDGB-FFA-5f563e89742b2800145c7da1"
+        }
+    end hnote
+    [-> IG: get certificate/key **<font color=grey>"POST (https://{{FQDN}}/jwkms/apiclient/getcert)"</font>**
+    IG -[#0000FF]->[: certificates (pemCert + pemKey)
+    note left of IG #papayawhip
+        **<font color=grey>(Content-Type: text/plain)</font>**
+        ~--~--~-BEGIN CERTIFICATE~--~--~-
+        MIIK...BA==
+        ~--~--~-END CERTIFICATE~--~--~-
+        ~--~--~-BEGIN RSA PRIVATE KEY~--~--~-
+        MIIEowIB......GLzcj
+        ~--~--~-END RSA PRIVATE KEY~--~--~-
+    end note
+    note left of IG
+        **<font color=red>To use the cert and key in postman</font>**
+        - Save the certificate and the key in files (.pem, .key)
+        - Add the certificate and key to postman
+    end note
+end group
+group get SSA (Software Statement Assertion)
+    hnote over IG #papayawhip
+    {
+        "software_id": "acmefintechid",
+        "software_client_name": "acmefintech application",
+        "software_client_id": "11111111",
+        "software_tos_uri": "https://tpp.com/tos.html",
+        "software_client_description": "Tpp acmefintech client software for secure banking",
+        "software_redirect_uris": [
+            "https://obdemo.dev.forgerock.financial/tpp",
+            "https://tpp.com/callback"
+        ],
+        "software_policy_uri": "https://tpp.com/policy.html",
+        "software_logo_uri": "https://tpp.com/tpp.png",
+        "software_roles": [
+            "DATA",
+            "AISP",
+            "PISP",
+            "CBPII"
+        ]
+    }
+    end hnote
+    [-> IG: get SSA **<font color=grey>"POST https://{{FQDN}}/jwkms/apiclient/getssa"</font>**
+    IG -[#0000FF]->[: SSA JWT (text/plain)
+end group
+group Sign SSA JWT claims
+    hnote over IG #papayawhip
+    {
+        "exp": {{exp}},
+        "scope": "openid accounts payments eventpolling",
+        "response_types": [
+            "code id_token"
+        ],
+        "redirect_uris": [
+            "https://obdemo.dev.forgerock.financial/tpp",
+            "https://tpp.com/callback"
+        ],
+        "application_type": "web",
+        "grant_types": [
+            "authorization_code",
+            "refresh_token",
+            "client_credentials"
+        ],
+        "software_statement": "{{SSA_JWT_SERIALISED}}",
+        "token_endpoint_auth_method": "private_key_jwt",
+        "token_endpoint_auth_signing_alg": "PS256",
+        "id_token_signed_response_alg": "PS256",
+        "request_object_signing_alg": "PS256",
+        "request_object_encryption_alg": "RSA-OAEP-256",
+        "request_object_encryption_enc": "A128CBC-HS256"
+    }
+    end hnote
+    [-> IG: sign SSA JWT **<font color=grey>"POST https://{{FQDN}}/jwkms/apiclient/signclaims"</font>**
+    IG -[#0000FF]->[: Signed SSA JWT (Content-Type: text/plain))
+end group
+group Dynamic registration request
+    hnote over IG #papayawhip
+    {{dynamic_registration_request}} = (Signed SSA JWT)
+    end hnote
+    [-> IG: registration request **<font color=grey>"POST https://{{FQDN}}/am/oauth2/realms/root/realms/alpha/register"</font>**
+    IG -> AM: **<font color=grey>service_account.ig</font>** Get access_token
+    AM -[#0000FF]-> IG: access_token
+    IG -> AM: registration request **<font color=grey>(/am/oauth2/realms/root/realms/alpha/register)</font>**
+    AM -[#0000FF]-> IG: registration response
+    group Create api client and api client organisation
+        IG -> IDM: create api client **<font color=grey>/openidm/managed/apiClient?_action=create</font>**
+        IDM -[#0000FF]-> IG: api client response
+        IG -> IDM: Create api client organisation **<font color=grey>/openidm/managed/apiClientOrg?_action=create</font>**
+        IDM -[#0000FF]-> IG: api client organisation reponse
+    end group
+    IG -[#0000FF]->[: registration response
+    note left of IG #papayawhip
+    {
+        "token_endpoint_auth_signing_alg": "PS256",
+        "request_object_encryption_alg": "RSA-OAEP-256",
+        "introspection_encrypted_response_alg": "RSA-OAEP-256",
+        "default_max_age": 1,
+        "jwks": {
+            "keys": [
+                {
+                    "kty": "RSA",
+                    "kid": "-218354332397612390",
+                    "use": "sig",
+                    "alg": "PS256",
+                    "n": "lpttpd...prLw",
+                    "e": "AQAB"
+                }
+            ]
+        },
+        "application_type": "web",
+        "introspection_encrypted_response_enc": "A128CBC-HS256",
+        "introspection_signed_response_alg": "RS256",
+        "userinfo_encrypted_response_enc": "",
+        "registration_client_uri": "https://iam.dev.forgerock.financial:443/am/oauth2/realms/root/realms/alpha/register?client_id=fc425638-da2f-465d-b9ec-8bbb34cc75ec",
+        "client_type": "Confidential",
+        "userinfo_encrypted_response_alg": "",
+        "registration_access_token": "eyJ0eXAi...PgkE2Q",
+        "client_id": "fc425638-da2f-465d-b9ec-8bbb34cc75ec",
+        "token_endpoint_auth_method": "private_key_jwt",
+        "userinfo_signed_response_alg": "",
+        "software_statement": "eyJ0eX...9OZvg",
+        "software_id": "acmefintechid",
+        "public_key_selector": "jwks",
+        "scope": "openid payments accounts eventpolling",
+        "authorization_code_lifetime": 0,
+        "client_secret": "MhyjEox...YtOQQ",
+        "user_info_response_format_selector": "JSON",
+        "tls_client_certificate_bound_access_tokens": true,
+        "backchannel_logout_session_required": false,
+        "request_object_encryption_enc": "A128CBC-HS256",
+        "client_name": "acmefintech application",
+        "id_token_signed_response_alg": "PS256",
+        "default_max_age_enabled": false,
+        "token_intro_response_format_selector": "JSON",
+        "subject_type": "public",
+        "grant_types": [
+            "authorization_code",
+            "refresh_token",
+            "client_credentials"
+        ],
+        "jwt_token_lifetime": 0,
+        "id_token_encryption_enabled": false,
+        "redirect_uris": [
+            "https://obdemo.dev.forgerock.financial/tpp",
+            "https://tpp.com/callback"
+        ],
+        "id_token_encrypted_response_alg": "RSA-OAEP-256",
+        "id_token_encrypted_response_enc": "A128CBC-HS256",
+        "client_secret_expires_at": 0,
+        "access_token_lifetime": 0,
+        "refresh_token_lifetime": 0,
+        "scopes": [
+            "openid",
+            "payments",
+            "accounts",
+            "eventpolling"
+        ],
+        "request_object_signing_alg": "PS256",
+        "response_types": [
+            "code id_token"
+        ]
+    }
+    end note
+end group
+@enduml

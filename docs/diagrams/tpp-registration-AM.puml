@@ -1,0 +1,47 @@
+@startuml
+title TPP: Dynamic registration
+box "Objects"
+    participant CreateTppCallback
+    participant Tpp
+    participant Registration
+end box
+box "App Services" #LightBlue
+    participant Directory.Service as DS
+    participant AS.Service as AS
+    participant AM.Service as AM
+end box
+autonumber "<font color=grey>(##)"
+
+CreateTppCallback -> Tpp: entry point dynamicRegistration()
+group Dynamic registration
+    note over CreateTppCallback, Tpp
+        registrationRequest{
+            software_statement, iss (TppResource.softwarestatement.id)
+        }
+    end note
+    Tpp -> DS: generateSsa(): SSA ['/api/software-statement/current/ssa']
+    DS -[#0000FF]-> Tpp: SSA
+    Tpp o<-->o Tpp: signRegistrationRequest(registrationRequest): signed / (loadRsaPrivateKey(tppResources.signingKey)
+    group registration
+        Tpp -> Registration: register(signed)
+        Registration -> AS:
+        AS -> AM:
+        AM -[#0000FF]-> AS:
+        AS -[#0000FF]-> Registration
+        Registration -[#0000FF]-> Tpp: RegistrationResponse
+    end
+end
+Tpp -[#0000FF]-> CreateTppCallback: TppResource
+note left
+    TppResource = Tpp(
+    val sessionToken: String,
+    val directoryUser: UserRegistrationRequest,
+    val softwareStatement: SoftwareStatement,
+    val privateCert: String,
+    val publicCert: String,
+    val signingKid: String,
+    val signingKey: String
+    )
+    registrationResponse (dynamic registration response)
+end note
+@enduml

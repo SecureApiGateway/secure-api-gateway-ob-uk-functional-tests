@@ -1,2 +1,2 @@
-com.forgerock.securebanking.junit.EnabledIfVersionCondition
-com.forgerock.securebanking.junit.CreateTppCallback
+com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersionCondition
+
