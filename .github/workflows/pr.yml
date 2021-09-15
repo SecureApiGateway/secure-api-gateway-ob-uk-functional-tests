@@ -1,0 +1,39 @@
+name: pull-request
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - README.md
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Check PR integrity
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "14"
+          architecture: x64
+      
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCR_KEY }}
+      
+      - run: |
+          gcloud auth configure-docker
+
+      - name: pr docker tag
+        id: tag
+        run: |
+          PR=$(echo "$GITHUB_REF" | awk -F / '{print $3}')
+          echo "$PR"
+          echo ::set-output name=pr_number::pr-"$PR"
+      
+      - name: Build Docker Image
+        run: |
+          docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }} .
+          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }}
