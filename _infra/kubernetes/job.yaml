@@ -3,7 +3,6 @@ kind: Job
 metadata:
   name: functional-test
   annotations:
-    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   template:
