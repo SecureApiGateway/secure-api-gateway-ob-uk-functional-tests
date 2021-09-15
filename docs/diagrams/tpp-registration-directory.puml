@@ -1,0 +1,93 @@
+@startuml
+title TPP: register in FR directory
+box "Objects"
+    participant CreateTppCallback as tppCallback #orange
+    participant FuelInitialiser as fInit
+    participant Users
+    participant Directory
+    participant Keys
+end box
+box "App Services" #LightBlue
+    participant Directory.Service as DS
+    participant AM.Service as AM
+end box
+
+autonumber "<font color=grey>(##)"
+tppCallback -> fInit: entry point initFuelAsNewTpp()
+fInit o<-->o fInit: (initFuel) SSL Trust initialisation
+/'FuelInitialiser.initFuel -> fInit'/
+/' register directory user '/
+group register user into directory
+    fInit -> Users: (RegisterUser) Register directory user (username, password) (realm:auth)
+    activate Users
+        Users -> AM: https://am.$DOMAIN/json/realms/root/realms/$realm/selfservice/userRegistration?_action=submitRequirements
+        AM -[#0000FF]-> Users: directory User (username, passsord)
+        Users -[#0000FF]-> fInit: directory User
+    deactivate Users
+end
+/' login user registered and get session token '/
+group login user registered to get session
+    fInit -> Users: login(username, password)
+    activate Users
+        Users o<-->o Users: initiateOIDCFlow() goto.url
+        Users o<-->o Users:  authenticate(goto.url, username, password) SsoCode
+        Users -> AM: /json/realms/root/realms/auth/authenticate
+        AM -[#0000FF]-> Users: SsoCode
+        Users o<-->o Users: exchangeCode(goto.url, SsoCode) code
+        Users -> DS: exchange code
+        DS -[#0000FF]-> Users: code
+        Users o<-->o Users: getObriSessionToken(goto.url, code) obriSession 'sessionToken'
+        Users -> DS: /api/user/login
+        DS -[#0000FF]-> Users: obriSession 'sessionToken'
+        Users o<-->o Users: initUser(obriSession)
+        Users -[#0000FF]-> fInit: obriSession 'sessionToken'
+    deactivate Users
+end
+/' create software statement '/
+group create software statement
+    fInit -> Directory: createSoftwareStatement(sessionToken)
+    activate Directory
+        Directory -> DS: /api/software-statement/
+        DS -[#0000FF]-> Directory: Software Statement
+        Directory -[#0000FF]-> fInit: Software Statement
+    deactivate Directory
+end
+/' prepare the SSL transport and get user certificates '/
+group prepare the SSL transport and TPP certificates
+    fInit -> Directory: getTransportKid(Software Statement, sessionToken) transportKid
+    Directory -> DS: /api/software-statement/${softwareStatement.id}/application
+    DS -[#0000FF]-> Directory: transportKid
+    Directory -[#0000FF]-> fInit: transportKid
+    fInit -> Keys: getPrivateCert(Software Statement, transportKid, sessionToken) privateCert
+    Keys -> DS: /api/software-statement/${softwareStatement?.id}/application/${kid}/download/privateCert
+    DS -[#0000FF]-> Keys: privateCert
+    Keys -[#0000FF]-> fInit: privateCert
+    fInit -> Keys: getPublicCert(Software Statement, transportKid, sessionToken)
+    Keys -> DS: /api/software-statement/${softwareStatement?.id}/application/${kid}/download/publicCert
+    DS -[#0000FF]-> Keys: publicCert
+    Keys -[#0000FF]-> fInit: publicCert
+    fInit o<-->o fInit: initFuel(privateCert, publicCert) load SSL context privateCert and publicCert
+    fInit -> Directory: getSigningKid(SoftwareStatement, sessionToken) signingKid
+    Directory -> DS: /api/software-statement/${softwareStatement.id}/application
+    DS -[#0000FF]-> Directory: signingKid
+    Directory -[#0000FF]-> fInit: signingKid
+    fInit -> Keys: getPrivateCert(SoftwareStatement, signingKid, sessionToken) signingKey
+    Keys -> DS: /api/software-statement/${softwareStatement?.id}/application/${kid}/download/privateCert
+    DS -[#0000FF]-> Keys: signingKey
+    Keys -[#0000FF]-> fInit: signingKey
+end
+    fInit -[#0000FF]-> tppCallback: TppResource (TPP Registered in Directory)
+note left
+    TppResource = Tpp(
+    val sessionToken: String,
+    val directoryUser: UserRegistrationRequest,
+    val softwareStatement: SoftwareStatement,
+    val privateCert: String,
+    val publicCert: String,
+    val signingKid: String,
+    val signingKey: String
+    )
+    registrationResponse (dynamic registration response)
+end note
+
+@enduml
