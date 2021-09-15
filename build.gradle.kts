@@ -244,7 +244,7 @@ tasks.withType<Test>().configureEach {
 /*                 TEST TASKS                    */
 /* ********************************************* */
 // tests properties
-val packagePrefix = "com.forgerock.securebanking."
+val packagePrefix = "com.forgerock.securebanking.tests.functional."
 val suffixPattern = ".*"
 
 tasks.register<Test>("serviceHealthCheck") {

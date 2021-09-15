@@ -62,8 +62,8 @@ fun getSSA(accessToken: String): String {
 }
 
 fun getJWS(): SignedJWT? {
-    val resource = object {}.javaClass.getResource(OB_TPP_EIDAS_SIGNING_KEY_PATH)
-    if (resource != null) {
+    val signingKeyResource = object {}.javaClass.getResource(OB_TPP_EIDAS_SIGNING_KEY_PATH)
+    if (signingKeyResource != null) {
         val detachedPayload = Payload(GsonBuilder().create().toJson(ClaimsTest()))
 
         val jwtClaims = JWTClaimsSet.Builder(JWTClaimsSet.parse(detachedPayload.toJSONObject()))
@@ -77,7 +77,7 @@ fun getJWS(): SignedJWT? {
 
         val signedJWT = SignedJWT(jwsHeaderBuilder, jwtClaims)
 
-        signedJWT.sign(RSASSASigner(loadRsaPrivateKey(fileReader = FileReader(resource.file))))
+        signedJWT.sign(RSASSASigner(loadRsaPrivateKey(fileReader = FileReader(signingKeyResource.file))))
 
         return signedJWT
     } else {

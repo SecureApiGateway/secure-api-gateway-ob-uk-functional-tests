@@ -3,7 +3,7 @@ package com.forgerock.securebanking.framework.platform.register
 data class SSAClaims(
     val exp: Long? = (System.currentTimeMillis() / 1000) + 180,
     val scope: String? = "openid accounts payments eventpolling",
-    val response_types: List<String>? = listOf("code", "id_token"),
+    val response_types: List<String>? = listOf("code id_token"),
     val redirect_uris: List<String>? = listOf("https://obdemo.dev.forgerock.financial/tpp", "https://tpp.com/callback"),
     val application_type: String? = "web",
     val grant_types: List<String>? = listOf("authorization_code", "refresh_token", "client_credentials"),

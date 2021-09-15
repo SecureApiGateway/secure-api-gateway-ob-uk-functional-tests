@@ -7,8 +7,12 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.google.gson.GsonBuilder
+import org.apache.commons.io.output.FileWriterWithEncoding
+import org.bouncycastle.util.io.pem.PemObject
+import org.bouncycastle.util.io.pem.PemWriter
 import java.io.File
 import java.nio.charset.Charset
+import java.nio.file.Files
 
 var jwt: String = "empty"
 
@@ -39,15 +43,20 @@ private fun getSSAJwt(): String {
 
 private fun createSSAJwtFile() {
     val fileSSAJwt = File("${support.PATH_TO_STORE_EIDAS}/${support.ssaJwtFile}")
-    deleteFileIfExist(fileSSAJwt)
     jwt = getSSAJwt()
-    fileSSAJwt.writeText(jwt, Charset.defaultCharset())
+    writeFile(fileSSAJwt, jwt)
 }
 
 private fun signSSAClaims() {
     val fileSSAJws = File("${support.PATH_TO_STORE_EIDAS}/${support.ssaJwsFile}")
     deleteFileIfExist(fileSSAJws)
-    fileSSAJws.writeText(getSignedSSAJwtClaims(), Charsets.UTF_8)
+    writeFile(fileSSAJws, getSignedSSAJwtClaims())
+}
+
+private fun writeFile(file: File, content: String) {
+    deleteFileIfExist(file)
+    file.writeText(content, Charset.defaultCharset())
+    Files.setPosixFilePermissions(file.toPath(), support.filePermissions)
 }
 
 private fun getSignedSSAJwtClaims(): String {
