@@ -2,8 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: functional-test
-  annotations:
-    argocd.argoproj.io/hook-delete-policy: HookFailed
 spec:
   template:
     spec:
