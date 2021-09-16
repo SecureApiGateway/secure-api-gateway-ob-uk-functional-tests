@@ -1,0 +1,23 @@
+version: "1.0"
+
+stages:
+- prepare
+- apply
+steps:
+  main_clone:
+    type: git-clone
+    title: Git Clone CDK initializer
+    repo: SecureBankingAccessToolkit/securebanking-openbanking-uk-functional-tests
+    revision: master
+    stage: prepare
+    git: github-bot
+  prepare_environment_context:
+    title: Preparing environment
+    image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
+    stage: prepare
+    commands:
+      - cf_export DOMAIN=${{ENVIRONMENT}}.${{DOMAIN}}
+  trigger_dev_build:
+    image: eu.gcr.io/sbat-gcr-develop/securebanking/functional-tests:${{TAG}}
+    stage: apply
+    
