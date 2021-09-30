@@ -7,6 +7,9 @@ on:
     paths-ignore:
       - README.md
 
+env:
+  PR_NUMBER: pr-${{ github.event.number }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,15 +28,26 @@ jobs:
       
       - run: |
           gcloud auth configure-docker
-
-      - name: pr docker tag
-        id: tag
-        run: |
-          PR=$(echo "$GITHUB_REF" | awk -F / '{print $3}')
-          echo "$PR"
-          echo ::set-output name=pr_number::pr-"$PR"
       
       - name: Build Docker Image
         run: |
-          docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }} .
-          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }}
+          docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ env.PR_NUMBER }} .
+          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ env.PR_NUMBER }}
+
+      - name: 'Build environment'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        with:
+          args: '-v ENVIRONMENT=${{ github.actor }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/environment-build'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        id: build-env
+      
+      - name: 'Run Functional Tests'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        with:
+          args: '-v ENVIRONMENT=${{ github.actor }} -v TAG=${{ env.PR_NUMBER }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        id: run-tests
