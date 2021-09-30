@@ -7,6 +7,9 @@ on:
     paths-ignore:
       - README.md
 
+env:
+  PR_NUMBER: pr-${{ github.event.number }}
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,3 +40,21 @@ jobs:
         run: |
           docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }} .
           docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ steps.tag.outputs.pr_number }}
+
+      - name: 'Build environment'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        with:
+          args: '-v ENVIRONMENT=${{ github.actor }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/environment-build'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        id: build-env
+      
+      - name: 'Run Functional Tests'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        with:
+          args: '-v ENVIRONMENT=${{ github.actor }} -v TAG=${{ env.PR_NUMBER }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        id: run-tests
