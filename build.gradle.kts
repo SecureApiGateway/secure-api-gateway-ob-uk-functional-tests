@@ -204,7 +204,9 @@ tasks.register<Jar>("generateTestJar") {
 /* specific common definition for all task test type */
 /* ************************************************* */
 // default domain and optional domains
-val domain = "dev.forgerock.financial"
+val domain = "obdemo.dev.forgerock.financial"
+//val domain = "obdemo.mariantiris.forgerock.financial"
+//val domain = "dev.forgerock.financial"
 //val domain = "master.forgerock.financial"
 // val domain = "dev-ob.forgerock.financial:8074"
 
@@ -220,7 +222,7 @@ tasks.withType<Test>().configureEach {
 
     // all task to run all tests depends of check service except the health check task
     if (name != "serviceHealthCheck" && name != "singleTest") {
-        dependsOn("serviceHealthCheck")
+//        dependsOn("serviceHealthCheck")
     }
 
     group = "forgerock-tests"

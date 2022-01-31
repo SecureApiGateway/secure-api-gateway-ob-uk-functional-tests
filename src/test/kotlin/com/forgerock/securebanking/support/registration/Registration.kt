@@ -4,6 +4,9 @@ import com.forgerock.securebanking.framework.constants.*
 import com.forgerock.securebanking.framework.data.RegistrationRequest
 import com.forgerock.securebanking.framework.data.RegistrationResponse
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.adminAuthentication
+import com.forgerock.securebanking.framework.utils.getIDMAdminAuthCode
+import com.forgerock.securebanking.framework.utils.getIDMAdminToken
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.loadRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
@@ -18,8 +21,11 @@ import io.jsonwebtoken.SignatureAlgorithm
 import java.nio.file.Files
 import java.nio.file.Paths
 
-fun unregisterTpp(accessToken: String): Triple<Request, Response, Result<String, FuelError>> {
-    return Fuel.delete(asDiscovery.registrationEndpoint)
+fun unregisterTpp(id: String): Triple<Request, Response, Result<String, FuelError>> {
+    val cookie = adminAuthentication()
+    val code = getIDMAdminAuthCode(cookie)
+    val accessToken = getIDMAdminToken(cookie, code)
+    return Fuel.delete("$IAM/openidm/managed/apiClient/$id")
         .header("Authorization", "Bearer $accessToken")
         .responseObject()
 }
@@ -30,12 +36,12 @@ fun registerTpp(signedRegistrationRequest: String): RegistrationResponse {
         .header(Headers.CONTENT_TYPE, "application/jwt")
         .responseObject<RegistrationResponse>()
     if (response.statusCode != 201) {
-        val xFapiInteractionId = response.headers.get("x-fapi-interaction-id")
+        val xForgerockTransactionId = response.headers.get("x-forgerock-transactionid")
         throw AssertionError(
             "Registration failed with ${response.statusCode} : ${
                 String
                     (response.data)
-            } x-fapi-interaction-id: ${xFapiInteractionId}", result.component2()
+            } x-forgerock-transactionid: $xForgerockTransactionId", result.component2()
         )
     }
     return result.get()

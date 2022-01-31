@@ -28,7 +28,12 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
                 TppResource::class.java
             )
         // Need to init fuel with transport keys as we may load cached result
-        tpp?.let { initFuel(it.tpp.privateCert.byteInputStream(), it.tpp.publicCert.byteInputStream()) }
+        tpp?.let {
+            initFuel(
+                object {}.javaClass.getResourceAsStream(it.tpp.privateCert),
+                object {}.javaClass.getResourceAsStream(it.tpp.publicCert)
+            )
+        }
     }
 
 
@@ -41,14 +46,21 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
                 TppResource::class.java
             )
         // Need to init fuel with transport keys as we may load cached result
-        initFuel(tpp.tpp.privateCert.byteInputStream(), tpp.tpp.publicCert.byteInputStream())
+
+        initFuel(
+            object {}.javaClass.getResourceAsStream(tpp.tpp.privateCert),
+            object {}.javaClass.getResourceAsStream(tpp.tpp.publicCert)
+        )
     }
 
     class TppResource(val tpp: Tpp) : ExtensionContext.Store.CloseableResource {
 
         override fun close() {
             // Need to re-init fuel with transport keys as that may have changed
-            initFuel(tpp.privateCert.byteInputStream(), tpp.publicCert.byteInputStream())
+            initFuel(
+                object {}.javaClass.getResourceAsStream(tpp.privateCert),
+                object {}.javaClass.getResourceAsStream(tpp.publicCert)
+            )
             tpp.unregister()
         }
     }

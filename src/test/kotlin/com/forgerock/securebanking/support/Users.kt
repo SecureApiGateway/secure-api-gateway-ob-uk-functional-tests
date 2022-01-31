@@ -1,43 +1,57 @@
 package com.forgerock.securebanking.support
 
 import com.forgerock.securebanking.framework.configuration.DOMAIN
+import com.forgerock.securebanking.framework.constants.IAM
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.adminAuthentication
+import com.forgerock.securebanking.framework.utils.getIDMAdminAuthCode
+import com.forgerock.securebanking.framework.utils.getIDMAdminToken
 import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.jsonBody
+import com.google.gson.Gson
 import org.apache.http.client.utils.URIBuilder
 import java.net.URLEncoder
 import java.util.*
 
-
 private fun registerUser(realm: String): UserRegistrationRequest {
-    val user = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "password")
-    val (_, response, result) = Fuel.post("https://am.$DOMAIN/json/realms/root/realms/$realm/selfservice/userRegistration?_action=submitRequirements")
-        .header("Accept-API-Version", "protocol=1.0,resource=1.0")
-        .jsonBody(user)
+    val cookie = adminAuthentication()
+    val code = getIDMAdminAuthCode(cookie)
+    val accessToken = getIDMAdminToken(cookie, code)
+
+    val username = "fortest_" + UUID.randomUUID()
+    val user = UserRegistrationRequest(username, "Password@1", username, username, "mail@forgerock.com")
+    val (_, response, result) = Fuel.post("$IAM/openidm/managed/user?_action=create")
+        .header("Authorization", "Bearer $accessToken")
+        .jsonBody(user.user)
         .responseString()
     if (!response.isSuccessful) throw AssertionError("Failed to register user", result.component2())
     return user
 }
 
 fun registerDirectoryUser(): UserRegistrationRequest {
-    return registerUser(realm = "auth")
+    return registerUser(realm = "alpha")
 }
 
 fun registerPSU(): UserRegistrationRequest {
-    return registerUser(realm = "openbanking")
+    return registerUser(realm = "alpha")
 }
+
+//fun login(username: String, password: String): String {
+//    val gotoUrl = initiateOIDCFlow()
+//    val ssoCode = authenticate(gotoUrl, username, password)
+//    val code = exchangeCode(gotoUrl, ssoCode)
+//    val obriSession = getObriSessionToken(gotoUrl, code)
+//    initUser(obriSession)
+//    return obriSession
+//}
 
 fun login(username: String, password: String): String {
-    val gotoUrl = initiateOIDCFlow()
-    val ssoCode = authenticate(gotoUrl, username, password)
-    val code = exchangeCode(gotoUrl, ssoCode)
-    val obriSession = getObriSessionToken(gotoUrl, code)
-    initUser(obriSession)
-    return obriSession
-}
+    val ssoCode = authenticate(realm = "alpha", username, password)
 
+    return ssoCode.tokenId
+}
 
 private fun initiateOIDCFlow(): String {
     val (_, initiateLoginResponse, initiateLoginResult) = Fuel.get(
@@ -110,46 +124,17 @@ fun authenticatePSU(gotoUrl: String, username: String, password: String): SsoCod
     return authenticateResult.get()
 }
 
-private fun authenticate(gotoUrl: String, username: String, password: String): SsoCode {
-    val (_, authenticateInitResponse, authenticateInitResult) = Fuel.post(
-        "https://am.$DOMAIN/json/realms/root/realms/auth/authenticate?goto=${
-            URLEncoder.encode(
-                gotoUrl,
-                "UTF-8"
-            )
-        }"
+private fun authenticate(realm: String, username: String, password: String): SsoCode {
+    val (_, response, result) = Fuel.post("$IAM/am/json/realms/root/realms/$realm/authenticate")
+        .header("X-OpenAM-Username", username)
+        .header("X-OpenAM-Password", password)
+        .responseString()
+    if (!response.isSuccessful) throw AssertionError(
+        "Failed to get callbacks to Registration Journey",
+        result.component2()
     )
-        .header("Accept-API-Version", "protocol=1.0,resource=2.1")
-        .responseObject<AuthenticationRequest>()
-
-    if (!authenticateInitResponse.isSuccessful) throw AssertionError(
-        "Failed to initiate login",
-        authenticateInitResult.component2()
-    )
-    val routeCookie =
-        authenticateInitResponse.header("Set-Cookie").find { it.contains("route") }?.substringAfter("route=").toString()
-    // Authenticate with AM and get SSO code
-    val authenticationTemplate = authenticateInitResult.get()
-    authenticationTemplate.callbacks.get(0).input.get(0).value = username
-    authenticationTemplate.callbacks.get(1).input.get(0).value = password
-
-    val (_, authenticateResponse, authenticateResult) = Fuel.post(
-        "https://am.$DOMAIN/json/realms/root/realms/auth/authenticate?goto=${
-            URLEncoder.encode(
-                gotoUrl,
-                "UTF-8"
-            )
-        }"
-    )
-        .jsonBody(authenticationTemplate)
-        .header("Accept-API-Version", "protocol=1.0,resource=2.1")
-        .header("Cookie", "route=$routeCookie")
-        .responseObject<SsoCode>()
-    if (!authenticateResponse.isSuccessful) throw AssertionError(
-        "Failed to initiate login",
-        authenticateResult.component2()
-    )
-    return authenticateResult.get()
+    val gson = Gson()
+    return gson.fromJson(result.component1(), SsoCode::class.java)
 }
 
 private fun exchangeCode(gotoUrl: String, ssoCode: SsoCode): String? {

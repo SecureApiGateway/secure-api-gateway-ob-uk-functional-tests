@@ -1,6 +1,7 @@
 package com.forgerock.securebanking.support.discovery
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
+import com.forgerock.securebanking.framework.constants.IAM
+import com.forgerock.securebanking.framework.constants.OB_DEMO
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.responseObject
@@ -34,16 +35,19 @@ data class AsDiscovery(
     val userinfo_encryption_enc_values_supported: List<String>,
     val userinfo_endpoint: String,
     val userinfo_signing_alg_values_supported: List<String>,
-    val version: String
+    val version: String,
+    var registrationEndpoint: String
 ) {
-    var registrationEndpoint: String = registration_endpoint ?: "https://matls.as.aspsp.$DOMAIN/open-banking/register/"
+//    var registrationEndpoint: String = registration_endpoint ?: "$OB_DEMO/am/oauth2/realms/root/realms/alpha/register"
 }
 
 val asDiscovery by lazy { getAsConfiguration() }
 
 private fun getAsConfiguration(): AsDiscovery {
-    val (_, response, result) = Fuel.get("https://as.aspsp.$DOMAIN/oauth2/.well-known/openid-configuration")
+    val (_, response, result) = Fuel.get("$IAM/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
         .responseObject<AsDiscovery>()
     if (!response.isSuccessful) throw AssertionError("Failed to load As Discovery", result.component2())
-    return result.get()
+    var asDiscoveryResult = result.get()
+    asDiscoveryResult.registrationEndpoint = "$OB_DEMO/am/oauth2/realms/root/realms/alpha/register"
+    return asDiscoveryResult
 }
