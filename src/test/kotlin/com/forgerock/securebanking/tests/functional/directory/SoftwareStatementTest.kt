@@ -23,7 +23,7 @@ class SoftwareStatementTest {
 
     @BeforeAll
     fun setUp() {
-        this.sessionToken = login(directoryUser.input.user.username, directoryUser.input.user.userPassword)
+        this.sessionToken = login(directoryUser.user.userName, directoryUser.user.password)
     }
 
     @Test

@@ -1,7 +1,8 @@
-package com.forgerock.securebanking.tests.functional.account
+package com.forgerock.securebanking.tests.functional.account.accounts
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.configuration.psu
@@ -22,7 +23,11 @@ import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
 
 class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
-    @EnabledIfVersion(type = "accounts", apiVersion = "v3.1", operations = ["", ""])
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v3.1",
+        operations = ["CreateAccountAccessConsent", "GetAccounts"]
+    )
     @Test
     fun shouldGetAccounts_v3_1() {
         // Given
@@ -32,7 +37,7 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
             consentRequest,
             tppResource.tpp
         )
-        val accessToken = AccountAS().headlessAuthentication(
+        val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -41,12 +46,12 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
         // When
         val result =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data.account).isNotEmpty()
-        assertThat(result.data.account.size).isEqualTo(3)
+        assertThat(result.data.account.size).isGreaterThan(0)
     }
 
     @EnabledIfVersion(
@@ -72,7 +77,7 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
         // When
         val result =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1_1.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1_1.Links.links.GetAccounts, accessToken)
 
         // Then
         assertThat(result).isNotNull()
@@ -103,7 +108,7 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
         // When
         val result =
-            AccountRS().getAccountData<OBReadAccount5>(accountAndTransaction3_1_4.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount5>(accountAndTransaction3_1_4.Links.links.GetAccounts, accessToken)
 
         // Then
         assertThat(result).isNotNull()
@@ -134,7 +139,7 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
         // When
         val result =
-            AccountRS().getAccountData<OBReadAccount5>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount5>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
 
         // Then
         assertThat(result).isNotNull()

@@ -17,7 +17,7 @@ class PsuDataTest {
     fun updatePsuData() {
         // Given
         val psu = registerPSU()
-        val ssoCode = authenticatePSU("gotoUrl", psu.input.user.username, psu.input.user.userPassword)
+        val ssoCode = authenticatePSU("gotoUrl", psu.user.userName, psu.user.password)
         val statusCode = checkSession(ssoCode)
         assertThat(statusCode).isEqualTo(200)
         // When

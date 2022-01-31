@@ -55,7 +55,7 @@ class OpenBankingDirectoryOBWacMtlsTest {
     fun shouldBeAnRegisteredTppWhenAsApiMtlsCheck() {
         // Given
         val (signedRegistrationRequest, _) = signRegistrationRequest()
-        val (_, _, registrationResult) = Fuel.post(asDiscovery.registrationEndpoint)
+        val (_, _, registrationResult) = Fuel.post(asDiscovery.registration_endpoint!!)
             .body(signedRegistrationRequest)
             .header(Headers.CONTENT_TYPE, "application/jwt")
             .responseObject<RegistrationResponse>()
@@ -78,7 +78,7 @@ class OpenBankingDirectoryOBWacMtlsTest {
     fun shouldBeAnRegisteredTppWhenRsApiMtlsCheck() {
         // Given
         val (signedRegistrationRequest, _) = signRegistrationRequest()
-        val (_, _, registrationResult) = Fuel.post(asDiscovery.registrationEndpoint)
+        val (_, _, registrationResult) = Fuel.post(asDiscovery.registration_endpoint!!)
             .body(signedRegistrationRequest)
             .header(Headers.CONTENT_TYPE, "application/jwt")
             .responseObject<RegistrationResponse>()

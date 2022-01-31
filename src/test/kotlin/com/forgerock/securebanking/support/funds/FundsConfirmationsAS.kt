@@ -53,13 +53,13 @@ class FundsConfirmationsAS {
             "nonce" to requestParameters.nonce,
             "request" to signedPayload,
             "scope" to scopes,
-            "username" to psu.input.user.username,
-            "password" to psu.input.user.userPassword
+            "username" to psu.user.userName,
+            "password" to psu.user.password
         )
         val (_, response, result) = Fuel.post(asDiscovery.token_endpoint, parameters = headlessForm)
             .header("X_HEADLESS_AUTH_ENABLE", true)
-            .header("X_HEADLESS_AUTH_USERNAME", psu.input.user.username)
-            .header("X_HEADLESS_AUTH_PASSWORD", psu.input.user.username)
+            .header("X_HEADLESS_AUTH_USERNAME", psu.user.userName)
+            .header("X_HEADLESS_AUTH_PASSWORD", psu.user.userName)
             .authentication()
             .basic(tpp.registrationResponse.client_id, tpp.registrationResponse.client_secret!!)
             .responseObject<AccessToken>()

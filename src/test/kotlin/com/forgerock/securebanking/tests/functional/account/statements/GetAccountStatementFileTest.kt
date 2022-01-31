@@ -1,4 +1,4 @@
-package com.forgerock.securebanking.tests.functional.account
+package com.forgerock.securebanking.tests.functional.account.statements
 
 import assertk.assertThat
 import assertk.assertions.*
@@ -42,14 +42,14 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
             consentRequest,
             tppResource.tpp
         )
-        val accessToken = AccountAS().headlessAuthentication(
+        val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
         val accounts =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()
@@ -92,14 +92,14 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
             consentRequest,
             tppResource.tpp
         )
-        val accessToken = AccountAS().headlessAuthentication(
+        val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
         val accounts =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()
@@ -137,14 +137,14 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
             consentRequest,
             tppResource.tpp
         )
-        val accessToken = AccountAS().headlessAuthentication(
+        val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
         val accounts =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()
@@ -187,14 +187,14 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
             consentRequest,
             tppResource.tpp
         )
-        val accessToken = AccountAS().headlessAuthentication(
+        val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
         val accounts =
-            AccountRS().getAccountData<OBReadAccount3>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()

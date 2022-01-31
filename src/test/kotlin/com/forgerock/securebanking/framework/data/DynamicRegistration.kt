@@ -12,7 +12,7 @@ data class RegistrationRequest(
     val id_token_signed_response_alg: String = "PS256",
     val redirect_uris: List<String> = listOf(REDIRECT_URI),
     val request_object_encryption_alg: String = "RSA-OAEP-256",
-    val request_object_encryption_enc: String? = asDiscovery.request_object_encryption_enc_values_supported[0],
+    val request_object_encryption_enc: String? = asDiscovery.request_object_encryption_enc_values_supported[3],
     val request_object_signing_alg: String = "PS256",
     val response_types: List<String> = listOf("code id_token"),
     val scope: String = asDiscovery.scopes_supported.intersect(
@@ -25,8 +25,8 @@ data class RegistrationRequest(
         )
     ).joinToString(separator = " "),
     val software_statement: String,
-    val subject_type: String = "pairwise",
-    val token_endpoint_auth_method: String = "client_secret_basic",
+    val subject_type: String = "public",
+    val token_endpoint_auth_method: String = "private_key_jwt",
     val token_endpoint_auth_signing_alg: String = "PS256",
     val tls_client_auth_subject_dn: String? = null
 )
@@ -51,11 +51,27 @@ data class RegistrationResponse(
     val response_types: List<String>,
     val scope: String,
     val scopes: List<String>,
-    val software_statement: String,
     val subject_type: String,
     val token_endpoint_auth_method: String,
     val token_endpoint_auth_signing_alg: String,
     val userinfo_encrypted_response_alg: String,
     val userinfo_encrypted_response_enc: String,
-    val userinfo_signed_response_alg: String
+    val userinfo_signed_response_alg: String,
+    val introspection_encrypted_response_alg: String,
+    val introspection_encrypted_response_enc: String,
+    val introspection_signed_response_alg: String,
+    val client_type: String,
+    val public_key_selector: String,
+    val authorization_code_lifetime: Long,
+    val user_info_response_format_selector: String,
+    val tls_client_certificate_bound_access_tokens: Boolean,
+    val backchannel_logout_session_required: Boolean,
+    val client_name: String,
+    val default_max_age_enabled: Boolean,
+    val token_intro_response_format_selector: String,
+    val jwt_token_lifetime: Long,
+    val id_token_encryption_enabled: Boolean,
+    val access_token_lifetime: Long,
+    val refresh_token_lifetime: Long,
+    val software_statement: String? = null
 )

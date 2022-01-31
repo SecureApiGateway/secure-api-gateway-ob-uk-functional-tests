@@ -50,7 +50,7 @@ class ForgerockDirectoryDynamicRegistrationTest {
         val (signedRegistrationRequest, registrationRequest) = signRegistrationRequest()
 
         // When
-        val (_, response, result) = Fuel.post(asDiscovery.registrationEndpoint)
+        val (_, response, result) = Fuel.post(asDiscovery.registration_endpoint!!)
             .body(signedRegistrationRequest)
             .header(CONTENT_TYPE, "application/jwt")
             .responseObject<RegistrationResponse>()
@@ -63,7 +63,7 @@ class ForgerockDirectoryDynamicRegistrationTest {
     }
 
     fun register(signedRegistrationRequest: String): RegistrationResponse {
-        val (_, response, result) = Fuel.post(asDiscovery.registrationEndpoint)
+        val (_, response, result) = Fuel.post(asDiscovery.registration_endpoint!!)
             .body(signedRegistrationRequest)
             .header(CONTENT_TYPE, "application/jwt")
             .responseObject<RegistrationResponse>()
