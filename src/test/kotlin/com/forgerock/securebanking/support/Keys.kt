@@ -5,12 +5,13 @@ import com.forgerock.securebanking.framework.data.SoftwareStatement
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.openssl.PEMReader
-import java.io.Reader
-import java.io.StringReader
-import java.security.KeyPair
+import org.bouncycastle.util.io.pem.PemObject
+import org.bouncycastle.util.io.pem.PemReader
+import java.io.FileReader
+import java.security.KeyFactory
 import java.security.PrivateKey
 import java.security.Security
+import java.security.spec.PKCS8EncodedKeySpec
 
 
 /**
@@ -20,12 +21,23 @@ import java.security.Security
  */
 fun loadRsaPrivateKey(key: String): PrivateKey? {
     Security.addProvider(BouncyCastleProvider())
-    PEMReader(StringReader(key) as Reader).use { pemReader ->
-        val `object` = pemReader.readObject()
-        return if (`object` is KeyPair)
-            `object`.private
-        else
-            `object` as PrivateKey
+//    PEMReader(StringReader(key) as Reader).use { pemReader ->
+//        val `object` = pemReader.readObject()
+//        return if (`object` is KeyPair)
+//            `object`.private
+//        else
+//            `object` as PrivateKey
+//    }
+
+    val factory: KeyFactory = KeyFactory.getInstance("RSA")
+
+    FileReader("src/test/resources/$key").use { keyReader ->
+        PemReader(keyReader).use { pemReader ->
+            val pemObject: PemObject = pemReader.readPemObject()
+            val content: ByteArray = pemObject.getContent()
+            val privKeySpec = PKCS8EncodedKeySpec(content)
+            return factory.generatePrivate(privKeySpec)
+        }
     }
 }
 

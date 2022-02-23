@@ -24,11 +24,12 @@ class BankRegistrationTest {
     @Test
     fun shouldRegisterNewUser() {
         // Given
-        val psu = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "password")
+        val psu = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1", "givenName", "sn", "mail@forgerock.com")
 
         // When
         val (_, response, _) = Fuel.post("https://as.aspsp.$DOMAIN/json/realms/root/realms/openbanking/selfservice/userRegistration?_action=submitRequirements")
-            .header("Accept-API-Version", "protocol=1.0,resource=1.0")
+            .header("Accept-API-Version", "resource=1.0, protocol=1.0")
+            .header("Content-Type", "application/json")
             .jsonBody(psu)
             .responseString()
 
@@ -40,7 +41,7 @@ class BankRegistrationTest {
     fun shouldAuthenticateWithNewUser() {
         // Given
         val psu = registerPSU()
-        val ssoCode = authenticatePSU("gotoUrl", psu.input.user.username, psu.input.user.userPassword)
+        val ssoCode = authenticatePSU("gotoUrl", psu.user.userName, psu.user.password)
 
         // When
         val statusCode = checkSession(ssoCode)

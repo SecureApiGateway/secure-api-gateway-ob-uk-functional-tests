@@ -8,14 +8,16 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
+import com.forgerock.securebanking.framework.constants.TRUSTSTORE_PASSWORD
+import com.forgerock.securebanking.framework.constants.TRUSTSTORE_PATH
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.support.directory.createSoftwareStatement
-import com.forgerock.securebanking.support.directory.getSigningKid
-import com.forgerock.securebanking.support.directory.getTransportKid
-import com.forgerock.securebanking.support.getPrivateCert
-import com.forgerock.securebanking.support.getPublicCert
 import com.forgerock.securebanking.support.login
 import com.forgerock.securebanking.support.registerDirectoryUser
+import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_SIGNING_KEY_PATH
+import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_TRANSPORT_KEY_PATH
+import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_TRANSPORT_PEM_PATH
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.ResponseResultOf
@@ -29,6 +31,7 @@ import io.r2.simplepemkeystore.SimplePemKeyStoreProvider
 import org.apache.http.ssl.SSLContextBuilder
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
+import java.io.BufferedReader
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.Security
@@ -43,7 +46,7 @@ class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
-        gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTimeNoMillis()))
+        gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTime()))
     }
 }
 
@@ -60,7 +63,7 @@ val defaultMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
 
 fun initFuel(privatePem: InputStream, certificatePem: InputStream) {
     val ks = loadKeystore(privatePem, certificatePem)
-    val truststore = object {}.javaClass.getResource("/com/forgerock/securebanking/truststore.jks")
+    val truststore = object {}.javaClass.getResource(TRUSTSTORE_PATH)
     val sc = SSLContextBuilder()
         .loadKeyMaterial(
             ks,
@@ -69,14 +72,14 @@ fun initFuel(privatePem: InputStream, certificatePem: InputStream) {
         )
         // Force keystore to select hardcoded "server" alias in io.r2.simplepemkeystore.spi.SimplePemKeyStoreSpi see https://github.com/robymus/simple-pem-keystore/issues/2
         { _, _ -> "server" }
-        .loadTrustMaterial(truststore.toURI().toURL(), "changeit".toCharArray())
+        .loadTrustMaterial(truststore.toURI().toURL(), TRUSTSTORE_PASSWORD.toCharArray())
     initFuel(sc)
 }
 
 private fun initFuel(
     scb: SSLContextBuilder = SSLContextBuilder().loadTrustMaterial(
         object {}.javaClass.getResource
-            ("truststore.jks"), "changeit".toCharArray()
+            (TRUSTSTORE_PATH), TRUSTSTORE_PASSWORD.toCharArray()
     )
 ) {
     FuelManager.instance.reset()
@@ -97,8 +100,8 @@ private fun initFuel(
  * @param publicPem pem certificate
  */
 fun initFuel(
-    privatePem: String = "/com/forgerock/securebanking/ob-eidas/obwac.key",
-    publicPem: String = "/com/forgerock/securebanking/ob-eidas/obwac.pem"
+    privatePem: String = OB_TPP_EIDAS_TRANSPORT_KEY_PATH,
+    publicPem: String = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
 ) {
     val privatePemStream = object {}.javaClass.getResourceAsStream(privatePem)
     val publicPemStream = object {}.javaClass.getResourceAsStream(publicPem)
@@ -109,17 +112,33 @@ fun initFuel(
  * Initialise HTTP client Fuel for MTLS with a new TPP
  */
 fun initFuelAsNewTpp(): Tpp {
-    initFuel()  // Bootstrap truststore for any HTTP requests
+    initFuel()
+    // Bootstrap truststore for any HTTP requests
+    initFuel(OB_TPP_EIDAS_TRANSPORT_KEY_PATH, OB_TPP_EIDAS_TRANSPORT_PEM_PATH)
+    val privateCert = OB_TPP_EIDAS_TRANSPORT_KEY_PATH
+    val publicCert = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
+
     val directoryUser = registerDirectoryUser()
-    val sessionToken = login(directoryUser.input.user.username, directoryUser.input.user.userPassword)
+    val sessionToken = login(directoryUser.user.userName, directoryUser.user.password)
     val softwareStatement = createSoftwareStatement(sessionToken)
-    val transportKid = getTransportKid(softwareStatement, sessionToken)
-    val privateCert = getPrivateCert(softwareStatement, transportKid, sessionToken)
-    val publicCert = getPublicCert(softwareStatement, transportKid, sessionToken)
-    initFuel(privateCert.byteInputStream(), publicCert.byteInputStream())
-    val signingKid = getSigningKid(softwareStatement, sessionToken)!!
-    val signingKey = getPrivateCert(softwareStatement, signingKid, sessionToken)
+
+    val signingKid = OB_TPP_OB_EIDAS_TEST_SIGNING_KID
+    val signingKey = OB_TPP_EIDAS_SIGNING_KEY_PATH
     return Tpp(sessionToken, directoryUser, softwareStatement, privateCert, publicCert, signingKid, signingKey)
+}
+
+private fun readFromFile(filePath: String): String {
+    val stream = object {}.javaClass.getResourceAsStream(filePath)
+    val reader = BufferedReader(stream.reader())
+    val content = StringBuilder()
+    reader.use { reader ->
+        var line = reader.readLine()
+        while (line != null) {
+            content.append(line)
+            line = reader.readLine()
+        }
+    }
+    return content.toString()
 }
 
 private fun loadKeystore(privatePem: InputStream, publicPem: InputStream): KeyStore {
@@ -136,7 +155,7 @@ private fun loadKeystore(privatePem: InputStream, publicPem: InputStream): KeySt
 }
 
 /**
- * Extend Fuel DSL to use our custom (de)serialiser
+ * Extend Fuel DSL to use our custom (de)serializer
  */
 inline fun <reified T : Any> Request.responseObject(): ResponseResultOf<T> =
     response(jacksonDeserializerOf(defaultMapper))

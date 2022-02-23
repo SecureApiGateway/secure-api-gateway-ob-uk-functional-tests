@@ -1,6 +1,7 @@
 package com.forgerock.uk.openbanking.framework.accesstoken
 
 import com.forgerock.securebanking.framework.cert.loadRsaPrivateKey
+import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.uk.openbanking.framework.accesstoken.constants.*

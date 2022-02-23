@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 //import org.jetbrains.gradle.ext.JUnit
 //import org.jetbrains.gradle.ext.ProjectSettings
 //import org.jetbrains.gradle.ext.RunConfiguration
@@ -152,7 +153,7 @@ java {
 tasks.register<Copy>("copyOBCertificates") {
     group = "forgerock"
     from("certs/automating-testing/")
-    include("*.pem","*.key")
+    include("*.pem", "*.key")
     into("src/test/resources/com/forgerock/uk/openbanking/eidas")
 }
 
@@ -170,7 +171,7 @@ tasks {
     }
     test {
         useJUnitPlatform()
-        dependsOn("serviceHealthCheck")
+//        dependsOn("serviceHealthCheck")
         description = "Runs ALL tests"
     }
 }
@@ -204,9 +205,20 @@ tasks.register<Jar>("generateTestJar") {
 /* specific common definition for all task test type */
 /* ************************************************* */
 // default domain and optional domains
-val domain = "dev.forgerock.financial"
+//val domain = "mariantiris.forgerock.financial"
+val domain = "andra-racovita.forgerock.financial"
 //val domain = "master.forgerock.financial"
 // val domain = "dev-ob.forgerock.financial:8074"
+
+//User's Password
+val userPassword = "Passw0rd@1"
+
+//Identity Cloud Admin Credentials
+val adminUsername = "amadmin"
+val adminPassword = "LujHa2N1lzcgzYNrLQMbVRvr"
+
+val eidasTestSigningKid = "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
+val preEidasTestSigningKid = "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
@@ -218,9 +230,17 @@ tasks.withType<Test>().configureEach {
     }
     println("RUNNING [" + name + "] tests, DOMAIN --> " + environment["DOMAIN"])
 
+    environment("USER_PASSWORD", userPassword)
+
+    environment("ADMIN_USERNAME", adminUsername)
+    environment("ADMIN_PASSWORD", adminPassword)
+
+    environment("OB_TPP_OB_EIDAS_TEST_SIGNING_KID", eidasTestSigningKid)
+    environment("OB_TPP_PRE_EIDAS_SIGNING_KID", preEidasTestSigningKid)
+
     // all task to run all tests depends of check service except the health check task
     if (name != "serviceHealthCheck" && name != "singleTest") {
-        dependsOn("serviceHealthCheck")
+//        dependsOn("serviceHealthCheck")
     }
 
     group = "forgerock-tests"
@@ -293,6 +313,7 @@ tasks.register<Test>("accounts") {
     filter {
         includeTestsMatching(packagePrefix + "account" + suffixPattern)
     }
+    failFast = false
 }
 
 tasks.register<Test>("accessToken") {

@@ -1,6 +1,7 @@
 package com.forgerock.securebanking.support.discovery
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
+import com.forgerock.securebanking.framework.constants.IAM
+import com.forgerock.securebanking.framework.constants.OB_DEMO
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.responseObject
@@ -27,23 +28,24 @@ data class AsDiscovery(
     val response_types_supported: List<String>,
     val scopes_supported: List<String>,
     val subject_types_supported: List<String>,
-    val token_endpoint: String,
+    var token_endpoint: String,
     val token_endpoint_auth_methods_supported: List<String>,
     val token_endpoint_auth_signing_alg_values_supported: List<String>,
     val userinfo_encryption_alg_values_supported: List<String>,
     val userinfo_encryption_enc_values_supported: List<String>,
     val userinfo_endpoint: String,
     val userinfo_signing_alg_values_supported: List<String>,
-    val version: String
-) {
-    var registrationEndpoint: String = registration_endpoint ?: "https://matls.as.aspsp.$DOMAIN/open-banking/register/"
-}
+    val version: String,
+)
 
 val asDiscovery by lazy { getAsConfiguration() }
 
 private fun getAsConfiguration(): AsDiscovery {
-    val (_, response, result) = Fuel.get("https://as.aspsp.$DOMAIN/oauth2/.well-known/openid-configuration")
+    val (_, response, result) = Fuel.get("$OB_DEMO/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
         .responseObject<AsDiscovery>()
     if (!response.isSuccessful) throw AssertionError("Failed to load As Discovery", result.component2())
-    return result.get()
+
+    //TODO: change the access token route to go to iam.dev.forgerock.financial
+    val asDiscovery = result.get()
+    return asDiscovery
 }

@@ -8,22 +8,25 @@ import com.forgerock.securebanking.support.registerDirectoryUser
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.gson.jsonBody
+import com.google.gson.Gson
+import com.nimbusds.jose.shaded.json.JSONObject
 import org.junit.jupiter.api.Test
 import java.util.*
 
-data class UserRegistrationRequest(val input: Input) {
-    constructor(username: String, userPassword: String) : this(Input(User(username, userPassword)))
+data class UserRegistrationRequest(val user: User) {
+    constructor(userName: String, password: String, givenName: String, sn: String, mail: String, uid: String) : this(User(userName, password, givenName, sn, mail, uid))
+    constructor(userName: String, password: String, givenName: String, sn: String, mail: String) : this(User(userName, password, givenName, sn, mail, null))
 }
 
-data class Input(val user: User)
-data class User(val username: String, val userPassword: String)
+data class User(val userName: String, val password: String, val givenName: String, val sn: String, val mail: String, var uid: String?)
 
 class DirectoryRegistrationTest {
 
+    //TODO
     @Test
     fun shouldRegisterNewUser() {
         // Given
-        val directoryUser = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "password")
+        val directoryUser = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1", "givenName", "sn", "mail@forgerock.com")
 
         // When
         val (_, response, _) = Fuel.post("https://as.aspsp.$DOMAIN/json/realms/root/realms/auth/selfservice/userRegistration?_action=submitRequirements")
@@ -35,6 +38,7 @@ class DirectoryRegistrationTest {
         assertThat(response.statusCode).isEqualTo(200)
     }
 
+    //TODO
     @Test
     fun shouldAuthenticateWithNewUser() {
         // Given
@@ -46,8 +50,8 @@ class DirectoryRegistrationTest {
         val (_, response, _) = Fuel.post(
             "https://service.directory.$DOMAIN/api/user/authenticate",
             listOf(
-                Pair("username", directoryUser.input.user.username),
-                Pair("password", directoryUser.input.user.userPassword)
+                Pair("username", directoryUser.user.userName),
+                Pair("password", directoryUser.user.password)
             )
         )
             .responseString()
