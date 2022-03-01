@@ -40,7 +40,8 @@ annotation class EnabledIfVersion(
     val apiVersion: String,
     val postCreateVersion: String = "",
     val operations: Array<String> = [],
-    vararg val apis: String = []
+    vararg val apis: String = [],
+    val compatibleVersions: Array<String> = []
 )
 
 

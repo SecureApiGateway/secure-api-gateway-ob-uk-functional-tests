@@ -214,8 +214,8 @@ val domain = "andra-racovita.forgerock.financial"
 val userPassword = "Passw0rd@1"
 
 //Identity Cloud Admin Credentials
-val adminUsername = "amadmin"
-val adminPassword = "LujHa2N1lzcgzYNrLQMbVRvr"
+val adminUsername = "username"
+val adminPassword = "password"
 
 val eidasTestSigningKid = "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
 val preEidasTestSigningKid = "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
@@ -312,6 +312,15 @@ tasks.register<Test>("accounts") {
     description = "Runs the account tests"
     filter {
         includeTestsMatching(packagePrefix + "account" + suffixPattern)
+    }
+    failFast = false
+}
+
+/* ACCOUNTS */
+tasks.register<Test>("accounts_v3.1.8") {
+    description = "Runs the account tests with the version v3.1.8"
+    filter {
+        includeTestsMatching(packagePrefix + "account" + suffixPattern + "v3_1_8")
     }
     failFast = false
 }

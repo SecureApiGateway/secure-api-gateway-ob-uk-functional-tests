@@ -9,9 +9,8 @@ import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.support.account.AccountAS
 import com.forgerock.securebanking.support.account.AccountFactory.Companion.urlWithAccountId
 import com.forgerock.securebanking.support.account.AccountRS
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_1
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_6
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_2
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_8
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.*
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.READACCOUNTSDETAIL
@@ -21,12 +20,13 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1",
+        apiVersion = "v3.1.2",
         operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountProduct"],
-        apis = ["transactions"]
+        apis = ["products"],
+        compatibleVersions = ["v.3.1.1", "v.3.1", "v.3.0"]
     )
     @Test
-    fun shouldGetAccountProduct_v3_1() {
+    fun shouldGetAccountProduct_v3_1_2() {
         // Given
         val consentRequest = OBReadConsent1().data(
             OBReadData1()
@@ -38,7 +38,7 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
         )
             .risk(OBRisk2())
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_2.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -48,12 +48,12 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadProduct2>(
             urlWithAccountId(
-                accountAndTransaction3_1.Links.links.GetAccountProduct,
+                accountAndTransaction3_1_2.Links.links.GetAccountProduct,
                 accountId
             ), accessToken
         )
@@ -63,14 +63,16 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
         assertThat(result.data.product).isNotEmpty()
     }
 
+
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1.1",
+        apiVersion = "v3.1.8",
         operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountProduct"],
-        apis = ["transactions"]
+        apis = ["products"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5", "v.3.1.4", "v.3.1.3"]
     )
     @Test
-    fun shouldGetAccountProduct_v3_1_1() {
+    fun shouldGetAccountProduct_v3_1_8() {
         // Given
         val consentRequest = OBReadConsent1().data(
             OBReadData1()
@@ -82,7 +84,7 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
         )
             .risk(OBRisk2())
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_1.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_8.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -92,56 +94,12 @@ class GetAccountProductTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_1.Links.links.GetAccounts, accessToken)
+        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_8.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadProduct2>(
             urlWithAccountId(
-                accountAndTransaction3_1_1.Links.links.GetAccountProduct,
-                accountId
-            ), accessToken
-        )
-
-        // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data.product).isNotEmpty()
-    }
-
-    @EnabledIfVersion(
-        type = "accounts",
-        apiVersion = "v3.1.6",
-        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountProduct"],
-        apis = ["transactions"]
-    )
-    @Test
-    fun shouldGetAccountProduct_v3_1_6() {
-        // Given
-        val consentRequest = OBReadConsent1().data(
-            OBReadData1()
-                .permissions(
-                    listOf(
-                        READACCOUNTSDETAIL, READPRODUCTS
-                    )
-                )
-        )
-            .risk(OBRisk2())
-        val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_6.Links.links.CreateAccountAccessConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-        val accessToken = AccountAS().getAccessToken(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_6.Links.links.GetAccounts, accessToken)
-
-        // When
-        val result = AccountRS().getAccountsData<OBReadProduct2>(
-            urlWithAccountId(
-                accountAndTransaction3_1_6.Links.links.GetAccountProduct,
+                accountAndTransaction3_1_8.Links.links.GetAccountProduct,
                 accountId
             ), accessToken
         )

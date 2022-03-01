@@ -10,7 +10,8 @@ import com.forgerock.securebanking.support.account.AccountAS
 import com.forgerock.securebanking.support.account.AccountFactory.Companion.obReadConsent1
 import com.forgerock.securebanking.support.account.AccountRS
 import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_6
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_2
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_8
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.account.OBReadAccount3
@@ -21,11 +22,13 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1",
-        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountStatements"]
+        apiVersion = "v3.1.2",
+        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountStatements"],
+        apis = ["statements"],
+        compatibleVersions = ["v.3.1.1", "v.3.1", "v.3.0"]
     )
     @Test
-    fun shouldGetAccountStatements_v3_1() {
+    fun shouldGetAccountStatements_v3_1_2() {
         // Given
         val consentRequest = obReadConsent1(
             listOf(
@@ -35,7 +38,7 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
             )
         )
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_2.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -51,7 +54,7 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()
 
-        val accountDataUrl = accountAndTransaction3_1.Links.links.GetAccountStatements
+        val accountDataUrl = accountAndTransaction3_1_2.Links.links.GetAccountStatements
             .replace("{AccountId}", accounts.data.account[0].accountId)
         // When
         val result = AccountRS().getAccountData<OBReadStatement2>(
@@ -67,11 +70,13 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1.6",
-        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountStatements"]
+        apiVersion = "v3.1.8",
+        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountStatements"],
+        apis = ["statements"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5", "v.3.1.4", "v.3.1.3"]
     )
     @Test
-    fun shouldGetAccountStatements_v3_1_6() {
+    fun shouldGetAccountStatements_v3_1_8() {
         // Given
         val consentRequest = obReadConsent1(
             listOf(
@@ -81,7 +86,7 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
             )
         )
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_6.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_8.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -92,12 +97,12 @@ class GetAccountStatementsTest(val tppResource: CreateTppCallback.TppResource) {
             tppResource.tpp
         )
         val accounts =
-            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount3>(accountAndTransaction3_1_8.Links.links.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()
 
-        val accountDataUrl = accountAndTransaction3_1_6.Links.links.GetAccountStatements
+        val accountDataUrl = accountAndTransaction3_1_8.Links.links.GetAccountStatements
             .replace("{AccountId}", accounts.data.account[0].accountId)
         // When
         val result = AccountRS().getAccountData<OBReadStatement2>(
