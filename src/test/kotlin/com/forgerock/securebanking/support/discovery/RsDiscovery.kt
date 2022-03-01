@@ -13,8 +13,13 @@ val rsDiscovery by lazy { getRsConfiguration() }
 val accountAndTransaction3_1 by lazy {
     rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == "v3.1" }!!
 }
+
 val accountAndTransaction3_1_1 by lazy {
     rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == ("v3.1.1") }!!
+}
+
+val accountAndTransaction3_1_2 by lazy {
+    rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == ("v3.1.2") }!!
 }
 
 val accountAndTransaction3_1_3 by lazy {
@@ -31,6 +36,14 @@ val accountAndTransaction3_1_5 by lazy {
 
 val accountAndTransaction3_1_6 by lazy {
     rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == ("v3.1.6") }!!
+}
+
+val accountAndTransaction3_1_7 by lazy {
+    rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == ("v3.1.7") }!!
+}
+
+val accountAndTransaction3_1_8 by lazy {
+    rsDiscovery.Data.AccountAndTransactionAPI?.first { it.Version == ("v3.1.8") }!!
 }
 
 val payment3_1 by lazy {
@@ -59,6 +72,14 @@ val payment3_1_5 by lazy {
 
 val payment3_1_6 by lazy {
     rsDiscovery.Data.PaymentInitiationAPI?.first { it.Version == ("v3.1.6") }!!
+}
+
+val payment3_1_7 by lazy {
+    rsDiscovery.Data.PaymentInitiationAPI?.first { it.Version == ("v3.1.7") }!!
+}
+
+val payment3_1_8 by lazy {
+    rsDiscovery.Data.PaymentInitiationAPI?.first { it.Version == ("v3.1.8") }!!
 }
 
 val accountPermissions by lazy {
@@ -99,6 +120,14 @@ val eventsNotification3_1_6 by lazy {
     rsDiscovery.Data.EventNotificationAPI?.first { it.Version == ("v3.1.6") }!!
 }
 
+val eventsNotification3_1_7 by lazy {
+    rsDiscovery.Data.EventNotificationAPI?.first { it.Version == ("v3.1.7") }!!
+}
+
+val eventsNotification3_1_8 by lazy {
+    rsDiscovery.Data.EventNotificationAPI?.first { it.Version == ("v3.1.8") }!!
+}
+
 // Funds confirmations
 val fundsConfirmations3_0 by lazy {
     rsDiscovery.Data.FundsConfirmationAPI?.first { it.Version == ("v3.0") }!!
@@ -130,6 +159,14 @@ val fundsConfirmations3_1_5 by lazy {
 
 val fundsConfirmations3_1_6 by lazy {
     rsDiscovery.Data.FundsConfirmationAPI?.first { it.Version == ("v3.1.6") }!!
+}
+
+val fundsConfirmations3_1_7 by lazy {
+    rsDiscovery.Data.FundsConfirmationAPI?.first { it.Version == ("v3.1.7") }!!
+}
+
+val fundsConfirmations3_1_8 by lazy {
+    rsDiscovery.Data.FundsConfirmationAPI?.first { it.Version == ("v3.1.8") }!!
 }
 
 val rsDiscoveryMap by lazy {

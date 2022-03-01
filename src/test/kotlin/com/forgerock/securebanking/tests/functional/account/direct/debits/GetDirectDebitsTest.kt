@@ -9,26 +9,29 @@ import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.support.account.AccountAS
 import com.forgerock.securebanking.support.account.AccountFactory.Companion.obReadConsent1
 import com.forgerock.securebanking.support.account.AccountRS
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1
-import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_6
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_2
+import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_8
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.READDIRECTDEBITS
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
+import uk.org.openbanking.datamodel.account.OBReadDirectDebit1
 import uk.org.openbanking.datamodel.account.OBReadDirectDebit2
 
 class GetDirectDebitsTest(val tppResource: CreateTppCallback.TppResource) {
+
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1",
+        apiVersion = "v3.1.2",
         operations = ["CreateAccountAccessConsent", "GetDirectDebits"],
-        apis = ["direct-debits"]
+        apis = ["direct-debits"],
+        compatibleVersions = ["v.3.1.1", "v.3.1", "v.3.0"]
     )
     @Test
-    fun shouldGetDirectDebits_v3_1() {
+    fun shouldGetDirectDebits_v3_1_2() {
         // Given
         val consentRequest = obReadConsent1(listOf(READDIRECTDEBITS))
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_2.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -40,8 +43,8 @@ class GetDirectDebitsTest(val tppResource: CreateTppCallback.TppResource) {
         )
 
         // When
-        val result = AccountRS().getAccountsData<OBReadDirectDebit2>(
-            accountAndTransaction3_1.Links.links.GetDirectDebits,
+        val result = AccountRS().getAccountsData<OBReadDirectDebit1>(
+            accountAndTransaction3_1_2.Links.links.GetDirectDebits,
             accessToken
         )
 
@@ -52,16 +55,17 @@ class GetDirectDebitsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
-        apiVersion = "v3.1.6",
+        apiVersion = "v3.1.8",
         operations = ["CreateAccountAccessConsent", "GetDirectDebits"],
-        apis = ["direct-debits"]
+        apis = ["direct-debits"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5", "v.3.1.4", "v.3.1.3"]
     )
     @Test
-    fun shouldGetDirectDebits_v3_1_6() {
+    fun shouldGetDirectDebits_v3_1_8() {
         // Given
         val consentRequest = obReadConsent1(listOf(READDIRECTDEBITS))
         val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_6.Links.links.CreateAccountAccessConsent,
+            accountAndTransaction3_1_8.Links.links.CreateAccountAccessConsent,
             consentRequest,
             tppResource.tpp
         )
@@ -74,7 +78,7 @@ class GetDirectDebitsTest(val tppResource: CreateTppCallback.TppResource) {
 
         // When
         val result = AccountRS().getAccountsData<OBReadDirectDebit2>(
-            accountAndTransaction3_1_6.Links.links.GetDirectDebits,
+            accountAndTransaction3_1_8.Links.links.GetDirectDebits,
             accessToken
         )
 

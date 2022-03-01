@@ -38,7 +38,6 @@ class AccountAS {
         psu: UserRegistrationRequest,
         tpp: Tpp
     ): AccessToken {
-        populateRSData(psu)
         val authenticationURL = generateAuthenticationURL(consentId, registrationResponse, psu, tpp)
         val response = authenticate(authenticationURL, psu)
         val authorizeURL = response.successUrl
@@ -48,20 +47,6 @@ class AccountAS {
         val consentDecisionResponse = sendConsentDecision(consentRequest, accountsIds)
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
         return exchangeCode(registrationResponse, tpp, authCode)
-    }
-
-    fun populateRSData(psu: UserRegistrationRequest) {
-        val parameters = listOf(
-            "userId" to psu.user.uid,
-            "username" to psu.user.uid,
-            "profile" to "random"
-        )
-        val (_, response, result) = Fuel.post("$RS/admin/fake-data/generate", parameters = parameters)
-            .responseString()
-        if (!response.isSuccessful) throw AssertionError(
-            "Could not populate RS Data for user with the uid: ${psu.user.uid}",
-            result.component2()
-        )
     }
 
     fun generateAuthenticationURL(

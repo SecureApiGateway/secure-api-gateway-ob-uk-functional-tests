@@ -3,6 +3,7 @@ package com.forgerock.securebanking.support
 import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.configuration.USER_PASSWORD
 import com.forgerock.securebanking.framework.constants.IAM
+import com.forgerock.securebanking.framework.constants.RS
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.utils.adminAuthentication
 import com.forgerock.securebanking.framework.utils.getIDMAdminAuthCode
@@ -31,7 +32,22 @@ private fun registerUser(realm: String): UserRegistrationRequest {
     if (!response.isSuccessful) throw AssertionError("Failed to register user", result.component2())
     val str = JsonParser.parseString(result.get()).asJsonObject
     user.user.uid = str.get("_id").asString
+    populateRSData(user)
     return user
+}
+
+fun populateRSData(psu: UserRegistrationRequest) {
+    val parameters = listOf(
+        "userId" to psu.user.uid,
+        "username" to psu.user.uid,
+        "profile" to "random"
+    )
+    val (_, response, result) = Fuel.post("$RS/admin/fake-data/generate", parameters = parameters)
+        .responseString()
+    if (!response.isSuccessful) throw AssertionError(
+        "Could not populate RS Data for user with the uid: ${psu.user.uid}",
+        result.component2()
+    )
 }
 
 fun registerDirectoryUser(): UserRegistrationRequest {
