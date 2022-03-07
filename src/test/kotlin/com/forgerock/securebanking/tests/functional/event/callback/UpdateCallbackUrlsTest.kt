@@ -7,8 +7,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.forgerock.openbanking.common.model.version.OBVersion
 import com.forgerock.securebanking.framework.data.Tpp
-import com.forgerock.securebanking.framework.http.fuel.initFuelAsNewTpp
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
+import com.forgerock.securebanking.framework.http.fuel.initFuelAsNewTpp
 import com.forgerock.securebanking.support.event.Events
 import com.forgerock.securebanking.support.event.EventsDataFactory
 import com.github.kittinunf.fuel.core.FuelError

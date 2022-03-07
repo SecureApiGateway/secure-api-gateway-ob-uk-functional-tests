@@ -9,12 +9,12 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.securebanking.support.funds.FundsConfirmationRS
-import com.forgerock.securebanking.support.funds.FundsConfirmationsAS
 import com.forgerock.securebanking.support.discovery.fundsConfirmations3_0
 import com.forgerock.securebanking.support.discovery.fundsConfirmations3_1_2
 import com.forgerock.securebanking.support.discovery.fundsConfirmations3_1_3
 import com.forgerock.securebanking.support.discovery.fundsConfirmations3_1_6
+import com.forgerock.securebanking.support.funds.FundsConfirmationRS
+import com.forgerock.securebanking.support.funds.FundsConfirmationsAS
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
 import org.junit.jupiter.api.Test

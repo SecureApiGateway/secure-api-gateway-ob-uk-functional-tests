@@ -2,43 +2,22 @@ package com.forgerock.securebanking.tests.functional.directory
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.forgerock.securebanking.framework.configuration.DOMAIN
+import com.forgerock.securebanking.framework.constants.IAM
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.support.registerDirectoryUser
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.fuel.gson.jsonBody
-import com.google.gson.Gson
-import com.nimbusds.jose.shaded.json.JSONObject
 import org.junit.jupiter.api.Test
-import java.util.*
 
 data class UserRegistrationRequest(val user: User) {
-    constructor(userName: String, password: String, givenName: String, sn: String, mail: String, uid: String) : this(User(userName, password, givenName, sn, mail, uid))
-    constructor(userName: String, password: String, givenName: String, sn: String, mail: String) : this(User(userName, password, givenName, sn, mail, null))
+    constructor(userName: String, password: String, uid: String) : this(User(userName, password, uid))
+    constructor(userName: String, password: String) : this(User(userName, password,null))
 }
 
-data class User(val userName: String, val password: String, val givenName: String, val sn: String, val mail: String, var uid: String?)
+data class User(val userName: String, val password: String, var uid: String?)
 
 class DirectoryRegistrationTest {
 
-    //TODO
-    @Test
-    fun shouldRegisterNewUser() {
-        // Given
-        val directoryUser = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1", "givenName", "sn", "mail@forgerock.com")
-
-        // When
-        val (_, response, _) = Fuel.post("https://as.aspsp.$DOMAIN/json/realms/root/realms/auth/selfservice/userRegistration?_action=submitRequirements")
-            .header("Accept-API-Version", "protocol=1.0,resource=1.0")
-            .jsonBody(directoryUser)
-            .responseString()
-
-        // Then
-        assertThat(response.statusCode).isEqualTo(200)
-    }
-
-    //TODO
     @Test
     fun shouldAuthenticateWithNewUser() {
         // Given
@@ -48,7 +27,7 @@ class DirectoryRegistrationTest {
         FuelManager.instance.reset()  // Force non mtls
         initFuel()
         val (_, response, _) = Fuel.post(
-            "https://service.directory.$DOMAIN/api/user/authenticate",
+            "$IAM/am/XUI/?realm=root&authIndexType=service&authIndexValue=Login",
             listOf(
                 Pair("username", directoryUser.user.userName),
                 Pair("password", directoryUser.user.password)

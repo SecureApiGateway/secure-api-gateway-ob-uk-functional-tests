@@ -7,9 +7,6 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.google.gson.GsonBuilder
-import org.apache.commons.io.output.FileWriterWithEncoding
-import org.bouncycastle.util.io.pem.PemObject
-import org.bouncycastle.util.io.pem.PemWriter
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -38,7 +35,6 @@ private fun getSSAJwt(): String {
     )
     return String(r.get())
 }
-
 
 
 private fun createSSAJwtFile() {

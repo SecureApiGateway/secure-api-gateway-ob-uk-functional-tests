@@ -211,11 +211,8 @@ val domain = "andra-racovita.forgerock.financial"
 // val domain = "dev-ob.forgerock.financial:8074"
 
 //User's Password
-val userPassword = "Passw0rd@1"
-
-//Identity Cloud Admin Credentials
-val adminUsername = "username"
-val adminPassword = "password"
+val userPassword = "password"
+val username = "username"
 
 val eidasTestSigningKid = "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
 val preEidasTestSigningKid = "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
@@ -230,10 +227,8 @@ tasks.withType<Test>().configureEach {
     }
     println("RUNNING [" + name + "] tests, DOMAIN --> " + environment["DOMAIN"])
 
-    environment("USER_PASSWORD", userPassword)
-
-    environment("ADMIN_USERNAME", adminUsername)
-    environment("ADMIN_PASSWORD", adminPassword)
+    environment("PSU_PASSWORD", userPassword)
+    environment("PSU_USERNAME", username)
 
     environment("OB_TPP_OB_EIDAS_TEST_SIGNING_KID", eidasTestSigningKid)
     environment("OB_TPP_PRE_EIDAS_SIGNING_KID", preEidasTestSigningKid)

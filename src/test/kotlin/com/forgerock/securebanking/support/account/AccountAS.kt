@@ -1,14 +1,13 @@
 package com.forgerock.securebanking.support.account
 
+import com.forgerock.securebanking.framework.constants.COOKIE_NAME
 import com.forgerock.securebanking.framework.constants.IAM
 import com.forgerock.securebanking.framework.constants.RCS
 import com.forgerock.securebanking.framework.constants.REDIRECT_URI
-import com.forgerock.securebanking.framework.constants.RS
 import com.forgerock.securebanking.framework.data.*
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.securebanking.framework.utils.COOKIE_NAME
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel

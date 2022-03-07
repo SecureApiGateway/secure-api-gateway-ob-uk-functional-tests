@@ -1,6 +1,5 @@
 package com.forgerock.securebanking.support.discovery
 
-import com.forgerock.securebanking.framework.constants.IAM
 import com.forgerock.securebanking.framework.constants.OB_DEMO
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
