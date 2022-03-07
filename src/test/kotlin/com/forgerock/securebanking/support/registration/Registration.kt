@@ -2,13 +2,13 @@ package com.forgerock.securebanking.support.registration
 
 import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.securebanking.framework.configuration.OB_TPP_PRE_EIDAS_SIGNING_KID
-import com.forgerock.securebanking.framework.constants.*
+import com.forgerock.securebanking.framework.constants.OB_TPP_EIDAS_SIGNING_KEY
+import com.forgerock.securebanking.framework.constants.OB_TPP_EIDAS_SSA_PATH
+import com.forgerock.securebanking.framework.constants.OB_TPP_PRE_EIDAS_SIGNING_KEY
+import com.forgerock.securebanking.framework.constants.OB_TPP_PRE_EIDAS_SSA_PATH
 import com.forgerock.securebanking.framework.data.RegistrationRequest
 import com.forgerock.securebanking.framework.data.RegistrationResponse
 import com.forgerock.securebanking.framework.http.fuel.responseObject
-import com.forgerock.securebanking.framework.utils.adminAuthentication
-import com.forgerock.securebanking.framework.utils.getIDMAdminAuthCode
-import com.forgerock.securebanking.framework.utils.getIDMAdminToken
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.loadRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
@@ -24,11 +24,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 fun unregisterTpp(id: String): Triple<Request, Response, Result<String, FuelError>> {
-    val cookie = adminAuthentication()
-    val code = getIDMAdminAuthCode(cookie)
-    val accessToken = getIDMAdminToken(cookie, code)
-    return Fuel.delete("$IAM/openidm/managed/apiClient/$id")
-        .header("Authorization", "Bearer $accessToken")
+    return Fuel.delete("${asDiscovery.registration_endpoint!!}/$id")
         .responseObject()
 }
 

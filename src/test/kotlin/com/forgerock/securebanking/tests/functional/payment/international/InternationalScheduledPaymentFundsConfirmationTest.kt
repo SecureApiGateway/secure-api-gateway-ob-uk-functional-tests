@@ -7,11 +7,11 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
+import com.forgerock.securebanking.support.discovery.payment3_1_2
+import com.forgerock.securebanking.support.discovery.payment3_1_6
 import com.forgerock.securebanking.support.funds.FundsConfirmationsAS
 import com.forgerock.securebanking.support.payment.PaymentAS
 import com.forgerock.securebanking.support.payment.PaymentRS
-import com.forgerock.securebanking.support.discovery.payment3_1_2
-import com.forgerock.securebanking.support.discovery.payment3_1_6
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName

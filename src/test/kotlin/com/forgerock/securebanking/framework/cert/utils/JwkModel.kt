@@ -1,7 +1,6 @@
 package com.forgerock.securebanking.framework.cert.utils
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.gson.annotations.SerializedName
 
 data class JwkModel(
     val p: String,

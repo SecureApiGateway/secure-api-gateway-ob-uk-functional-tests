@@ -29,8 +29,10 @@ data class SupportValues(
 val support = SupportValues()
 
 fun initSSLClient() {
-    val privatePemStream = object {}.javaClass.getResourceAsStream("${support.PATH_EIDAS_RESOURCES}/${support.certificatePemClient}")
-    val publicPemStream = object {}.javaClass.getResourceAsStream("${support.PATH_EIDAS_RESOURCES}/${support.privatePemKeyClient}")
+    val privatePemStream =
+        object {}.javaClass.getResourceAsStream("${support.PATH_EIDAS_RESOURCES}/${support.certificatePemClient}")
+    val publicPemStream =
+        object {}.javaClass.getResourceAsStream("${support.PATH_EIDAS_RESOURCES}/${support.privatePemKeyClient}")
     initFuel(privatePemStream, publicPemStream)
 }
 

@@ -1,39 +1,21 @@
 package com.forgerock.securebanking.support
 
 import com.forgerock.securebanking.framework.configuration.DOMAIN
-import com.forgerock.securebanking.framework.configuration.USER_PASSWORD
+import com.forgerock.securebanking.framework.configuration.PSU_PASSWORD
+import com.forgerock.securebanking.framework.configuration.PSU_USERNAME
 import com.forgerock.securebanking.framework.constants.IAM
 import com.forgerock.securebanking.framework.constants.RS
 import com.forgerock.securebanking.framework.http.fuel.responseObject
-import com.forgerock.securebanking.framework.utils.adminAuthentication
-import com.forgerock.securebanking.framework.utils.getIDMAdminAuthCode
-import com.forgerock.securebanking.framework.utils.getIDMAdminToken
 import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.jsonBody
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 import org.apache.http.client.utils.URIBuilder
 import java.net.URLEncoder
-import java.util.*
 
-private fun registerUser(realm: String): UserRegistrationRequest {
-    val cookie = adminAuthentication()
-    val code = getIDMAdminAuthCode(cookie)
-    val accessToken = getIDMAdminToken(cookie, code)
-
-    val username = "fortest_" + UUID.randomUUID()
-    val user = UserRegistrationRequest(username, USER_PASSWORD, username, username, "mail@forgerock.com")
-    val (_, response, result) = Fuel.post("$IAM/openidm/managed/user?_action=create")
-        .header("Authorization", "Bearer $accessToken")
-        .jsonBody(user.user)
-        .responseString()
-    if (!response.isSuccessful) throw AssertionError("Failed to register user", result.component2())
-    val str = JsonParser.parseString(result.get()).asJsonObject
-    user.user.uid = str.get("_id").asString
-    populateRSData(user)
-    return user
+private fun initializeUser(): UserRegistrationRequest {
+    return UserRegistrationRequest(PSU_USERNAME, PSU_PASSWORD)
 }
 
 fun populateRSData(psu: UserRegistrationRequest) {
@@ -51,11 +33,11 @@ fun populateRSData(psu: UserRegistrationRequest) {
 }
 
 fun registerDirectoryUser(): UserRegistrationRequest {
-    return registerUser(realm = "alpha")
+    return initializeUser()
 }
 
 fun registerPSU(): UserRegistrationRequest {
-    return registerUser(realm = "alpha")
+    return initializeUser()
 }
 
 //fun login(username: String, password: String): String {

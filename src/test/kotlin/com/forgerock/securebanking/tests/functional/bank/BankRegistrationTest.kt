@@ -24,7 +24,7 @@ class BankRegistrationTest {
     @Test
     fun shouldRegisterNewUser() {
         // Given
-        val psu = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1", "givenName", "sn", "mail@forgerock.com")
+        val psu = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1")
 
         // When
         val (_, response, _) = Fuel.post("https://as.aspsp.$DOMAIN/json/realms/root/realms/openbanking/selfservice/userRegistration?_action=submitRequirements")

@@ -1,7 +1,5 @@
 package com.forgerock.uk.openbanking.framework.accesstoken.constants
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
-
 /* Sandbox directory api endpoints */
 const val TOKEN_URL_SANDBOX = "https://matls-sso.openbankingtest.org.uk/as/token.oauth2"
 const val TEST_URL_SANDBOX = "https://matls-api.openbankingtest.org.uk/scim/v2/OBAccountPaymentServiceProviders/"

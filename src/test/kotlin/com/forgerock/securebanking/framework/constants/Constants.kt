@@ -22,4 +22,7 @@ const val OB_TPP_PRE_EIDAS_SSA_PATH = "/com/forgerock/securebanking/ob-pre-eidas
 const val SCOPES_TPP = "ASPSPReadAccess TPPReadAccess AuthoritiesReadAccess"
 const val SCOPES_ASPSP = "ASPSPReadAccess TPPReadAll AuthoritiesReadAccess"
 
+//AM
+const val COOKIE_NAME = "iPlanetDirectoryPro"
+
 

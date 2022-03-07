@@ -9,8 +9,8 @@ import com.forgerock.openbanking.common.model.version.OBVersion
 import com.forgerock.openbanking.constants.OpenBankingConstants
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.securebanking.support.event.Events
 import com.forgerock.securebanking.support.discovery.asDiscovery
+import com.forgerock.securebanking.support.event.Events
 import com.github.kittinunf.fuel.core.FuelError
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Tag
