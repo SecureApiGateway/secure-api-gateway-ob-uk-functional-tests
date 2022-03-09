@@ -2,6 +2,7 @@ package com.forgerock.securebanking.tests.functional.account.parties
 
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
@@ -44,7 +45,13 @@ class GetAccountPartyTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
+        val (accountId, psuId) = AccountRS().getFirstAccountIdAndPsuId(
+            accountAndTransaction3_1.Links.links.GetAccounts,
+            accessToken
+        )
+        assertThat(accountId).isNotEqualTo("")
+        assertThat(psuId).isNotEqualTo("")
+        psu.user.uid = psuId
 
         // When
         val result = AccountRS().getAccountsDataEndUser<OBReadParty1>(
@@ -86,7 +93,13 @@ class GetAccountPartyTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
+        val (accountId, psuId) = AccountRS().getFirstAccountIdAndPsuId(
+            accountAndTransaction3_1_2.Links.links.GetAccounts,
+            accessToken
+        )
+        assertThat(accountId).isNotEqualTo("")
+        assertThat(psuId).isNotEqualTo("")
+        psu.user.uid = psuId
 
         // When
         val result = AccountRS().getAccountsData<OBReadParty2>(
@@ -127,7 +140,13 @@ class GetAccountPartyTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_8.Links.links.GetAccounts, accessToken)
+        val (accountId, psuId) = AccountRS().getFirstAccountIdAndPsuId(
+            accountAndTransaction3_1_8.Links.links.GetAccounts,
+            accessToken
+        )
+        assertThat(accountId).isNotEqualTo("")
+        assertThat(psuId).isNotEqualTo("")
+        psu.user.uid = psuId
 
         // When
         val result = AccountRS().getAccountsDataEndUser<OBReadParty2>(
