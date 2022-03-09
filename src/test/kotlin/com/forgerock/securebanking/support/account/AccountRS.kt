@@ -169,6 +169,19 @@ class AccountRS {
         return accounts.data.account[0].accountId
     }
 
+    fun getFirstAccountIdAndPsuId(accountDataUrl: String, accessToken: AccessToken): Pair<String, String> {
+        val accounts = getAccountsData<OBReadAccount3>(accountDataUrl, accessToken)
+
+        try {
+            val accountId = accounts.data.account[0].accountId
+            val psuId = accounts.data.account[0].account[0].name
+            return Pair<String, String>(accountId, psuId)
+        } catch (e: Exception) {
+            throw AssertionError("The accounts response body doesn't have the expected format")
+        }
+        return Pair<String, String>("", "")
+    }
+
     fun getFirstStatementId(statementUrl: String, accessToken: AccessToken): String {
         val statement = getAccountsData<OBReadStatement2>(statementUrl, accessToken)
         return statement.data.statement[0].statementId
