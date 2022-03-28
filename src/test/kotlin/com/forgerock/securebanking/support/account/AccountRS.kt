@@ -1,5 +1,6 @@
 package com.forgerock.securebanking.support.account
 
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.constants.REDIRECT_URI
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.ClientCredentialData
@@ -16,7 +17,7 @@ import com.github.kittinunf.fuel.core.isSuccessful
 import uk.org.openbanking.datamodel.account.OBReadAccount3
 import uk.org.openbanking.datamodel.account.OBReadStatement2
 
-const val LOCALHOST = "http://localhost:8080"
+//const val LOCALHOST = "http://localhost:8080"
 
 class AccountRS {
 
@@ -87,7 +88,7 @@ class AccountRS {
         accountDataUrl: String,
         accessToken: AccessToken
     ): T {
-        val xObURL = "$LOCALHOST/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
@@ -108,7 +109,7 @@ class AccountRS {
         accessToken: AccessToken,
         psu: UserRegistrationRequest
     ): T {
-        val xObURL = "$LOCALHOST/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
@@ -130,7 +131,7 @@ class AccountRS {
         accessToken: AccessToken,
         accountId: String
     ): T {
-        val xObURL = "$LOCALHOST/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(
             AccountFactory.urlWithAccountId(
                 accountDataUrl,

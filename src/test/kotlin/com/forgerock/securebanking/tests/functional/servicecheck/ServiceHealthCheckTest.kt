@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.github.kittinunf.fuel.Fuel
 import org.junit.jupiter.api.BeforeEach
@@ -22,7 +21,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getJWKMSState() {
         // When
-        val (_, response, result) = Fuel.get("https://jwkms.$DOMAIN/external/actuator/health").responseString()
+        val (_, response, result) = Fuel.get("https://jwkms.DOMAIN/external/actuator/health").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -32,7 +31,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getDirectoryState() {
         // When
-        val (_, response, result) = Fuel.get("https://matls.service.directory.$DOMAIN/external/actuator/health")
+        val (_, response, result) = Fuel.get("https://matls.service.directory.DOMAIN/external/actuator/health")
             .responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
@@ -43,7 +42,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getAMState() {
         // When
-        val (_, response, result) = Fuel.get("https://as.aspsp.$DOMAIN/isAlive.jsp").responseString()
+        val (_, response, result) = Fuel.get("https://as.aspsp.DOMAIN/isAlive.jsp").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -53,7 +52,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getASState() {
         // When
-        val (_, response, result) = Fuel.get("https://as.aspsp.$DOMAIN/external/actuator/health").responseString()
+        val (_, response, result) = Fuel.get("https://as.aspsp.DOMAIN/external/actuator/health").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -63,7 +62,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getRSState() {
         // When
-        val (_, response, result) = Fuel.get("https://rs.aspsp.$DOMAIN/external/actuator/health").responseString()
+        val (_, response, result) = Fuel.get("https://rs.aspsp.DOMAIN/external/actuator/health").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -73,7 +72,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getRCSState() {
         // When
-        val (_, response, result) = Fuel.get("https://rcs.aspsp.$DOMAIN/external/actuator/health").responseString()
+        val (_, response, result) = Fuel.get("https://rcs.aspsp.DOMAIN/external/actuator/health").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -83,7 +82,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getMonitoringState() {
         // When
-        val (_, response, result) = Fuel.get("https://monitoring.$DOMAIN/external/actuator/health").responseString()
+        val (_, response, result) = Fuel.get("https://monitoring.DOMAIN/external/actuator/health").responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)
         assertThat(result.get()).isNotNull()
@@ -93,7 +92,7 @@ class ServiceHealthCheckTest {
     @Test
     fun getBankState() {
         // When
-        val (_, response, result) = Fuel.get("https://matls.service.bank.$DOMAIN/external/actuator/health")
+        val (_, response, result) = Fuel.get("https://matls.service.bank.DOMAIN/external/actuator/health")
             .responseString()
         // Then
         assertThat(response.statusCode).isEqualTo(200)

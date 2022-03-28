@@ -4,16 +4,19 @@ import com.forgerock.securebanking.support.registerDirectoryUser
 import com.forgerock.securebanking.support.registerPSU
 import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
 
-val DOMAIN = System.getenv("DOMAIN") ?: "dev.forgerock.financial"
-val OB_DEMO_DOMAIN =
-    if (System.getenv("DOMAIN") != null) "obdemo." + System.getenv("DOMAIN") else "obdemo.dev.forgerock.financial"
+val RS_SERVER = System.getenv("rsServer") ?: "https://rs.dev.forgerock.financial"
+val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
+val RCS_SERVER = System.getenv("rcsServer") ?: "https://rcs.dev.forgerock.financial"
+val IG_SERVER = System.getenv("igServer") ?: "https://obdemo.dev.forgerock.financial"
 
-val PSU_PASSWORD = System.getenv("PSU_PASSWORD") ?: "Passw0rd@1"
-val PSU_USERNAME = System.getenv("PSU_USERNAME") ?: "username"
+val PSU_PASSWORD = System.getenv("userPassword") ?: "Passw0rd@1"
+val PSU_USERNAME = System.getenv("username") ?: "username"
 
 val OB_TPP_OB_EIDAS_TEST_SIGNING_KID =
-    System.getenv("OB_TPP_OB_EIDAS_TEST_SIGNING_KID") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
-val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("OB_TPP_PRE_EIDAS_SIGNING_KID") ?: "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
+    System.getenv("eidasTestSigningKid") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
+val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("preEidasTestSigningKid") ?: "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
+
+val COOKIE_NAME = System.getenv("cookieName") ?: "iPlanetDirectoryPro"
 
 val psu: UserRegistrationRequest by lazy { registerPSU() }
 val directoryUser: UserRegistrationRequest by lazy { registerDirectoryUser() }

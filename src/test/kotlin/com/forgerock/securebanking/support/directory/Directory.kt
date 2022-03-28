@@ -1,7 +1,6 @@
 package com.forgerock.securebanking.support.directory
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
-import com.forgerock.securebanking.framework.constants.OB_DEMO
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.data.Application
 import com.forgerock.securebanking.framework.data.SoftwareStatement
 import com.forgerock.securebanking.framework.http.fuel.responseObject
@@ -17,7 +16,7 @@ import com.google.gson.JsonParser.parseString
  */
 
 fun getTransportKid(softwareStatement: SoftwareStatement, sessionToken: String): String? {
-    val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application")
+    val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application")
         .header("Cookie", "obri-session=$sessionToken")
         .responseObject<Application>()
     if (!response.isSuccessful) throw AssertionError("Could not get transport kid")
@@ -25,7 +24,7 @@ fun getTransportKid(softwareStatement: SoftwareStatement, sessionToken: String):
 }
 
 fun getSigningKid(softwareStatement: SoftwareStatement, sessionToken: String): String? {
-    val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application")
+    val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application")
         .header("Cookie", "obri-session=$sessionToken")
         .responseObject<Application>()
     if (!response.isSuccessful) throw AssertionError("Could not get signing kid")
@@ -33,7 +32,7 @@ fun getSigningKid(softwareStatement: SoftwareStatement, sessionToken: String): S
 }
 
 fun getEncryptionKid(softwareStatement: SoftwareStatement, sessionToken: String): String? {
-    val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application")
+    val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application")
         .header("Cookie", "obri-session=$sessionToken")
         .responseObject<Application>()
     if (!response.isSuccessful) throw AssertionError("Could not get encryption kid")
@@ -76,7 +75,7 @@ fun generateSoftwareStatement(sessionToken: String): String {
             "PISP"
         ), jwkMsKey
     )
-    val (_, response, result) = Fuel.post("$OB_DEMO/jwkms/apiclient/getssa")
+    val (_, response, result) = Fuel.post("$IG_SERVER/jwkms/apiclient/getssa")
         .jsonBody(requestBody)
         .header("Content-Type", "application/json")
         .responseString()
@@ -87,7 +86,7 @@ fun generateSoftwareStatement(sessionToken: String): String {
 
 fun issueCertificate(): String {
     val organization = Organization()
-    val (_, response, result) = Fuel.post("$OB_DEMO/jwkms/apiclient/issuecert")
+    val (_, response, result) = Fuel.post("$IG_SERVER/jwkms/apiclient/issuecert")
         .jsonBody(organization)
         .header("Content-Type", "application/json")
         .responseString()
@@ -98,7 +97,7 @@ fun issueCertificate(): String {
 
 fun getTLSCertFromJWKs(jwkMsKey: String): String {
     val body = parseString(jwkMsKey).asJsonObject
-    val (_, response, result) = Fuel.post("$OB_DEMO/jwkms/apiclient/gettlscert")
+    val (_, response, result) = Fuel.post("$IG_SERVER/jwkms/apiclient/gettlscert")
         .jsonBody(body)
         .header("Content-Type", "application/json")
         .responseString()

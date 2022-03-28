@@ -9,3 +9,5 @@ build
 .project
 .settings/
 .idea/
+gradle/profiles/*
+!gradle/profiles/profile-default.gradle.kts

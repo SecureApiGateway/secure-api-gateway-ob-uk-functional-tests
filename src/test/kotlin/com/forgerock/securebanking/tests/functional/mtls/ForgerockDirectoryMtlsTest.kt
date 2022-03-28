@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsAll
 import assertk.assertions.isEqualTo
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.initFuelAsNewTpp
 import com.github.kittinunf.fuel.Fuel
@@ -24,7 +23,7 @@ class ForgerockDirectoryMtlsTest(val tppResource: CreateTppCallback.TppResource)
         val tpp = initFuelAsNewTpp()
 
         // When
-        val (_, response, result) = Fuel.get("https://matls.as.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.as.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -39,7 +38,7 @@ class ForgerockDirectoryMtlsTest(val tppResource: CreateTppCallback.TppResource)
         val tpp = initFuelAsNewTpp()
 
         // When
-        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -53,7 +52,7 @@ class ForgerockDirectoryMtlsTest(val tppResource: CreateTppCallback.TppResource)
         // Given already registered
 
         // When
-        val (_, response, result) = Fuel.get("https://matls.as.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.as.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -67,7 +66,7 @@ class ForgerockDirectoryMtlsTest(val tppResource: CreateTppCallback.TppResource)
         // Given already registered
 
         // When
-        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -79,7 +78,7 @@ class ForgerockDirectoryMtlsTest(val tppResource: CreateTppCallback.TppResource)
     @Test
     fun shouldHaveRoleSoftwareStatementWhenFRDirectoryMtlsCheck() {
         // When
-        val (_, response, result) = Fuel.get("https://matls.service.directory.$DOMAIN/api/matls/test")
+        val (_, response, result) = Fuel.get("https://matls.service.directory.DOMAIN/api/matls/test")
             .responseObject<MtlsResponse>()
 
         // Then

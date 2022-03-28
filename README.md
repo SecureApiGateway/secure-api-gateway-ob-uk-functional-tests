@@ -1,16 +1,16 @@
 [<img src="https://raw.githubusercontent.com/ForgeRock/forgerock-logo-dev/master/Logo-fr-dev.png" align="right" width="220px"/>](https://developer.forgerock.com/)
 
-| |Current Status|
-|---|---|
-|Build|[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FSecureBankingAcceleratorToolkit%2Fsecurebanking-openbanking-uk-functional-tests%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests/goto?ref=master)|
-|Release|[![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests.svg)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests)
-|License|![license](https://img.shields.io/github/license/ACRA/acra.svg)|
+|         | Current Status                                                                                                                                                                                                                                                                                                                                      |
+|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Build   | [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FSecureBankingAcceleratorToolkit%2Fsecurebanking-openbanking-uk-functional-tests%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests/goto?ref=master) |
+| Release | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests.svg)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests)                                                              |
+| License | ![license](https://img.shields.io/github/license/ACRA/acra.svg)                                                                                                                                                                                                                                                                                     |
 
 # securebanking functional tests (Open Banking UK)
 Software testing to validate and coverage the implemented open banking functionalities and ensure that these satisfies the functional requirements.
 
 ## Setup
-- Gradle 7.1.1
+- Gradle 7.4.1
 - Kotlin 1.4.20
 - Java 14
 
@@ -22,48 +22,72 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 
 ## Adding a new ExecutionCondition
 
-1. Copy from [examples](./src/test/kotlin/com/forgerock/openbanking/junit)
+1. Copy from [examples](./src/test/kotlin/com/forgerock/securebanking/framework/extensions/junit)
 1. Update the execution condition logic
 1. Add FQN of ExecutionCondition class to [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension)
 1. Add your annotations to classes
 
+## Profiles
+Functional test project has been implemented with a gradle strategy to be able to run the tests 
+against different environments using different profiles files, let's go how works.
+
+The profiles file lives in `gradle/profiles` folder, and they need to be named following the pattern `profile-${profile-name}.gradle.kts`
+as example we provide the default profile `profile-default.gradle.kts`, with all mandatory properties, where `default` is the `${profile-name}`.
+
+For default the functional tests are executed with the `default` profile if another profile is not provided. 
+
+### How run tests with a custom profile?
+First you will need to create a new profile file in `gradle/profile` following the pattern defined for the profile file name.
+Example: `gradle/profile/profile-MY_CUSTOM_PROFILE_NAME.gradle.kts`
+
+To use your new profile you can pass the profile name by command line.
+```shell
+gradle -Pprofile=MY_CUSTOM_PROFILE_NAME
+```
+**Check your values**
+```shell
+gradle properties -q -Pprofile=jorge
+```
+```shell
+gradle properties -q -Pprofile=jorge
+```
+### How overwrite a property supplied by a profile file?
+To overwrite a property defined in a profile file we can use system properties passed by command line.
+
+**Example command line to overwrite a project property defined by profile**
+```shell
+gradle -DpropertyName=someValue -DpropertyName2=someValue -DpropertyName3=someValue ...
+```
+```shell
+gradle -Pprofile=MY_CUSTOM_PROFILE_NAME -DpropertyName=newValue -DpropertyName2=newValue -DpropertyName3=newValue ...
+```
+> The logic implemented in build gradle will overwrite the project property `propertyName` with the new value passed by command line.
+> The `properyName` need match with a property defined in the profile file to be overwrites
+
+#
+# The next sections  (OUT OF DATE) Needs to be updated!
 ## tasks
 ![tasks](docs/assets/img/tasks.png)
 
-| Code Generation | Description |
-|---|---|
+| Code Generation         | Description                                            |
+|-------------------------|--------------------------------------------------------|
 | gen-pain00100108-source | Generate sources for the schema schema-pain.001.001.08 |
-| xjcGeneration | Run all XJC tasks |
+| xjcGeneration           | Run all XJC tasks                                      |
 
-| Forgerock | Description |
-| --- | --- |
-| generateTestJar | Generate a non-executable jar library tests |
+| specific           | Description                                                                                                       |
+|--------------------|-------------------------------------------------------------------------------------------------------------------|
+| copyOBCertificates | Copy the certificates from `certs/automating-testing/` to `src/test/resources/com/forgerock/uk/openbanking/eidas` |
+| generateTestJar    | Generate a non-executable jar library tests                                                                       |
 
-| Forgerock-tests | Description |
-| --- | --- |
-| accessToken | Runs the access token tests |
-| account | Runs the account tests |
-| bank | Runs the bank tests |
-| directory | Runs the directory tests |
-| registration | Runs the dynamic registration tests |
-| matls | Runs the matls tests |
-| payment | Runs the payment tests |
-| serviceHealthCheck | Runs the test to check the service status |
-| all | Runs ALL tests |
+| accounts-tests     | Description                                |
+|--------------------|--------------------------------------------|
+| accounts_v3_1_8    | Runs the accounts tests for version v3.1.8 |
 
-| Forgerock-tests-events | Description |
-| --- | --- |
-| all.events | Runs all event tests |
-| aggregatedpolling | Runs the aggregated polling tests |
-| callbacks | Runs the callback tests |
-| subscriptions | Runs the subscription tests |
+| deprecated | Description                                                         |
+|------------|---------------------------------------------------------------------|
+| N/A        | All test tasks that have been deprecated for that strategic version |
 
-| Forgerock-tests-payments | Description |
-| --- | --- |
-| all.payments | Runs all payment tests |
-| domesticPayments | Runs the domestic payment tests |
-| filePayments | Runs the file payment tests |
-| internationalPayments | Runs the international payment tests |
+
 
 ## Run single Test on Intellij using JUnit platform
 1. Go to `IntelliJ IDEA > preferences > build, execution, deployment > build tools > Gradle`

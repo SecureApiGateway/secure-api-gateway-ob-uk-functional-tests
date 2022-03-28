@@ -1,6 +1,6 @@
 package com.forgerock.securebanking.support.discovery
 
-import com.forgerock.securebanking.framework.constants.OB_DEMO
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.responseObject
@@ -40,7 +40,7 @@ data class AsDiscovery(
 val asDiscovery by lazy { getAsConfiguration() }
 
 private fun getAsConfiguration(): AsDiscovery {
-    val (_, response, result) = Fuel.get("$OB_DEMO/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
+    val (_, response, result) = Fuel.get("$IG_SERVER/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
         .responseObject<AsDiscovery>()
     if (!response.isSuccessful) throw AssertionError("Failed to load As Discovery", result.component2())
 

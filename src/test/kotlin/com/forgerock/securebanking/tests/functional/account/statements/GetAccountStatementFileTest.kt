@@ -72,15 +72,8 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
         val result = AccountRS().getAccountStatementFileData(accountDataUrl, accessToken, "application/pdf")
 
         // Then
-        // Depends of the configuration of the sandbox the result can be the below:
-        // - '404 - Not found': If the resource PDF hasn't provided and configured on the sandbox.
-        // - byteArray: If the resource PDF has provided and configured on the sandbox
-        if (result.second.statusCode == 404) {
-            assertThat(result.second.responseMessage.toLowerCase()).contains("not found")
-        } else {
             assertThat(result.third.get()).isNotNull().isNotEmpty()
             assertThat(result.third.get()).isInstanceOf(ByteArray::class.java)
-        }
     }
 
     @EnabledIfVersion(
@@ -197,7 +190,7 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
         // Then
         assertThat((result.third.component2() as FuelError).response.statusCode).isEqualTo(400)
         val body = String((result.third.component2() as FuelError).response.data)
-        assertThat(body).contains("OBRI.Request.Invalid")
+        assertThat(body).contains("UK.OBIE.Header.Invalid")
         assertThat(body).contains("Invalid header 'Accept' the only supported value for this operation is 'application/pdf'")
     }
 
@@ -254,14 +247,7 @@ class GetAccountStatementFileTest(val tppResource: CreateTppCallback.TppResource
         val result = AccountRS().getAccountStatementFileData(accountDataUrl, accessToken, "application/pdf")
 
         // Then
-        // Depends of the configuration of the sandbox the result can be the below:
-        // - '404 - Not found': If the resource PDF hasn't provided and configured on the sandbox.
-        // - byteArray: If the resource PDF has provided and configured on the sandbox.
-        if (result.second.statusCode == 404) {
-            assertThat(result.second.responseMessage.toLowerCase()).contains("not found")
-        } else {
-            assertThat(result.third.get()).isNotNull().isNotEmpty()
-            assertThat(result.third.get()).isInstanceOf(ByteArray::class.java)
-        }
+        assertThat(result.third.get()).isNotNull().isNotEmpty()
+        assertThat(result.third.get()).isInstanceOf(ByteArray::class.java)
     }
 }

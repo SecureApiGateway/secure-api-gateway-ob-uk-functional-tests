@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.RegistrationRequest
 import com.forgerock.securebanking.framework.http.fuel.initFuelAsNewTpp
@@ -127,7 +126,7 @@ class AccessTokenTest {
                 )
             }
             val payload = ClientAssertion(
-                aud = "https://as.aspsp.$DOMAIN/oauth2",
+                aud = "https://as.aspsp.DOMAIN/oauth2",
                 sub = tpp.registrationResponse.client_id,
                 iss = tpp.registrationResponse.client_id,
                 exp = (System.currentTimeMillis() / 1000 + 180).toInt(),

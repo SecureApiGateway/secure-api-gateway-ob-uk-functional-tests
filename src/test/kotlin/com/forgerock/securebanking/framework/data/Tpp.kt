@@ -136,7 +136,7 @@ data class Tpp(
         }
     }
 
-    fun acquireAccessToken(jws: SignedJWT): AccessTokenResponse {
+    private fun acquireAccessToken(jws: SignedJWT): AccessTokenResponse {
         val accessTokenRequest = AccessTokenRequest(client_assertion = jws.serialize())
 
         val parameters = listOf(

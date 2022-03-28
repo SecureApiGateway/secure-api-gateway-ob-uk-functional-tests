@@ -2,7 +2,7 @@ package com.forgerock.securebanking.tests.functional.directory
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.forgerock.securebanking.framework.constants.IAM
+import com.forgerock.securebanking.framework.configuration.PLATFORM_SERVER
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.support.registerDirectoryUser
 import com.github.kittinunf.fuel.Fuel
@@ -27,7 +27,7 @@ class DirectoryRegistrationTest {
         FuelManager.instance.reset()  // Force non mtls
         initFuel()
         val (_, response, _) = Fuel.post(
-            "$IAM/am/XUI/?realm=root&authIndexType=service&authIndexValue=Login",
+            "$PLATFORM_SERVER/am/XUI/?realm=root&authIndexType=service&authIndexValue=Login",
             listOf(
                 Pair("username", directoryUser.user.userName),
                 Pair("password", directoryUser.user.password)

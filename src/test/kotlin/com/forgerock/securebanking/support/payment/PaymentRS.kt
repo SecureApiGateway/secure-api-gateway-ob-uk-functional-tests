@@ -7,7 +7,6 @@ import com.forgerock.openbanking.common.model.version.OBVersion.v3_1_4
 import com.forgerock.openbanking.constants.OpenBankingConstants
 import com.forgerock.openbanking.jwt.model.CreateDetachedJwtResponse
 import com.forgerock.openbanking.jwt.model.SigningRequest
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
@@ -273,7 +272,7 @@ class PaymentRS {
         val orgId: String = ssPayload["org_id"] as String
         val softwareId: String = ssPayload["software_id"] as String
 
-        val (_, detachedJwtResponse, detachedJwt) = Fuel.post("https://jwkms.$DOMAIN/api/crypto/signPayloadToDetachedJwt")
+        val (_, detachedJwtResponse, detachedJwt) = Fuel.post("https://jwkms.DOMAIN/api/crypto/signPayloadToDetachedJwt")
             .header("issuerId", "$orgId/$softwareId")
             .header("signingRequest", serialisedSigningRequest(version))
             .jsonBody(body)

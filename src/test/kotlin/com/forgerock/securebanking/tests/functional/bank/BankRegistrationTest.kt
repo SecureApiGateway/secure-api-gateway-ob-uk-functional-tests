@@ -2,7 +2,6 @@ package com.forgerock.securebanking.tests.functional.bank
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.support.authenticatePSU
 import com.forgerock.securebanking.support.checkSession
@@ -27,7 +26,7 @@ class BankRegistrationTest {
         val psu = UserRegistrationRequest("fortest_" + UUID.randomUUID(), "Password@1")
 
         // When
-        val (_, response, _) = Fuel.post("https://as.aspsp.$DOMAIN/json/realms/root/realms/openbanking/selfservice/userRegistration?_action=submitRequirements")
+        val (_, response, _) = Fuel.post("https://as.aspsp.DOMAIN/json/realms/root/realms/openbanking/selfservice/userRegistration?_action=submitRequirements")
             .header("Accept-API-Version", "resource=1.0, protocol=1.0")
             .header("Content-Type", "application/json")
             .jsonBody(psu)
