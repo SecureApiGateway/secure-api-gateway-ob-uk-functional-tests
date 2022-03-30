@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.configuration.directoryUser
 import com.forgerock.securebanking.support.directory.createSoftwareStatement
 import com.forgerock.securebanking.support.directory.getEncryptionKid
@@ -44,7 +43,7 @@ class SoftwareStatementTest {
         val transportKid = getTransportKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 
@@ -61,7 +60,7 @@ class SoftwareStatementTest {
         val transportKid = getTransportKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 
@@ -78,7 +77,7 @@ class SoftwareStatementTest {
         val transportKid = getSigningKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 
@@ -95,7 +94,7 @@ class SoftwareStatementTest {
         val transportKid = getSigningKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 
@@ -112,7 +111,7 @@ class SoftwareStatementTest {
         val transportKid = getEncryptionKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/privateCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 
@@ -129,7 +128,7 @@ class SoftwareStatementTest {
         val transportKid = getEncryptionKid(softwareStatement, sessionToken)
 
         // When
-        val (_, response, result) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
+        val (_, response, result) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement.id}/application/${transportKid}/download/publicCert")
             .header("Cookie", "obri-session=$sessionToken")
             .responseString()
 

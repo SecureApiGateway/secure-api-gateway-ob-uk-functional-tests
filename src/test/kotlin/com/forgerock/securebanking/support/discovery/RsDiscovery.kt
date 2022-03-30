@@ -1,6 +1,6 @@
 package com.forgerock.securebanking.support.discovery
 
-import com.forgerock.securebanking.framework.configuration.OB_DEMO_DOMAIN
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.gsonDeserializer
@@ -228,7 +228,7 @@ val rsDiscoveryEnabledOperationsMap by lazy {
 }
 
 private fun getRsConfiguration(): RsDiscovery {
-    val (_, response, result) = Fuel.get("https://$OB_DEMO_DOMAIN/rs/open-banking/discovery")
+    val (_, response, result) = Fuel.get("$IG_SERVER/rs/open-banking/discovery")
         .responseObject<RsDiscovery>(gsonDeserializer())
     if (!response.isSuccessful) throw AssertionError("Failed to load RS Discovery", result.component2())
     return result.get()

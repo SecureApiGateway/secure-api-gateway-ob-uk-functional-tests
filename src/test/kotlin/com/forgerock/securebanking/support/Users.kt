@@ -1,18 +1,28 @@
 package com.forgerock.securebanking.support
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
+import com.forgerock.securebanking.framework.configuration.PLATFORM_SERVER
 import com.forgerock.securebanking.framework.configuration.PSU_PASSWORD
 import com.forgerock.securebanking.framework.configuration.PSU_USERNAME
-import com.forgerock.securebanking.framework.constants.IAM
-import com.forgerock.securebanking.framework.constants.RS
+import com.forgerock.securebanking.framework.configuration.RS_SERVER
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.BodyLength
+import com.github.kittinunf.fuel.core.Headers
+import com.github.kittinunf.fuel.core.Request
+import com.github.kittinunf.fuel.core.extensions.cUrlString
 import com.github.kittinunf.fuel.core.isSuccessful
+import com.github.kittinunf.fuel.core.requests.DefaultBody
 import com.github.kittinunf.fuel.gson.jsonBody
 import com.google.gson.Gson
+import io.netty.handler.codec.http.HttpContent
 import org.apache.http.client.utils.URIBuilder
+import org.apache.http.entity.ContentType
+import java.net.URI
 import java.net.URLEncoder
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 
 private fun initializeUser(): UserRegistrationRequest {
     return UserRegistrationRequest(PSU_USERNAME, PSU_PASSWORD)
@@ -24,7 +34,7 @@ fun populateRSData(psu: UserRegistrationRequest) {
         "username" to psu.user.uid,
         "profile" to "random"
     )
-    val (_, response, result) = Fuel.post("$RS/admin/fake-data/generate", parameters = parameters)
+    val (_, response, result) = Fuel.post("$RS_SERVER/admin/fake-data/generate", parameters = parameters)
         .responseString()
     if (!response.isSuccessful) throw AssertionError(
         "Could not populate RS Data for user with the uid: ${psu.user.uid}",
@@ -50,14 +60,14 @@ fun registerPSU(): UserRegistrationRequest {
 //}
 
 fun login(username: String, password: String): String {
-    val ssoCode = authenticate(realm = "alpha", username, password)
-
+    //val ssoCode = authenticate(realm = "alpha", username, password)
+    val ssoCode = authenticateByHttpClient(realm = "alpha", username, password)
     return ssoCode.tokenId
 }
 
 private fun initiateOIDCFlow(): String {
     val (_, initiateLoginResponse, initiateLoginResult) = Fuel.get(
-        "https://service.directory.$DOMAIN/api/user/initiate-login",
+        "https://service.directory.DOMAIN/api/user/initiate-login",
         listOf(Pair("originUrl", "/"))
     ).responseString()
     if (!initiateLoginResponse.isSuccessful) throw AssertionError(
@@ -68,7 +78,7 @@ private fun initiateOIDCFlow(): String {
 }
 
 fun checkSession(ssoCode: SsoCode): Int {
-    val (_, response, _) = Fuel.post("https://am.$DOMAIN/json/sessions?_action=getSessionInfo")
+    val (_, response, _) = Fuel.post("https://am.DOMAIN/json/sessions?_action=getSessionInfo")
         .header("Content-Type", "application/json")
         .header("Accept-API-Version", "protocol=1.0,resource=2.1")
         .header("iPlanetDirectoryPro", ssoCode.tokenId)
@@ -86,9 +96,10 @@ fun checkSession(ssoCode: SsoCode): Int {
     return response.statusCode
 }
 
+
 fun authenticatePSU(gotoUrl: String, username: String, password: String): SsoCode {
     val (_, authenticateInitResponse, authenticateInitResult) = Fuel.post(
-        "https://am.$DOMAIN/json/realms/root/realms/openbanking/authenticate?goto=${
+        "https://am.DOMAIN/json/realms/root/realms/openbanking/authenticate?goto=${
             URLEncoder.encode(
                 gotoUrl,
                 "UTF-8"
@@ -113,7 +124,7 @@ fun authenticatePSU(gotoUrl: String, username: String, password: String): SsoCod
     authenticationResponsePayload.callbacks.get(1).input.get(0).value = password
 
 
-    val (_, authenticateResponse, authenticateResult) = Fuel.post("https://am.$DOMAIN/json/realms/root/realms/openbanking/authenticate")
+    val (_, authenticateResponse, authenticateResult) = Fuel.post("https://am.DOMAIN/json/realms/root/realms/openbanking/authenticate")
         .header("Content-Type", "application/json")
         .header("Accept-API-Version", "protocol=1.0,resource=2.1")
         .header("Cookie", "route=$routeCookie")
@@ -126,11 +137,44 @@ fun authenticatePSU(gotoUrl: String, username: String, password: String): SsoCod
     return authenticateResult.get()
 }
 
-private fun authenticate(realm: String, username: String, password: String): SsoCode {
-    val (_, response, result) = Fuel.post("$IAM/am/json/realms/root/realms/$realm/authenticate")
+private fun authenticateByHttpClient(realm: String, username: String, password: String): SsoCode {
+    val client = HttpClient.newBuilder().build();
+    val request = HttpRequest.newBuilder()
+        .uri(URI.create("$PLATFORM_SERVER/am/json/realms/root/realms/$realm/authenticate"))
         .header("X-OpenAM-Username", username)
         .header("X-OpenAM-Password", password)
-        .responseString()
+        .header("Accept-API-Version", "resource=2.1, protocol=1.0")
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build()
+    val response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    val gson = Gson()
+    return gson.fromJson(response.body(), SsoCode::class.java)
+}
+
+private fun authenticate(realm: String, username: String, password: String): SsoCode {
+    var request = Fuel.post("$PLATFORM_SERVER/am/json/realms/root/realms/$realm/authenticate")
+    request = request
+//        .header("Content-Length",request.body.toString().length)
+        .header("X-OpenAM-Username", username)
+        .header("X-OpenAM-Password", password)
+        .header("Accept-API-Version", "resource=2.1, protocol=1.0")
+        .header(Headers.CONTENT_TYPE, ContentType.DEFAULT_TEXT)
+        .header("My-header", "200")
+        .header(Headers.CONTENT_LENGTH, 0)
+    /*
+    curl -i -X POST https://openam-forgerock-securebankingaccelerato.forgeblocks.com/am/json/realms/root/realms/alpha/authenticate \
+    -H 'X-OpenAM-Password:0penBanking!' -H "My-header:200" -H "x-obri-analytics-enabled:false" -H "X-OpenAM-Username:psu" \
+    -H "Accept-API-Version:resource=2.1, protocol=1.0" -H "Content-Type:text/plain; charset=ISO-8859-1" -H "Content-Length:0"
+     */
+    val curl = request.cUrlString()
+    val (_, response, result) = request.responseString()
+//    val (req, response, result) = Fuel.post("$PLATFORM_SERVER/am/json/realms/root/realms/$realm/authenticate")
+//        .header("X-OpenAM-Username", username)
+//        .header("X-OpenAM-Password", password)
+//        .header("Accept-API-Version", "resource=2.0, protocol=1.0")
+//        .header("My-header", "200")
+//        .header("Content-Length",req.body.lengh)
+//        .responseString()
     if (!response.isSuccessful) throw AssertionError(
         "Failed to get callbacks to Registration Journey",
         result.component2()
@@ -152,7 +196,7 @@ private fun exchangeCode(gotoUrl: String, ssoCode: SsoCode): String? {
 
 private fun getObriSessionToken(gotoUrl: String, code: String?): String {
     val state = URIBuilder(gotoUrl).queryParams.find { it.name.equals("state") }
-    val (_, loginResponse, loginResult) = Fuel.post("https://service.directory.$DOMAIN/api/user/login")
+    val (_, loginResponse, loginResult) = Fuel.post("https://service.directory.DOMAIN/api/user/login")
         .jsonBody(mapOf("code" to code, "state" to state?.value))
         .header("Cookie", "OIDC_ORIGIN_URL=/")
         .responseString()
@@ -164,7 +208,7 @@ private fun getObriSessionToken(gotoUrl: String, code: String?): String {
 }
 
 private fun initUser(obriSession: String) {
-    val (_, initResponse, initResult) = Fuel.get("https://service.directory.$DOMAIN/api/user/")
+    val (_, initResponse, initResult) = Fuel.get("https://service.directory.DOMAIN/api/user/")
         .header("Cookie", "obri-session=${obriSession}")
         .responseString()
     if (!initResponse.isSuccessful) throw AssertionError("Failed to initialise user", initResult.component2())

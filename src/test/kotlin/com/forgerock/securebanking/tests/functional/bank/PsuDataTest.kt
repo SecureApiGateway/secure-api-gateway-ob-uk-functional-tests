@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isIn
 import assertk.assertions.isNotNull
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.support.authenticatePSU
 import com.forgerock.securebanking.support.checkSession
 import com.forgerock.securebanking.support.registerPSU
@@ -21,7 +20,7 @@ class PsuDataTest {
         val statusCode = checkSession(ssoCode)
         assertThat(statusCode).isEqualTo(200)
         // When
-        val (_, dataResponse, dataResult) = Fuel.post("https://matls.service.bank.$DOMAIN/api/data/user/generate")
+        val (_, dataResponse, dataResult) = Fuel.post("https://matls.service.bank.DOMAIN/api/data/user/generate")
             .header("Cookie", "obri-session=${ssoCode.tokenId}")
             .responseString()
 

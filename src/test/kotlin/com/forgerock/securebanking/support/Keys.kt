@@ -1,6 +1,5 @@
 package com.forgerock.securebanking.support
 
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.data.SoftwareStatement
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
@@ -42,7 +41,7 @@ fun loadRsaPrivateKey(key: String): PrivateKey? {
 }
 
 fun getPrivateCert(softwareStatement: SoftwareStatement?, kid: String?, sessionToken: String): String {
-    val (_, response, public) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement?.id}/application/${kid}/download/privateCert")
+    val (_, response, public) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement?.id}/application/${kid}/download/privateCert")
         .header("Cookie", "obri-session=$sessionToken")
         .responseString()
     if (!response.isSuccessful) throw AssertionError("Failed to download private cert", public.component2())
@@ -50,7 +49,7 @@ fun getPrivateCert(softwareStatement: SoftwareStatement?, kid: String?, sessionT
 }
 
 fun getPublicCert(softwareStatement: SoftwareStatement?, kid: String?, sessionToken: String): String {
-    val (_, response, public) = Fuel.get("https://service.directory.$DOMAIN/api/software-statement/${softwareStatement?.id}/application/${kid}/download/publicCert")
+    val (_, response, public) = Fuel.get("https://service.directory.DOMAIN/api/software-statement/${softwareStatement?.id}/application/${kid}/download/publicCert")
         .header("Cookie", "obri-session=$sessionToken")
         .responseString()
     if (!response.isSuccessful) throw AssertionError("Failed to download public cert", public.component2())

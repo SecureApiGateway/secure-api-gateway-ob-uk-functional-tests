@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.containsAll
 import assertk.assertions.isEqualTo
-import com.forgerock.securebanking.framework.configuration.DOMAIN
 import com.forgerock.securebanking.framework.constants.OB_SOFTWARE_ID
 import com.forgerock.securebanking.framework.constants.OB_TPP_PRE_EIDAS_TRANSPORT_KEY_PATH
 import com.forgerock.securebanking.framework.constants.OB_TPP_PRE_EIDAS_TRANSPORT_PEM_PATH
@@ -30,7 +29,7 @@ class OpenBankingDirectoryMtlsTest {
     @Test
     fun shouldBeAnUnregisteredTppWhenAsApiMtlsCheck() {
         // When
-        val (_, response, result) = Fuel.get("https://matls.as.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.as.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -42,7 +41,7 @@ class OpenBankingDirectoryMtlsTest {
     @Test
     fun shouldBeAnUnregisteredTppWhenRsApiMtlsCheck() {
         // When
-        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.rs.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -61,7 +60,7 @@ class OpenBankingDirectoryMtlsTest {
             .responseObject<RegistrationResponse>()
 
         // When
-        val (_, response, result) = Fuel.get("https://matls.as.aspsp.$DOMAIN/open-banking/mtlsTest")
+        val (_, response, result) = Fuel.get("https://matls.as.aspsp.DOMAIN/open-banking/mtlsTest")
             .responseObject<MtlsResponse>()
 
         // Then
@@ -85,7 +84,7 @@ class OpenBankingDirectoryMtlsTest {
 
         // When
         try {
-            val (_, response, result) = Fuel.get("https://matls.rs.aspsp.$DOMAIN/open-banking/mtlsTest")
+            val (_, response, result) = Fuel.get("https://matls.rs.aspsp.DOMAIN/open-banking/mtlsTest")
                 .responseObject<MtlsResponse>()
 
             // Then

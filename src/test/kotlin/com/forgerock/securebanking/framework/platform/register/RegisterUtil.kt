@@ -3,7 +3,7 @@ package com.forgerock.securebanking.framework.platform.register
 import com.forgerock.securebanking.framework.cert.utils.SupportValues
 import com.forgerock.securebanking.framework.cert.utils.deleteFileIfExist
 import com.forgerock.securebanking.framework.cert.utils.initSSLClient
-import com.forgerock.securebanking.framework.constants.OB_DEMO
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.isSuccessful
@@ -22,7 +22,7 @@ fun registerApp() {
         object {}.javaClass.getResourceAsStream("${support.PATH_EIDAS_RESOURCES}/${support.ssaJwsFile}")
             .readAllBytes()
     )
-    val registerURL = "$OB_DEMO/am/oauth2/realms/root/realms/alpha/register"
+    val registerURL = "$IG_SERVER/am/oauth2/realms/root/realms/alpha/register"
     val (_, result, r) = Fuel.post(registerURL)
         .header(Headers.CONTENT_TYPE, "application/jwt")
         .body(ssaJWT)

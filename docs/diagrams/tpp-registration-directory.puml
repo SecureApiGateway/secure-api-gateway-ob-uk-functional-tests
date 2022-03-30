@@ -20,7 +20,7 @@ fInit o<-->o fInit: (initFuel) SSL Trust initialisation
 group register user into directory
     fInit -> Users: (RegisterUser) Register directory user (username, password) (realm:auth)
     activate Users
-        Users -> AM: https://am.$DOMAIN/json/realms/root/realms/$realm/selfservice/userRegistration?_action=submitRequirements
+        Users -> AM: https://am.DOMAIN/json/realms/root/realms/$realm/selfservice/userRegistration?_action=submitRequirements
         AM -[#0000FF]-> Users: directory User (username, passsord)
         Users -[#0000FF]-> fInit: directory User
     deactivate Users

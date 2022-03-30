@@ -1,6 +1,6 @@
 package com.forgerock.securebanking.framework.cert.utils
 
-import com.forgerock.securebanking.framework.constants.OB_DEMO
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.platform.register.Organization
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
@@ -26,7 +26,7 @@ fun main() {
 
 private fun getJWK(): String {
     val getCertsRequest = GsonBuilder().create().toJson(Organization())
-    val certsURL = "$OB_DEMO/jwkms/apiclient/getcert"
+    val certsURL = "$IG_SERVER/jwkms/apiclient/getcert"
     val (_, certResult, r) = Fuel.post(certsURL)
         .header(Headers.CONTENT_TYPE, "application/json")
         .body(getCertsRequest)
