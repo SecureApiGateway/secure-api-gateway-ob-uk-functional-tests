@@ -92,7 +92,7 @@ class GetAccountPartiesTest(val tppResource: CreateTppCallback.TppResource) {
             urlWithAccountId(
                 accountAndTransaction3_1_8.Links.links.GetAccountParties,
                 accountId
-            ), accessToken, psu
+            ), accessToken
         )
 
         // Then
