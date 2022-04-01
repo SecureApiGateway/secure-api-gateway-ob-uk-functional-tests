@@ -55,8 +55,7 @@ class GetPartyTest(val tppResource: CreateTppCallback.TppResource) {
         val party =
             AccountRS().getAccountsDataEndUser<OBReadParty1>(
                 accountAndTransaction3_1.Links.links.GetParty,
-                accessToken,
-                psu
+                accessToken
             )
 
         // Then
@@ -144,8 +143,7 @@ class GetPartyTest(val tppResource: CreateTppCallback.TppResource) {
         val party =
             AccountRS().getAccountsDataEndUser<OBReadParty2>(
                 accountAndTransaction3_1_8.Links.links.GetParty,
-                accessToken,
-                psu
+                accessToken
             )
 
         // Then

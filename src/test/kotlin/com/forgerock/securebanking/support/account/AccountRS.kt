@@ -106,15 +106,13 @@ class AccountRS {
 
     inline fun <reified T : Any> getAccountsDataEndUser(
         accountDataUrl: String,
-        accessToken: AccessToken,
-        psu: UserRegistrationRequest
+        accessToken: AccessToken
     ): T {
         val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("x-ob-url", xObURL)
-            .header("x-ob-user-id", psu.user.uid ?: "")
             .responseObject<T>()
         if (!accountResult.isSuccessful) throw AssertionError(
             "Could not get requested account data from ${accountDataUrl}: ${
