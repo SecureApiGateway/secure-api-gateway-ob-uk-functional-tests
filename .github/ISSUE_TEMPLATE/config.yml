@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Developers and Collaborators guidelines
+    url: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/wiki/Developers-guideline
+    about: Please read the developers and collaborators guideline before submit an issue.
+  - name: Creation Issue page
+    url: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/new/choose
+    about: Use this link to go creation issue page.
