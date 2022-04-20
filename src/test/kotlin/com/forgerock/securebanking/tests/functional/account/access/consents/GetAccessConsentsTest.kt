@@ -3,12 +3,14 @@ package com.forgerock.securebanking.tests.functional.account.access.consents
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.support.account.AccountFactory
 import com.forgerock.securebanking.support.account.AccountFactory.Companion.obReadConsent1
 import com.forgerock.securebanking.support.account.AccountRS
 import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_8
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.READACCOUNTSDETAIL
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
@@ -34,13 +36,14 @@ class GetAccessConsentsTest(val tppResource: CreateTppCallback.TppResource) {
         assertThat(consent).isNotNull()
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotNull()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // When
         val result =
             AccountRS().getConsent<OBReadConsentResponse1>(
-                AccountFactory.urlSubstituted(
+                AccountFactory.urlWithConsentId(
                     accountAndTransaction3_1_8.Links.links.GetAccountAccessConsent,
-                    mapOf("ConsentId" to consent.data.consentId)
+                    consent.data.consentId
                 ),
                 tppResource.tpp
             )
@@ -49,5 +52,6 @@ class GetAccessConsentsTest(val tppResource: CreateTppCallback.TppResource) {
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isEqualTo(consent.data.consentId)
+        Assertions.assertThat(result.data.status.toString()).`is`(Status.consentCondition)
     }
 }

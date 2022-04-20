@@ -33,7 +33,7 @@ fun loadRsaPrivateKey(key: String): PrivateKey? {
     FileReader("src/test/resources/$key").use { keyReader ->
         PemReader(keyReader).use { pemReader ->
             val pemObject: PemObject = pemReader.readPemObject()
-            val content: ByteArray = pemObject.getContent()
+            val content: ByteArray = pemObject.content
             val privKeySpec = PKCS8EncodedKeySpec(content)
             return factory.generatePrivate(privKeySpec)
         }

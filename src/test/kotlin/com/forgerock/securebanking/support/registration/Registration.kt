@@ -9,6 +9,7 @@ import com.forgerock.securebanking.framework.constants.OB_TPP_PRE_EIDAS_SSA_PATH
 import com.forgerock.securebanking.framework.data.RegistrationRequest
 import com.forgerock.securebanking.framework.data.RegistrationResponse
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.loadRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
@@ -52,7 +53,7 @@ fun signRegistrationRequest(): Pair<String, RegistrationRequest> {
     val key = loadRsaPrivateKey(privateKey)
     val signedRegistrationRequest = Jwts.builder()
         .setHeaderParam("kid", OB_TPP_PRE_EIDAS_SIGNING_KID)
-        .setPayload(GsonBuilder().create().toJson(registrationRequest))
+        .setPayload(GsonUtils.gson.toJson(registrationRequest))
         .signWith(key, SignatureAlgorithm.forName(asDiscovery.request_object_signing_alg_values_supported[0]))
         .compact()
     return Pair(signedRegistrationRequest, registrationRequest)
@@ -65,7 +66,7 @@ fun signOBEidasRegistrationRequest(): Pair<String, RegistrationRequest> {
     val key = loadRsaPrivateKey(privateKey)
     val signedRegistrationRequest = Jwts.builder()
         .setHeaderParam("kid", OB_TPP_OB_EIDAS_TEST_SIGNING_KID)
-        .setPayload(GsonBuilder().create().toJson(registrationRequest))
+        .setPayload(GsonUtils.gson.toJson(registrationRequest))
         .signWith(key, SignatureAlgorithm.forName(asDiscovery.request_object_signing_alg_values_supported[0]))
         .compact()
     return Pair(signedRegistrationRequest, registrationRequest)

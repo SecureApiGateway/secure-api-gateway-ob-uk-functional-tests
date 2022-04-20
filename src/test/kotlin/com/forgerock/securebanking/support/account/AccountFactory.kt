@@ -1,10 +1,14 @@
 package com.forgerock.securebanking.support.account
 
+import com.forgerock.securebanking.support.general.GeneralFactory.Companion.urlSubstituted
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.account.OBReadConsent1
 import uk.org.openbanking.datamodel.account.OBReadData1
 import uk.org.openbanking.datamodel.account.OBRisk2
 
+/**
+ * Generate common OB account data and URLs
+ */
 class AccountFactory {
     companion object {
         fun obReadConsent1(permissions: List<OBExternalPermissions1Code>): OBReadConsent1 {
@@ -16,10 +20,8 @@ class AccountFactory {
         }
 
         fun urlWithAccountId(url: String, accountId: String) = urlSubstituted(url, mapOf("AccountId" to accountId))
-        fun urlSubstituted(url: String, replaceable: Map<String, String>): String {
-            var replaced = url
-            for (replace in replaceable) replaced = replaced.replace("{${replace.key}}", replace.value)
-            return replaced
-        }
+
+        fun urlWithConsentId(url: String, consentId: String) =
+            urlSubstituted(url, mapOf("ConsentId" to consentId))
     }
 }

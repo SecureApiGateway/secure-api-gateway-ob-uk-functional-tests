@@ -4,6 +4,7 @@ import com.forgerock.securebanking.framework.cert.loadRsaPrivateKey
 import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.uk.openbanking.framework.accesstoken.constants.*
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenRequest
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenResponse
@@ -65,7 +66,7 @@ fun getSSA(accessToken: String): String {
 fun getJWS(): SignedJWT? {
     val signingKeyResource = object {}.javaClass.getResource(OB_TPP_EIDAS_SIGNING_KEY_PATH)
     if (signingKeyResource != null) {
-        val detachedPayload = Payload(GsonBuilder().create().toJson(ClaimsTest()))
+        val detachedPayload = Payload(GsonUtils.gson.toJson(ClaimsTest()))
 
         val jwtClaims = JWTClaimsSet.Builder(JWTClaimsSet.parse(detachedPayload.toJSONObject()))
             .issueTime(Date())

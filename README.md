@@ -83,6 +83,14 @@ gradle -Pprofile=MY_CUSTOM_PROFILE_NAME -DpropertyName=newValue -DpropertyName2=
 |--------------------|--------------------------------------------|
 | accounts_v3_1_8    | Runs the accounts tests for version v3.1.8 |
 
+| domestic-payments-tests  | Description                                         |
+|--------------------------|-----------------------------------------------------|
+| domestic_payments_v3_1_8 | Runs the domestic payments tests for version v3.1.8 |
+
+| tests        | Description                                                      |
+|--------------|------------------------------------------------------------------|
+| tests_v3_1_8 | Runs the accounts and domestic payments tests for version v3.1.8 |
+
 | deprecated | Description                                                         |
 |------------|---------------------------------------------------------------------|
 | N/A        | All test tasks that have been deprecated for that strategic version |

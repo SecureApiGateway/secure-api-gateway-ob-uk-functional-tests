@@ -68,7 +68,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("org.bouncycastle:bcprov-jdk16:1.46")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 
     testImplementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
 
@@ -104,7 +104,7 @@ xjcGeneration {
     defaultBindingFile = null
     schemas.register("schema-pain.001.001.08")
     schemas {
-        "schema-pain.001.001.08"{
+        "schema-pain.001.001.08" {
             taskName = "gen-pain00100108-source"
             schemaRootDir = "src/test/resources/com/forgerock/securebanking/payment/file"
             schemaFile = "pain.001.001.08.xsd"
@@ -144,7 +144,7 @@ if (project.hasProperty("profile")) {
 // override profile properties from command line or system properties set
 println("Overriding properties by command line....")
 project.extra.properties.forEach { (key, _) ->
-    if(System.getProperties().containsKey(key)){
+    if (System.getProperties().containsKey(key)) {
         println("* overriding [$key] sys prop")
         project.extra[key] = System.getProperty(key)
     }
@@ -292,6 +292,27 @@ tasks.register<Test>("accounts_$apiVersion") {
     group = "accounts-tests"
     description = "Runs the account tests with the version $apiVersion"
     filter {
+        includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+    }
+    failFast = false
+}
+
+/* DOMESTIC PAYMENTS */
+tasks.register<Test>("domestic_payments_$apiVersion") {
+    group = "payments-tests"
+    description = "Runs the payments tests with the version $apiVersion"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
+    }
+    failFast = false
+}
+
+/* ALL IMPLEMENTED TESTS */
+tasks.register<Test>("tests_$apiVersion") {
+    group = "tests"
+    description = "Runs the tests with the version $apiVersion"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
         includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
     }
     failFast = false

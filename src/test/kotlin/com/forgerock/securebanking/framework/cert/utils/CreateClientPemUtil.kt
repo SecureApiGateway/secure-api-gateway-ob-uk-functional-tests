@@ -2,10 +2,10 @@ package com.forgerock.securebanking.framework.cert.utils
 
 import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.platform.register.Organization
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.isSuccessful
-import com.google.gson.GsonBuilder
 import com.nimbusds.jose.jwk.JWK
 import org.apache.commons.io.output.FileWriterWithEncoding
 import org.bouncycastle.util.io.pem.PemObject
@@ -25,7 +25,7 @@ fun main() {
 }
 
 private fun getJWK(): String {
-    val getCertsRequest = GsonBuilder().create().toJson(Organization())
+    val getCertsRequest = GsonUtils.gson.toJson(Organization())
     val certsURL = "$IG_SERVER/jwkms/apiclient/getcert"
     val (_, certResult, r) = Fuel.post(certsURL)
         .header(Headers.CONTENT_TYPE, "application/json")

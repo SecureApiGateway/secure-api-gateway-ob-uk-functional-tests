@@ -1,196 +1,448 @@
 package com.forgerock.securebanking.tests.functional.payment.domestic.payments.consents
 
 import assertk.assertThat
-import assertk.assertions.*
-import com.forgerock.openbanking.common.model.version.OBVersion.v3_1_6
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEmpty
+import assertk.assertions.isNotNull
+import assertk.assertions.isNull
+import com.forgerock.openbanking.common.model.version.OBVersion
 import com.forgerock.securebanking.framework.conditions.Status
-import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.securebanking.support.discovery.payment3_1_2
-import com.forgerock.securebanking.support.discovery.payment3_1_6
-import com.forgerock.securebanking.support.funds.FundsConfirmationsAS
-import com.forgerock.securebanking.support.payment.PaymentAS
+import com.forgerock.securebanking.framework.http.fuel.defaultMapper
+import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
+import com.forgerock.securebanking.support.discovery.payment3_1_1
+import com.forgerock.securebanking.support.discovery.payment3_1_3
+import com.forgerock.securebanking.support.discovery.payment3_1_4
+import com.forgerock.securebanking.support.discovery.payment3_1_8
+import com.forgerock.securebanking.support.payment.PaymentFactory
 import com.forgerock.securebanking.support.payment.PaymentRS
-import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse2
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse3
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
-import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent2
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.*
 
 class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.2",
-        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"]
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    @DisplayName("shouldGet_DomesticPayment_FundsConfirmation_v3_1_2() ")
-    fun shouldGet_FundsConfirmation_v3_1_2() {
+    fun shouldGetDomesticPaymentsConsents_v3_1_8() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent2()
+        val consentRequest = aValidOBWriteDomesticConsent4()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse5>(
+            payment3_1_8.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_8,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
 
         // When
-        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse2>(
-            payment3_1_2.Links.links.CreateDomesticPaymentConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-        val getConsentResult = PaymentRS().getConsent<OBWriteDomesticConsentResponse2>(
-            payment3_1_2.Links.links.CreateDomesticPaymentConsent + "/" + consent.data.consentId,
-            tppResource.tpp
-        )
-        val fundsConfirmationUrl = payment3_1_2.Links.links.GetDomesticPaymentConsentsConsentIdFundsConfirmation
-            .replace("{ConsentId}", consent.data.consentId)
-        val accessTokenAuthorizationCode = FundsConfirmationsAS().headlessAuthentication(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-        val fundsConfirmationResult = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            fundsConfirmationUrl,
-            accessTokenAuthorizationCode
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse5>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_8.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_8
         )
 
         // Then
-        assertThat(getConsentResult).isNotNull()
-        assertThat(getConsentResult.data.consentId).isNotEmpty()
-        Assertions.assertThat(getConsentResult.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(getConsentResult.links.self).isEqualTo(payment3_1_2.Links.links.CreateDomesticPaymentConsent + "/" + consent.data.consentId)
-        assertThat(getConsentResult.meta).isNotNull()
-        // then fundsConfirmation asserts
-        assertThat(fundsConfirmationResult).isNotNull()
-        assertThat(fundsConfirmationResult.data.fundsAvailableResult.isFundsAvailable).isTrue()
-        assertThat(fundsConfirmationResult.links.self).isEqualTo(fundsConfirmationUrl)
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.2",
-        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"]
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    @DisplayName("shouldGet_Wrong_Grant_Type_DomesticPayment_FundsConfirmation_v3_1_2() ")
-    fun shouldGet_WrongGrantType_FundsConfirmation_v3_1_2() {
+    fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_8() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent2()
+        val consentRequest = aValidOBWriteDomesticConsent4()
+        consentRequest.data.initiation.debtorAccount(null)
 
-        // When
-        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse2>(
-            payment3_1_2.Links.links.CreateDomesticPaymentConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-        val fundsConfirmationUrl = payment3_1_2.Links.links.GetDomesticPaymentConsentsConsentIdFundsConfirmation
-            .replace("{ConsentId}", consent.data.consentId)
-        val accessTokenClientCredentials = PaymentAS().clientCredentialsAuthentication(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            tppResource.tpp
-        )
-
-        // then
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-                fundsConfirmationUrl,
-                accessTokenClientCredentials
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
             )
-        }
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
-    }
 
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.6",
-        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"]
-    )
-    @Test
-    @DisplayName("shouldGet_DomesticPayment_FundsConfirmation_v3_1_6() ")
-    fun shouldGet_FundsConfirmation_v3_1_6() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent2()
-
-        // When
         val consent = PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-            payment3_1_6.Links.links.CreateDomesticPaymentConsent,
+            payment3_1_8.Links.links.CreateDomesticPaymentConsent,
             consentRequest,
             tppResource.tpp,
-            v3_1_6
+            OBVersion.v3_1_8,
+            signedPayloadConsent
         )
-        val getConsentResult = PaymentRS().getConsent<OBWriteDomesticConsentResponse5>(
-            payment3_1_6.Links.links.CreateDomesticPaymentConsent + "/" + consent.data.consentId,
-            tppResource.tpp
-        )
-        val fundsConfirmationUrl = payment3_1_6.Links.links.GetDomesticPaymentConsentsConsentIdFundsConfirmation
-            .replace("{ConsentId}", consent.data.consentId)
-        val accessTokenAuthorizationCode = FundsConfirmationsAS().headlessAuthentication(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-        val fundsConfirmationResult = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            fundsConfirmationUrl,
-            accessTokenAuthorizationCode
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+        assertThat(consent.data.initiation.debtorAccount).isNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse5>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_8.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_8
         )
 
         // Then
-        assertThat(getConsentResult).isNotNull()
-        assertThat(getConsentResult.data.consentId).isNotEmpty()
-        Assertions.assertThat(getConsentResult.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(getConsentResult.links.self).isEqualTo(payment3_1_6.Links.links.CreateDomesticPaymentConsent + "/" + consent.data.consentId)
-        assertThat(getConsentResult.meta).isNotNull()
-        // then fundsConfirmation asserts
-        assertThat(fundsConfirmationResult).isNotNull()
-        assertThat(fundsConfirmationResult.data.fundsAvailableResult.isFundsAvailable).isTrue()
-        assertThat(fundsConfirmationResult.links.self).isEqualTo(fundsConfirmationUrl)
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(result.data.initiation.debtorAccount).isNull()
+    }
+
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.4",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentsConsents_v3_1_4() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent4()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse4>(
+            payment3_1_4.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_4,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse4>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_4.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_4
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.6",
-        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
+        apiVersion = "v3.1.4",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
         apis = ["domestic-payment-consents"]
     )
     @Test
-    @DisplayName("shouldGet_Wrong_grant_type_DomesticPayment_FundsConfirmation_v3_1_6() ")
-    fun shouldGet_WrongGrantType_FundsConfirmation_v3_1_6() {
+    fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_4() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent4()
+        consentRequest.data.initiation.debtorAccount(null)
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse4>(
+            payment3_1_4.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_4,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+        assertThat(consent.data.initiation.debtorAccount).isNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse4>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_4.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_4
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(result.data.initiation.debtorAccount).isNull()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.3",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.2"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentsConsents_v3_1_3() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent3()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse3>(
+            payment3_1_3.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_3,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse3>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_3.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_3
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.3",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.2"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_3() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent3()
+        consentRequest.data.initiation.debtorAccount(null)
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse3>(
+            payment3_1_3.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_3,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+        assertThat(consent.data.initiation.debtorAccount).isNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse3>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_3.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_3
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(result.data.initiation.debtorAccount).isNull()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.1",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentsConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
 
-        // When
-        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-            payment3_1_6.Links.links.CreateDomesticPaymentConsent,
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse2>(
+            payment3_1_1.Links.links.CreateDomesticPaymentConsent,
             consentRequest,
             tppResource.tpp,
-            v3_1_6
-        )
-        val fundsConfirmationUrl = payment3_1_6.Links.links.GetDomesticPaymentConsentsConsentIdFundsConfirmation
-            .replace("{ConsentId}", consent.data.consentId)
-        val accessTokenClientCredentials = PaymentAS().clientCredentialsAuthentication(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            tppResource.tpp
+            OBVersion.v3_1_1,
+            signedPayloadConsent
         )
 
-        // then
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-                fundsConfirmationUrl,
-                accessTokenClientCredentials
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse2>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_1.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_1
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.1",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_1() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent2()
+        consentRequest.data.initiation.debtorAccount(null)
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
             )
-        }
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse2>(
+            payment3_1_1.Links.links.CreateDomesticPaymentConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_1,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+        assertThat(consent.data.initiation.debtorAccount).isNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse2>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_1.Links.links.GetDomesticPaymentConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_1
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(result.data.initiation.debtorAccount).isNull()
     }
 }

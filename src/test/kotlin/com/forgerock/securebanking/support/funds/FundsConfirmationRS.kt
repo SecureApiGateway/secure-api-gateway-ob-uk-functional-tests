@@ -8,6 +8,7 @@ import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.discovery.rsDiscovery
 import com.github.kittinunf.fuel.Fuel
@@ -125,7 +126,7 @@ class FundsConfirmationRS {
         this
             .header("Authorization", "Bearer $accessToken")
             // x-fapi-financial-id is no longer required in v3.1.2 onwards
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId)
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId?:"")
             .header("x-idempotency-key", UUID.randomUUID().toString())
             .header("Accept", "application/json")
 
@@ -139,6 +140,6 @@ class FundsConfirmationRS {
             claimsBuilder.includeB64(true)
         }
         val signingRequest = SigningRequest.builder().customHeaderClaims(claimsBuilder.build()).build()
-        return GsonBuilder().create().toJson(signingRequest)
+        return GsonUtils.gson.toJson(signingRequest)
     }
 }

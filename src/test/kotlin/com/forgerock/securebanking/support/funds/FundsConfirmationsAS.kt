@@ -9,7 +9,7 @@ import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
 import com.forgerock.securebanking.support.discovery.asDiscovery
-import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
+import com.forgerock.securebanking.tests.functional.deprecated.directory.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.core.isSuccessful

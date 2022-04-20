@@ -15,7 +15,7 @@ data class AsDiscovery(
     val id_token_encryption_enc_values_supported: List<String>,
     val id_token_signing_alg_values_supported: List<String>,
     val introspection_endpoint: String,
-    val issuer: String,
+    var issuer: String,
     val jwks_uri: String,
     val registration_endpoint: String?,
     val request_object_encryption_alg_values_supported: List<String>,

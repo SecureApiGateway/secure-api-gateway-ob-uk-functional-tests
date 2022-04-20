@@ -10,14 +10,12 @@ import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.discovery.rsDiscovery
-import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
+import com.forgerock.securebanking.support.general.GeneralAS.Companion.CLIENT_ASSERTION_TYPE
+import com.forgerock.securebanking.support.general.GeneralAS.GrantTypes.CLIENT_CREDENTIALS
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.ResponseResultOf
 import com.github.kittinunf.fuel.core.isSuccessful
 import uk.org.openbanking.datamodel.account.OBReadAccount3
-import uk.org.openbanking.datamodel.account.OBReadStatement2
-
-//const val LOCALHOST = "http://localhost:8080"
 
 class AccountRS {
 
@@ -30,7 +28,7 @@ class AccountRS {
         val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
 
         val body = listOf(
-            "grant_type" to "client_credentials",
+            "grant_type" to CLIENT_CREDENTIALS,
             "redirect_uri" to REDIRECT_URI,
             "client_assertion_type" to CLIENT_ASSERTION_TYPE,
             "scope" to "accounts",
@@ -178,11 +176,5 @@ class AccountRS {
         } catch (e: Exception) {
             throw AssertionError("The accounts response body doesn't have the expected format")
         }
-        return Pair<String, String>("", "")
-    }
-
-    fun getFirstStatementId(statementUrl: String, accessToken: AccessToken): String {
-        val statement = getAccountsData<OBReadStatement2>(statementUrl, accessToken)
-        return statement.data.statement[0].statementId
     }
 }

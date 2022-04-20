@@ -60,7 +60,7 @@ fun main() {
 //    val key = loadRsaPrivateKey(privateKey)
 //    val signedRegistrationRequest = Jwts.builder()
 //            .setHeaderParam("kid", OB_TPP_TEST_KID)
-//            .setPayload(GsonBuilder().create().toJson(registrationRequest))
+//            .setPayload(GsonUtils.gson.toJson(registrationRequest))
 //            .signWith(key, SignatureAlgorithm.forName("RS256"))
 //            .compact()
 //    return Pair(signedRegistrationRequest, registrationRequest)

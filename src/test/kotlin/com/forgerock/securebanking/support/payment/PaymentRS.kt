@@ -2,76 +2,103 @@ package com.forgerock.securebanking.support.payment
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.forgerock.openbanking.common.model.version.OBVersion
-import com.forgerock.openbanking.common.model.version.OBVersion.v3_1_2
 import com.forgerock.openbanking.common.model.version.OBVersion.v3_1_4
+import com.forgerock.openbanking.common.model.version.OBVersion.v3_1_8
 import com.forgerock.openbanking.constants.OpenBankingConstants
 import com.forgerock.openbanking.jwt.model.CreateDetachedJwtResponse
 import com.forgerock.openbanking.jwt.model.SigningRequest
+import com.forgerock.securebanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
+import com.forgerock.securebanking.framework.constants.REDIRECT_URI
+import com.forgerock.securebanking.framework.constants.TAN
 import com.forgerock.securebanking.framework.data.AccessToken
+import com.forgerock.securebanking.framework.data.ClientCredentialData
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.signature.signPayload
+import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.discovery.rsDiscovery
+import com.forgerock.securebanking.support.general.GeneralAS.Companion.CLIENT_ASSERTION_TYPE
+import com.forgerock.securebanking.support.general.GeneralAS.GrantTypes.CLIENT_CREDENTIALS
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.HttpException
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.core.isSuccessful
-import com.google.gson.GsonBuilder
 import com.nimbusds.jose.JWSObject
-import com.nimbusds.jose.Payload
-import com.nimbusds.jose.crypto.RSASSAVerifier
-import com.nimbusds.jose.jwk.JWKSet
-import com.nimbusds.jose.jwk.RSAKey
 import java.util.*
-import java.util.regex.Pattern
 
 /**
  * Generic RS client methods for payment tests
  */
 class PaymentRS {
-
-    object GrantTypes {
-        const val CLIENT_CREDENTIALS = "client_credentials"
-        const val AUTHORIZATION_CODE = "authorization_code"
-    }
-
-    companion object {
-        private const val TAN = "openbanking.org.uk"
-        private val DETACHED_SIGNATURE_PATTERN = Pattern.compile("(.*\\.)(\\..*)")
-
-        private val jwkSet = getJwkSet()
-
-        private fun getJwkSet(): JWKSet {
-            val jwksUri = asDiscovery.jwks_uri
-            val (_, response, result) = Fuel.get(jwksUri).responseString()
-            return if (response.isSuccessful) JWKSet.parse(result.get()) else throw AssertionError(
-                "Failed to retrieve JWKs",
-                result.component2()
-            )
-        }
-    }
-
     inline fun <reified T : Any> consent(
         consentUrl: String,
         consentRequest: Any,
         tpp: Tpp,
-        version: OBVersion = v3_1_2
+        version: OBVersion = v3_1_8,
+        detachedJwt: String = ""
     ): T {
         try {
-            val accessToken = getAccessToken(tpp)
-            val detachedJwt = getDetachedJws(consentRequest, tpp, version)
-            val (_, consentResponse, r) = Fuel.post(consentUrl)
+            val accessToken = getAccessToken(tpp).access_token
+            val (_, consentResponse, result) = Fuel.post(consentUrl)
                 .jsonBody(consentRequest)
-                .defaultHeaders(accessToken)
+                .header("Authorization", "Bearer $accessToken")
+                .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
                 .header("x-jws-signature", detachedJwt)
                 .responseObject<T>()
             if (!consentResponse.isSuccessful) {
-                throw AssertionError("Could not create consent with: ${String(consentResponse.data)}", r.component2())
+                throw AssertionError(
+                    "Could not create the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+                    result.component2()
+                )
             }
+
+            if (consentResponse.header("x-jws-signature").isNullOrEmpty()) {
+                throw AssertionError(
+                    "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+                )
+            }
+            //TODO: Uncomment the function when the issue https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/293 is implemented
+//            verifyDetachedJws(
+//                consentResponse.header("x-jws-signature").first(),
+//                defaultMapper.writeValueAsString(result.get()),
+//                version,
+//                tpp
+//            )
+
+            GsonUtils.gson.toJson(result.get())
+            return result.get()
+        } catch (e: HttpException) {
+            println(e)
+            throw e
+        }
+    }
+
+    inline fun <reified T : Any> consentNoDetachedJwt(
+        consentUrl: String,
+        consentRequest: Any,
+        tpp: Tpp,
+        version: OBVersion = v3_1_8
+    ): T {
+        try {
+            val accessToken = getAccessToken(tpp).access_token
+            val (_, consentResponse, r) = Fuel.post(consentUrl)
+                .jsonBody(consentRequest)
+                .header("Authorization", "Bearer $accessToken")
+                .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+                .responseObject<T>()
+            if (!consentResponse.isSuccessful) {
+                throw AssertionError(
+                    "Could not create the consent: \n" + r.component2()?.errorData?.toString(Charsets.UTF_8),
+                    r.component2()
+                )
+            }
+
             return r.get()
         } catch (e: HttpException) {
             println(e)
@@ -79,87 +106,84 @@ class PaymentRS {
         }
     }
 
-    fun submitFilePayment(
-        consentFileUrl: String,
-        file: String,
-        mediaType: String,
-        tpp: Tpp,
-        version: OBVersion = v3_1_2
-    ): Response {
-        try {
-            val accessToken = getAccessToken(tpp)
-            val detachedJwt = getDetachedJws(file, tpp, version)
-            val (_, consentResponse, r) = Fuel.post(consentFileUrl)
-                .jsonBody(file)
-                .defaultHeaders(accessToken)
-                .header("Content-Type", mediaType)
-                .header("x-jws-signature", detachedJwt)
-                .responseString()
-            if (!consentResponse.isSuccessful) {
-                throw AssertionError("Could not create consent with: ${String(consentResponse.data)}", r.component2())
-            }
-            return consentResponse
-        } catch (e: HttpException) {
-            println(e)
-            throw e
-        }
-    }
-
-    fun submitCSVFilePayment(
-        consentFileUrl: String,
-        file: String,
-        mediaType: String,
-        tpp: Tpp,
-        version: OBVersion = v3_1_2
-    ): Response {
-        try {
-            val accessToken = getAccessToken(tpp)
-            val detachedJwt = getDetachedJws(file, tpp, version)
-            val (_, consentResponse, r) = Fuel.post(consentFileUrl)
-                .jsonBody(file)
-                .defaultHeaders(accessToken)
-                .header("Content-Type", mediaType)
-                .header("x-jws-signature", detachedJwt)
-                .responseString()
-            if (!consentResponse.isSuccessful) {
-                throw AssertionError("Could not create consent with: ${String(consentResponse.data)}", r.component2())
-            }
-            return consentResponse
-        } catch (e: HttpException) {
-            println(e)
-            throw e
-        }
-    }
-
-    inline fun <reified T : Any> getConsent(consentUrl: String, tpp: Tpp): T {
-        val accessToken = getAccessToken(tpp)
-        val (_, consentResponse, r) = Fuel.get(consentUrl)
-            .defaultHeaders(accessToken)
+    inline fun <reified T : Any> getConsent(consentUrl: String, tpp: Tpp, version: OBVersion = v3_1_8): T {
+        val accessToken = getAccessToken(tpp).access_token
+        val (_, consentResponse, result) = Fuel.get(consentUrl)
+            .header("Authorization", "Bearer $accessToken")
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
-            "Could not get consent with with: ${
-                String(
-                    consentResponse.data
-                )
-            }", r.component2()
+            "Could not create the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+            result.component2()
         )
-        return r.get()
+
+        if (consentResponse.header("x-jws-signature").isNullOrEmpty()) {
+            throw AssertionError(
+                "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+            )
+        }
+
+        //TODO: Uncomment the function when the issue https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/293 is implemented
+//        verifyDetachedJws(
+//            consentResponse.header("x-jws-signature").first(),
+//            defaultMapper.writeValueAsString(result.get()),
+//            version,
+//            tpp
+//        )
+
+        return result.get()
     }
 
     inline fun <reified T : Any> submitPayment(
         paymentUrl: String,
         paymentRequest: Any,
         accessToken: AccessToken,
+        signedPayload: String,
         tpp: Tpp,
-        version: OBVersion = v3_1_2
+        version: OBVersion = v3_1_8
+    ): T {
+        val (_, response, result) = Fuel.post(paymentUrl)
+            .jsonBody(paymentRequest)
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-jws-signature", signedPayload)
+            .header("x-idempotency-key", UUID.randomUUID())
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            .responseObject<T>()
+        if (!response.isSuccessful) throw AssertionError(
+            "Could not create the payment submission: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+            result.component2()
+        )
+
+        if (response.header("x-jws-signature").isNullOrEmpty()) {
+            throw AssertionError(
+                "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+            )
+        }
+
+        //TODO: Uncomment the function when the issue https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/293 is implemented
+//        verifyDetachedJws(
+//            response.header("x-jws-signature").first(),
+//            defaultMapper.writeValueAsString(result.get()),
+//            version,
+//            tpp
+//        )
+
+        return result.get()
+    }
+
+    inline fun <reified T : Any> submitPaymentNoDetachedJws(
+        paymentUrl: String,
+        paymentRequest: Any,
+        accessToken: AccessToken
     ): T {
         val (_, response, r) = Fuel.post(paymentUrl)
             .jsonBody(paymentRequest)
-            .defaultHeaders(accessToken.access_token)
-            .header("x-jws-signature", getDetachedJws(paymentRequest, tpp, version))
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-idempotency-key", UUID.randomUUID())
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!response.isSuccessful) throw AssertionError(
-            "Could not create payment submission with: ${String(response.data)}",
+            "Could not create the payment submission: \n" + r.component2()?.errorData?.toString(Charsets.UTF_8),
             r.component2()
         )
         return r.get()
@@ -167,105 +191,103 @@ class PaymentRS {
 
     inline fun <reified T : Any> getPayment(
         url: String,
-        paymentId: String,
         accessToken: AccessToken,
-        version: OBVersion = v3_1_2
+        tpp: Tpp,
+        version: OBVersion = v3_1_8
     ): T {
-        return getCall("$url/$paymentId", accessToken, version)
+        return getCall(url, accessToken, tpp, version)
     }
 
     inline fun <reified T : Any> getFundsConfirmation(
         url: String,
-        accessToken: AccessToken,
-        version: OBVersion = v3_1_2
-    ): T {
-        return getCall(url, accessToken, version)
-    }
-
-    inline fun <reified T : Any> consentRequest_InvalidDetachedJws(
-        consentUrl: String,
-        consentRequest: Any,
-        tpp: Tpp
-    ): Response {
-        val accessToken = getAccessToken(tpp)
-        val (_, consentResponse, _) = Fuel.post(consentUrl)
-            .jsonBody(consentRequest)
-            .defaultHeaders(accessToken)
-            .header("x-jws-signature", "invalid-jwt")
-            .responseObject<T>()
-        return consentResponse
-    }
-
-    inline fun <reified T : Any> consentRequest_DetachedJwsMissingB64Claim(
-        consentUrl: String,
-        consentRequest: Any,
-        tpp: Tpp
-    ): Response {
-        val accessToken = getAccessToken(tpp)
-        val detachedJwt =
-            getDetachedJws(consentRequest, tpp, v3_1_4) // v3.1.4 onwards should not contain the b64 header
-        val (_, consentResponse, _) = Fuel.post(consentUrl)
-            .jsonBody(consentRequest)
-            .defaultHeaders(accessToken)
-            .header("x-jws-signature", detachedJwt)
-            .responseObject<T>()
-        return consentResponse
-    }
-
-    inline fun <reified T : Any> submitPayment_InvalidDetachedJws(
-        paymentUrl: String,
-        paymentRequest: Any,
         accessToken: AccessToken
-    ): Response {
-        val (_, response, _) = Fuel.post(paymentUrl)
-            .jsonBody(paymentRequest)
-            .defaultHeaders(accessToken.access_token)
-            .header("x-jws-signature", "invalid-jws")
-            .responseObject<T>()
-        return response
+    ): T {
+        return getCallWithoutDetachedJws(url, accessToken)
     }
 
     inline fun <reified T> getCall(
         url: String,
         accessToken: AccessToken,
-        version: OBVersion = v3_1_2
+        tpp: Tpp,
+        version: OBVersion = v3_1_8
     ): T {
         val (_, response, result) = Fuel.get(url)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId)
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseString()
         if (!response.isSuccessful) throw AssertionError(
-            "Could not get funds confirmation submission with: ${
-                String(
-                    response.data
-                )
-            }", result.component2()
+            "Error executing the get call: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+            result.component2()
         )
 
-        verifyDetachedJws(response.header("x-jws-signature").first(), Payload(result.get()), version)
+        if (response.header("x-jws-signature").isNullOrEmpty()) {
+            throw AssertionError(
+                "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+            )
+        }
+
+        //TODO: Uncomment the function when the issue https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/293 is implemented
+//        verifyDetachedJws(
+//            response.header("x-jws-signature").first(),
+//            defaultMapper.writeValueAsString(result.get()),
+//            version,
+//            tpp
+//        )
 
         return defaultMapper.readValue(result.get())
     }
 
-    fun getAccessToken(tpp: Tpp): String {
+    inline fun <reified T> getCallWithoutDetachedJws(
+        url: String,
+        accessToken: AccessToken
+    ): T {
+        val (_, response, result) = Fuel.get(url)
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            .responseString()
+        if (!response.isSuccessful) throw AssertionError(
+            "Error executing the get call: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+            result.component2()
+        )
+
+        return defaultMapper.readValue(result.get())
+    }
+
+    fun getAccessToken(tpp: Tpp): AccessToken {
+        val requestParameters = ClientCredentialData(
+            sub = tpp.registrationResponse.client_id,
+            iss = tpp.registrationResponse.client_id,
+            aud = asDiscovery.issuer
+        )
+        val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
+
         val scopes = asDiscovery.scopes_supported.intersect(
             listOf(
+                OpenBankingConstants.Scope.OPENID,
                 OpenBankingConstants.Scope.ACCOUNTS,
                 OpenBankingConstants.Scope.PAYMENTS
             )
         ).joinToString(separator = " ")
         val body = listOf(
-            "grant_type" to GrantTypes.CLIENT_CREDENTIALS,
-            "scope" to scopes
+            "grant_type" to CLIENT_CREDENTIALS,
+            "redirect_uri" to REDIRECT_URI,
+            "client_assertion_type" to CLIENT_ASSERTION_TYPE,
+            "scope" to scopes,
+            "client_assertion" to signedPayload
         )
         val (_, accessTokenResponse, result) = Fuel.post(asDiscovery.token_endpoint, parameters = body)
             .authentication()
             .basic(tpp.registrationResponse.client_id, tpp.registrationResponse.client_secret!!)
             .responseObject<AccessToken>()
-        if (!accessTokenResponse.isSuccessful) throw AssertionError("Could not get access token", result.component2())
-        return result.get().access_token
+        if (!accessTokenResponse.isSuccessful) throw AssertionError(
+            "Could not get access token: \n" + result.component2()?.errorData?.toString(
+                Charsets.UTF_8
+            ), result.component2()
+        )
+        return result.get()
     }
 
+    //DEPRECATED
     fun getDetachedJws(body: Any, tpp: Tpp, version: OBVersion): String {
         val softwareStatement = JWSObject.parse(tpp.registrationResponse.software_statement)
         val ssPayload = softwareStatement.payload.toJSONObject()
@@ -284,22 +306,156 @@ class PaymentRS {
         return detachedJwt.get().detachedSignature
     }
 
-    fun verifyDetachedJws(detachedJws: String, payload: Payload, version: OBVersion) {
-        val isDetached = DETACHED_SIGNATURE_PATTERN.matcher(detachedJws).find()
-        val parsedJWSObject = if (isDetached) JWSObject.parse(detachedJws, payload) else JWSObject.parse(detachedJws)
-        val jwk = jwkSet.getKeyByKeyId(parsedJWSObject.header.keyID)
-        val rsaPublicKey = (jwk as RSAKey).toRSAPublicKey()
-        val verifier = RSASSAVerifier(rsaPublicKey, getCriticalHeaders(version))
-        if (!parsedJWSObject.verify(verifier)) {
-            throw AssertionError("Could not validate detached JWT: $detachedJws")
+    //DEPRECATED
+    inline fun <reified T : Any> getPayment(
+        url: String,
+        paymentId: String,
+        accessToken: AccessToken,
+        version: OBVersion = v3_1_8
+    ): T {
+        return getCall("$url/$paymentId", accessToken, version)
+    }
+
+    //DEPRECATED
+    inline fun <reified T : Any> submitPayment(
+        paymentUrl: String,
+        paymentRequest: Any,
+        accessToken: AccessToken,
+        tpp: Tpp
+    ): T {
+        val signedPayload = signPayloadSubmitPayment(paymentRequest as String, tpp.signingKey, tpp.signingKid)
+        val (_, response, r) = Fuel.post(paymentUrl)
+            .jsonBody(paymentRequest)
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-jws-signature", signedPayload)
+            .header("x-idempotency-key", UUID.randomUUID())
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            .responseObject<T>()
+        if (!response.isSuccessful) throw AssertionError(
+            "Could not create the payment submission",
+            r.component2()
+        )
+        return r.get()
+    }
+
+    fun submitFilePayment(
+        consentFileUrl: String,
+        file: String,
+        mediaType: String,
+        tpp: Tpp,
+        version: OBVersion = v3_1_8
+    ): Response {
+        try {
+            val accessToken = getAccessToken(tpp)
+            val detachedJwt = getDetachedJws(file, tpp, version)
+            val (_, consentResponse, r) = Fuel.post(consentFileUrl)
+                .jsonBody(file)
+                .defaultHeaders(accessToken.access_token)
+                .header("Content-Type", mediaType)
+                .header("x-jws-signature", detachedJwt)
+                .responseString()
+            if (!consentResponse.isSuccessful) {
+                throw AssertionError("Could not create the consent", r.component2())
+            }
+            return consentResponse
+        } catch (e: HttpException) {
+            println(e)
+            throw e
         }
+    }
+
+    //DEPRECATED
+    inline fun <reified T : Any> submitPayment_InvalidDetachedJws(
+        paymentUrl: String,
+        paymentRequest: Any,
+        accessToken: AccessToken
+    ): Response {
+        val (_, response, _) = Fuel.post(paymentUrl)
+            .jsonBody(paymentRequest)
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            .header("x-jws-signature", INVALID_FORMAT_DETACHED_JWS)
+            .responseObject<T>()
+        return response
+    }
+
+    //DEPRECATED
+    inline fun <reified T> getCall(
+        url: String,
+        accessToken: AccessToken,
+        version: OBVersion = v3_1_8
+    ): T {
+        val (_, response, result) = Fuel.get(url)
+            .header("Authorization", "Bearer ${accessToken.access_token}")
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            .responseString()
+        if (!response.isSuccessful) throw AssertionError(
+            "Error executing the get call", result.component2()
+        )
+        return defaultMapper.readValue(result.get())
+    }
+
+    fun submitCSVFilePayment(
+        consentFileUrl: String,
+        file: String,
+        mediaType: String,
+        tpp: Tpp,
+        version: OBVersion = v3_1_8
+    ): Response {
+        try {
+            val accessToken = getAccessToken(tpp)
+            val detachedJwt = getDetachedJws(file, tpp, version)
+            val (_, consentResponse, r) = Fuel.post(consentFileUrl)
+                .jsonBody(file)
+                .defaultHeaders(accessToken.access_token)
+                .header("Content-Type", mediaType)
+                .header("x-jws-signature", detachedJwt)
+                .responseString()
+            if (!consentResponse.isSuccessful) {
+                throw AssertionError("Could not create the consent with", r.component2())
+            }
+            return consentResponse
+        } catch (e: HttpException) {
+            println(e)
+            throw e
+        }
+    }
+
+    inline fun <reified T : Any> consentRequest_InvalidDetachedJws(
+        consentUrl: String,
+        consentRequest: Any,
+        tpp: Tpp
+    ): Response {
+        val accessToken = getAccessToken(tpp).access_token
+        val (_, consentResponse, _) = Fuel.post(consentUrl)
+            .jsonBody(consentRequest)
+            .defaultHeaders(accessToken)
+            .header("x-jws-signature", "invalid-jwt")
+            .responseObject<T>()
+        return consentResponse
+    }
+
+    inline fun <reified T : Any> consentRequest_DetachedJwsMissingB64Claim(
+        consentUrl: String,
+        consentRequest: Any,
+        tpp: Tpp
+    ): Response {
+        val accessToken = getAccessToken(tpp)
+        val detachedJwt =
+            getDetachedJws(consentRequest, tpp, v3_1_4) // v3.1.4 onwards should not contain the b64 header
+        val (_, consentResponse, _) = Fuel.post(consentUrl)
+            .jsonBody(consentRequest)
+            .defaultHeaders(accessToken.access_token)
+            .header("x-jws-signature", detachedJwt)
+            .responseObject<T>()
+        return consentResponse
     }
 
     fun Request.defaultHeaders(accessToken: String) =
         this
             .header("Authorization", "Bearer $accessToken")
             // x-fapi-financial-id is no longer required in v3.1.2 onwards
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId)
+            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("x-idempotency-key", UUID.randomUUID().toString())
             .header("Accept", "application/json")
 
@@ -313,17 +469,6 @@ class PaymentRS {
             claimsBuilder.includeB64(true)
         }
         val signingRequest = SigningRequest.builder().customHeaderClaims(claimsBuilder.build()).build()
-        return GsonBuilder().create().toJson(signingRequest)
-    }
-
-    private fun getCriticalHeaders(version: OBVersion): Set<String> {
-        val criticalHeaders = mutableSetOf<String>()
-        if (version.isBeforeVersion(v3_1_4)) {
-            criticalHeaders.add("b64")
-        }
-        criticalHeaders.add("http://openbanking.org.uk/iat")
-        criticalHeaders.add("http://openbanking.org.uk/iss")
-        criticalHeaders.add("http://openbanking.org.uk/tan")
-        return criticalHeaders
+        return GsonUtils.gson.toJson(signingRequest)
     }
 }
