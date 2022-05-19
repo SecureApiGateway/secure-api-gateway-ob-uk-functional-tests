@@ -2,11 +2,13 @@ package com.forgerock.securebanking.tests.functional.account.access.consents
 
 import assertk.assertThat
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.support.account.AccountFactory.Companion.obReadConsent1
 import com.forgerock.securebanking.support.account.AccountRS
 import com.forgerock.securebanking.support.discovery.accountAndTransaction3_1_8
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.READACCOUNTSDETAIL
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
@@ -34,5 +36,6 @@ class CreateAccessConsentsTest(val tppResource: CreateTppCallback.TppResource) {
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
+        Assertions.assertThat(result.data.status.toString()).`is`(Status.consentCondition)
     }
 }

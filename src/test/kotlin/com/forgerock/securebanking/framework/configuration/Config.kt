@@ -2,7 +2,7 @@ package com.forgerock.securebanking.framework.configuration
 
 import com.forgerock.securebanking.support.registerDirectoryUser
 import com.forgerock.securebanking.support.registerPSU
-import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
+import com.forgerock.securebanking.tests.functional.deprecated.directory.UserRegistrationRequest
 
 val RS_SERVER = System.getenv("rsServer") ?: "https://rs.dev.forgerock.financial"
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"

@@ -26,27 +26,51 @@ import com.github.kittinunf.fuel.core.interceptors.LogRequestAsCurlInterceptor
 import com.github.kittinunf.fuel.core.interceptors.LogResponseInterceptor
 import com.github.kittinunf.fuel.core.response
 import com.github.kittinunf.fuel.jackson.jacksonDeserializerOf
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
 import io.r2.simplepemkeystore.MultiFileConcatSource
 import io.r2.simplepemkeystore.SimplePemKeyStoreProvider
 import org.apache.http.ssl.SSLContextBuilder
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
+import uk.org.openbanking.jackson.DateTimeSerializer.DATE_TIME_FORMATTER
 import java.io.BufferedReader
 import java.io.InputStream
+import java.lang.reflect.Type
 import java.security.KeyStore
 import java.security.Security
 import javax.net.ssl.HostnameVerifier
+import kotlin.ranges.CharRange.Companion.EMPTY
+
 
 class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext?): DateTime {
         val date = jp.text
         return DateTime.parse(date, ISODateTimeFormat.dateTime())
     }
+
+    fun deserialize(
+        je: JsonElement, type: Type?,
+        jdc: JsonDeserializationContext?
+    ): DateTime? {
+        return if (je.asString.isEmpty()) null else DATE_TIME_FORMATTER.parseDateTime(
+            ISODateTimeFormat.dateTime().toString()
+        )
+    }
 }
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
         gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTime()))
+    }
+
+    fun serialize(
+        src: DateTime?, typeOfSrc: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement? {
+        return JsonPrimitive(if (src == null) EMPTY.toString() else DATE_TIME_FORMATTER.print(src))
     }
 }
 
@@ -59,7 +83,6 @@ val defaultMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
     .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
     .registerModules(JodaModule())
     .registerModules(serializers)
-
 
 fun initFuel(privatePem: InputStream, certificatePem: InputStream) {
     val ks = loadKeystore(privatePem, certificatePem)

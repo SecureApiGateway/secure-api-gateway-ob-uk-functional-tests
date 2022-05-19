@@ -25,7 +25,7 @@ data class RegistrationRequest(
         )
     ).joinToString(separator = " "),
     val software_statement: String,
-    val subject_type: String = "public",
+    val subject_type: String = "pairwise",
     val token_endpoint_auth_method: String = "private_key_jwt",
     val token_endpoint_auth_signing_alg: String = "PS256",
     val tls_client_auth_subject_dn: String? = null

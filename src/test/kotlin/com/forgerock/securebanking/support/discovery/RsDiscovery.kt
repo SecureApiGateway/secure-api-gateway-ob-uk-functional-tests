@@ -241,7 +241,7 @@ data class RsDiscovery(
     data class RsDiscoveryData(
         val AccountAndTransactionAPI: List<RsDiscoveryAccountAndTransactionAPI>?,
         val EventNotificationAPI: List<RsDiscoveryEventNotificationAPI>?,
-        val FinancialId: String,
+        val FinancialId: String?,
         val FundsConfirmationAPI: List<RsDiscoveryFundsConfirmationAPI>?,
         val PaymentInitiationAPI: List<RsDiscoveryPaymentInitiationAPI>?
     ) {
@@ -271,6 +271,7 @@ data class RsDiscovery(
                     val CreateInternationalStandingOrder: String,
                     val CreateInternationalStandingOrderConsent: String,
                     val GetDomesticPayment: String,
+                    val GetDomesticPaymentDomesticPaymentIdPaymentDetails: String,
                     val GetDomesticPaymentConsent: String,
                     val GetDomesticPaymentConsentsConsentIdFundsConfirmation: String,
                     val GetDomesticScheduledPayment: String,

@@ -2,11 +2,12 @@ package com.forgerock.securebanking.framework.data
 
 import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.securebanking.framework.http.fuel.responseObject
+import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.support.discovery.asDiscovery
 import com.forgerock.securebanking.support.loadRsaPrivateKey
 import com.forgerock.securebanking.support.registration.registerTpp
 import com.forgerock.securebanking.support.registration.unregisterTpp
-import com.forgerock.securebanking.tests.functional.directory.UserRegistrationRequest
+import com.forgerock.securebanking.tests.functional.deprecated.directory.UserRegistrationRequest
 import com.forgerock.uk.openbanking.framework.accesstoken.constants.*
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenRequest
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenResponse
@@ -17,7 +18,6 @@ import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.result.Result
-import com.google.gson.GsonBuilder
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
@@ -55,7 +55,7 @@ data class Tpp(
         }
     }
 
-    fun getSSA(accessToken: String): String {
+    private fun getSSA(accessToken: String): String {
         val matlsSSAUrl = SSA_MATLS_URL_SANDBOX
             .replace("{org_id}", OB_ORGANISATION_ID, true)
             .replace("{software_id}", OB_SOFTWARE_ID, true)
@@ -95,7 +95,7 @@ data class Tpp(
         val key = loadRsaPrivateKey(this.signingKey)
         return Jwts.builder()
             .setHeaderParam("kid", signingKid)
-            .setPayload(GsonBuilder().create().toJson(registrationRequest))
+            .setPayload(GsonUtils.gson.toJson(registrationRequest))
             .signWith(key, SignatureAlgorithm.forName(asDiscovery.request_object_signing_alg_values_supported[0]))
             .compact()
     }
@@ -104,10 +104,10 @@ data class Tpp(
         return registerTpp(signedRegistrationRequest)
     }
 
-    fun getJWS(): SignedJWT? {
+    private fun getJWS(): SignedJWT? {
         val signingKeyResource = object {}.javaClass.getResource(OB_TPP_EIDAS_SIGNING_KEY_PATH)
         if (signingKeyResource != null) {
-            val detachedPayload = Payload(GsonBuilder().create().toJson(ClaimsTest()))
+            val detachedPayload = Payload(GsonUtils.gson.toJson(ClaimsTest()))
 
             val jwtClaims = JWTClaimsSet.Builder(JWTClaimsSet.parse(detachedPayload.toJSONObject()))
                 .issueTime(Date())
