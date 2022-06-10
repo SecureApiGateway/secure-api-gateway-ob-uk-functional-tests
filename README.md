@@ -10,7 +10,7 @@
 Software testing to validate and coverage the implemented open banking functionalities and ensure that these satisfies the functional requirements.
 
 ## Setup
-- Gradle 7.4.1
+- Gradle 7.4.2
 - Kotlin 1.4.20
 - Java 14
 - OB certificates
@@ -20,6 +20,15 @@ Fortunately this is already in the tasks defined in the gradle configuration in 
 [modules](./src/test/kotlin/com/forgerock/openbanking/junit) defined in [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension).
 
 For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#extensions-registration-automatic
+
+### `source` Folders structure
+- **_src/test/kotlin/com/forgerock_**: The root folder source structure.
+
+- **_{Root}/securebanking_**: Folder source container that contains all related with the functional tests transversal framework for generic purposes.
+- **_{Root}/uk_**: Folder source container that contains all related with a specific functional test implementation for Open banking UK spec.
+  - **_/framework_**: configuration, constants etc for uk spec tests
+  - **_/support_**: instrumentalization support classes for uk spec tests
+  - **_/tests_**: Where functional tests implementation live.
 
 ### Set up the certificates for test purposes
 The certificates are protected, and you can't find them in the repository, for that reason to run the functional tests in local environments is necessary set the OB certificates:
