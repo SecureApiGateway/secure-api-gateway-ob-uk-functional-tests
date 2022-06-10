@@ -15,7 +15,7 @@ steps:
       - echo "$OB_SEAL_PEM_B64" | base64 -d > certificates/OBSeal.pem
       - echo "$OB_SEAL_KEY_B64" | base64 -d > certificates/OBSeal.key
   test:
-    title: "Running tests: gradle task [[${{GRADLE_TASK}}]]"
+    title: "Running tests: gradle task [[${{TEST_TASK}}]]"
     image: eu.gcr.io/sbat-gcr-develop/securebanking/tests/${{SPEC_IMAGE}}:${{TAG}} # The image and tag in which command will be executed
     stage: test
     working_directory: IMAGE_WORK_DIR # the working root directory defined in the image to find the certificates properly
