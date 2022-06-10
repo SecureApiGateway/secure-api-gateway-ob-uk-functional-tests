@@ -39,6 +39,7 @@ jobs:
           docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:${{ env.PR_NUMBER }} .
           docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:${{ env.PR_NUMBER }}
 
+# The functional tests currently only works for the default profile that is pointed against dev, for now we not need build the env.
 #      - name: 'Build environment'
 #        uses: codefresh-io/codefresh-pipeline-runner@master
 #        with:
@@ -53,6 +54,6 @@ jobs:
         with:
           args: '-v SPEC_IMAGE=${{ env.SPEC_IMAGE }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/jordi-pipeline'
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
         id: run-tests
