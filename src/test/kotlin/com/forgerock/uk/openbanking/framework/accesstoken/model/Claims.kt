@@ -1,9 +1,9 @@
 package com.forgerock.uk.openbanking.framework.accesstoken.model
 
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.AUDIENCE
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.AUDIENCE_SANDBOX
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_SOFTWARE_ID
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.SCOPES_TPP
+import com.forgerock.uk.openbanking.framework.configuration.AUDIENCE
+import com.forgerock.uk.openbanking.framework.configuration.AUDIENCE_SANDBOX
+import com.forgerock.uk.openbanking.framework.configuration.OB_SOFTWARE_ID
+import com.forgerock.uk.openbanking.framework.configuration.SCOPES_TPP
 
 data class Claims(
     val iss: String = OB_SOFTWARE_ID,

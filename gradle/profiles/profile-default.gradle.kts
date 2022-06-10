@@ -1,13 +1,54 @@
 /* ************************************************* */
 /* default profile                                   */
 /* ************************************************* */
+
+// Truststore configuration
+val truststorePath by extra("/com/forgerock/securebanking/truststore.jks")
+val truststorePassword by extra("changeit")
+/**
+ * OB configuration: Used Create a Software Statement Assertion (SSA) using an API call for Dynamic Registration
+ * https://openbanking.atlassian.net/wiki/spaces/DZ/pages/1322979574/Open+Banking+Directory+Usage+-+eIDAS+release+Production+-+v1.9
+ */
+// OB directory organisation
+val obOrganisationId by extra("0015800001041REAAY")
+val obSoftwareId by extra("ebSqTNqmQXFYz6VtWGXZAa")
+
+// OB token scopes
+val scopesTpp by extra("ASPSPReadAccess TPPReadAccess AuthoritiesReadAccess")
+val scopesAspsp by extra("ASPSPReadAccess TPPReadAll AuthoritiesReadAccess")
+
+/*
+ OB Sandbox directory
+ */
+val obSandboxHostSufix by extra("openbankingtest.org.uk")
+val tokenUrlSandbox by extra("https://matls-sso.$obSandboxHostSufix/as/token.oauth2")
+val testUrlSandbox by extra("https://matls-api.$obSandboxHostSufix/scim/v2/OBAccountPaymentServiceProviders/")
+val audienceSandbox by extra("https://matls-sso.$obSandboxHostSufix/as/token.oauth2")
+val ssaMatlsUrlSandbox by extra("https://matls-dirapi.$obSandboxHostSufix/organisation/tpp/{org_id}/software-statement/{software_id}/software-statement-assertion")
+val ssaMatlsLegacyUrlSandbox by extra("https://matls-ssaapi.$obSandboxHostSufix/api/v1rc2/tpp/{org_id}/ssa/{software_id}")
+/*
+ OB Directory api endpoints
+ */
+val obHostSufix by extra("openbanking.org.uk")
+val tokenUrl by extra("https://matls-sso.$obHostSufix/as/token.oauth2")
+val audience by extra("https://matls-sso.$obHostSufix/as/token.oauth2")
+val testUrl by extra("https://matls-api.$obHostSufix/scim/v2/OBAccountPaymentServiceProviders/")
+val ssaMatlsLegacyUrl by extra("https://matls-ssaapi.$obHostSufix/api/v1rc2/tpp/{org_id}/ssa/{software_id}")
+val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{org_id}/software-statement/{software_id}/software-statement-assertion")
+
+/**
+ * Functional tests configuration
+ */
 // servers
 val environment by extra("dev")
 val rsServer by extra("https://rs.$environment.forgerock.financial")
-val platformServer by extra("https://iam.dev.forgerock.financial")
-val cookieName by extra("iPlanetDirectoryPro")
+val platformServer by extra("https://iam.$environment.forgerock.financial")
+val amCookieName by extra("iPlanetDirectoryPro")
 val rcsServer by extra("https://rcs.$environment.forgerock.financial")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
+// cookie name
+val cookieName by extra("iPlanetDirectoryPro")
+
 //User's Password
 val userPassword by extra("0penBanking!")
 val username by extra("psu4test")
@@ -16,3 +57,16 @@ val username by extra("psu4test")
 val eidasTestSigningKid by extra("2yNjPOCjpO8rcKg6_lVtWzAQR0U")
 val preEidasTestSigningKid by extra("RmQ-EmViYPKXYyGCVnfuMo6ggXE")
 val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
+
+// Expected path to find the Certificates used for test purposes
+val eidasOBSealKey by extra("./certificates/OBSeal.key")
+val eidasOBSealPem by extra("./certificates/OBSeal.pem")
+val eidasOBWacKey by extra("./certificates/OBWac.key")
+val eidasOBWacPem by extra("./certificates/OBWac.pem")
+
+// ISS claim values (expected from client cert)
+val commonName by extra("$obOrganisationId")
+val organizationIdentifier by extra("PSDGB-OB-Unknown$obOrganisationId")
+val organization by extra("FORGEROCK LIMITED")
+val country by extra("GB")
+val issClaimValue by extra("CN=$commonName,organizationIdentifier=$organizationIdentifier,O=$organization,C=$country")

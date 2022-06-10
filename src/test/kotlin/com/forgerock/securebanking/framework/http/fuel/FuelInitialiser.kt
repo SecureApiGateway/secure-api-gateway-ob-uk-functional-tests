@@ -8,16 +8,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
-import com.forgerock.securebanking.framework.constants.TRUSTSTORE_PASSWORD
-import com.forgerock.securebanking.framework.constants.TRUSTSTORE_PATH
+import com.forgerock.securebanking.framework.configuration.*
 import com.forgerock.securebanking.framework.data.Tpp
-import com.forgerock.securebanking.support.directory.createSoftwareStatement
-import com.forgerock.securebanking.support.login
-import com.forgerock.securebanking.support.registerDirectoryUser
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_SIGNING_KEY_PATH
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_TRANSPORT_KEY_PATH
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.OB_TPP_EIDAS_TRANSPORT_PEM_PATH
+import com.forgerock.securebanking.framework.utils.FileUtils
+import com.forgerock.uk.openbanking.support.directory.createSoftwareStatement
+import com.forgerock.uk.openbanking.support.login
+import com.forgerock.uk.openbanking.support.registerDirectoryUser
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.ResponseResultOf
@@ -36,7 +32,6 @@ import org.apache.http.ssl.SSLContextBuilder
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 import uk.org.openbanking.jackson.DateTimeSerializer.DATE_TIME_FORMATTER
-import java.io.BufferedReader
 import java.io.InputStream
 import java.lang.reflect.Type
 import java.security.KeyStore
@@ -50,27 +45,11 @@ class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
         val date = jp.text
         return DateTime.parse(date, ISODateTimeFormat.dateTime())
     }
-
-    fun deserialize(
-        je: JsonElement, type: Type?,
-        jdc: JsonDeserializationContext?
-    ): DateTime? {
-        return if (je.asString.isEmpty()) null else DATE_TIME_FORMATTER.parseDateTime(
-            ISODateTimeFormat.dateTime().toString()
-        )
-    }
 }
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
         gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTime()))
-    }
-
-    fun serialize(
-        src: DateTime?, typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement? {
-        return JsonPrimitive(if (src == null) EMPTY.toString() else DATE_TIME_FORMATTER.print(src))
     }
 }
 
@@ -126,8 +105,8 @@ fun initFuel(
     privatePem: String = OB_TPP_EIDAS_TRANSPORT_KEY_PATH,
     publicPem: String = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
 ) {
-    val privatePemStream = object {}.javaClass.getResourceAsStream(privatePem)
-    val publicPemStream = object {}.javaClass.getResourceAsStream(publicPem)
+    val privatePemStream = FileUtils().getInputStream(privatePem)
+    val publicPemStream = FileUtils().getInputStream(publicPem)
     initFuel(privatePemStream, publicPemStream)
 }
 
@@ -143,25 +122,11 @@ fun initFuelAsNewTpp(): Tpp {
 
     val directoryUser = registerDirectoryUser()
     val sessionToken = login(directoryUser.user.userName, directoryUser.user.password)
-    val softwareStatement = createSoftwareStatement(sessionToken)
+    val softwareStatement = createSoftwareStatement()
 
     val signingKid = OB_TPP_OB_EIDAS_TEST_SIGNING_KID
     val signingKey = OB_TPP_EIDAS_SIGNING_KEY_PATH
     return Tpp(sessionToken, directoryUser, softwareStatement, privateCert, publicCert, signingKid, signingKey)
-}
-
-private fun readFromFile(filePath: String): String {
-    val stream = object {}.javaClass.getResourceAsStream(filePath)
-    val reader = BufferedReader(stream.reader())
-    val content = StringBuilder()
-    reader.use { reader ->
-        var line = reader.readLine()
-        while (line != null) {
-            content.append(line)
-            line = reader.readLine()
-        }
-    }
-    return content.toString()
 }
 
 private fun loadKeystore(privatePem: InputStream, publicPem: InputStream): KeyStore {

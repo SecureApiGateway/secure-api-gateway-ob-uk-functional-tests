@@ -1,6 +1,6 @@
 package com.forgerock.securebanking.framework.data
 
-import com.forgerock.securebanking.support.discovery.asDiscovery
+import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import java.util.*
 
 data class ClientCredentialData(

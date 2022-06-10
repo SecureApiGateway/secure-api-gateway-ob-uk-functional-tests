@@ -13,6 +13,7 @@ Software testing to validate and coverage the implemented open banking functiona
 - Gradle 7.4.1
 - Kotlin 1.4.20
 - Java 14
+- OB certificates
 
 It's important to have the VM argument `-Djunit.jupiter.extensions.autodetection.enabled=true` when running the tests.
 Fortunately this is already in the tasks defined in the gradle configuration in the [build.gradle.kts](./build.gradle.kts). This VM argument tells JUnit to automatically load the ExecutionCondition
@@ -20,8 +21,27 @@ Fortunately this is already in the tasks defined in the gradle configuration in 
 
 For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#extensions-registration-automatic
 
-## Adding a new ExecutionCondition
+### Set up the certificates for test purposes
+The certificates are protected, and you can't find them in the repository, for that reason to run the functional tests in local environments is necessary set the OB certificates:
+- Create the folder `certificates` in the root project folder
 
+**Forgerock code owners**
+- Get the certificates from [ob-ci-secrets](https://github.com/ForgeCloud/ob-ci-secrets) and decrypt them:
+  - OBWac.key
+  - OBWac.pem
+  - OBSeal.key
+  - OBSeal.pem
+
+**Customers**
+- Obtain your TPP OB certificates for test purposes from OB directory:
+  - OBWac.key
+  - OBWac.pem
+  - OBSeal.key
+  - OBSeal.pem
+
+- Copy the certificates to `certificates` folder created in the above step.
+
+## Adding a new ExecutionCondition
 1. Copy from [examples](./src/test/kotlin/com/forgerock/securebanking/framework/extensions/junit)
 1. Update the execution condition logic
 1. Add FQN of ExecutionCondition class to [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension)
@@ -36,7 +56,9 @@ as example we provide the default profile `profile-default.gradle.kts`, with all
 
 For default the functional tests are executed with the `default` profile if another profile is not provided. 
 
-### How run tests with a custom profile?
+The `profile` file contains all properties/values that will be necessary to run the tests against an environment.
+
+## How run tests with a custom profile?
 First you will need to create a new profile file in `gradle/profile` following the pattern defined for the profile file name.
 Example: `gradle/profile/profile-MY_CUSTOM_PROFILE_NAME.gradle.kts`
 
@@ -64,10 +86,9 @@ gradle -Pprofile=MY_CUSTOM_PROFILE_NAME -DpropertyName=newValue -DpropertyName2=
 > The logic implemented in build gradle will overwrite the project property `propertyName` with the new value passed by command line.
 > The `properyName` need match with a property defined in the profile file to be overwrites
 
-#
-# The next sections  (OUT OF DATE) Needs to be updated!
-## tasks
-![tasks](docs/assets/img/tasks.png)
+# tasks
+The tasks are grouped by types
+![Task](docs/assets/img/tasks.png)
 
 | Code Generation         | Description                                            |
 |-------------------------|--------------------------------------------------------|
@@ -76,7 +97,6 @@ gradle -Pprofile=MY_CUSTOM_PROFILE_NAME -DpropertyName=newValue -DpropertyName2=
 
 | specific           | Description                                                                                                       |
 |--------------------|-------------------------------------------------------------------------------------------------------------------|
-| copyOBCertificates | Copy the certificates from `certs/automating-testing/` to `src/test/resources/com/forgerock/uk/openbanking/eidas` |
 | generateTestJar    | Generate a non-executable jar library tests                                                                       |
 
 | accounts-tests     | Description                                |
@@ -95,39 +115,38 @@ gradle -Pprofile=MY_CUSTOM_PROFILE_NAME -DpropertyName=newValue -DpropertyName2=
 |------------|---------------------------------------------------------------------|
 | N/A        | All test tasks that have been deprecated for that strategic version |
 
-
-
 ## Run single Test on Intellij using JUnit platform
 1. Go to `IntelliJ IDEA > preferences > build, execution, deployment > build tools > Gradle`
-1. Set `Run tests using` to `IntelliJ IDEA`
-1. Set `Gradle JVM` to `java version 14`
+2. Set `Build and run using` to `Gradle`
+3. Set `Run tests using` to `Gradle`
+4. Set `use gradle from` to 'gradle-wrapper.properties' file
+5. Set `Gradle JVM` to `java version 14`
    ![gradle-config](docs/assets/img/gradle-config.png)
-1. Go to `Run/Debug configuration` and `Edit configuration`
+6. Go to `Run/Debug configuration` and `Edit configuration`
    ![edit-config](docs/assets/img/edit-config.png)
-1. Go to properties for `JUnit` template on `Edit templates`
-   ![edit-junit-template](docs/assets/img/edit-junit-template.png)
-1. Set the `DOMAIN` environment variable value
+7. Go to properties for `Gradle` template and add a new run configuration
+   ![edit-junit-template](docs/assets/img/gradle-run-configuration.png)
+8. Add in `Run` the task name and the profile `-Pprofile=jorge` (the profile is optional, the default profile will be applied if `-Pprofile` isn't set)
 
-> This template will use every time you run a new `single test`.
-> You can change the Junit template all the times you want
+**Run configuration examples**
 
-> If you run a test on IntelliJ you can change later the DOMAIN value editing the test configuration
-> to run the test against another DOMAIN
-![reedit-config](docs/assets/img/reedit-config.png)
-
-## Run tests on IntelliJ using Gradle
-![run-gradle-task](docs/assets/img/run-gradle-task.png)
+| Run                                                                                                                                          | profile | Description                                                                                                             |
+|----------------------------------------------------------------------------------------------------------------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------|
+| `accounts_v3_1_8`                                                                                                                            | default | runs the task `accounts_v3_1_8` with profile `viper-default.gradle.kts`                                                 |
+| `accounts_v3_1_8 -Pprofile=jorge`                                                                                                            | jorge   | runs the task with the profile `viper-jorge.gradle.kts`                                                                 |
+| `:singleTest --tests "com.forgerock.securebanking.tests.functional.account.parties.GetPartyTest.shouldGetParty_v3_1_8" -Pprofile=jorge`      | jorge   | Runs the single test method `shouldGetParty_v3_1_8` defined on `GetPartyTest` with `viper-jorge.gradle.kts` profile     |
+| `:singleTest --tests "com.forgerock.securebanking.tests.functional.account.accounts.GetAccountsTest.shouldGetAccounts_v3_1_8" -Pprofile=dev` | dev     | Runs the single test method `shouldGetAccounts_v3_1_8` defined on `GetAccountsTest` with `viper-dev.gradle.kts` profile |
 
 ## Run gradle tests manually
-> When a task has been run and you want to run again the test task you need use the flag `--rerun-tasks` to avoid
+> When a task has been run, and you want to run again the test task you need use the flag `--rerun-tasks` to avoid
 > the UP-TO-DATE gradle check
    
 ```bash
-gradle all [--rerun-tasks] [-Pdomain]
+gradle all [--rerun-tasks] [-Pprofile]
   ``` 
 ### All test
   ```bash
-  gradle all [-Pdomain]
+  gradle all [-Pprofile]
   ``` 
   Examples
   ```bash
@@ -135,25 +154,66 @@ gradle all [--rerun-tasks] [-Pdomain]
   # The default 'DOMAIN' value has been set in the variable 'domain' defined on the 'build.gradle.kts' file
   ```
   ```bash
-  gradle all -Pdomain="dev-ob.forgerock.financial:8074"
+  gradle all -Pprofile=my-profile
   ```
 ### A Specific task, set of tests
   ```bash
-  gradle <TASK> [-Pdomain]
+  gradle <TASK> [-Pprofile]
   ``` 
   Examples
   ```bash
   gradle payment
-  # The default 'DOMAIN' value has been set in the variable 'domain' defined on the 'build.gradle.kts' file
   ```
   ```bash
-  gradle payment -Pdomain="dev-ob.forgerock.financial:8074"
+  gradle payment -Pprofile=my-profile
   ```
 ### Single test 
   ```bash
-  gradle test --tests "x.x.y.y.TestClass.testMethod" [-Pdomain]
+  gradle test --tests "x.x.y.y.TestClass.testMethod" [-Pprofile]
   ```
   Example 
   ```bash
-  gradle test --tests "com.forgerock.securebanking.openbanking.uk.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pdomain="dev-ob.forgerock.financial:8074"
+  gradle test --tests "com.forgerock.securebanking.openbanking.uk.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pprofile=my-profile
   ```
+# Pipelines
+## Codefresh pipeline variables table
+
+| Name       | Mandatory                       | Description                                                                                                                                                        |
+|------------|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SPEC_IMAGE | YES                             | Define the value of the image used for functional tests by spec implementation (ex. uk-functional-tests, <spec>-functional-tests)                                  |
+| TAG        | YES                             | Define the image tag                                                                                                                                               |
+| TEST_TASK  | YES                             | Define the test task to be executed by gradle (ex. `tests_v3_1_8`, `accounts_v3_1_8`)                                                                              |
+| PROFILE    | NO (default profile: `default`) | Define which properties profile file will be load by gradle in the execution to inject the properties of a specific environment. (ex. `default`, `dev`, `nightly`) |
+
+## Run Codefresh functional tests pipeline manually
+- Go to [codefresh](https://codefresh.io/) and sing in up.
+- Go to the pipeline `ForgeCloud/sbat-infra/functional-tests`
+- When Run you need to ensure that the variables values are the correct values that you want.
+## Run Codefresh functional tests pipeline from github actions
+To run the codefresh pipeline from a github action add the below step to your action descriptor.
+```yaml
+  - name: 'run functional tests'
+    uses: codefresh-io/codefresh-pipeline-runner@master
+    with:
+      args: '-v SPEC_IMAGE=uk-functional-tests -v TAG=latest -v TEST_TASK=tests_v3_1_8' # PROFILE isn't mandatory, no profile provided to use the default
+    env:
+      PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+    id: run-pipeline
+```
+## Run the functional tests pipeline from another codefresh pipeline
+To run the functional tests pipeline from another codefresh pipeline add the below step to your pipeline.
+```yaml
+call_uk_functional_tests_pipeline:
+    title: Initialise cluster
+    stage: configure-kubernetes
+    type: codefresh-run
+    arguments:
+      PIPELINE_ID: ForgeCloud/sbat-infra/functional-tests
+      VARIABLE:
+        - SPEC_IMAGE=uk-functional-tests
+        - TAG=latest
+        - TEST_TASK=tests_v3_1_8
+        # PROFILE isn't mandatory, no profile provided to use the default
+    # add conditions directive if necessary
+```

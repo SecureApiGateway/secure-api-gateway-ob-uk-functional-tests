@@ -1,23 +1,29 @@
 version: "1.0"
-
 stages:
-- prepare
-- apply
+  - "prepare"
+  - "test"
+
 steps:
-  main_clone:
-    type: git-clone
-    title: Git Clone CDK initializer
-    repo: SecureBankingAccessToolkit/securebanking-openbanking-uk-functional-tests
-    revision: master
-    stage: prepare
-    git: github-bot
   prepare_environment_context:
-    title: Preparing environment
-    image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
+    title: "Preparing environment"
+    image: alpine
     stage: prepare
     commands:
-      - cf_export DOMAIN=${{ENVIRONMENT}}.${{DOMAIN}}
-  trigger_dev_build:
-    image: eu.gcr.io/sbat-gcr-develop/securebanking/functional-tests:${{TAG}}
-    stage: apply
-    
+      - mkdir -p certificates
+      - echo "$OB_WAC_PEM_B64" | base64 -d > certificates/OBWac.pem
+      - echo "$OB_WAC_KEY_B64" | base64 -d > certificates/OBWac.key
+      - echo "$OB_SEAL_PEM_B64" | base64 -d > certificates/OBSeal.pem
+      - echo "$OB_SEAL_KEY_B64" | base64 -d > certificates/OBSeal.key
+  test:
+    title: "Running tests: gradle task [[${{GRADLE_TASK}}]]"
+    image: eu.gcr.io/sbat-gcr-develop/securebanking/tests/${{SPEC_IMAGE}}:${{TAG}} # The image and tag in which command will be executed
+    stage: test
+    working_directory: IMAGE_WORK_DIR # the working root directory defined in the image to find the certificates properly
+    volumes:
+      - ./certificates:/opt/functional-tests/certificates # host path is relative to /codefresh/volume
+    cmd:
+      - "./gradlew"
+      - "cleanTest"
+      - "${{TEST_TASK}}"
+      - "-Pprofile=${{PROFILE}}"
+      - "-Djunit.jupiter.extensions.autodetection.enabled=true"
