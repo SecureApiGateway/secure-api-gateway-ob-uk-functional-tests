@@ -1,12 +1,12 @@
 package com.forgerock.securebanking.framework.signature
 
-import com.forgerock.openbanking.common.model.version.OBVersion
-import com.forgerock.securebanking.framework.constants.INVALID_DETACHED_JWS_ERROR
-import com.forgerock.securebanking.framework.constants.ISS_CLAIM_VALUE
-import com.forgerock.securebanking.framework.constants.TAN
+import com.forgerock.securebanking.framework.configuration.ISS_CLAIM_VALUE
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.utils.GsonUtils
-import com.forgerock.securebanking.support.loadRsaPrivateKey
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBVersion
+import com.forgerock.uk.openbanking.framework.constants.TAN
+import com.forgerock.uk.openbanking.framework.errors.INVALID_DETACHED_JWS_ERROR
+import com.forgerock.uk.openbanking.support.loadRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.nimbusds.jose.JWSHeader

@@ -9,6 +9,7 @@ on:
 
 env:
   GIT_SHA_SHORT: $(echo ${{ github.sha }} | cut -c1-7)
+  SPEC_IMAGE: uk-functional-tests
 
 jobs:
   build:
@@ -34,8 +35,8 @@ jobs:
       
       - name: Build Docker Image
         run: |
-          docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:latest .
-          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:latest
-          docker tag eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:latest eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ env.GIT_SHA_SHORT }}
-          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/functional-tests:${{ env.GIT_SHA_SHORT }}
+          docker build -t eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:latest .
+          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:latest
+          docker tag eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:latest eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:${{ env.GIT_SHA_SHORT }}
+          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/tests/${{ env.SPEC_IMAGE }}:${{ env.GIT_SHA_SHORT }}
 

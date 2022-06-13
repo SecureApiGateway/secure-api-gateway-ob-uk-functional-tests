@@ -51,8 +51,14 @@ repositories {
 }
 
 configurations.all {
-    //exclude("org.bouncycastle", "bcpkix-jdk15on")
-    //exclude("org.bouncycastle", "bcprov-jdk15on")
+    exclude("org.springframework.boot")
+    exclude("org.springframework")
+    exclude("org.springframework.plugin")
+    exclude("io.springfox")
+    exclude("io.swagger.core")
+    exclude("io.swagger")
+    exclude("org.projectlombok")
+    exclude("org.slf4")
 }
 
 dependencies {
@@ -66,10 +72,17 @@ dependencies {
     // Align versions of all Kotlin components
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.3-SNAPSHOT"))
+    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-common")
+    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel")
+    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel")
+    testImplementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel:jar:tests")
+    testImplementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel:jar:tests")
 
+    testImplementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     testImplementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
@@ -79,22 +92,17 @@ dependencies {
     testImplementation("com.github.kittinunf.fuel:fuel:2.2.1")
     testImplementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
     testImplementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
-    testImplementation("com.google.code.gson:gson:2.7")
+    testImplementation("com.google.code.gson:gson:2.9.0")
     testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
     testImplementation("io.jsonwebtoken:jjwt-api:0.10.7")
     testImplementation("io.jsonwebtoken:jjwt-impl:0.10.7")
     testImplementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
-    //testImplementation("org.bouncycastle:bcprov-jdk16:1.46")
     testImplementation("io.r2:simple-pem-keystore:0.1")
     testImplementation("org.apache.httpcomponents:httpclient:4.5.9")
     testImplementation("org.assertj:assertj-core:3.13.2")
-    testImplementation("javax.validation:validation-api:2.0.1.Final")
-    testImplementation("commons-io:commons-io:2.6")
     testImplementation("com.nimbusds:nimbus-jose-jwt:9.0.1")
-    testImplementation("com.forgerock.openbanking.uk:openbanking-uk-datamodel:3.1.8.0:tests")
-    testImplementation("com.forgerock.openbanking:forgerock-openbanking-uk-extensions:1.4.4")
 }
 
 /*
@@ -156,20 +164,11 @@ project.extra.properties.forEach { (key, _) ->
  ********************************************************************
  */
 
-tasks.register<Copy>("copyOBCertificates") {
-    group = "specific"
-    from("certs/automating-testing/")
-    include("*.pem", "*.key")
-    into("src/test/resources/com/forgerock/uk/openbanking/eidas")
-}
 
 /*
  * scope generic tasks
  */
 tasks {
-    compileKotlin {
-        dependsOn("copyOBCertificates")
-    }
     test {
         useJUnitPlatform()
 //        dependsOn("serviceHealthCheck")
@@ -234,7 +233,7 @@ tasks.withType<Test>().configureEach {
 /*                 TEST TASKS                    */
 /* ********************************************* */
 // tests properties
-val packagePrefix = "com.forgerock.securebanking.tests.functional."
+val packagePrefix = "com.forgerock.uk.openbanking.tests.functional."
 val suffixPattern = ".*"
 val apiVersion = "v3_1_8"
 tasks.register<Test>("serviceHealthCheck") {

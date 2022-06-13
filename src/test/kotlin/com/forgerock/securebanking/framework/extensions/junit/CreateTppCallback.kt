@@ -3,6 +3,7 @@ package com.forgerock.securebanking.framework.extensions.junit
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.framework.http.fuel.initFuelAsNewTpp
+import com.forgerock.securebanking.framework.utils.FileUtils
 import org.junit.jupiter.api.extension.*
 
 
@@ -30,8 +31,8 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
         // Need to init fuel with transport keys as we may load cached result
         tpp?.let {
             initFuel(
-                object {}.javaClass.getResourceAsStream(it.tpp.privateCert),
-                object {}.javaClass.getResourceAsStream(it.tpp.publicCert)
+                FileUtils().getInputStream(it.tpp.privateCert),
+                FileUtils().getInputStream(it.tpp.publicCert)
             )
         }
     }
@@ -48,8 +49,8 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
         // Need to init fuel with transport keys as we may load cached result
 
         initFuel(
-            object {}.javaClass.getResourceAsStream(tpp.tpp.privateCert),
-            object {}.javaClass.getResourceAsStream(tpp.tpp.publicCert)
+            FileUtils().getInputStream(tpp.tpp.privateCert),
+            FileUtils().getInputStream(tpp.tpp.publicCert)
         )
     }
 
@@ -58,8 +59,8 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
         override fun close() {
             // Need to re-init fuel with transport keys as that may have changed
             initFuel(
-                object {}.javaClass.getResourceAsStream(tpp.privateCert),
-                object {}.javaClass.getResourceAsStream(tpp.publicCert)
+                FileUtils().getInputStream(tpp.privateCert),
+                FileUtils().getInputStream(tpp.publicCert)
             )
             tpp.unregister()
         }

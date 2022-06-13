@@ -1,17 +1,22 @@
 package com.forgerock.securebanking.framework.data
 
+import com.forgerock.securebanking.framework.configuration.OB_TPP_EIDAS_SIGNING_KEY_PATH
 import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.utils.GsonUtils
-import com.forgerock.securebanking.support.discovery.asDiscovery
-import com.forgerock.securebanking.support.loadRsaPrivateKey
-import com.forgerock.securebanking.support.registration.registerTpp
-import com.forgerock.securebanking.support.registration.unregisterTpp
-import com.forgerock.securebanking.tests.functional.deprecated.directory.UserRegistrationRequest
-import com.forgerock.uk.openbanking.framework.accesstoken.constants.*
+import com.forgerock.securebanking.framework.utils.FileUtils
+import com.forgerock.uk.openbanking.support.discovery.asDiscovery
+import com.forgerock.uk.openbanking.support.loadRsaPrivateKey
+import com.forgerock.uk.openbanking.support.registration.registerTpp
+import com.forgerock.uk.openbanking.support.registration.unregisterTpp
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenRequest
 import com.forgerock.uk.openbanking.framework.accesstoken.model.AccessTokenResponse
 import com.forgerock.uk.openbanking.framework.accesstoken.model.ClaimsTest
+import com.forgerock.uk.openbanking.framework.configuration.OB_ORGANISATION_ID
+import com.forgerock.uk.openbanking.framework.configuration.OB_SOFTWARE_ID
+import com.forgerock.uk.openbanking.framework.configuration.SSA_MATLS_URL_SANDBOX
+import com.forgerock.uk.openbanking.framework.configuration.TOKEN_URL_SANDBOX
+import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
@@ -27,7 +32,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import java.io.FileReader
+import java.io.File
 import java.util.*
 
 
@@ -105,8 +110,7 @@ data class Tpp(
     }
 
     private fun getJWS(): SignedJWT? {
-        val signingKeyResource = object {}.javaClass.getResource(OB_TPP_EIDAS_SIGNING_KEY_PATH)
-        if (signingKeyResource != null) {
+        if (File(OB_TPP_EIDAS_SIGNING_KEY_PATH).exists()) {
             val detachedPayload = Payload(GsonUtils.gson.toJson(ClaimsTest()))
 
             val jwtClaims = JWTClaimsSet.Builder(JWTClaimsSet.parse(detachedPayload.toJSONObject()))
@@ -123,9 +127,7 @@ data class Tpp(
             signedJWT.sign(
                 RSASSASigner(
                     com.forgerock.securebanking.framework.cert.loadRsaPrivateKey(
-                        fileReader = FileReader(
-                            signingKeyResource.file
-                        )
+                        fileReader = FileUtils().getFileReader(OB_TPP_EIDAS_SIGNING_KEY_PATH)
                     )
                 )
             )

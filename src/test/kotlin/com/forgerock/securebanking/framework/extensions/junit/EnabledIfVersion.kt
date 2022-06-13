@@ -1,8 +1,8 @@
 package com.forgerock.securebanking.framework.extensions.junit
 
 import com.forgerock.securebanking.framework.http.fuel.initFuel
-import com.forgerock.securebanking.support.discovery.rsDiscoveryEnabledOperationsMap
-import com.forgerock.securebanking.support.discovery.rsDiscoveryMap
+import com.forgerock.uk.openbanking.support.discovery.rsDiscoveryEnabledOperationsMap
+import com.forgerock.uk.openbanking.support.discovery.rsDiscoveryMap
 import org.junit.jupiter.api.extension.ConditionEvaluationResult
 import org.junit.jupiter.api.extension.ConditionEvaluationResult.disabled
 import org.junit.jupiter.api.extension.ConditionEvaluationResult.enabled

@@ -1,8 +1,8 @@
 package com.forgerock.securebanking.framework.data
 
-import com.forgerock.openbanking.constants.OpenBankingConstants
-import com.forgerock.securebanking.framework.constants.REDIRECT_URI
-import com.forgerock.securebanking.support.discovery.asDiscovery
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBConstants
+import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
+import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import java.util.*
 
 data class RequestParameters(
@@ -18,8 +18,8 @@ data class RequestParameters(
     val response_type: String = "code id_token",
     val scope: String = asDiscovery.scopes_supported.intersect(
         listOf(
-            OpenBankingConstants.Scope.OPENID,
-            OpenBankingConstants.Scope.ACCOUNTS
+            OBConstants.Scope.OPENID,
+            OBConstants.Scope.ACCOUNTS
         )
     ).joinToString(separator = " "),
     val state: String = "10d260bf-a7d9-444a-92d9-7b7a5f088208"
