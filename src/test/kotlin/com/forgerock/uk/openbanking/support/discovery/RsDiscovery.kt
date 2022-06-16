@@ -286,6 +286,7 @@ data class RsDiscovery(
                     val GetInternationalPaymentConsent: String,
                     val GetInternationalPaymentConsentsConsentIdFundsConfirmation: String,
                     val GetInternationalScheduledPayment: String,
+                    val GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails: String,
                     val GetInternationalScheduledPaymentConsent: String,
                     val GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation: String,
                     val GetInternationalStandingOrder: String,

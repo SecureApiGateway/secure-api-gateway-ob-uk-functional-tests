@@ -171,7 +171,6 @@ project.extra.properties.forEach { (key, _) ->
 tasks {
     test {
         useJUnitPlatform()
-//        dependsOn("serviceHealthCheck")
         description = "Runs ALL tests"
     }
 }
@@ -208,10 +207,6 @@ tasks.withType<Test>().configureEach {
     println("PROFILE FILE --> $profilePath")
     println("RUNNING task [$name]")
     environment = project.extra.properties
-    // all task to run all tests depends of check service except the health check task
-    if (name != "serviceHealthCheck" && name != "singleTest") {
-//        dependsOn("serviceHealthCheck")
-    }
 
     group = "special-tasks-4tests"
 
@@ -236,55 +231,6 @@ tasks.withType<Test>().configureEach {
 val packagePrefix = "com.forgerock.uk.openbanking.tests.functional."
 val suffixPattern = ".*"
 val apiVersion = "v3_1_8"
-tasks.register<Test>("serviceHealthCheck") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "servicecheck" + suffixPattern)
-    }
-    description = "Runs the test to check the service status"
-}
-
-/* PAYMENTS */
-tasks.register<Test>("all.payments") {
-    group = "Deprecated"
-    description = "Runs the payment tests"
-    filter {
-        includeTestsMatching(packagePrefix + "payment" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("domesticPayments") {
-    group = "Deprecated"
-    description = "Runs the payment tests"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.domestic" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("filePayments") {
-    group = "Deprecated"
-    description = "Runs the payment tests"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.file" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("internationalPayments") {
-    group = "Deprecated"
-    description = "Runs the payment tests"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.international" + suffixPattern)
-    }
-}
-
-/* ACCOUNTS */
-tasks.register<Test>("accounts") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "account" + suffixPattern)
-    }
-    failFast = false
-}
 
 /* ACCOUNTS */
 tasks.register<Test>("accounts_$apiVersion") {
@@ -306,103 +252,24 @@ tasks.register<Test>("domestic_payments_$apiVersion") {
     failFast = false
 }
 
-/* ALL IMPLEMENTED TESTS */
-tasks.register<Test>("tests_$apiVersion") {
-    group = "tests"
-    description = "Runs the tests with the version $apiVersion"
+tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
+    group = "payments-tests"
+    description = "Runs the payments tests with the version $apiVersion"
     filter {
-        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+        includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
     }
     failFast = false
 }
 
-tasks.register<Test>("accessToken") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "as" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("bank") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "bank" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("directory") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "directory" + suffixPattern)
-    }
-}
-
-/* EVENTS */
-
-tasks.register<Test>("all.events") {
-    group = "Deprecated"
-    description = "Runs the event tests"
-    filter {
-        includeTestsMatching(packagePrefix + "event" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("aggregatedpolling") {
-    group = "Deprecated"
-    description = "Runs the event tests"
-    filter {
-        includeTestsMatching(packagePrefix + "event.aggregatedpolling" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("callbacks") {
-    group = "Deprecated"
-    description = "Runs the event tests"
-    filter {
-        includeTestsMatching(packagePrefix + "event.callback" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("subscriptions") {
-    group = "Deprecated"
-    description = "Runs the event tests"
-    filter {
-        includeTestsMatching(packagePrefix + "event.sub" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("fundsConfirmation") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "funds" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("matls") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "mtls" + suffixPattern)
-    }
-}
-
-tasks.register<Test>("registration") {
-    group = "Deprecated"
-    filter {
-        includeTestsMatching(packagePrefix + "onboarding" + suffixPattern)
-    }
-}
-
-// recomended use that task only on local
-tasks.register<Test>("all") {
-    group = "Deprecated"
-    description = "Runs all tests"
-    filter {
-        includeTestsMatching("$packagePrefix*")
-        // to avoid run twice the same tests, the serviceCheckHealth task will run before this task
-        // such as a dependency
-        excludeTestsMatching(packagePrefix + "servicecheck" + suffixPattern)
-    }
+/* ALL IMPLEMENTED TESTS */
+tasks.register<Test>("tests_$apiVersion") {
+    group = "tests"
+    description = "Runs the tests with the version $apiVersion"
+    dependsOn(
+        "accounts_$apiVersion",
+        "domestic_payments_$apiVersion",
+        "domestic_scheduled_payments_$apiVersion"
+    )
     failFast = false
 }
 

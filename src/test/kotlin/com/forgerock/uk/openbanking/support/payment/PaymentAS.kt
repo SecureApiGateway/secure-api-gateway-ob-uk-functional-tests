@@ -1,5 +1,6 @@
 package com.forgerock.uk.openbanking.support.payment
 
+import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.account.FRFinancialAccount
 import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.common.FRAccountIdentifier
 import com.forgerock.securebanking.framework.configuration.AM_COOKIE_NAME
 import com.forgerock.securebanking.framework.configuration.RCS_SERVER
@@ -11,6 +12,8 @@ import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
+import com.forgerock.securebanking.framework.utils.GsonUtils
+import com.forgerock.securebanking.framework.utils.GsonUtils.Companion.gson
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBConstants
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.general.GeneralAS
@@ -30,7 +33,7 @@ class PaymentAS : GeneralAS() {
     data class SendConsentDecisionRequestBody(
         val consentJwt: String,
         val decision: String,
-        val debtorAccount: FRAccountIdentifier
+        val debtorAccount: FRFinancialAccount
     )
 
     fun getAccessToken(
@@ -59,15 +62,14 @@ class PaymentAS : GeneralAS() {
         return exchangeCode(registrationResponse, tpp, authCode)
     }
 
-    private fun getDebtorAccountFromConsentDetails(consentDetails: String): FRAccountIdentifier {
+    private fun getDebtorAccountFromConsentDetails(consentDetails: String): FRFinancialAccount {
         try {
             val str = JsonParser().parse(consentDetails).asJsonObject
             val accounts = str.getAsJsonArray("accounts")
             val account =
-                accounts[0].asJsonObject.get("account").asJsonObject.get("accounts").asJsonArray.get(0).asJsonObject
+                accounts[0].asJsonObject.get("account").asJsonObject
 
-            val gson = Gson()
-            return gson.fromJson(account, FRAccountIdentifier::class.java)
+            return gson.fromJson(account, FRFinancialAccount::class.java)
         } catch (e: Exception) {
             throw AssertionError(
                 "The response body doesn't have the expected format"
@@ -77,7 +79,7 @@ class PaymentAS : GeneralAS() {
 
     private fun sendConsentDecision(
         consentRequest: String,
-        consentedAccount: FRAccountIdentifier
+        consentedAccount: FRFinancialAccount
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, "Authorised", consentedAccount)
         val (_, response, result) = Fuel.post("$RCS_SERVER/api/rcs/consent/decision/")
