@@ -43,13 +43,29 @@ import kotlin.ranges.CharRange.Companion.EMPTY
 class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext?): DateTime {
         val date = jp.text
-        return DateTime.parse(date, ISODateTimeFormat.dateTime())
+        return DateTime.parse(date)
+    }
+
+    fun deserialize(
+        je: JsonElement, type: Type?,
+        jdc: JsonDeserializationContext?
+    ): DateTime? {
+        return if (je.asString.isEmpty()) null else DATE_TIME_FORMATTER.parseDateTime(
+            ISODateTimeFormat.dateTimeNoMillis().toString()
+        )
     }
 }
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
-        gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTime()))
+        gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTimeNoMillis()))
+    }
+
+    fun serialize(
+        src: DateTime?, typeOfSrc: Type?,
+        context: JsonSerializationContext?
+    ): JsonElement? {
+        return JsonPrimitive(if (src == null) EMPTY.toString() else DATE_TIME_FORMATTER.print(src))
     }
 }
 

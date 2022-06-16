@@ -9,6 +9,7 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
+import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_1
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.*
 
-@Disabled("The domestic payment consents funds confirmation is not implemented.")
 class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
@@ -145,6 +145,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
+    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
@@ -193,8 +194,8 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         }
 
         // Then
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
     @EnabledIfVersion(
@@ -311,6 +312,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
+    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
@@ -357,8 +359,8 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         }
 
         // Then
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
     @EnabledIfVersion(
@@ -477,6 +479,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
+    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
@@ -524,8 +527,8 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         }
 
         // Then
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
     @EnabledIfVersion(
@@ -644,6 +647,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
+    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
@@ -691,7 +695,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         }
 
         // Then
-        assertThat(exception.message.toString()).contains("The access token grant type CLIENT_CREDENTIAL doesn't match one of the expected grant types")
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 }

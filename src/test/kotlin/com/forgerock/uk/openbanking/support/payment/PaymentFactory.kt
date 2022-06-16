@@ -4,9 +4,7 @@ import com.forgerock.uk.openbanking.support.general.GeneralFactory.Companion.url
 import com.google.common.base.Preconditions
 import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.common.OBCashAccount3
-import uk.org.openbanking.datamodel.payment.OBDomestic2
-import uk.org.openbanking.datamodel.payment.OBRemittanceInformation1
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiation
+import uk.org.openbanking.datamodel.payment.*
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -82,6 +80,58 @@ class PaymentFactory {
                         .unstructured(initiation.remittanceInformation?.unstructured)
                         .reference(initiation.remittanceInformation?.reference)
                 )
+                .supplementaryData(initiation.supplementaryData)
+        }
+
+        fun mapOBDomesticScheduled2ToOBWriteDomesticScheduled2DataInitiation(initiation: OBDomesticScheduled2): OBWriteDomesticScheduled2DataInitiation? {
+            return OBWriteDomesticScheduled2DataInitiation()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .requestedExecutionDateTime(initiation.requestedExecutionDateTime)
+                .instructedAmount(
+                    OBWriteDomestic2DataInitiationInstructedAmount()
+                        .amount(initiation.instructedAmount?.amount)
+                        .currency(initiation.instructedAmount?.currency)
+                )
+                .debtorAccount(
+                    OBWriteDomestic2DataInitiationDebtorAccount()
+                        .schemeName(initiation.debtorAccount?.schemeName)
+                        .identification(initiation.debtorAccount?.identification)
+                        .name(initiation.debtorAccount?.name)
+                        .secondaryIdentification(initiation.debtorAccount?.secondaryIdentification)
+                )
+                .creditorAccount(
+                    OBWriteDomestic2DataInitiationCreditorAccount()
+                        .schemeName(initiation.creditorAccount?.schemeName)
+                        .identification(initiation.creditorAccount?.identification)
+                        .name(initiation.creditorAccount?.name)
+                        .secondaryIdentification(initiation.creditorAccount?.secondaryIdentification)
+                )
+                .creditorPostalAddress(initiation.creditorPostalAddress)
+                .remittanceInformation(
+                    OBWriteDomestic2DataInitiationRemittanceInformation()
+                        .unstructured(initiation.remittanceInformation?.unstructured)
+                        .reference(initiation.remittanceInformation?.reference)
+                )
+                .supplementaryData(initiation.supplementaryData)
+        }
+
+        fun copyOBWriteDomesticScheduled2DataInitiation(initiation: OBWriteDomesticScheduled2DataInitiation): OBWriteDomesticScheduled2DataInitiation {
+            return OBWriteDomesticScheduled2DataInitiation()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .requestedExecutionDateTime(initiation.requestedExecutionDateTime)
+                .instructedAmount(
+                    OBWriteDomestic2DataInitiationInstructedAmount()
+                        .amount(initiation.instructedAmount.amount)
+                        .currency(initiation.instructedAmount.currency)
+                )
+                .debtorAccount(initiation.debtorAccount)
+                .creditorAccount(initiation.creditorAccount)
+                .creditorPostalAddress(initiation.creditorPostalAddress)
+                .remittanceInformation(initiation.remittanceInformation)
                 .supplementaryData(initiation.supplementaryData)
         }
     }
