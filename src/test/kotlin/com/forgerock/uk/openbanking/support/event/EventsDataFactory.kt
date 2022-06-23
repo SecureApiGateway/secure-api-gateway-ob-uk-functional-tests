@@ -3,7 +3,7 @@ package com.forgerock.uk.openbanking.support.event
 import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.event.FRDataEvent
 import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.event.OBEventNotification2
 import com.forgerock.securebanking.framework.data.Tpp
-import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBVersion
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import uk.org.openbanking.datamodel.event.*
 
 class EventsDataFactory {

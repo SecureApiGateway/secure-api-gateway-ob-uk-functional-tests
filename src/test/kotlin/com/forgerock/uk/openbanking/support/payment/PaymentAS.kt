@@ -14,7 +14,7 @@ import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
 import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.framework.utils.GsonUtils.Companion.gson
-import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBConstants
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.general.GeneralAS
 import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest

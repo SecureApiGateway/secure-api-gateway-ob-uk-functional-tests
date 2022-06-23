@@ -9,7 +9,7 @@ import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBConstants
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
 import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.general.GeneralAS
