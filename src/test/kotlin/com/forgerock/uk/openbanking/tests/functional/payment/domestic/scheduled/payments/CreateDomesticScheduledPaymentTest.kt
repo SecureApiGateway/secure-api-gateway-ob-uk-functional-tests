@@ -12,7 +12,7 @@ import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPaymentInvalidB64ClaimTrue
-import com.forgerock.securebanking.openbanking.uk.common.api.meta.OBVersion
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.constants.INVALID_CONSENT_ID
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
