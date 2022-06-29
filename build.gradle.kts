@@ -265,11 +265,11 @@ tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
 tasks.register<Test>("tests_$apiVersion") {
     group = "tests"
     description = "Runs the tests with the version $apiVersion"
-    dependsOn(
-        "accounts_$apiVersion",
-        "domestic_payments_$apiVersion",
-        "domestic_scheduled_payments_$apiVersion"
-    )
+    filter {
+        includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
+        includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
+    }
     failFast = false
 }
 
