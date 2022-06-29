@@ -28,7 +28,7 @@ class AccountAS : GeneralAS() {
     data class SendConsentDecisionRequestBody(
         val consentJwt: String,
         val decision: String,
-        val sharedAccounts: List<String>
+        val accountIds: List<String>
     )
 
     fun getAccessToken(
