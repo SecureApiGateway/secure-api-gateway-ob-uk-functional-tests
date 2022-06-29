@@ -261,6 +261,15 @@ tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
     failFast = false
 }
 
+tasks.register<Test>("domestic_standing_order_$apiVersion") {
+    group = "payments-tests"
+    description = "Runs the payments tests with the version $apiVersion"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+    }
+    failFast = false
+}
+
 /* ALL IMPLEMENTED TESTS */
 tasks.register<Test>("tests_$apiVersion") {
     group = "tests"
@@ -269,6 +278,7 @@ tasks.register<Test>("tests_$apiVersion") {
         includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
         includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
         includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
+        includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
     }
     failFast = false
 }

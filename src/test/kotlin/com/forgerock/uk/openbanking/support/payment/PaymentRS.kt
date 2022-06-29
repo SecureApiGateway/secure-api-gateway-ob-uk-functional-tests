@@ -104,7 +104,7 @@ class PaymentRS {
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
-            "Could not create the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+            "Could not get the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
             result.component2()
         )
 
