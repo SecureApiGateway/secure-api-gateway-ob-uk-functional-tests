@@ -8,3 +8,5 @@ const val PAYMENT_SUBMISSION_ALREADY_EXISTS = "Payment submission already exists
 const val B64_HEADER_NOT_PERMITTED = "B64 header not permitted in JWT header after v3.1.3"
 const val UNAUTHORIZED = "Unauthorized"
 const val INVALID_DETACHED_JWS_ERROR = "Could not validate detached JWS -"
+const val INVALID_FREQUENCY_VALUE = "Invalid frequency value in the request payload."
+
