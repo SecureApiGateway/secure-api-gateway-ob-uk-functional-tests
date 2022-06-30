@@ -117,6 +117,46 @@ class PaymentFactory {
                 .supplementaryData(initiation.supplementaryData)
         }
 
+        fun mapOBDomesticStandingOrder3ToOBWriteDomesticStandingOrder3DataInitiation(initiation: OBDomesticStandingOrder3): OBWriteDomesticStandingOrder3DataInitiation? {
+            return OBWriteDomesticStandingOrder3DataInitiation()
+                .frequency(initiation.frequency)
+                .reference(initiation.reference)
+                .numberOfPayments(initiation.numberOfPayments)
+                .firstPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationFirstPaymentAmount()
+                        .amount(initiation.firstPaymentAmount?.amount)
+                        .currency(initiation.firstPaymentAmount?.currency)
+                )
+                .recurringPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationRecurringPaymentAmount()
+                        .amount(initiation.recurringPaymentAmount?.amount)
+                        .currency(initiation.recurringPaymentAmount?.currency)
+                )
+                .finalPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationFinalPaymentAmount()
+                        .amount(initiation.finalPaymentAmount?.amount)
+                        .currency(initiation.finalPaymentAmount?.currency)
+                )
+                .debtorAccount(
+                    OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
+                        .schemeName(initiation.debtorAccount?.schemeName)
+                        .identification(initiation.debtorAccount?.identification)
+                        .name(initiation.debtorAccount?.name)
+                        .secondaryIdentification(initiation.debtorAccount?.secondaryIdentification)
+                )
+                .creditorAccount(
+                    OBWriteDomesticStandingOrder3DataInitiationCreditorAccount()
+                        .schemeName(initiation.creditorAccount?.schemeName)
+                        .identification(initiation.creditorAccount?.identification)
+                        .name(initiation.creditorAccount?.name)
+                        .secondaryIdentification(initiation.creditorAccount?.secondaryIdentification)
+                )
+                .firstPaymentDateTime(initiation.firstPaymentDateTime)
+                .recurringPaymentDateTime(initiation.recurringPaymentDateTime)
+                .finalPaymentDateTime(initiation.finalPaymentDateTime)
+                .supplementaryData(initiation.supplementaryData)
+        }
+
         fun copyOBWriteDomesticScheduled2DataInitiation(initiation: OBWriteDomesticScheduled2DataInitiation): OBWriteDomesticScheduled2DataInitiation {
             return OBWriteDomesticScheduled2DataInitiation()
                 .instructionIdentification(initiation.instructionIdentification)
@@ -132,6 +172,34 @@ class PaymentFactory {
                 .creditorAccount(initiation.creditorAccount)
                 .creditorPostalAddress(initiation.creditorPostalAddress)
                 .remittanceInformation(initiation.remittanceInformation)
+                .supplementaryData(initiation.supplementaryData)
+        }
+
+        fun copyOBWriteDomesticStandingOrder3DataInitiation(initiation: OBWriteDomesticStandingOrder3DataInitiation): OBWriteDomesticStandingOrder3DataInitiation {
+            return OBWriteDomesticStandingOrder3DataInitiation()
+                .frequency(initiation.frequency)
+                .reference(initiation.reference)
+                .numberOfPayments(initiation.numberOfPayments)
+                .firstPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationFirstPaymentAmount()
+                        .amount(initiation.firstPaymentAmount.amount)
+                        .currency(initiation.firstPaymentAmount.currency)
+                )
+                .recurringPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationRecurringPaymentAmount()
+                        .amount(initiation.recurringPaymentAmount.amount)
+                        .currency(initiation.recurringPaymentAmount.currency)
+                )
+                .finalPaymentAmount(
+                    OBWriteDomesticStandingOrder3DataInitiationFinalPaymentAmount()
+                        .amount(initiation.finalPaymentAmount.amount)
+                        .currency(initiation.finalPaymentAmount.currency)
+                )
+                .debtorAccount(initiation.debtorAccount)
+                .creditorAccount(initiation.creditorAccount)
+                .firstPaymentDateTime(initiation.firstPaymentDateTime)
+                .recurringPaymentDateTime(initiation.recurringPaymentDateTime)
+                .finalPaymentDateTime(initiation.finalPaymentDateTime)
                 .supplementaryData(initiation.supplementaryData)
         }
     }

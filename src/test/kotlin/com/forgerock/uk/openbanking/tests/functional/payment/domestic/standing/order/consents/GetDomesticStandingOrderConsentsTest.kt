@@ -1,7 +1,6 @@
 package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents
 
 import assertk.assertThat
-import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -10,18 +9,11 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
-import com.forgerock.securebanking.framework.signature.signPayloadSubmitPaymentInvalidB64ClaimTrue
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.constants.INVALID_FREQUENCY
-import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
-import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.*
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
-import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
