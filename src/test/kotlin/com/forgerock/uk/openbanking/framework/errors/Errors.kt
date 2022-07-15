@@ -7,6 +7,7 @@ const val INVALID_FORMAT_DETACHED_JWS_ERROR = "Wrong number of dots on inbound d
 const val PAYMENT_SUBMISSION_ALREADY_EXISTS = "Payment submission already exists."
 const val B64_HEADER_NOT_PERMITTED = "B64 header not permitted in JWT header after v3.1.3"
 const val UNAUTHORIZED = "Unauthorized"
+const val INVALID_CONSENT_STATUS = "UK.OBIE.Resource.InvalidConsentStatus"
 const val INVALID_DETACHED_JWS_ERROR = "Could not validate detached JWS -"
 const val INVALID_FREQUENCY_VALUE = "Invalid frequency value in the request payload."
 

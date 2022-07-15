@@ -245,7 +245,7 @@ tasks.register<Test>("accounts_$apiVersion") {
 /* DOMESTIC PAYMENTS */
 tasks.register<Test>("domestic_payments_$apiVersion") {
     group = "payments-tests"
-    description = "Runs the payments tests with the version $apiVersion"
+    description = "Runs the domestic payments tests with the version $apiVersion"
     filter {
         includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
     }
@@ -254,7 +254,7 @@ tasks.register<Test>("domestic_payments_$apiVersion") {
 
 tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
     group = "payments-tests"
-    description = "Runs the payments tests with the version $apiVersion"
+    description = "Runs the domestic scheduled payments tests with the version $apiVersion"
     filter {
         includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
     }
@@ -263,9 +263,18 @@ tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
 
 tasks.register<Test>("domestic_standing_order_$apiVersion") {
     group = "payments-tests"
-    description = "Runs the payments tests with the version $apiVersion"
+    description = "Runs the domestic standing order tests with the version $apiVersion"
     filter {
         includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+    }
+    failFast = false
+}
+
+tasks.register<Test>("international_payments_$apiVersion") {
+    group = "payments-tests"
+    description = "Runs the international payments tests with the version $apiVersion"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
     }
     failFast = false
 }
@@ -279,6 +288,7 @@ tasks.register<Test>("tests_$apiVersion") {
         includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
         includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
         includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+        includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
     }
     failFast = false
 }
