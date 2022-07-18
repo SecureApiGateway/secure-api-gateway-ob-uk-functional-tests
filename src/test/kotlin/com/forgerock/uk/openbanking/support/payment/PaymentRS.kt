@@ -12,6 +12,7 @@ import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion.v3_1_8
+import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.discovery.rsDiscovery
@@ -133,10 +134,17 @@ class PaymentRS {
         tpp: Tpp,
         version: OBVersion = v3_1_8
     ): T {
+        val detachedJwt = if (signedPayload == INVALID_FORMAT_DETACHED_JWS) {
+            INVALID_FORMAT_DETACHED_JWS
+        } else {
+            val jwtElements = signedPayload.split(".")
+            jwtElements[0] + "." + "." + jwtElements[2]
+        }
+
         val (_, response, result) = Fuel.post(paymentUrl)
             .jsonBody(paymentRequest)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-jws-signature", signedPayload)
+            .header("x-jws-signature", detachedJwt)
             .header("x-idempotency-key", UUID.randomUUID())
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()

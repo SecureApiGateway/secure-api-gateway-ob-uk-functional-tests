@@ -14,7 +14,10 @@ import com.forgerock.securebanking.framework.signature.signPayloadSubmitPaymentI
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
-import com.forgerock.uk.openbanking.framework.errors.*
+import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
+import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
+import com.forgerock.uk.openbanking.framework.errors.SIGNATURE_VALIDATION_FAILED
+import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.*
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
