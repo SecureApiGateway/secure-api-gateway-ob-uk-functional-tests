@@ -4,6 +4,7 @@ import com.forgerock.uk.openbanking.support.general.GeneralFactory.Companion.url
 import com.google.common.base.Preconditions
 import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.common.OBCashAccount3
+import uk.org.openbanking.datamodel.common.OBChargeBearerType1Code
 import uk.org.openbanking.datamodel.payment.*
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -200,6 +201,92 @@ class PaymentFactory {
                 .firstPaymentDateTime(initiation.firstPaymentDateTime)
                 .recurringPaymentDateTime(initiation.recurringPaymentDateTime)
                 .finalPaymentDateTime(initiation.finalPaymentDateTime)
+                .supplementaryData(initiation.supplementaryData)
+        }
+
+        fun mapOBWriteInternational2DataInitiationToOBInternational2(initiation: OBWriteInternational2DataInitiation): OBInternational2 {
+            return OBInternational2()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .instructionPriority(initiation.instructionPriority)
+                .purpose(initiation.purpose)
+                .chargeBearer(initiation.chargeBearer)
+                .currencyOfTransfer(initiation.currencyOfTransfer)
+                .instructedAmount(
+                    OBActiveOrHistoricCurrencyAndAmount()
+                        .amount(initiation.instructedAmount?.amount)
+                        .currency(initiation.instructedAmount?.currency)
+                )
+                .exchangeRateInformation(
+                    OBExchangeRate1()
+                        .unitCurrency(initiation.exchangeRateInformation?.unitCurrency)
+                        .exchangeRate(initiation.exchangeRateInformation?.exchangeRate)
+                        .rateType(initiation.exchangeRateInformation?.rateType)
+                        .contractIdentification(initiation.exchangeRateInformation?.contractIdentification)
+                )
+                .debtorAccount(
+                    OBCashAccount3()
+                        .schemeName(initiation.debtorAccount?.schemeName)
+                        .identification(initiation.debtorAccount?.identification)
+                        .name(initiation.debtorAccount?.name)
+                        .secondaryIdentification(initiation.debtorAccount?.secondaryIdentification)
+                )
+                .creditor(
+                    OBPartyIdentification43()
+                        .name(initiation.creditor?.name)
+                        .postalAddress(initiation.creditor?.postalAddress)
+                )
+                .creditorAgent(
+                    OBBranchAndFinancialInstitutionIdentification3()
+                        .schemeName(initiation.creditorAgent?.schemeName)
+                        .identification(initiation.creditorAgent?.identification)
+                        .name(initiation.creditorAgent?.name)
+                        .postalAddress(initiation.creditorAgent?.postalAddress)
+                )
+                .creditorAccount(
+                    OBCashAccount3()
+                        .schemeName(initiation.creditorAccount?.schemeName)
+                        .identification(initiation.creditorAccount?.identification)
+                        .name(initiation.creditorAccount?.name)
+                        .secondaryIdentification(initiation.creditorAccount?.secondaryIdentification)
+                )
+                .remittanceInformation(
+                    OBRemittanceInformation1()
+                        .unstructured(initiation.remittanceInformation?.unstructured)
+                        .reference(initiation.remittanceInformation?.reference)
+                )
+                .supplementaryData(initiation.supplementaryData)
+        }
+
+        fun copyOBWriteInternational3DataInitiation(initiation: OBWriteInternational3DataInitiation): OBWriteInternational3DataInitiation {
+            return OBWriteInternational3DataInitiation()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .instructionPriority(initiation.instructionPriority)
+                .purpose(initiation.purpose)
+                .extendedPurpose(initiation.extendedPurpose)
+                .chargeBearer(initiation.chargeBearer)
+                .currencyOfTransfer(initiation.currencyOfTransfer)
+                .destinationCountryCode(initiation.destinationCountryCode)
+                .instructedAmount(
+                    OBWriteDomestic2DataInitiationInstructedAmount()
+                        .amount(initiation.instructedAmount.amount)
+                        .currency(initiation.instructedAmount.currency)
+                )
+                .exchangeRateInformation(
+                    OBWriteInternational3DataInitiationExchangeRateInformation()
+                        .unitCurrency(initiation.exchangeRateInformation.unitCurrency)
+                        .exchangeRate(initiation.exchangeRateInformation.exchangeRate)
+                        .rateType(initiation.exchangeRateInformation.rateType)
+                        .contractIdentification(initiation.exchangeRateInformation.contractIdentification)
+                )
+                .debtorAccount(initiation.debtorAccount)
+                .creditor(initiation.creditor)
+                .creditorAgent(initiation.creditorAgent)
+                .creditorAccount(initiation.creditorAccount)
+                .remittanceInformation(initiation.remittanceInformation)
                 .supplementaryData(initiation.supplementaryData)
         }
     }
