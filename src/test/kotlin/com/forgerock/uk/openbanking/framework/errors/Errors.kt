@@ -10,4 +10,5 @@ const val UNAUTHORIZED = "Unauthorized"
 const val INVALID_CONSENT_STATUS = "UK.OBIE.Resource.InvalidConsentStatus"
 const val INVALID_DETACHED_JWS_ERROR = "Could not validate detached JWS -"
 const val INVALID_FREQUENCY_VALUE = "Invalid frequency value in the request payload."
+const val REQUEST_EXECUTION_TIME_IN_THE_PAST = "Invalid RequestedExecutionDateTime value in the request payload."
 
