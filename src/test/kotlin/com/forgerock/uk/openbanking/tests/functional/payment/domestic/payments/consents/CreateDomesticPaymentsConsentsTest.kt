@@ -15,7 +15,6 @@ import com.forgerock.securebanking.framework.signature.signPayloadSubmitPaymentI
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_1
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
-import com.forgerock.uk.openbanking.support.discovery.payment3_1_8
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
@@ -30,171 +29,17 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse2
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse3
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.*
 
+/**
+ * Tests for CreateDomesticPaymentConsent operations pre version 3.1.8
+ *
+ * The follow classes demonstrate the latest pattern:
+ * @see CreateDomesticPaymentsConsentsv3_1_8Impl
+ * @see CreateDomesticPaymentsConsentsv3_1_8Test
+ */
+@Deprecated("Tests for API versions < 3.1.8, such versions are expected to be dropped from support in the future")
 class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppResource) {
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun createDomesticPaymentsConsents_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        // When
-        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-            payment3_1_8.Links.links.CreateDomesticPaymentConsent,
-            consentRequest,
-            tppResource.tpp,
-            OBVersion.v3_1_8,
-            signedPayloadConsent
-        )
-
-        // Then
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidFormatDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                payment3_1_8.Links.links.CreateDomesticPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                INVALID_FORMAT_DETACHED_JWS
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(INVALID_FORMAT_DETACHED_JWS_ERROR)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticPaymentsConsents_throwsNoDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consentNoDetachedJwt<OBWriteDomesticConsentResponse5>(
-                payment3_1_8.Links.links.CreateDomesticPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(NO_DETACHED_JWS)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticPaymentsConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
-
-        val signedPayload =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid,
-                true
-            )
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                payment3_1_8.Links.links.CreateDomesticPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                signedPayload
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
-
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                INVALID_SIGNING_KID
-            )
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                payment3_1_8.Links.links.CreateDomesticPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                signedPayloadConsent
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
-    }
 
     @EnabledIfVersion(
         type = "payments",
