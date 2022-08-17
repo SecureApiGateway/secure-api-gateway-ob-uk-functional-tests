@@ -34,7 +34,6 @@ import org.joda.time.format.ISODateTimeFormat
 import uk.org.openbanking.jackson.DateTimeSerializer.DATE_TIME_FORMATTER
 import java.io.InputStream
 import java.lang.reflect.Type
-import java.math.BigDecimal
 import java.security.KeyStore
 import java.security.Security
 import javax.net.ssl.HostnameVerifier
@@ -59,7 +58,7 @@ class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
-        gen?.writeString(value?.toDateTimeISO()?.toString(ISODateTimeFormat.dateTimeNoMillis()))
+        gen?.writeString(value?.toDateTimeISO()?.toString(DATE_TIME_FORMATTER))
     }
 
     fun serialize(
@@ -70,23 +69,9 @@ class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     }
 }
 
-class BigDecimalSerializer : StdSerializer<BigDecimal>(BigDecimal::class.java) {
-    override fun serialize(value: BigDecimal?, gen: JsonGenerator?, provider: SerializerProvider?) {
-        gen?.writeString(value?.toString())
-    }
-
-    fun serialize(
-        src: BigDecimal?, typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement? {
-        return JsonPrimitive(src?.toString() ?: EMPTY.toString())
-    }
-}
-
 val serializers: SimpleModule = SimpleModule("CustomSerializer")
     .addDeserializer(DateTime::class.java, DateTimeDeserializer())
     .addSerializer(DateTime::class.java, DateTimeSerializer())
-    .addSerializer(BigDecimal::class.java, BigDecimalSerializer())
 
 val defaultMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
