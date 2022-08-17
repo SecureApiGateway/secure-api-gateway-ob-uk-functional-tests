@@ -28,7 +28,10 @@ import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFact
  */
 class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
+    private val paymentLinks = getPaymentsApiLinks(version)
+
     fun createDomesticPaymentsConsents() {
+
         // Given
         val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
         val signedPayloadConsent =
@@ -40,7 +43,7 @@ class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppRe
 
         // When
         val consent = PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-            getPaymentsApiLinks(version).CreateDomesticPaymentConsent,
+            paymentLinks.CreateDomesticPaymentConsent,
             consentRequest,
             tppResource.tpp,
             version,
@@ -62,10 +65,10 @@ class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppRe
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                getPaymentsApiLinks(version).CreateDomesticPaymentConsent,
+                paymentLinks.CreateDomesticPaymentConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8,
+                version,
                 INVALID_FORMAT_DETACHED_JWS
             )
         }
@@ -82,7 +85,7 @@ class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppRe
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consentNoDetachedJwt<OBWriteDomesticConsentResponse5>(
-                getPaymentsApiLinks(version).CreateDomesticPaymentConsent,
+                paymentLinks.CreateDomesticPaymentConsent,
                 consentRequest,
                 tppResource.tpp,
                 version
@@ -109,7 +112,7 @@ class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppRe
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                getPaymentsApiLinks(version).CreateDomesticPaymentConsent,
+                paymentLinks.CreateDomesticPaymentConsent,
                 consentRequest,
                 tppResource.tpp,
                 version,
@@ -136,7 +139,7 @@ class CreateDomesticPaymentsConsentsv3_1_8Impl(val version: OBVersion, val tppRe
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticConsentResponse5>(
-                getPaymentsApiLinks(version).CreateDomesticPaymentConsent,
+                paymentLinks.CreateDomesticPaymentConsent,
                 consentRequest,
                 tppResource.tpp,
                 version,

@@ -34,7 +34,7 @@ import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFact
 /**
  * Tests for CreateDomesticPaymentConsent operations pre version 3.1.8
  *
- * The follow classes demonstrate the latest pattern:
+ * The following classes demonstrate the pattern to use for the lastest API versions:
  * @see CreateDomesticPaymentsConsentsv3_1_8Impl
  * @see CreateDomesticPaymentsConsentsv3_1_8Test
  */
