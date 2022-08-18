@@ -5,8 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.matchesPredicate
 import com.forgerock.securebanking.framework.conditions.Status
+import com.forgerock.securebanking.framework.configuration.psu
+import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.account.AccountAS
 import com.forgerock.uk.openbanking.support.account.AccountFactory
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.support.discovery.getAccountsApiLinks
@@ -70,6 +73,17 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
             consentRequest,
             tppResource.tpp
         )
+    }
+
+    override fun createConsentAndGetAccessToken(permissions: List<OBExternalPermissions1Code>): Pair<OBReadConsentResponse1, AccessToken> {
+        val consent = createConsent(permissions)
+        val accessToken = AccountAS().getAccessToken(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp
+        )
+        return consent to accessToken
     }
 
     override fun deleteConsent(consentId: String): OBReadConsentResponse1 {
