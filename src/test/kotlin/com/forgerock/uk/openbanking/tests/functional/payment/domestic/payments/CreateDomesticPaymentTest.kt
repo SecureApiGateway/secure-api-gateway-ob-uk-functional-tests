@@ -117,6 +117,10 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
@@ -792,6 +796,10 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
@@ -1460,6 +1468,10 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
@@ -2219,6 +2231,10 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
