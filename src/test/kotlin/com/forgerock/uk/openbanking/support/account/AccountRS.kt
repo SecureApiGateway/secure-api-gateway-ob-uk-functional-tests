@@ -63,7 +63,7 @@ class AccountRS {
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
-            "Could not create consent: ${String(consentResponse.data)}",
+            "Could not get consent: ${String(consentResponse.data)}",
             r.component2()
         )
         return r.get()

@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.account.accounts
+package com.forgerock.uk.openbanking.tests.functional.account.accounts.legacy
 
 import assertk.assertThat
 import assertk.assertions.isGreaterThan
@@ -12,15 +12,13 @@ import com.forgerock.uk.openbanking.support.account.AccountFactory.Companion.obR
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_2
 import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_5
-import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_8
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.READACCOUNTSDETAIL
 import uk.org.openbanking.datamodel.account.OBReadAccount4
 import uk.org.openbanking.datamodel.account.OBReadAccount5
-import uk.org.openbanking.datamodel.account.OBReadAccount6
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
 
-class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
@@ -81,39 +79,6 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
         // When
         val result =
             AccountRS().getAccountsData<OBReadAccount5>(accountAndTransaction3_1_5.Links.links.GetAccounts, accessToken)
-
-        // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data.account).isNotEmpty()
-        assertThat(result.data.account.size).isGreaterThan(0)
-    }
-
-    @EnabledIfVersion(
-        type = "accounts",
-        apiVersion = "v3.1.8",
-        operations = ["CreateAccountAccessConsent", "GetAccounts"],
-        apis = ["accounts"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6"]
-    )
-    @Test
-    fun shouldGetAccounts_v3_1_8() {
-        // Given
-        val consentRequest = obReadConsent1(listOf(READACCOUNTSDETAIL))
-        val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_8.Links.links.CreateAccountAccessConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-        val accessToken = AccountAS().getAccessToken(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-
-        // When
-        val result =
-            AccountRS().getAccountsData<OBReadAccount6>(accountAndTransaction3_1_8.Links.links.GetAccounts, accessToken)
 
         // Then
         assertThat(result).isNotNull()

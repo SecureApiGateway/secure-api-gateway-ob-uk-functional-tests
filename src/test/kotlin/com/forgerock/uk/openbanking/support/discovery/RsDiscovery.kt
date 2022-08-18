@@ -1,6 +1,7 @@
 package com.forgerock.uk.openbanking.support.discovery
 
 import com.forgerock.securebanking.framework.configuration.IG_SERVER
+import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.gsonDeserializer
@@ -180,6 +181,36 @@ val rsDiscoveryMap by lazy {
         "funds" to funds,
         "events" to events
     )
+}
+
+// Maps apiName -> version -> links
+val rsDiscoveryApiToVersionLinks by lazy {
+    val paymentVersions = rsDiscovery.Data.PaymentInitiationAPI?.map { it.Version to it.Links.links }?.toMap()
+    val accounts = rsDiscovery.Data.AccountAndTransactionAPI?.map { it.Version to it.Links.links }?.toMap()
+    val funds = rsDiscovery.Data.FundsConfirmationAPI?.map { it.Version to it.Links.links }?.toMap()
+    val events = rsDiscovery.Data.EventNotificationAPI?.map { it.Version to it.Links.links }?.toMap()
+    return@lazy mapOf(
+        "payments" to paymentVersions,
+        "accounts" to accounts,
+        "funds" to funds,
+        "events" to events
+    )
+}
+
+fun getAccountsApiLinks(version: OBVersion): RsDiscovery.RsDiscoveryData.RsDiscoveryAccountAndTransactionAPI.RsDiscoveryAccountAndTransactionAPILinks.Links {
+    return rsDiscoveryApiToVersionLinks["accounts"]?.get(version.canonicalName) as RsDiscovery.RsDiscoveryData.RsDiscoveryAccountAndTransactionAPI.RsDiscoveryAccountAndTransactionAPILinks.Links
+}
+
+fun getPaymentsApiLinks(version: OBVersion): RsDiscovery.RsDiscoveryData.RsDiscoveryPaymentInitiationAPI.RsDiscoveryPaymentInitiationAPILinks.Links {
+    return rsDiscoveryApiToVersionLinks["payments"]?.get(version.canonicalName) as RsDiscovery.RsDiscoveryData.RsDiscoveryPaymentInitiationAPI.RsDiscoveryPaymentInitiationAPILinks.Links
+}
+
+fun getFundsApiLinks(version: OBVersion): RsDiscovery.RsDiscoveryData.RsDiscoveryFundsConfirmationAPI.RsDiscoveryFundsConfirmationAPILinks.Links {
+    return rsDiscoveryApiToVersionLinks["funds"]?.get(version.canonicalName) as RsDiscovery.RsDiscoveryData.RsDiscoveryFundsConfirmationAPI.RsDiscoveryFundsConfirmationAPILinks.Links
+}
+
+fun getEventsApiLinks(version: OBVersion): RsDiscovery.RsDiscoveryData.RsDiscoveryEventNotificationAPI.RsDiscoveryEventNotificationAPILinks.Links {
+    return rsDiscoveryApiToVersionLinks["events"]?.get(version.canonicalName) as RsDiscovery.RsDiscoveryData.RsDiscoveryEventNotificationAPI.RsDiscoveryEventNotificationAPILinks.Links
 }
 
 /**
