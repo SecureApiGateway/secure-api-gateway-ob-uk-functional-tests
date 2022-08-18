@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.account.balances.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.account.beneficiaries.api.v3_1_8
 
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
@@ -10,18 +10,17 @@ import com.forgerock.uk.openbanking.support.account.AccountAS
 import com.forgerock.uk.openbanking.support.account.AccountFactory
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.tests.functional.account.access.BaseAccountApi3_1_8
-import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
-import uk.org.openbanking.datamodel.account.OBReadBalance1
+import uk.org.openbanking.datamodel.account.*
 
-class GetAccountBalances(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
-    fun shouldGetAccountBalancesTest() {
+class GetAccountBeneficiaries(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
+    fun shouldGetAccountBeneficiariesTest() {
         // Given
         val permissions = listOf(
             OBExternalPermissions1Code.READACCOUNTSDETAIL,
-            OBExternalPermissions1Code.READBALANCES
+            OBExternalPermissions1Code.READBENEFICIARIESDETAIL
         )
-        val consent = accountAccessConsentApi.createConsent(permissions)
 
+        val consent = accountAccessConsentApi.createConsent(permissions)
         val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
@@ -31,15 +30,15 @@ class GetAccountBalances(version: OBVersion, tppResource: CreateTppCallback.TppR
         val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
-        val result = AccountRS().getAccountsData<OBReadBalance1>(
+        val result = AccountRS().getAccountsData<OBReadBeneficiary5>(
             AccountFactory.urlWithAccountId(
-                accountsApiLinks.GetAccountBalances,
+                accountsApiLinks.GetAccountBeneficiaries,
                 accountId
             ), accessToken
         )
 
         // Then
         assertThat(result).isNotNull()
-        assertThat(result.data.balance).isNotEmpty()
+        assertThat(result.data.beneficiary).isNotEmpty()
     }
 }
