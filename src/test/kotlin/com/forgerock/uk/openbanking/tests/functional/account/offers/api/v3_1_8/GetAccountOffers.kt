@@ -10,7 +10,7 @@ import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.tests.functional.account.access.BaseAccountApi3_1_8
 import uk.org.openbanking.datamodel.account.*
 
-class GetAccountOffers(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource)  {
+class GetAccountOffers(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
     fun shouldGetAccountOffersTest() {
         // Given
         val permissions = listOf(
