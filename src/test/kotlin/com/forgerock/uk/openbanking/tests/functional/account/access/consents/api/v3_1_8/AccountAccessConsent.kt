@@ -5,17 +5,21 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.matchesPredicate
 import com.forgerock.securebanking.framework.conditions.Status
+import com.forgerock.securebanking.framework.configuration.psu
+import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.account.AccountAS
 import com.forgerock.uk.openbanking.support.account.AccountFactory
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.support.discovery.getAccountsApiLinks
+import com.forgerock.uk.openbanking.tests.functional.account.access.consents.AccountAccessConsentApi
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
 
-class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
+class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCallback.TppResource): AccountAccessConsentApi {
 
     private val accountsApiLinks = getAccountsApiLinks(version)
 
@@ -23,7 +27,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         // Given
         val permissions = listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL)
         // When
-        val consentResponse = createAccountAccessConsent(permissions)
+        val consentResponse = createConsent(permissions)
 
         // Then
         assertThat(consentResponse).isNotNull()
@@ -34,9 +38,9 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
 
     fun deleteAccountAccessConsentTest() {
         // Given
-        val consent = createAccountAccessConsent(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
+        val consent = createConsent(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
         // When
-        val deletedConsent = deleteAccountAccessConsent(consent.data.consentId)
+        val deletedConsent = deleteConsent(consent.data.consentId)
 
         // Then
         assertThat(deletedConsent).isNotNull()
@@ -46,7 +50,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
 
         // Verify we cannot get the consent anymore
         val error = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getAccountAccessConsent(
+            getConsent(
                 consent.data.consentId
             )
         }
@@ -55,14 +59,14 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
 
     fun getAccountAccessConsentTest() {
         // Given
-        val originalConsentResponse = createAccountAccessConsent(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
+        val originalConsentResponse = createConsent(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
         // When
-        val latestConsentResponse = getAccountAccessConsent(originalConsentResponse.data.consentId)
+        val latestConsentResponse = getConsent(originalConsentResponse.data.consentId)
         // Then
         assertEquals(originalConsentResponse, latestConsentResponse)
     }
 
-    fun createAccountAccessConsent(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1 {
+    override fun createConsent(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1 {
         val consentRequest = AccountFactory.obReadConsent1(permissions)
         return AccountRS().consent(
             accountsApiLinks.CreateAccountAccessConsent,
@@ -71,7 +75,18 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         )
     }
 
-    fun deleteAccountAccessConsent(consentId: String): OBReadConsentResponse1 {
+    override fun createConsentAndGetAccessToken(permissions: List<OBExternalPermissions1Code>): Pair<OBReadConsentResponse1, AccessToken> {
+        val consent = createConsent(permissions)
+        val accessToken = AccountAS().getAccessToken(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp
+        )
+        return consent to accessToken
+    }
+
+    override fun deleteConsent(consentId: String): OBReadConsentResponse1 {
         return AccountRS().deleteConsent(
             AccountFactory.urlWithConsentId(
                 accountsApiLinks.DeleteAccountAccessConsent,
@@ -81,7 +96,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         )
     }
 
-    fun getAccountAccessConsent(consentId: String): OBReadConsentResponse1 {
+    override fun getConsent(consentId: String): OBReadConsentResponse1 {
         return AccountRS().getConsent(
             AccountFactory.urlWithConsentId(
                 accountsApiLinks.GetAccountAccessConsent,

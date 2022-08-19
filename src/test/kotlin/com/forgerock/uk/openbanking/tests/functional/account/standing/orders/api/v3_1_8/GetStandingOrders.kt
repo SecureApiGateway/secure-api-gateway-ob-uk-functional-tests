@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.account.balances.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.account.standing.orders.api.v3_1_8
 
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
@@ -8,24 +8,25 @@ import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.tests.functional.account.access.BaseAccountApi3_1_8
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
-import uk.org.openbanking.datamodel.account.OBReadBalance1
+import uk.org.openbanking.datamodel.account.OBReadStandingOrder6
 
-class GetBalances(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
-    fun shouldGetBalancesTest() {
+class GetStandingOrders(version: OBVersion, tppResource: CreateTppCallback.TppResource) :
+    BaseAccountApi3_1_8(version, tppResource) {
+
+    fun shouldGetStandingOrdersTest() {
         // Given
-        val permissions = listOf(
-            OBExternalPermissions1Code.READACCOUNTSDETAIL,
-            OBExternalPermissions1Code.READBALANCES
-        )
+        val permissions =
+            listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL, OBExternalPermissions1Code.READSTANDINGORDERSDETAIL)
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
 
         // When
-        val result = AccountRS().getAccountsData<OBReadBalance1>(
-            accountsApiLinks.GetBalances, accessToken
+        val result = AccountRS().getAccountsData<OBReadStandingOrder6>(
+            accountsApiLinks.GetStandingOrders,
+            accessToken
         )
 
         // Then
         assertThat(result).isNotNull()
-        assertThat(result.data.balance).isNotEmpty()
+        assertThat(result.data.standingOrder).isNotEmpty()
     }
 }
