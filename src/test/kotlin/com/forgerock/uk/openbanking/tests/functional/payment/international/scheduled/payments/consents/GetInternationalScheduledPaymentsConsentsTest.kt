@@ -14,6 +14,7 @@ import com.forgerock.uk.openbanking.support.discovery.*
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.*
@@ -347,6 +348,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -400,6 +402,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -455,6 +458,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -509,6 +513,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -562,6 +567,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -617,6 +623,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -671,6 +678,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -724,6 +732,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -778,6 +787,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -829,6 +839,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -881,6 +892,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -935,6 +947,7 @@ class GetInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()

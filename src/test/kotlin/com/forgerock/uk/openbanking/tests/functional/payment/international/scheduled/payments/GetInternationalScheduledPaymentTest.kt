@@ -1102,6 +1102,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_AGREED_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -1208,6 +1209,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_ACTUAL_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -1314,6 +1316,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_INDICATIVE_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -1420,6 +1423,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4MandatoryFields()
@@ -1522,6 +1526,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_AGREED_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -1631,6 +1636,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_ACTUAL_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -1740,6 +1746,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_INDICATIVE_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -1849,6 +1856,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_v3_1_2_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
@@ -1955,6 +1963,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_AGREED_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -2064,6 +2073,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_ACTUAL_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -2173,6 +2183,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_INDICATIVE_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -2283,6 +2294,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_v3_1_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
@@ -2389,6 +2401,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_AGREED_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -2494,6 +2507,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_ACTUAL_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -2599,6 +2613,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_rateType_INDICATIVE_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -2704,6 +2719,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalScheduledPayments_v3_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2MandatoryFields()

@@ -26,6 +26,7 @@ import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse2
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse3
@@ -325,6 +326,7 @@ class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppR
         apis = ["domestic-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent4()
@@ -361,6 +363,7 @@ class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticPaymentsConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -452,6 +455,7 @@ class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -559,6 +563,7 @@ class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun createDomesticPaymentsConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -650,6 +655,7 @@ class CreateDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()

@@ -23,6 +23,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.*
@@ -388,6 +389,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
@@ -422,6 +424,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -458,6 +461,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()
@@ -547,6 +551,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -651,6 +656,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -687,6 +693,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
@@ -776,6 +783,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -880,6 +888,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -916,6 +925,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
@@ -1005,6 +1015,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -1108,6 +1119,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()
@@ -1144,6 +1156,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2MandatoryFields()
@@ -1233,6 +1246,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()
@@ -1268,6 +1282,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalPaymentConsents_throwsB64ClaimMissingDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()

@@ -18,6 +18,7 @@ import com.forgerock.uk.openbanking.support.discovery.payment3_1_8
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse2
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse3
@@ -244,6 +245,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentsConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -295,6 +297,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -349,6 +352,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentsConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -400,6 +404,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()

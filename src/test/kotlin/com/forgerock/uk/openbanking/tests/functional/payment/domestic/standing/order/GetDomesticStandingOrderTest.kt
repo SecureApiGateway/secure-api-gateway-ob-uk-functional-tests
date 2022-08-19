@@ -663,6 +663,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -766,6 +767,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()
@@ -868,6 +870,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -974,6 +977,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3MandatoryFields()
@@ -1080,6 +1084,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -1182,6 +1187,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrders_v3_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2MandatoryFields()

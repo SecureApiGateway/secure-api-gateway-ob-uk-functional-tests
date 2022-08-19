@@ -24,6 +24,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse2
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse3
@@ -359,6 +360,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent4()
@@ -431,6 +433,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticScheduledPaymentsConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -522,6 +525,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -665,6 +669,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun createDomesticScheduledPaymentsConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -756,6 +761,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()

@@ -1081,6 +1081,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_AGREED_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -1187,6 +1188,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_ACTUAL_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -1293,6 +1295,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_INDICATIVE_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -1399,6 +1402,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()
@@ -1501,6 +1505,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_AGREED_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -1606,6 +1611,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_ACTUAL_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -1711,6 +1717,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_INDICATIVE_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -1816,6 +1823,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_v3_1_2_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
@@ -1918,6 +1926,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_AGREED_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -2027,6 +2036,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_ACTUAL_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -2136,6 +2146,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_INDICATIVE_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3()
@@ -2246,6 +2257,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_v3_1_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
@@ -2352,6 +2364,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_AGREED_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()
@@ -2457,6 +2470,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_ACTUAL_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()
@@ -2562,6 +2576,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_rateType_INDICATIVE_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2()
@@ -2667,6 +2682,7 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPayments_v3_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2MandatoryFields()

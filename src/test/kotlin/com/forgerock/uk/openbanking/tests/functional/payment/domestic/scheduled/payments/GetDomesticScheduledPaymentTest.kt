@@ -458,6 +458,7 @@ class GetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getDomesticScheduledPayments_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -561,6 +562,7 @@ class GetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun getDomesticScheduledPayments_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()

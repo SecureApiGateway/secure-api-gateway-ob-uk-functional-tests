@@ -31,6 +31,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.*
@@ -801,6 +802,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExists_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent4()
@@ -1386,6 +1388,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticPayments_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1470,6 +1473,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExists_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1556,6 +1560,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsSendInvalidFormatDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1634,6 +1639,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsNoDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1709,6 +1715,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1795,6 +1802,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsB64ClaimMissingDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1879,6 +1887,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -1963,6 +1972,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -2054,6 +2064,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -2145,6 +2156,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun createDomesticPayments_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2229,6 +2241,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExists_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2315,6 +2328,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsSendInvalidFormatDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2392,6 +2406,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsNoDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2467,6 +2482,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2552,6 +2568,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsB64ClaimMissingDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2637,6 +2654,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2722,6 +2740,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -2813,6 +2832,7 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()

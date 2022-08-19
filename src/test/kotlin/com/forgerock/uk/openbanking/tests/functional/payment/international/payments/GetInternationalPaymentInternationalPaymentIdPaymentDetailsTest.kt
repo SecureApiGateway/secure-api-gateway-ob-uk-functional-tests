@@ -18,6 +18,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.map
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.urlWithInternationalPaymentId
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.*
@@ -839,6 +840,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPaymentInternationalPaymentIdPaymentDetails_rateType_AGREED_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -942,6 +944,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPaymentInternationalPaymentIdPaymentDetails_rateType_ACTUAL_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -1046,6 +1049,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPaymentInternationalPaymentIdPaymentDetails_rateType_INDICATIVE_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4()
@@ -1150,6 +1154,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
+    @Disabled
     fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()

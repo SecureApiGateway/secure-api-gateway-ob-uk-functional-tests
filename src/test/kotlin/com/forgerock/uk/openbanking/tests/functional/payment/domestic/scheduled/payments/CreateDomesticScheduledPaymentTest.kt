@@ -1396,6 +1396,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticScheduledPayments_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1574,6 +1575,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidFormatDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1652,6 +1654,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsNoDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1727,6 +1730,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1813,6 +1817,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsB64ClaimMissingDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1897,6 +1902,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -1981,6 +1987,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -2072,6 +2079,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent3()
@@ -2163,6 +2171,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun createDomesticScheduledPayments_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2341,6 +2350,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidFormatDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2418,6 +2428,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsNoDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2493,6 +2504,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2578,6 +2590,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsB64ClaimMissingDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2663,6 +2676,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2748,6 +2762,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()
@@ -2839,6 +2854,7 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticScheduledConsent2()

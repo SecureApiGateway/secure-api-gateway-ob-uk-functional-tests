@@ -21,6 +21,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
@@ -455,6 +456,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
@@ -490,6 +492,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -527,6 +530,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()
@@ -564,6 +568,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -655,6 +660,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -761,6 +767,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -797,6 +804,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3MandatoryFields()
@@ -834,6 +842,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -922,6 +931,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -1025,6 +1035,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -1061,6 +1072,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrdersConsents_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2MandatoryFields()
@@ -1097,6 +1109,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -1186,6 +1199,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -1221,6 +1235,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrdersConsents_throwsB64ClaimMissingDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()

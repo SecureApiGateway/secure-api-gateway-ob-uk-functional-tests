@@ -19,6 +19,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.urlWithDomesticStandingOrderId
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
@@ -428,6 +429,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(val tppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -529,6 +531,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(val tppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()

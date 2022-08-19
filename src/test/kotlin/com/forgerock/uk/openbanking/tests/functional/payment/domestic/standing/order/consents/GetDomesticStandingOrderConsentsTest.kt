@@ -14,6 +14,7 @@ import com.forgerock.uk.openbanking.support.discovery.*
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
@@ -128,6 +129,7 @@ class GetDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticStandingOrdersConsents_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -179,6 +181,7 @@ class GetDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.Tp
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticStandingOrdersConsents_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -230,6 +233,7 @@ class GetDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.Tp
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticStandingOrdersConsents_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()

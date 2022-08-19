@@ -1558,6 +1558,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -1642,6 +1643,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()
@@ -1820,6 +1822,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidFormatDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -1898,6 +1901,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsNoDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -1973,6 +1977,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -2059,6 +2064,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimMissingDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -2143,6 +2149,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -2227,6 +2234,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -2318,6 +2326,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
@@ -2408,6 +2417,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -2492,6 +2502,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3MandatoryFields()
@@ -2669,6 +2680,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidFormatDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -2745,6 +2757,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsNoDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -2819,6 +2832,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -2903,6 +2917,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimMissingDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -2987,6 +3002,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -3071,6 +3087,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -3161,6 +3178,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
@@ -3251,6 +3269,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -3335,6 +3354,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun createDomesticStandingOrder_v3_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2MandatoryFields()
@@ -3591,6 +3611,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsNoDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -3750,6 +3771,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimMissingDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
@@ -4008,6 +4030,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()

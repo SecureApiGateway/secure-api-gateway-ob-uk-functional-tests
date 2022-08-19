@@ -21,6 +21,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.map
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.urlWithDomesticPaymentId
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.*
@@ -232,6 +233,7 @@ class GetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResource: Cre
         apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
+    @Disabled
     fun getDomesticPaymentDomesticPaymentIdPaymentDetails_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()

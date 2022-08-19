@@ -459,6 +459,7 @@ class GetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) {
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun getDomesticPayments_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -562,6 +563,7 @@ class GetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) {
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun getDomesticPayments_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()

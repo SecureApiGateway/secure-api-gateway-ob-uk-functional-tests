@@ -1955,6 +1955,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_AGREED_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2040,6 +2041,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_ACTUAL_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2126,6 +2128,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_INDICATIVE_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2212,6 +2215,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_v3_1_3_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4MandatoryFields()
@@ -2388,6 +2392,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2465,6 +2470,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2539,6 +2545,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2624,6 +2631,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimMissingDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2707,6 +2715,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2790,6 +2799,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2880,6 +2890,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4()
@@ -2970,6 +2981,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_AGREED_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3059,6 +3071,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_ACTUAL_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3149,6 +3162,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_INDICATIVE_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3239,6 +3253,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_v3_1_2_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
@@ -3423,6 +3438,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3504,6 +3520,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3582,6 +3599,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3671,6 +3689,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimMissingDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3758,6 +3777,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3845,6 +3865,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -3943,6 +3964,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4041,6 +4063,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_AGREED_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4131,6 +4154,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_ACTUAL_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4222,6 +4246,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_INDICATIVE_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4313,6 +4338,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_v3_1_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
@@ -4498,6 +4524,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4578,6 +4605,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4656,6 +4684,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4744,6 +4773,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimMissingDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4832,6 +4862,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimShouldBeFalseDetachedJws_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -4920,6 +4951,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -5018,6 +5050,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3()
@@ -5116,6 +5149,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_AGREED_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -5202,6 +5236,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_ACTUAL_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -5289,6 +5324,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_rateType_INDICATIVE_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -5376,6 +5412,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun createInternationalScheduledPayment_v3_1_mandatoryFields() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2MandatoryFields()
@@ -5791,6 +5828,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsB64ClaimMissingDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()
@@ -6049,6 +6087,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2()

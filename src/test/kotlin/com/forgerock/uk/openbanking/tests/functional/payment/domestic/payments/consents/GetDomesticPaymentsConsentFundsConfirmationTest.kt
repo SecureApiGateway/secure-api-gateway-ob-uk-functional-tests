@@ -371,6 +371,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -429,6 +430,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_false_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent3()
@@ -539,6 +541,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
@@ -597,6 +600,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         compatibleVersions = ["v.3.1"]
     )
     @Test
+    @Disabled
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_false_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent2()
