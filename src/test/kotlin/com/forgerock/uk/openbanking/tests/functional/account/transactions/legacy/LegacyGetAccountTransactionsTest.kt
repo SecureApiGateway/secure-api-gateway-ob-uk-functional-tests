@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.account.transactions
+package com.forgerock.uk.openbanking.tests.functional.account.transactions.legacy
 
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
@@ -12,12 +12,11 @@ import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1
 import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_2
 import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_4
-import com.forgerock.uk.openbanking.support.discovery.accountAndTransaction3_1_8
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.account.*
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code.*
 
-class GetAccountTransactionsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetAccountTransactionsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "accounts",
@@ -154,54 +153,6 @@ class GetAccountTransactionsTest(val tppResource: CreateTppCallback.TppResource)
         val result = AccountRS().getAccountsData<OBReadTransaction5>(
             urlWithAccountId(
                 accountAndTransaction3_1_4.Links.links.GetAccountTransactions,
-                accountId
-            ), accessToken
-        )
-
-        // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data.transaction).isNotEmpty()
-    }
-
-    @EnabledIfVersion(
-        type = "accounts",
-        apiVersion = "v3.1.8",
-        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountTransactions"],
-        apis = ["transactions"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldGetAccountTransactions_v3_1_8() {
-        // Given
-        val consentRequest = OBReadConsent1().data(
-            OBReadData1()
-                .permissions(
-                    listOf(
-                        READACCOUNTSDETAIL,
-                        READTRANSACTIONSCREDITS,
-                        READTRANSACTIONSDEBITS,
-                        READTRANSACTIONSDETAIL
-                    )
-                )
-        )
-            .risk(OBRisk2())
-        val consent = AccountRS().consent<OBReadConsentResponse1>(
-            accountAndTransaction3_1_8.Links.links.CreateAccountAccessConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-        val accessToken = AccountAS().getAccessToken(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_8.Links.links.GetAccounts, accessToken)
-
-        // When
-        val result = AccountRS().getAccountsData<OBReadTransaction6>(
-            urlWithAccountId(
-                accountAndTransaction3_1_8.Links.links.GetAccountTransactions,
                 accountId
             ), accessToken
         )
