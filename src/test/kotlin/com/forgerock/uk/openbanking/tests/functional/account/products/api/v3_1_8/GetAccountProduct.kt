@@ -1,32 +1,35 @@
-package com.forgerock.uk.openbanking.tests.functional.account.parties.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.account.products.api.v3_1_8
 
 import assertk.assertThat
-import assertk.assertions.isGreaterThanOrEqualTo
+import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountFactory
 import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.tests.functional.account.access.BaseAccountApi3_1_8
-import uk.org.openbanking.datamodel.account.*
+import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.account.OBReadProduct2
 
-class GetAccountParties(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
-    fun shouldGetAccountPartiesTest() {
+class GetAccountProduct(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
+    fun shouldGetAccountProductTest() {
         // Given
-        val permissions = listOf(OBExternalPermissions1Code.READPARTY, OBExternalPermissions1Code.READACCOUNTSBASIC)
+        val permissions = listOf(
+            OBExternalPermissions1Code.READACCOUNTSDETAIL, OBExternalPermissions1Code.READPRODUCTS
+        )
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
         val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
-        val result = AccountRS().getAccountsDataEndUser<OBReadParty3>(
+        val result = AccountRS().getAccountsData<OBReadProduct2>(
             AccountFactory.urlWithAccountId(
-                accountsApiLinks.GetAccountParties,
+                accountsApiLinks.GetAccountProduct,
                 accountId
             ), accessToken
         )
 
         // Then
         assertThat(result).isNotNull()
-        assertThat(result.data.party.size).isGreaterThanOrEqualTo(1)
+        assertThat(result.data.product).isNotEmpty()
     }
 }

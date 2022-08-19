@@ -21,7 +21,7 @@ class GetParty(version: OBVersion, tppResource: CreateTppCallback.TppResource): 
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
 
         val (_, psuId) = AccountRS().getFirstAccountIdAndPsuId(
-            accountAndTransaction3_1_8.Links.links.GetAccounts,
+            accountsApiLinks.GetAccounts,
             accessToken
         )
         assertThat(psuId).isNotEqualTo("")
@@ -30,7 +30,7 @@ class GetParty(version: OBVersion, tppResource: CreateTppCallback.TppResource): 
         // when
         val party =
             AccountRS().getAccountsDataEndUser<OBReadParty2>(
-                accountAndTransaction3_1_8.Links.links.GetParty,
+                accountsApiLinks.GetParty,
                 accessToken
             )
 
