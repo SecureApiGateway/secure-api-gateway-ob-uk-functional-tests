@@ -3856,6 +3856,7 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
+    @Disabled
     fun shouldCreateDomesticStandingOrder_throwsB64ClaimShouldBeFalseDetachedJws_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
