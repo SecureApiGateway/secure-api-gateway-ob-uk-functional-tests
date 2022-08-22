@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents
+package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents.legacy
 
 import assertk.assertThat
 import assertk.assertions.contains
@@ -16,247 +16,22 @@ import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FREQUENCY
 import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
 import com.forgerock.uk.openbanking.framework.errors.*
-import com.forgerock.uk.openbanking.support.discovery.*
+import com.forgerock.uk.openbanking.support.discovery.payment3_1
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_1
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse2
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse3
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse4
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
 
-class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun createDomesticStandingOrdersConsents_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        // When
-        val consent = PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-            payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-            consentRequest,
-            tppResource.tpp,
-            OBVersion.v3_1_8,
-            signedPayloadConsent
-        )
-
-        // Then
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun createDomesticStandingOrdersConsents_mandatoryFields_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        // When
-        val consent = PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-            payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-            consentRequest,
-            tppResource.tpp,
-            OBVersion.v3_1_8,
-            signedPayloadConsent
-        )
-
-        // Then
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-        consentRequest.data.initiation.frequency =  INVALID_FREQUENCY
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                signedPayloadConsent
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(INVALID_FREQUENCY_VALUE)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidFormatDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                INVALID_FORMAT_DETACHED_JWS
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(INVALID_FORMAT_DETACHED_JWS_ERROR)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticStandingOrdersConsents_throwsNoDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consentNoDetachedJwt<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(NO_DETACHED_JWS)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticStandingOrdersConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-
-        val signedPayload =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid,
-                true
-            )
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                signedPayload
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-    }
-
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                INVALID_SIGNING_KID
-            )
-
-        // When
-        val exception = assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-                consentRequest,
-                tppResource.tpp,
-                OBVersion.v3_1_8,
-                signedPayloadConsent
-            )
-        }
-
-        // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
-    }
-
+class LegacyCreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
@@ -337,7 +112,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-        consentRequest.data.initiation.frequency =  INVALID_FREQUENCY
+        consentRequest.data.initiation.frequency = INVALID_FREQUENCY
         val signedPayloadConsent =
             signPayloadSubmitPayment(
                 defaultMapper.writeValueAsString(consentRequest),
@@ -567,7 +342,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4()
-        consentRequest.data.initiation.frequency =  INVALID_FREQUENCY
+        consentRequest.data.initiation.frequency = INVALID_FREQUENCY
         val signedPayloadConsent =
             signPayloadSubmitPayment(
                 defaultMapper.writeValueAsString(consentRequest),
@@ -837,7 +612,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3()
-        consentRequest.data.initiation.frequency =  INVALID_FREQUENCY
+        consentRequest.data.initiation.frequency = INVALID_FREQUENCY
         val signedPayloadConsent =
             signPayloadSubmitPayment(
                 defaultMapper.writeValueAsString(consentRequest),
@@ -1100,7 +875,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2()
-        consentRequest.data.initiation.frequency =  INVALID_FREQUENCY
+        consentRequest.data.initiation.frequency = INVALID_FREQUENCY
         val signedPayloadConsent =
             signPayloadSubmitPayment(
                 defaultMapper.writeValueAsString(consentRequest),

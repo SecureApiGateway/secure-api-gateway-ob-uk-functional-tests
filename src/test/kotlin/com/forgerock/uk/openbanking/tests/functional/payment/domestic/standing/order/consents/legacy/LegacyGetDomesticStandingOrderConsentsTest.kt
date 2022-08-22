@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents
+package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents.legacy
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -10,65 +10,21 @@ import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.support.discovery.*
+import com.forgerock.uk.openbanking.support.discovery.payment3_1
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_1
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse2
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse3
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse4
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
 
-class GetDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
-    @EnabledIfVersion(
-        type = "payments",
-        apiVersion = "v3.1.8",
-        operations = ["CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
-    )
-    @Test
-    fun shouldGetDomesticStandingOrdersConsents_v3_1_8() {
-        // Given
-        val consentRequest = aValidOBWriteDomesticStandingOrderConsent5()
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        val consent = PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-            payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
-            consentRequest,
-            tppResource.tpp,
-            OBVersion.v3_1_8,
-            signedPayloadConsent
-        )
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
-        // When
-        val result = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                payment3_1_8.Links.links.GetDomesticStandingOrderConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            OBVersion.v3_1_8
-        )
-
-        // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
-    }
-
+class LegacyGetDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
