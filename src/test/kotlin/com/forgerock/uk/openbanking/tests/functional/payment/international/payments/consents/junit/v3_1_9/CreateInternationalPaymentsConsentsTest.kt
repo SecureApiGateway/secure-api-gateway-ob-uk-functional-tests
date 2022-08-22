@@ -20,8 +20,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun createInternationalPaymentsConsents_v3_1_9() {
@@ -32,8 +31,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1_9() {
@@ -44,8 +42,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidFormatDetachedJws_v3_1_9() {
@@ -56,8 +53,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPaymentConsents_throwsNoDetachedJws_v3_1_9() {
@@ -68,8 +64,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPaymentConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_9() {
@@ -80,8 +75,7 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_9() {

@@ -20,8 +20,7 @@ class GetInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentsConsents_rateType_AGREED_v3_1_9() {
@@ -32,8 +31,7 @@ class GetInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentsConsents_rateType_ACTUAL_v3_1_9() {
@@ -44,8 +42,7 @@ class GetInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentsConsents_rateType_INDICATIVE_v3_1_9() {

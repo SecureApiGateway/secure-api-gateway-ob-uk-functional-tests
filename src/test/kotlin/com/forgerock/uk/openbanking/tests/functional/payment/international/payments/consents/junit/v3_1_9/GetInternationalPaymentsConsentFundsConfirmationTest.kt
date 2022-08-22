@@ -23,8 +23,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_9() {
@@ -35,8 +34,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_9() {
@@ -47,8 +45,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_9() {
@@ -59,8 +56,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_9() {
@@ -71,8 +67,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_9() {
@@ -83,8 +78,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_9() {
@@ -96,8 +90,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_9() {
@@ -108,8 +101,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payment-consents"]
     )
     @Test
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_9() {
