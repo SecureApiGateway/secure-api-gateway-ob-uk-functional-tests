@@ -11,7 +11,10 @@ import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.errors.INVALID_CONSENT_STATUS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
-import com.forgerock.uk.openbanking.support.discovery.*
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_1
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_2
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
+import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
