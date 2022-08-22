@@ -54,7 +54,7 @@ val userPassword by extra("0penBanking!")
 val username by extra("psu4test")
 
 // Kid's
-val eidasTestSigningKid by extra("2yNjPOCjpO8rcKg6_lVtWzAQR0U")
+val eidasTestSigningKid by extra("zPeFbX7nJokEVpynzayWvgtFBxo")
 val preEidasTestSigningKid by extra("RmQ-EmViYPKXYyGCVnfuMo6ggXE")
 val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
 
