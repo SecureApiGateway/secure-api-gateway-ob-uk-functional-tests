@@ -76,10 +76,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+                paymentLinks.CreateDomesticStandingOrderConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8,
+                version,
                 signedPayloadConsent
             )
         }
@@ -97,10 +97,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+                paymentLinks.CreateDomesticStandingOrderConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8,
+                version,
                 INVALID_FORMAT_DETACHED_JWS
             )
         }
@@ -118,10 +118,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consentNoDetachedJwt<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+                paymentLinks.CreateDomesticStandingOrderConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8
+                version
             )
         }
 
@@ -146,10 +146,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+                paymentLinks.CreateDomesticStandingOrderConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8,
+                version,
                 signedPayload
             )
         }
@@ -174,10 +174,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-                payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+                paymentLinks.CreateDomesticStandingOrderConsent,
                 consentRequest,
                 tppResource.tpp,
-                OBVersion.v3_1_8,
+                version,
                 signedPayloadConsent
             )
         }
@@ -197,10 +197,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
         // When
         val consent = PaymentRS().consent<OBWriteDomesticStandingOrderConsentResponse6>(
-            payment3_1_8.Links.links.CreateDomesticStandingOrderConsent,
+            paymentLinks.CreateDomesticStandingOrderConsent,
             consentRequest,
             tppResource.tpp,
-            OBVersion.v3_1_8,
+            version,
             signedPayloadConsent
         )
         return consent
