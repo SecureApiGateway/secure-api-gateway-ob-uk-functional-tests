@@ -6,6 +6,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
+import com.forgerock.securebanking.framework.configuration.psu
+import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
@@ -16,6 +18,7 @@ import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
+import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
@@ -151,5 +154,16 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
             signedPayloadConsent
         )
         return consent
+    }
+
+    fun createDomesticPaymentsConsentAndGetAccessToken(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteDomesticConsentResponse5, AccessToken> {
+        val consent = createDomesticPaymentsConsent(consentRequest)
+        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp
+        )
+        return consent to accessTokenAuthorizationCode
     }
 }
