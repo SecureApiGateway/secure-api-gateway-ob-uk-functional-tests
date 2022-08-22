@@ -21,8 +21,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_v3_1_9() {
@@ -33,8 +32,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_v3_1_9() {
@@ -45,8 +43,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_v3_1_9() {
@@ -57,8 +54,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_9_mandatoryFields() {

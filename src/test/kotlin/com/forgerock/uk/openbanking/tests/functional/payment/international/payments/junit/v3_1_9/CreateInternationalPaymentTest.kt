@@ -20,8 +20,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_rateType_AGREED_v3_1_9() {
@@ -32,8 +31,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_rateType_ACTUAL_v3_1_9() {
@@ -44,8 +42,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_rateType_INDICATIVE_v3_1_9() {
@@ -56,8 +53,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_mandatoryFields_v3_1_9() {
@@ -68,8 +64,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsInternationalPaymentAlreadyExists_v3_1_9() {
@@ -80,8 +75,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsSendInvalidFormatDetachedJws_v3_1_9() {
@@ -92,8 +86,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsNoDetachedJws_v3_1_9() {
@@ -104,8 +97,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_9() {
@@ -116,8 +108,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsSendInvalidKidDetachedJws_v3_1_9() {
@@ -128,8 +119,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_9() {
@@ -140,8 +130,7 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_9() {

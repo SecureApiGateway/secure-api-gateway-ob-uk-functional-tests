@@ -12,8 +12,7 @@ class GetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResource: Cre
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent", "GetDomesticPaymentDomesticPaymentIdPaymentDetails"],
-        apis = ["domestic-payments", "domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
     fun getDomesticPaymentDomesticPaymentIdPaymentDetails_v3_1_9() {

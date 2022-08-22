@@ -12,8 +12,7 @@ class GetOffersTest(val tppResource: CreateTppCallback.TppResource) {
         type = "accounts",
         apiVersion = "v3.1.9",
         operations = ["CreateAccountAccessConsent", "GetAccounts", "GetOffers"],
-        apis = ["offers"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5", "v.3.1.4", "v.3.1.3"]
+        apis = ["offers"]
     )
     @Test
     fun shouldGetOffers_v3_1_9() {

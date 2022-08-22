@@ -21,8 +21,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPayments_rateType_AGREED_v3_1_9() {
@@ -33,8 +32,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPayments_rateType_ACTUAL_v3_1_9() {
@@ -45,8 +43,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPayments_rateType_INDICATIVE_v3_1_9() {
@@ -57,8 +54,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun getInternationalScheduledPayments_v3_1_9_mandatoryFields() {
@@ -69,8 +65,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Disabled
     @Test

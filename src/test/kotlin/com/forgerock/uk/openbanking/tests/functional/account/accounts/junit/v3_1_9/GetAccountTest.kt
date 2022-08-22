@@ -13,8 +13,7 @@ class GetAccountTest(val tppResource: CreateTppCallback.TppResource) {
         type = "accounts",
         apiVersion = "v3.1.9",
         operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccount"],
-        apis = ["accounts"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6"]
+        apis = ["accounts"]
     )
     @Test
     fun shouldGetAccount_v3_1_9() {

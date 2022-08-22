@@ -21,8 +21,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPaymentsConsents_v3_1_9() {
@@ -33,8 +32,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPaymentsConsents_mandatoryFields_v3_1_9() {
@@ -45,8 +43,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPaymentConsents_throwsSendInvalidFormatDetachedJws_v3_1_9() {
@@ -57,8 +54,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPaymentConsents_throwsNoDetachedJws_v3_1_9() {
@@ -69,8 +65,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPaymentConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_9() {
@@ -81,8 +76,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_9() {
@@ -93,8 +87,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPaymentConsents_throwsRequestExecutionTimeInThePast_v3_1_9() {

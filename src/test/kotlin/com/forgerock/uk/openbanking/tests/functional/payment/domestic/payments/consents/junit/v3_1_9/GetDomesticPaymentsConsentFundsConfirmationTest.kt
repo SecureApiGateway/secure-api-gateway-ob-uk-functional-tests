@@ -22,8 +22,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payment-consents"]
     )
     @Test
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_false_v3_1_9() {
@@ -35,8 +34,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payment-consents"]
     )
     @Test
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_9() {
@@ -47,8 +45,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payment-consents"]
     )
     @Test
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true_v3_1_9() {

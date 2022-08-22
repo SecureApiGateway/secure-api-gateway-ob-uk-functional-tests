@@ -11,8 +11,7 @@ class GetAccountStandingOrdersTest(val tppResource: CreateTppCallback.TppResourc
         type = "accounts",
         apiVersion = "v3.1.9",
         operations = ["CreateAccountAccessConsent", "GetAccounts", "GetAccountStandingOrders"],
-        apis = ["standing-orders"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["standing-orders"]
     )
     @Test
     fun shouldGetAccountStandingOrders_v3_1_9() {

@@ -21,8 +21,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticStandingOrder", "CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-orders", "domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
     fun getDomesticStandingOrders_v3_1_9() {
@@ -33,8 +32,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticStandingOrder", "CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-orders", "domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
     fun getDomesticStandingOrders_v3_1_9_mandatoryFields() {
@@ -45,8 +43,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticStandingOrder", "CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
-        apis = ["domestic-standing-orders", "domestic-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Disabled
     @Test

@@ -21,8 +21,7 @@ class GetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) {
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
-        apis = ["domestic-payments", "domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
     fun getDomesticPayments_v3_1_9() {
@@ -33,8 +32,7 @@ class GetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) {
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
-        apis = ["domestic-payments", "domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
     @Disabled("Issue to fix this test: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/492")

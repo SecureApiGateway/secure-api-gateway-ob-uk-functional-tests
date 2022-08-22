@@ -21,8 +21,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun createDomesticScheduledPaymentsConsents_v3_1_9() {
@@ -33,8 +32,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidFormatDetachedJws_v3_1_9() {
@@ -45,8 +43,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsNoDetachedJws_v3_1_9() {
@@ -57,8 +54,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_9() {
@@ -69,8 +65,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_9() {
@@ -81,8 +76,7 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsRequestExecutionTimeInThePast_v3_1_9() {

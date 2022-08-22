@@ -12,8 +12,7 @@ class GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val tppReso
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticScheduledPayment", "CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails"],
-        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
     )
     @Test
     fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetails_v3_1_9() {

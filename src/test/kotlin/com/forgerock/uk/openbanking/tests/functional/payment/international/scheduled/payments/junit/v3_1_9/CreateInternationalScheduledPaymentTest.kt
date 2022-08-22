@@ -21,8 +21,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_rateType_AGREED_v3_1_9() {
@@ -33,8 +32,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_rateType_ACTUAL_v3_1_9() {
@@ -45,8 +43,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_rateType_INDICATIVE_v3_1_9() {
@@ -57,8 +54,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_mandatoryFields_v3_1_9() {
@@ -70,8 +66,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsInternationalScheduledPaymentAlreadyExists_v3_1_9() {
@@ -82,8 +77,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_v3_1_9() {
@@ -94,8 +88,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_v3_1_9() {
@@ -106,8 +99,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_9() {
@@ -118,8 +110,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_v3_1_9() {
@@ -130,8 +121,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_v3_1_9() {
@@ -142,8 +132,7 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_9() {

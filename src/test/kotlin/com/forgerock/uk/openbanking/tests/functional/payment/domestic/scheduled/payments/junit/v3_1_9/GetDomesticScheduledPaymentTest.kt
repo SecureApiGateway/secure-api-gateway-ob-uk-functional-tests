@@ -21,8 +21,7 @@ class GetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppReso
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticScheduledPayment", "CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
     )
     @Test
     fun getDomesticScheduledPayments_v3_1_9() {
@@ -33,8 +32,7 @@ class GetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppReso
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["GetDomesticScheduledPayment", "CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
     )
     @Disabled
     @Test

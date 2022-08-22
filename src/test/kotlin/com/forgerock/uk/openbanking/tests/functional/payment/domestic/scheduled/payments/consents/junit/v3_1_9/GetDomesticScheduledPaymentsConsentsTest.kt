@@ -20,8 +20,7 @@ class GetDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCallbac
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetDomesticScheduledPaymentsConsents_v3_1_9() {
@@ -32,8 +31,7 @@ class GetDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCallbac
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
-        apis = ["domestic-scheduled-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetDomesticScheduledPaymentsConsents_withoutOptionalDebtorAccount_v3_1_9() {

@@ -20,8 +20,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payment-consents"]
     )
     @Test
     fun shouldGetDomesticPaymentsConsents_v3_1_9() {
@@ -32,8 +31,7 @@ class GetDomesticPaymentsConsentsTest(val tppResource: CreateTppCallback.TppReso
         type = "payments",
         apiVersion = "v3.1.9",
         operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
-        apis = ["domestic-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["domestic-payment-consents"]
     )
     @Test
     fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccount_v3_1_9() {
