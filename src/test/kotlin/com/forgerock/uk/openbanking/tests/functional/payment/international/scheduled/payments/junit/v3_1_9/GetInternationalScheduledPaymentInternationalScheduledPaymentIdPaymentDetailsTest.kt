@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.junit.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.junit.v3_1_9
 
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -14,54 +14,50 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     @BeforeEach
     fun setUp() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails =
-            GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails(OBVersion.v3_1_8, tppResource)
+            GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails(OBVersion.v3_1_9, tppResource)
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_v3_1_8() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_v3_1_9() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test()
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_v3_1_8() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_v3_1_9() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_Test()
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_v3_1_8() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_v3_1_9() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_Test()
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.9",
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_8_mandatoryFields() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_9_mandatoryFields() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test()
     }
 }

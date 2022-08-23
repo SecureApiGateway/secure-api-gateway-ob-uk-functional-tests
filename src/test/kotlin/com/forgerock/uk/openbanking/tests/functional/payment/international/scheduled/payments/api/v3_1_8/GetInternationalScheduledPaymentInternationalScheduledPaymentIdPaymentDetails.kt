@@ -266,7 +266,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         assertThat(result.data.paymentStatus).isNotNull()
     }
 
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_8_Test() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test() {
         // Given
         val consentRequest =
             OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields()

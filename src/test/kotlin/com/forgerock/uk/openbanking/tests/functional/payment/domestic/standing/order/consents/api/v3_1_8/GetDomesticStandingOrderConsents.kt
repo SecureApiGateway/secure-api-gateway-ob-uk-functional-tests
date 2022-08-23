@@ -17,7 +17,7 @@ class GetDomesticStandingOrderConsents(val version: OBVersion, val tppResource: 
 
     private val createDomesticStandingOrderConsentsApi = CreateDomesticStandingOrderConsents(version, tppResource)
 
-    fun shouldGetDomesticStandingOrdersConsents_v3_1_8() {
+    fun shouldGetDomesticStandingOrdersConsents_Test() {
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()

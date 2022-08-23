@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.3-SNAPSHOT"))
+    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.4-SNAPSHOT"))
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-common")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel")
