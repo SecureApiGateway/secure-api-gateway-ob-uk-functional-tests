@@ -13,12 +13,12 @@ import uk.org.openbanking.datamodel.account.OBReadAccount3
 
 class AccountRS {
 
-    fun getAccessToken(tpp: Tpp): AccessToken {
+    fun getClientCredentialsAccessToken(tpp: Tpp): AccessToken {
         return tpp.getClientCredentialsAccessToken("accounts")
     }
 
     inline fun <reified T : Any> consent(consentUrl: String, consentRequest: Any, tpp: Tpp): T {
-        val accessToken = getAccessToken(tpp).access_token
+        val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.post(consentUrl)
             .jsonBody(consentRequest)
             .header("Authorization", "Bearer $accessToken")
@@ -32,7 +32,7 @@ class AccountRS {
     }
 
     inline fun <reified T : Any> getConsent(consentUrl: String, tpp: Tpp): T {
-        val accessToken = getAccessToken(tpp).access_token
+        val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.get(consentUrl)
             .header("Authorization", "Bearer $accessToken")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
@@ -45,7 +45,7 @@ class AccountRS {
     }
 
     inline fun <reified T : Any> deleteConsent(consentUrl: String, tpp: Tpp): T {
-        val accessToken = getAccessToken(tpp).access_token
+        val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.delete(consentUrl)
             .header("Authorization", "Bearer $accessToken")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
