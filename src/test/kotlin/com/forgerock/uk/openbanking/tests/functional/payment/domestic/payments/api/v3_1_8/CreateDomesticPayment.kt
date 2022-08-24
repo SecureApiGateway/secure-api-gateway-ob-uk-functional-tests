@@ -37,6 +37,7 @@ class CreateDomesticPayment(
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val createPaymentUrl = createDomesticPaymentsConsentsApi.paymentLinks.CreateDomesticPayment
 
     fun createDomesticPaymentsTest() {
         // Given
@@ -93,7 +94,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
@@ -118,7 +119,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(null).sendRequest()
         }
 
@@ -143,7 +144,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
@@ -168,7 +169,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
@@ -201,7 +202,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
@@ -234,7 +235,7 @@ class CreateDomesticPayment(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent, accessToken, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
@@ -278,7 +279,7 @@ class CreateDomesticPayment(
     ): OBWriteDomesticResponse5 {
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
         return paymentApiClient.submitPayment(
-            createDomesticPaymentsConsentsApi.paymentLinks.CreateDomesticPayment,
+            createPaymentUrl,
             authorizationToken,
             paymentSubmissionRequest
         )
