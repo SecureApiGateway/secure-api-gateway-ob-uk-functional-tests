@@ -148,7 +148,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         consent
     )
 
-    fun createDomesticStandingOrderConsentAndGetAccessToken(consentRequest: OBWriteDomesticStandingOrderConsent5): Pair<OBWriteDomesticStandingOrderConsentResponse6, AccessToken> {
+    fun createDomesticStandingOrderConsentAndAuthorize(consentRequest: OBWriteDomesticStandingOrderConsent5): Pair<OBWriteDomesticStandingOrderConsentResponse6, AccessToken> {
         val consent = createDomesticStandingOrderConsent(consentRequest)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,

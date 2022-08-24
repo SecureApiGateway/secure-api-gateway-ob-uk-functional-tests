@@ -27,7 +27,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails(
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndGetAccessToken(
+        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
@@ -100,7 +100,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails(
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndGetAccessToken(
+        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
