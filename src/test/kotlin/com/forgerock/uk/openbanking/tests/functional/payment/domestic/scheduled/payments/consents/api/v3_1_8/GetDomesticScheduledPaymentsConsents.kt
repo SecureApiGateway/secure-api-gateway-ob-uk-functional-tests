@@ -30,14 +30,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = getConsent(consent.data.consentId)
 
         // Then
         assertThat(result).isNotNull()
@@ -61,14 +54,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.data.initiation.debtorAccount).isNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = getConsent(consent.data.consentId)
 
         // Then
         assertThat(result).isNotNull()
@@ -77,5 +63,14 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(result.data).isEqualTo(consent.data)
         assertThat(result.risk).isEqualTo(consent.risk)
         assertThat(result.data.initiation.debtorAccount).isNull()
+    }
+
+    private fun getConsent(consentId: String): OBWriteDomesticScheduledConsentResponse5 {
+        return createDomesticScheduledPaymentsConsents.paymentApiClient.sendGetRequest<OBWriteDomesticScheduledConsentResponse5>(
+            PaymentFactory.urlWithConsentId(
+                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
+                consentId
+            ), PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
+        )
     }
 }

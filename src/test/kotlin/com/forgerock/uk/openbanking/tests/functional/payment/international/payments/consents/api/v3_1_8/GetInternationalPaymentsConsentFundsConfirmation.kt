@@ -191,7 +191,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(consent.risk).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -245,7 +245,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(consent.risk).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -295,7 +295,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(consent.risk).isNotNull()
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -339,7 +339,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(consent.risk).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,

@@ -1,27 +1,20 @@
 package com.forgerock.uk.openbanking.support.payment
 
 import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.account.FRFinancialAccount
-import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.common.FRAccountIdentifier
 import com.forgerock.securebanking.framework.configuration.AM_COOKIE_NAME
 import com.forgerock.securebanking.framework.configuration.RCS_SERVER
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.RegistrationResponse
-import com.forgerock.securebanking.framework.data.RequestParameters
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
-import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.framework.utils.GsonUtils.Companion.gson
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.general.GeneralAS
 import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.core.isSuccessful
-import com.google.gson.Gson
 import com.google.gson.JsonParser
 
 
@@ -36,7 +29,11 @@ class PaymentAS : GeneralAS() {
         val debtorAccount: FRFinancialAccount
     )
 
-    fun getAccessToken(
+    /**
+     * Authorizes a consent and returns an AccessToken with grant_type authorization_code, this token can then be used
+     * in subsequent operations on the consent (such as making a payment)
+     */
+    fun authorizeConsent(
         consentId: String,
         registrationResponse: RegistrationResponse,
         psu: UserRegistrationRequest,

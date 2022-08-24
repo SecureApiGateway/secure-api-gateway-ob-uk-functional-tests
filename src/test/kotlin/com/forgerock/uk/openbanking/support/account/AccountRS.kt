@@ -1,17 +1,11 @@
 package com.forgerock.uk.openbanking.support.account
 
 import com.forgerock.securebanking.framework.configuration.IG_SERVER
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.securebanking.framework.data.AccessToken
-import com.forgerock.securebanking.framework.data.ClientCredentialData
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
-import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.discovery.rsDiscovery
-import com.forgerock.uk.openbanking.support.general.GeneralAS.Companion.CLIENT_ASSERTION_TYPE
-import com.forgerock.uk.openbanking.support.general.GeneralAS.GrantTypes.CLIENT_CREDENTIALS
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.ResponseResultOf
 import com.github.kittinunf.fuel.core.isSuccessful
@@ -20,26 +14,7 @@ import uk.org.openbanking.datamodel.account.OBReadAccount3
 class AccountRS {
 
     fun getAccessToken(tpp: Tpp): AccessToken {
-        val requestParameters = ClientCredentialData(
-            sub = tpp.registrationResponse.client_id,
-            iss = tpp.registrationResponse.client_id,
-            aud = asDiscovery.issuer
-        )
-        val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
-
-        val body = listOf(
-            "grant_type" to CLIENT_CREDENTIALS,
-            "redirect_uri" to REDIRECT_URI,
-            "client_assertion_type" to CLIENT_ASSERTION_TYPE,
-            "scope" to "accounts",
-            "client_assertion" to signedPayload
-        )
-
-        val (_, accessTokenResponse, result) = Fuel.post(asDiscovery.token_endpoint, body)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .responseObject<AccessToken>()
-        if (!accessTokenResponse.isSuccessful) throw AssertionError("Could not get access token", result.component2())
-        return result.get()
+        return tpp.getClientCredentialsAccessToken("accounts")
     }
 
     inline fun <reified T : Any> consent(consentUrl: String, consentRequest: Any, tpp: Tpp): T {

@@ -18,10 +18,15 @@ import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
+import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
+import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
+import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
+import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
@@ -29,6 +34,7 @@ import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDat
 class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun createInternationalPaymentsConsents() {
         // Given
@@ -63,13 +69,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-                paymentLinks.CreateInternationalPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                version,
-                INVALID_FORMAT_DETACHED_JWS
-            )
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
         // Then
@@ -83,12 +83,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            PaymentRS().consentNoDetachedJwt<OBWriteInternationalConsentResponse6>(
-                paymentLinks.CreateInternationalPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                version
-            )
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -100,23 +95,9 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
 
-        val signedPayload =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid,
-                true
-            )
-
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-                paymentLinks.CreateInternationalPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                version,
-                signedPayload
-            )
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -128,22 +109,9 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
 
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                INVALID_SIGNING_KID
-            )
-
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-                paymentLinks.CreateInternationalPaymentConsent,
-                consentRequest,
-                tppResource.tpp,
-                version,
-                signedPayloadConsent
-            )
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -152,27 +120,20 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
     }
 
     fun createInternationalPaymentConsent(consentRequest: OBWriteInternationalConsent5): OBWriteInternationalConsentResponse6 {
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        // When
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            paymentLinks.CreateInternationalPaymentConsent,
-            consentRequest,
-            tppResource.tpp,
-            version,
-            signedPayloadConsent
-        )
-        return consent
+        return buildCreateConsentRequest(consentRequest).sendRequest()
     }
+
+    private fun buildCreateConsentRequest(
+        consent: OBWriteInternationalConsent5
+    ) = paymentApiClient.createDefaultPostRequest(
+        paymentLinks.CreateInternationalPaymentConsent,
+        tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+        consent
+    )
 
     fun createInternationalPaymentConsentAndGetAccessToken(consentRequest: OBWriteInternationalConsent5): Pair<OBWriteInternationalConsentResponse6, AccessToken> {
         val consent = createInternationalPaymentConsent(consentRequest)
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,

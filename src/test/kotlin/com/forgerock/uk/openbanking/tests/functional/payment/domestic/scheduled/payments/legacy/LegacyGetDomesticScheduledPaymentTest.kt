@@ -57,7 +57,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -65,7 +65,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -166,7 +166,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -174,7 +174,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -275,7 +275,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -283,7 +283,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -378,7 +378,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -386,7 +386,7 @@ class LegacyGetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.T
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse2>(
             PaymentFactory.urlWithConsentId(

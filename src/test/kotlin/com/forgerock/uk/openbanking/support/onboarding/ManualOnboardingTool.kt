@@ -1,5 +1,6 @@
 package com.forgerock.uk.openbanking.support.onboarding
 
+import com.forgerock.securebanking.framework.cert.loadRsaPrivateKey
 import com.forgerock.securebanking.framework.data.RequestParameters
 import com.forgerock.securebanking.framework.http.fuel.initFuel
 import com.forgerock.securebanking.framework.signature.signPayload
@@ -81,7 +82,7 @@ fun signClaims(/*ssaPath : String,*/ signingKeyPath: String, signingKid: String,
     val claims = RequestParameters.Claims(idToken, userInfo)
     val requestParameters = RequestParameters(claims = claims, client_id = clientId, iss = clientId)
     println("Request Parameters is \n$requestParameters")
-    val signedPayload = signPayload(requestParameters, signingKey, signingKid)
+    val signedPayload = signPayload(requestParameters, loadRsaPrivateKey(signingKey)!!, signingKid)
     println("Signed Request Parameters: \n$signedPayload")
 
     return signedPayload

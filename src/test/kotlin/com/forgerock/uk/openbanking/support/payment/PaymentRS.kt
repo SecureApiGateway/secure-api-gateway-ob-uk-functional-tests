@@ -2,31 +2,28 @@ package com.forgerock.uk.openbanking.support.payment
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.forgerock.securebanking.framework.data.AccessToken
-import com.forgerock.securebanking.framework.data.ClientCredentialData
 import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.http.fuel.jsonBody
 import com.forgerock.securebanking.framework.http.fuel.responseObject
-import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion.v3_1_8
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.discovery.rsDiscovery
-import com.forgerock.uk.openbanking.support.general.GeneralAS.Companion.CLIENT_ASSERTION_TYPE
-import com.forgerock.uk.openbanking.support.general.GeneralAS.GrantTypes.CLIENT_CREDENTIALS
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.HttpException
-import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.core.isSuccessful
 import java.util.*
 
 /**
  * Generic RS client methods for payment tests
+ *
+ * @deprecated  - com.forgerock.uk.openbanking.support.payment.PaymentApiClient should be used instead, methods are being
+ * migrated over to the new class as needed.
  */
+@Deprecated("com.forgerock.uk.openbanking.support.payment.PaymentApiClient should be used instead")
 class PaymentRS {
     inline fun <reified T : Any> consent(
         consentUrl: String,
@@ -36,7 +33,7 @@ class PaymentRS {
         detachedJwt: String = ""
     ): T {
         try {
-            val accessToken = getAccessToken(tpp).access_token
+            val accessToken = getClientCredentialsAccessToken(tpp).access_token
             val (_, consentResponse, result) = Fuel.post(consentUrl)
                 .jsonBody(consentRequest)
                 .header("Authorization", "Bearer $accessToken")
@@ -62,8 +59,6 @@ class PaymentRS {
 //                version,
 //                tpp
 //            )
-
-            GsonUtils.gson.toJson(result.get())
             return result.get()
         } catch (e: HttpException) {
             println(e)
@@ -78,7 +73,7 @@ class PaymentRS {
         version: OBVersion = v3_1_8
     ): T {
         try {
-            val accessToken = getAccessToken(tpp).access_token
+            val accessToken = getClientCredentialsAccessToken(tpp).access_token
             val (_, consentResponse, r) = Fuel.post(consentUrl)
                 .jsonBody(consentRequest)
                 .header("Authorization", "Bearer $accessToken")
@@ -99,7 +94,7 @@ class PaymentRS {
     }
 
     inline fun <reified T : Any> getConsent(consentUrl: String, tpp: Tpp, version: OBVersion = v3_1_8): T {
-        val accessToken = getAccessToken(tpp).access_token
+        val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, result) = Fuel.get(consentUrl)
             .header("Authorization", "Bearer $accessToken")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
@@ -252,37 +247,15 @@ class PaymentRS {
         return defaultMapper.readValue(result.get())
     }
 
-    fun getAccessToken(tpp: Tpp): AccessToken {
-        val requestParameters = ClientCredentialData(
-            sub = tpp.registrationResponse.client_id,
-            iss = tpp.registrationResponse.client_id,
-            aud = asDiscovery.issuer
+    fun getClientCredentialsAccessToken(tpp: Tpp): AccessToken {
+        return tpp.getClientCredentialsAccessToken(
+            asDiscovery.scopes_supported.intersect(
+                listOf(
+                    OBConstants.Scope.OPENID,
+                    OBConstants.Scope.ACCOUNTS,
+                    OBConstants.Scope.PAYMENTS
+                )
+            ).joinToString(separator = " ")
         )
-        val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
-
-        val scopes = asDiscovery.scopes_supported.intersect(
-            listOf(
-                OBConstants.Scope.OPENID,
-                OBConstants.Scope.ACCOUNTS,
-                OBConstants.Scope.PAYMENTS
-            )
-        ).joinToString(separator = " ")
-        val body = listOf(
-            "grant_type" to CLIENT_CREDENTIALS,
-            "redirect_uri" to REDIRECT_URI,
-            "client_assertion_type" to CLIENT_ASSERTION_TYPE,
-            "scope" to scopes,
-            "client_assertion" to signedPayload
-        )
-        val (_, accessTokenResponse, result) = Fuel.post(asDiscovery.token_endpoint, parameters = body)
-            .authentication()
-            .basic(tpp.registrationResponse.client_id, tpp.registrationResponse.client_secret!!)
-            .responseObject<AccessToken>()
-        if (!accessTokenResponse.isSuccessful) throw AssertionError(
-            "Could not get access token: \n" + result.component2()?.errorData?.toString(
-                Charsets.UTF_8
-            ), result.component2()
-        )
-        return result.get()
     }
 }

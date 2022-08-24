@@ -37,7 +37,7 @@ class GetInternationalPayment(
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
@@ -114,7 +114,7 @@ class GetInternationalPayment(
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
@@ -190,7 +190,7 @@ class GetInternationalPayment(
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
@@ -264,7 +264,7 @@ class GetInternationalPayment(
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
@@ -339,7 +339,7 @@ class GetInternationalPayment(
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(

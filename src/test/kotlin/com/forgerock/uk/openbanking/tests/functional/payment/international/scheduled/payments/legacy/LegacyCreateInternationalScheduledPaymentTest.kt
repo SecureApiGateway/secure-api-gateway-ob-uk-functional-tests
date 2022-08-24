@@ -67,7 +67,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -153,7 +153,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -238,7 +238,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -320,7 +320,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -403,7 +403,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -492,7 +492,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -570,7 +570,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -645,7 +645,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -730,7 +730,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -814,7 +814,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -904,7 +904,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -995,7 +995,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1082,7 +1082,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1168,7 +1168,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1251,7 +1251,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1335,7 +1335,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1427,7 +1427,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1504,7 +1504,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1578,7 +1578,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1663,7 +1663,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1746,7 +1746,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1829,7 +1829,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1919,7 +1919,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2010,7 +2010,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2101,7 +2101,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2191,7 +2191,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2278,7 +2278,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2366,7 +2366,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2462,7 +2462,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2543,7 +2543,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2621,7 +2621,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2710,7 +2710,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2797,7 +2797,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2884,7 +2884,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2982,7 +2982,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3081,7 +3081,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3173,7 +3173,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3264,7 +3264,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3352,7 +3352,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3441,7 +3441,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3537,7 +3537,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3617,7 +3617,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3695,7 +3695,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3783,7 +3783,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3871,7 +3871,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -3959,7 +3959,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4057,7 +4057,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4156,7 +4156,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4244,7 +4244,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4331,7 +4331,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4415,7 +4415,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4500,7 +4500,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4594,7 +4594,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4671,7 +4671,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4745,7 +4745,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4830,7 +4830,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4914,7 +4914,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -4998,7 +4998,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -5088,7 +5088,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,

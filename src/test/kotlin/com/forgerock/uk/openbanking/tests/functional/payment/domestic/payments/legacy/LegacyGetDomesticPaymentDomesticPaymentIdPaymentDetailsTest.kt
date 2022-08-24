@@ -58,7 +58,7 @@ class LegacyGetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResourc
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -66,7 +66,7 @@ class LegacyGetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResourc
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -157,7 +157,7 @@ class LegacyGetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResourc
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -165,7 +165,7 @@ class LegacyGetDomesticPaymentDomesticPaymentIdPaymentDetailsTest(val tppResourc
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticConsentResponse3>(
             PaymentFactory.urlWithConsentId(
