@@ -111,7 +111,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         consent
     )
 
-    fun createDomesticPaymentsConsentAndGetAccessToken(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteDomesticConsentResponse5, AccessToken> {
+    fun createDomesticPaymentsConsentAndAuthorize(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteDomesticConsentResponse5, AccessToken> {
         val consent = createDomesticPaymentsConsent(consentRequest)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,

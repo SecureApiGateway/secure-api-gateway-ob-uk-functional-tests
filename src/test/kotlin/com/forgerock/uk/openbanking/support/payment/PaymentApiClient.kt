@@ -26,7 +26,6 @@ val defaultPaymentScopesForAccessToken =
 class PaymentApiClient(val tpp: Tpp) {
 
     inner class PaymentApiRequestBuilder(val request: Request) {
-
         var jwsSignatureProducer: JwsSignatureProducer? = null
         var jsonBody: String? = null
 
@@ -41,8 +40,9 @@ class PaymentApiClient(val tpp: Tpp) {
         }
 
         fun addBody(body: Any): PaymentApiRequestBuilder {
-            // store the body string in a field so we can compute a signature later (if required)
+            // store the body string in a field, which allows us to compute a JWS signature later (if required)
             jsonBody = defaultMapper.writeValueAsString(body)
+            request.header("Content-Type" to "application/json;charset=utf-8")
             request.body(jsonBody!!)
             return this
         }
@@ -52,8 +52,8 @@ class PaymentApiClient(val tpp: Tpp) {
             return this
         }
 
-        fun addIdempotencyKeyHeader(postRequest: Request, idempotencyKey: String? = null): PaymentApiRequestBuilder {
-            postRequest.header("x-idempotency-key", idempotencyKey ?: UUID.randomUUID())
+        fun addIdempotencyKeyHeader(idempotencyKey: String? = null): PaymentApiRequestBuilder {
+            request.header("x-idempotency-key", idempotencyKey ?: UUID.randomUUID())
             return this
         }
 
@@ -112,4 +112,19 @@ class PaymentApiClient(val tpp: Tpp) {
     inline fun <reified T : Any> sendPostRequest(url: String, accessToken: AccessToken, body: Any): T {
         return createDefaultPostRequest(url, accessToken, body).sendRequest()
     }
+
+    inline fun <reified T : Any> getConsent(url: String, consentId: String, accessToken: AccessToken): T {
+        return sendGetRequest(PaymentFactory.urlWithConsentId(url, consentId), accessToken)
+    }
+
+    inline fun <reified T : Any> submitPayment(url: String, accessToken: AccessToken, body: Any): T {
+        return buildSubmitPaymentRequest(url, accessToken, body).sendRequest()
+    }
+
+    fun buildSubmitPaymentRequest(
+        url: String,
+        accessToken: AccessToken,
+        body: Any
+    ) = createDefaultPostRequest(url, accessToken, body)
+        .addIdempotencyKeyHeader()
 }

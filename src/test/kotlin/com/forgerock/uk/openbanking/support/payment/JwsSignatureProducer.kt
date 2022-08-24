@@ -64,8 +64,8 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
 /**
  * Implementation for testing purposes, produces an invalid detached JWS
  */
-class BadJwsSignatureProducer: JwsSignatureProducer {
-    override fun createDetachedSignature(jsonPayload: String) = INVALID_FORMAT_DETACHED_JWS
+class BadJwsSignatureProducer(private val badSignature: String = INVALID_FORMAT_DETACHED_JWS): JwsSignatureProducer {
+    override fun createDetachedSignature(jsonPayload: String) = badSignature
 }
 
 /**
