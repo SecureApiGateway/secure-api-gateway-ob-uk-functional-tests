@@ -230,79 +230,81 @@ tasks.withType<Test>().configureEach {
 // tests properties
 val packagePrefix = "com.forgerock.uk.openbanking.tests.functional."
 val suffixPattern = ".*"
-val apiVersion = "v3_1_8"
+val apiVersions = arrayOf("v3_1_8", "v3_1_9")
 
-/* ACCOUNTS */
-tasks.register<Test>("accounts_$apiVersion") {
-    group = "accounts-tests"
-    description = "Runs the account tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+// Add test tasks for each supported apiVersion
+for (apiVersion in apiVersions) {
+    /* ACCOUNTS */
+    tasks.register<Test>("accounts_$apiVersion") {
+        group = "accounts-tests"
+        description = "Runs the account tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-/* DOMESTIC PAYMENTS */
-tasks.register<Test>("domestic_payments_$apiVersion") {
-    group = "payments-tests"
-    description = "Runs the domestic payments tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
+    /* DOMESTIC PAYMENTS */
+    tasks.register<Test>("domestic_payments_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the domestic payments tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
-    group = "payments-tests"
-    description = "Runs the domestic scheduled payments tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
+    tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the domestic scheduled payments tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-tasks.register<Test>("domestic_standing_order_$apiVersion") {
-    group = "payments-tests"
-    description = "Runs the domestic standing order tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+    tasks.register<Test>("domestic_standing_order_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the domestic standing order tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-tasks.register<Test>("international_payments_$apiVersion") {
-    group = "payments-tests"
-    description = "Runs the international payments tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
+    tasks.register<Test>("international_payments_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the international payments tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-tasks.register<Test>("international_scheduled_payments_$apiVersion") {
-    group = "payments-tests"
-    description = "Runs the international scheduled payments tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
+    tasks.register<Test>("international_scheduled_payments_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the international scheduled payments tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
-}
 
-/* ALL IMPLEMENTED TESTS */
-tasks.register<Test>("tests_$apiVersion") {
-    group = "tests"
-    description = "Runs the tests with the version $apiVersion"
-    filter {
-        includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
-        includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
+    /* ALL IMPLEMENTED TESTS */
+    tasks.register<Test>("tests_$apiVersion") {
+        group = "tests"
+        description = "Runs the tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "account" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.domestic.payments" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.domestic.scheduled.payments" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
     }
-    failFast = false
 }
-
 tasks.register<Test>("singleTest") {
     description = "Runs open banking single functional tests"
 }
