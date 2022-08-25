@@ -21,9 +21,5 @@ steps:
     working_directory: IMAGE_WORK_DIR # the working root directory defined in the image to find the certificates properly
     volumes:
       - ./certificates:/opt/functional-tests/certificates # host path is relative to /codefresh/volume
-    cmd:
-      - "./gradlew"
-      - "cleanTest"
-      - "${{TEST_TASK}}"
-      - "-Pprofile=${{PROFILE}}"
-      - "-Djunit.jupiter.extensions.autodetection.enabled=true"
+    commands:
+      - "./gradlew cleanTest ${{TEST_TASK}} -Pprofile=${{PROFILE}} -Djunit.jupiter.extensions.autodetection.enabled=true"
