@@ -8,11 +8,8 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class GetInternationalPaymentsConsents(
@@ -37,14 +34,7 @@ class GetInternationalPaymentsConsents(
         assertThat(consent.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -70,14 +60,7 @@ class GetInternationalPaymentsConsents(
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -103,14 +86,7 @@ class GetInternationalPaymentsConsents(
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -119,5 +95,4 @@ class GetInternationalPaymentsConsents(
         assertThat(result.data).isEqualTo(consent.data)
         assertThat(result.risk).isEqualTo(consent.risk)
     }
-
 }

@@ -125,7 +125,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         consent
     )
 
-    fun createInternationalPaymentConsentAndGetAccessToken(consentRequest: OBWriteInternationalConsent5): Pair<OBWriteInternationalConsentResponse6, AccessToken> {
+    fun createInternationalPaymentConsentAndAuthorize(consentRequest: OBWriteInternationalConsent5): Pair<OBWriteInternationalConsentResponse6, AccessToken> {
         val consent = createInternationalPaymentConsent(consentRequest)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
@@ -134,5 +134,19 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
             tppResource.tpp
         )
         return consent to accessTokenAuthorizationCode
+    }
+
+    fun getPatchedConsent(consent: OBWriteInternationalConsentResponse6): OBWriteInternationalConsentResponse6 {
+        val patchedConsent = paymentApiClient.getConsent<OBWriteInternationalConsentResponse6>(
+            paymentLinks.GetInternationalPaymentConsent,
+            consent.data.consentId,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
+        )
+        assertThat(patchedConsent).isNotNull()
+        assertThat(patchedConsent.data).isNotNull()
+        assertThat(patchedConsent.risk).isNotNull()
+        assertThat(patchedConsent.data.consentId).isNotEmpty()
+        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
+        return patchedConsent
     }
 }

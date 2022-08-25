@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
+import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
@@ -18,6 +19,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
 
@@ -27,6 +29,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 ) {
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
@@ -34,24 +37,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
-        val (consent, accessTokenAuthorizationCode) =
-            createInternationalPaymentsConsents.createInternationalPaymentConsentAndGetAccessToken(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-        assertThat(consent.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -69,23 +56,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("3")
 
-        val (consent, accessTokenAuthorizationCode) =
-            createInternationalPaymentsConsents.createInternationalPaymentConsentAndGetAccessToken(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -103,23 +75,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("3")
 
-        val (consent, accessTokenAuthorizationCode) =
-            createInternationalPaymentsConsents.createInternationalPaymentConsentAndGetAccessToken(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -135,24 +92,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
-        val (consent, accessTokenAuthorizationCode) =
-            createInternationalPaymentsConsents.createInternationalPaymentConsentAndGetAccessToken(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-        assertThat(consent.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -170,43 +111,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            paymentLinks.CreateInternationalPaymentConsent,
-            consentRequest,
-            tppResource.tpp,
-            version,
-            signedPayloadConsent
-        )
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
-        // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -224,43 +130,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            paymentLinks.CreateInternationalPaymentConsent,
-            consentRequest,
-            tppResource.tpp,
-            version,
-            signedPayloadConsent
-        )
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
-        // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp
-        )
-
         // When
-        val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ),
-            accessTokenAuthorizationCode
-        )
+        val result = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -273,40 +144,14 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
+        val (consent, _) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(consentRequest)
 
-        val signedPayloadConsent =
-            signPayloadSubmitPayment(
-                defaultMapper.writeValueAsString(consentRequest),
-                tppResource.tpp.signingKey,
-                tppResource.tpp.signingKid
-            )
-
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            paymentLinks.CreateInternationalPaymentConsent,
-            consentRequest,
-            tppResource.tpp,
-            version,
-            signedPayloadConsent
-        )
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
-        // accessToken to get the payment use the grant type client_credentials
+        // client_credentials access token must not be allowed to get the funds confirmation
         val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
-                PaymentFactory.urlWithConsentId(
-                    paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
-                    consent.data.consentId
-                ),
-                accessTokenClientCredentials
-            )
+            getFundsConfirmation(consent, accessTokenClientCredentials)
         }
 
         // Then
@@ -314,6 +159,8 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
+    // TODO - Review logic and convert to use paymentApiClient
+    // The logic has not been migrated as it looks invalid and the tests are disabled so we cannot verify.
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
@@ -361,5 +208,24 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // Then
         assertThat(exception.message.toString()).contains(INVALID_CONSENT_STATUS)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteInternationalConsent5): OBWriteFundsConfirmationResponse1 {
+        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        return getFundsConfirmation(consent, accessTokenAuthorizationCode)
+    }
+
+    private fun getFundsConfirmation(
+        consent: OBWriteInternationalConsentResponse6,
+        accessTokenAuthorizationCode: AccessToken
+    ): OBWriteFundsConfirmationResponse1 {
+        return paymentApiClient.sendGetRequest(
+            PaymentFactory.urlWithConsentId(
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                consent.data.consentId
+            ), accessTokenAuthorizationCode
+        )
     }
 }
