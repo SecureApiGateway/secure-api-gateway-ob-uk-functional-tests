@@ -19,10 +19,7 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.copyOBWriteDomesticStandingOrder3DataInitiation
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
-import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
@@ -133,21 +130,6 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-
-        val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticStandingOrderConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
-
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
 
@@ -298,17 +280,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
     }
 
     private fun getPatchedConsent(consent: OBWriteDomesticStandingOrderConsentResponse6): OBWriteDomesticStandingOrderConsentResponse6 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
-            paymentLinks.GetDomesticStandingOrderConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
+        return createDomesticStandingOrderConsentsApi.getPatchedConsent(consent)
     }
 
     private fun submitStandingOrderForPatchedConsent(

@@ -262,17 +262,7 @@ class CreateDomesticPayment(
     }
 
     private fun getPatchedConsent(consent: OBWriteDomesticConsentResponse5): OBWriteDomesticConsentResponse5 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticConsentResponse5>(
-            paymentLinks.GetDomesticPaymentConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
+        return createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
     }
 
     private fun submitPaymentForPatchedConsent(

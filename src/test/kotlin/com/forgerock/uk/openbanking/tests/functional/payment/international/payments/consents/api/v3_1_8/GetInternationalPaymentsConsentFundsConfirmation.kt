@@ -25,9 +25,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
+
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()

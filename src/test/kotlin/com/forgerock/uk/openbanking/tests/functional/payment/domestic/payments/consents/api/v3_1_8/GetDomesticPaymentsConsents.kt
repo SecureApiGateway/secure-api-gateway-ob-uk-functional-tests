@@ -9,10 +9,7 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
 class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -32,14 +29,7 @@ class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: Creat
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -64,14 +54,7 @@ class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: Creat
         assertThat(consent.data.initiation.debtorAccount).isNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()

@@ -257,17 +257,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
     }
 
     private fun getPatchedConsent(consent: OBWriteDomesticScheduledConsentResponse5): OBWriteDomesticScheduledConsentResponse5 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticScheduledConsentResponse5>(
-            paymentLinks.GetDomesticScheduledPaymentConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
+        return createDomesticScheduledPaymentsConsents.getPatchedConsent(consent)
     }
 
     private fun submitPaymentForPatchedConsent(

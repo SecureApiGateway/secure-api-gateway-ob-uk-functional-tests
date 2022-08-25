@@ -8,18 +8,12 @@ import assertk.assertions.isNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
 class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val createDomesticScheduledPaymentsConsents = CreateDomesticScheduledPaymentsConsents(version, tppResource)
-    private val paymentLinks = getPaymentsApiLinks(version)
-    private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun shouldGetDomesticScheduledPaymentsConsentsTest() {
         // Given
@@ -33,7 +27,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = getConsent(consent.data.consentId)
+        val result = createDomesticScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -57,7 +51,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.data.initiation.debtorAccount).isNull()
 
         // When
-        val result = getConsent(consent.data.consentId)
+        val result = createDomesticScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -66,14 +60,5 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(result.data).isEqualTo(consent.data)
         assertThat(result.risk).isEqualTo(consent.risk)
         assertThat(result.data.initiation.debtorAccount).isNull()
-    }
-
-    private fun getConsent(consentId: String): OBWriteDomesticScheduledConsentResponse5 {
-        return paymentApiClient.sendGetRequest<OBWriteDomesticScheduledConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticScheduledPaymentConsent,
-                consentId
-            ), PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
-        )
     }
 }

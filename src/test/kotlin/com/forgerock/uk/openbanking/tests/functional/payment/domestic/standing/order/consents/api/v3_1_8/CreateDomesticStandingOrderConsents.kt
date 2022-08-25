@@ -158,4 +158,18 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         )
         return consent to accessTokenAuthorizationCode
     }
+
+    fun getPatchedConsent(consent: OBWriteDomesticStandingOrderConsentResponse6): OBWriteDomesticStandingOrderConsentResponse6 {
+        val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
+            paymentLinks.GetDomesticStandingOrderConsent,
+            consent.data.consentId,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
+        )
+        assertThat(patchedConsent).isNotNull()
+        assertThat(patchedConsent.data).isNotNull()
+        assertThat(patchedConsent.risk).isNotNull()
+        assertThat(patchedConsent.data.consentId).isNotEmpty()
+        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
+        return patchedConsent
+    }
 }
