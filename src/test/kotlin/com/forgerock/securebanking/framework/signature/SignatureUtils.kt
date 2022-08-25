@@ -6,7 +6,7 @@ import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.constants.TAN
 import com.forgerock.uk.openbanking.framework.errors.INVALID_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.support.loadRsaPrivateKey
+import com.forgerock.uk.openbanking.support.getRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.nimbusds.jose.JWSHeader
@@ -21,6 +21,7 @@ import org.bouncycastle.asn1.x500.X500Name
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.math.BigDecimal
+import java.security.PrivateKey
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.*
@@ -29,23 +30,21 @@ import java.util.regex.Pattern
 
 private val DETACHED_SIGNATURE_PATTERN = Pattern.compile("(.*\\.)(\\..*)")
 
-fun signPayload(payload: Any, signingKey: String, signingKid: String?): String {
+fun signPayload(payload: Any, signingKey: PrivateKey, signingKid: String?): String {
     val serialisedPayload = GsonUtils.gson.toJson(payload)
-    val key = loadRsaPrivateKey(signingKey)
     return Jwts.builder()
         .setHeaderParam("kid", signingKid)
         .setPayload(serialisedPayload)
-        .signWith(key, SignatureAlgorithm.PS256)
+        .signWith(signingKey, SignatureAlgorithm.PS256)
         .compact()
 }
 
 fun signPayloadSubmitPayment(
     payload: String,
-    signingKey: String,
+    signingKey: PrivateKey,
     signingKid: String?,
     versionLowerThan3_1_4: Boolean? = null
 ): String {
-    val key = loadRsaPrivateKey(signingKey)
     val headers = HashMap<String, Any>()
     if (signingKid != null) {
         headers["kid"] = signingKid
@@ -67,7 +66,7 @@ fun signPayloadSubmitPayment(
         val jws = Jwts.builder()
             .setHeaderParams(headers)
             .setPayload(payload)
-            .signWith(key, SignatureAlgorithm.PS256)
+            .signWith(signingKey, SignatureAlgorithm.PS256)
             .compact()
 
         val jwtElements = jws.split(".")
@@ -77,17 +76,16 @@ fun signPayloadSubmitPayment(
         return Jwts.builder()
             .setHeaderParams(headers)
             .setPayload(payload)
-            .signWith(key, SignatureAlgorithm.PS256)
+            .signWith(signingKey, SignatureAlgorithm.PS256)
             .compact()
     }
 }
 
 fun signPayloadSubmitPaymentInvalidB64ClaimTrue(
     payload: String,
-    signingKey: String,
+    signingKey: PrivateKey,
     signingKid: String?
 ): String {
-    val key = loadRsaPrivateKey(signingKey)
     val headers = HashMap<String, Any>()
     if (signingKid != null) {
         headers["kid"] = signingKid
@@ -106,7 +104,7 @@ fun signPayloadSubmitPaymentInvalidB64ClaimTrue(
     return Jwts.builder()
         .setHeaderParams(headers)
         .setPayload(payload)
-        .signWith(key, SignatureAlgorithm.PS256)
+        .signWith(signingKey, SignatureAlgorithm.PS256)
         .compact()
 }
 

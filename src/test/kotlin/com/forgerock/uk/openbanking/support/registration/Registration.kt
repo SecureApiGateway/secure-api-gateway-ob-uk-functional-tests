@@ -2,14 +2,13 @@ package com.forgerock.uk.openbanking.support.registration
 
 import com.forgerock.securebanking.framework.configuration.OB_TPP_EIDAS_SIGNING_KEY_PATH
 import com.forgerock.securebanking.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
-import com.forgerock.securebanking.framework.configuration.OB_TPP_PRE_EIDAS_SIGNING_KID
 import com.forgerock.securebanking.framework.data.RegistrationRequest
 import com.forgerock.securebanking.framework.data.RegistrationResponse
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.utils.GsonUtils
 import com.forgerock.securebanking.framework.utils.FileUtils
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
-import com.forgerock.uk.openbanking.support.loadRsaPrivateKey
+import com.forgerock.uk.openbanking.support.getRsaPrivateKey
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
@@ -66,7 +65,7 @@ fun signOBEidasRegistrationRequest(): Pair<String, RegistrationRequest> {
     val ssa = FileUtils().getStringContent("OB_TPP_EIDAS_SSA_PATH")
     val registrationRequest = RegistrationRequest(software_statement = ssa)
     val privateKey = FileUtils().getStringContent(OB_TPP_EIDAS_SIGNING_KEY_PATH)
-    val key = loadRsaPrivateKey(privateKey)
+    val key = getRsaPrivateKey(privateKey)
     val signedRegistrationRequest = Jwts.builder()
         .setHeaderParam("kid", OB_TPP_OB_EIDAS_TEST_SIGNING_KID)
         .setPayload(GsonUtils.gson.toJson(registrationRequest))

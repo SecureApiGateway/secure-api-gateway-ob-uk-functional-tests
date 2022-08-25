@@ -59,7 +59,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -67,7 +67,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -165,7 +165,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -173,7 +173,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -275,7 +275,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -283,7 +283,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -384,7 +384,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -392,7 +392,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -487,7 +487,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -495,7 +495,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -589,7 +589,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -597,7 +597,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -695,7 +695,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -703,7 +703,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -801,7 +801,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -809,7 +809,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -903,7 +903,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -911,7 +911,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse2>(
             PaymentFactory.urlWithConsentId(

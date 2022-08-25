@@ -57,7 +57,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -65,7 +65,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -159,7 +159,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -167,7 +167,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -261,7 +261,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -269,7 +269,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -360,7 +360,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -368,7 +368,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse5>(
             PaymentFactory.urlWithConsentId(
@@ -461,7 +461,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -469,7 +469,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -565,7 +565,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -573,7 +573,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -669,7 +669,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -677,7 +677,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -770,7 +770,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -778,7 +778,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse4>(
             PaymentFactory.urlWithConsentId(
@@ -873,7 +873,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -881,7 +881,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -977,7 +977,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -985,7 +985,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -1081,7 +1081,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1089,7 +1089,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -1182,7 +1182,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1190,7 +1190,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
             PaymentFactory.urlWithConsentId(
@@ -1285,7 +1285,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1293,7 +1293,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1389,7 +1389,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1397,7 +1397,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1493,7 +1493,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1501,7 +1501,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1594,7 +1594,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1602,7 +1602,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1697,7 +1697,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1705,7 +1705,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1801,7 +1801,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1809,7 +1809,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -1905,7 +1905,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -1913,7 +1913,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(
@@ -2006,7 +2006,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         // accessToken to submit payment use the grant type authorization_code
-        val accessTokenAuthorizationCode = PaymentAS().getAccessToken(
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
@@ -2014,7 +2014,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         )
 
         // accessToken to get the payment use the grant type client_credentials
-        val accessTokenClientCredentials = PaymentRS().getAccessToken(tppResource.tpp)
+        val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse2>(
             PaymentFactory.urlWithConsentId(

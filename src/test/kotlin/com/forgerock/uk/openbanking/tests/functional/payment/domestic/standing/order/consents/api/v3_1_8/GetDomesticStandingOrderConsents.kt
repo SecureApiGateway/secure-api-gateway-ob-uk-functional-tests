@@ -7,10 +7,7 @@ import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
 class GetDomesticStandingOrderConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -31,14 +28,7 @@ class GetDomesticStandingOrderConsents(val version: OBVersion, val tppResource: 
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                createDomesticStandingOrderConsentsApi.paymentLinks.GetDomesticStandingOrderConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createDomesticStandingOrderConsentsApi.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()

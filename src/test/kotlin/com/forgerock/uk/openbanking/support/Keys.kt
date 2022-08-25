@@ -12,30 +12,26 @@ import java.security.PrivateKey
 import java.security.Security
 import java.security.spec.PKCS8EncodedKeySpec
 
+val keyCache = mutableMapOf<String, PrivateKey?>()
+
 
 /**
  * Load rsa private key in DER format. DER because it's nicer code to parse DER format than PEM
  *
- * @param key path to private key. Defaults to open banking directory signing key
+ * @param keyPath path to private key. Defaults to open banking directory signing key
  */
-fun loadRsaPrivateKey(key: String): PrivateKey? {
-    Security.addProvider(BouncyCastleProvider())
-//    PEMReader(StringReader(key) as Reader).use { pemReader ->
-//        val `object` = pemReader.readObject()
-//        return if (`object` is KeyPair)
-//            `object`.private
-//        else
-//            `object` as PrivateKey
-//    }
+fun getRsaPrivateKey(keyPath: String): PrivateKey? {
+    return keyCache.getOrPut(keyPath) {
+        Security.addProvider(BouncyCastleProvider())
+        val factory: KeyFactory = KeyFactory.getInstance("RSA")
 
-    val factory: KeyFactory = KeyFactory.getInstance("RSA")
-
-    FileReader(key).use { keyReader ->
-        PemReader(keyReader).use { pemReader ->
-            val pemObject: PemObject = pemReader.readPemObject()
-            val content: ByteArray = pemObject.content
-            val privKeySpec = PKCS8EncodedKeySpec(content)
-            return factory.generatePrivate(privKeySpec)
+        FileReader(keyPath).use { keyReader ->
+            PemReader(keyReader).use { pemReader ->
+                val pemObject: PemObject = pemReader.readPemObject()
+                val content: ByteArray = pemObject.content
+                val privKeySpec = PKCS8EncodedKeySpec(content)
+                return factory.generatePrivate(privKeySpec)
+            }
         }
     }
 }

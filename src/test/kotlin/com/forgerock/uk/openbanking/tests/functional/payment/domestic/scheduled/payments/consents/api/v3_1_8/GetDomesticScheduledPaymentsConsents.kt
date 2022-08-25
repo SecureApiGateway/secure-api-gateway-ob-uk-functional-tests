@@ -8,15 +8,12 @@ import assertk.assertions.isNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
 class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
-    val createDomesticScheduledPaymentsConsents = CreateDomesticScheduledPaymentsConsents(version, tppResource)
+    private val createDomesticScheduledPaymentsConsents = CreateDomesticScheduledPaymentsConsents(version, tppResource)
 
     fun shouldGetDomesticScheduledPaymentsConsentsTest() {
         // Given
@@ -30,14 +27,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.risk).isNotNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createDomesticScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -61,14 +51,7 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
         assertThat(consent.data.initiation.debtorAccount).isNull()
 
         // When
-        val result = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse5>(
-            PaymentFactory.urlWithConsentId(
-                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createDomesticScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
