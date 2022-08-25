@@ -142,7 +142,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     private fun buildCreateConsentRequest(
         consent: OBWriteDomesticStandingOrderConsent5
-    ) = paymentApiClient.createDefaultPostRequest(
+    ) = paymentApiClient.newPostRequestBuilder(
         paymentLinks.CreateDomesticStandingOrderConsent,
         tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
         consent

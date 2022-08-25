@@ -85,32 +85,38 @@ class PaymentApiClient(val tpp: Tpp) {
         }
     }
 
-    fun createEmptyPostRequest(url: String): PaymentApiRequestBuilder {
+    fun newPostRequestBuilder(url: String): PaymentApiRequestBuilder {
         return PaymentApiRequestBuilder(Fuel.post(url))
     }
 
-    fun createDefaultPostRequest(
+    fun newGetRequestBuilder(url: String): PaymentApiRequestBuilder {
+        return PaymentApiRequestBuilder(Fuel.get(url))
+    }
+
+    /**
+     * Creates a PaymentApiRequestBuilder for HTTP Post request with the following configuration:
+     * - authorization token add to header
+     * - json body added
+     * - detached JWS signature header
+     */
+    fun newPostRequestBuilder(
         url: String,
         accessToken: AccessToken,
         body: Any
-    ) = createEmptyPostRequest(url).addAuthorization(accessToken).addBody(body).configureDefaultJwsSignatureProducer()
-
-    fun createGetRequest(url: String): PaymentApiRequestBuilder {
-        return PaymentApiRequestBuilder(Fuel.get(url))
-    }
+    ) = newPostRequestBuilder(url).addAuthorization(accessToken).addBody(body).configureDefaultJwsSignatureProducer()
 
     /**
      * Submits a HTTP GET request using default configuration
      */
     inline fun <reified T : Any> sendGetRequest(url: String, accessToken: AccessToken): T {
-        return createGetRequest(url).addAuthorization(accessToken).sendRequest()
+        return newGetRequestBuilder(url).addAuthorization(accessToken).sendRequest()
     }
 
     /**
      * Submits a HTTP Post request using default configuration
      */
     inline fun <reified T : Any> sendPostRequest(url: String, accessToken: AccessToken, body: Any): T {
-        return createDefaultPostRequest(url, accessToken, body).sendRequest()
+        return newPostRequestBuilder(url, accessToken, body).sendRequest()
     }
 
     inline fun <reified T : Any> getConsent(url: String, consentId: String, accessToken: AccessToken): T {
@@ -125,6 +131,6 @@ class PaymentApiClient(val tpp: Tpp) {
         url: String,
         accessToken: AccessToken,
         body: Any
-    ) = createDefaultPostRequest(url, accessToken, body)
+    ) = newPostRequestBuilder(url, accessToken, body)
         .addIdempotencyKeyHeader()
 }

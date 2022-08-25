@@ -143,7 +143,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     private fun buildCreateConsentRequest(
         consent: OBWriteInternationalScheduledConsent5
-    ) = paymentApiClient.createDefaultPostRequest(
+    ) = paymentApiClient.newPostRequestBuilder(
         paymentLinks.CreateInternationalScheduledPaymentConsent,
         tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
         consent

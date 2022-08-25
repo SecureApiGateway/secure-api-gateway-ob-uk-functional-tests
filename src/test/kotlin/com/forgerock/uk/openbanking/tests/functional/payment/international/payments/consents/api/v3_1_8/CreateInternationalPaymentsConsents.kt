@@ -119,7 +119,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     private fun buildCreateConsentRequest(
         consent: OBWriteInternationalConsent5
-    ) = paymentApiClient.createDefaultPostRequest(
+    ) = paymentApiClient.newPostRequestBuilder(
         paymentLinks.CreateInternationalPaymentConsent,
         tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
         consent

@@ -105,7 +105,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     private fun buildCreateConsentRequest(
         consent: OBWriteDomesticConsent4
-    ) = paymentApiClient.createDefaultPostRequest(
+    ) = paymentApiClient.newPostRequestBuilder(
         paymentLinks.CreateDomesticPaymentConsent,
         tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
         consent
