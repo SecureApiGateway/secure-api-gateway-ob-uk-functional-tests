@@ -10,7 +10,7 @@ on:
 env:
   PR_NUMBER: pr-${{ github.event.number }}
   SPEC_IMAGE: uk-functional-tests
-  TEST_TASK: tests_v3_1_8
+  TEST_TASK: tests_v3_1_8 tests_v3_1_9
 
 jobs:
   build:
