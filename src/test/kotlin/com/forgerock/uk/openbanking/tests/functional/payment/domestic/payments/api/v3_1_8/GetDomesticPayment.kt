@@ -12,7 +12,8 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
 class GetDomesticPayment(

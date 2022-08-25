@@ -10,7 +10,9 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class GetInternationalPayment(

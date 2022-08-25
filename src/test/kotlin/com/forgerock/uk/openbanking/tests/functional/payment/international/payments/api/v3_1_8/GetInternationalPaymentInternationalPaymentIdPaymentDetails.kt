@@ -7,7 +7,9 @@ import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
+import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class GetInternationalPaymentInternationalPaymentIdPaymentDetails(
@@ -87,7 +89,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetails(
         assertThat(result.data.paymentStatus).isNotNull()
     }
 
-    fun getPaymentDetails(paymentResponse: OBWriteInternationalResponse5): OBWritePaymentDetailsResponse1 {
+    private fun getPaymentDetails(paymentResponse: OBWriteInternationalResponse5): OBWritePaymentDetailsResponse1 {
         val getInternationalPaymentDetails = PaymentFactory.urlWithInternationalPaymentId(
             paymentLinks.GetInternationalPaymentInternationalPaymentIdPaymentDetails,
             paymentResponse.data.internationalPaymentId

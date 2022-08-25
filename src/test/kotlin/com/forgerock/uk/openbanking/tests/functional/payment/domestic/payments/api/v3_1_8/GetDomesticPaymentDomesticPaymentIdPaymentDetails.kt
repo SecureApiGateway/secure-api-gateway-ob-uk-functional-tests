@@ -7,7 +7,7 @@ import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
 class GetDomesticPaymentDomesticPaymentIdPaymentDetails(

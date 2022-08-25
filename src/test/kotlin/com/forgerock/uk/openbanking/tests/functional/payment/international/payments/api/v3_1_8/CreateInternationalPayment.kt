@@ -23,7 +23,13 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8.CreateInternationalPaymentsConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationInstructedAmount
+import uk.org.openbanking.datamodel.payment.OBWriteInternational3
+import uk.org.openbanking.datamodel.payment.OBWriteInternational3Data
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class CreateInternationalPayment(

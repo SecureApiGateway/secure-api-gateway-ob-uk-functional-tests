@@ -2,17 +2,11 @@ package com.forgerock.uk.openbanking.tests.functional.payment.international.sche
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
-import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
-import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 
 class GetInternationalScheduledPaymentsConsents(
@@ -32,22 +26,8 @@ class GetInternationalScheduledPaymentsConsents(
         val consent =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-        assertThat(consent.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
-
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -68,21 +48,8 @@ class GetInternationalScheduledPaymentsConsents(
         val consent =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()
@@ -103,21 +70,8 @@ class GetInternationalScheduledPaymentsConsents(
         val consent =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
-            PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalScheduledPaymentConsent,
-                consent.data.consentId
-            ),
-            tppResource.tpp,
-            version
-        )
+        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
 
         // Then
         assertThat(result).isNotNull()

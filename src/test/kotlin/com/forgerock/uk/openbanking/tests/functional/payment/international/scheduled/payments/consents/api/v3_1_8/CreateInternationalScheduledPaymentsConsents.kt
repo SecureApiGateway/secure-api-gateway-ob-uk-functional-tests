@@ -9,11 +9,7 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
-import com.forgerock.securebanking.framework.http.fuel.defaultMapper
-import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
 import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.REQUEST_EXECUTION_TIME_IN_THE_PAST
@@ -23,12 +19,10 @@ import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
@@ -155,7 +149,7 @@ class CreateInternationalScheduledPaymentsConsents(
         consent
     )
 
-    fun createInternationalScheduledPaymentConsentAndGetAccessToken(consentRequest: OBWriteInternationalScheduledConsent5): Pair<OBWriteInternationalScheduledConsentResponse6, AccessToken> {
+    fun createInternationalScheduledPaymentConsentAndAuthorize(consentRequest: OBWriteInternationalScheduledConsent5): Pair<OBWriteInternationalScheduledConsentResponse6, AccessToken> {
         val consent = createInternationalScheduledPaymentConsent(consentRequest)
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -165,5 +159,19 @@ class CreateInternationalScheduledPaymentsConsents(
             tppResource.tpp
         )
         return consent to accessTokenAuthorizationCode
+    }
+
+    fun getPatchedConsent(consent: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduledConsentResponse6 {
+        val patchedConsent = paymentApiClient.getConsent<OBWriteInternationalScheduledConsentResponse6>(
+            paymentLinks.GetInternationalScheduledPaymentConsent,
+            consent.data.consentId,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
+        )
+        assertThat(patchedConsent).isNotNull()
+        assertThat(patchedConsent.data).isNotNull()
+        assertThat(patchedConsent.risk).isNotNull()
+        assertThat(patchedConsent.data.consentId).isNotEmpty()
+        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
+        return patchedConsent
     }
 }

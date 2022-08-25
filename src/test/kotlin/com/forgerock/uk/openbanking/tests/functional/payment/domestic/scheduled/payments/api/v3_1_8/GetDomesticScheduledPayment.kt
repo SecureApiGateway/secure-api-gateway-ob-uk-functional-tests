@@ -12,7 +12,8 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled.payments.consents.api.v3_1_8.CreateDomesticScheduledPaymentsConsents
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
 class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
