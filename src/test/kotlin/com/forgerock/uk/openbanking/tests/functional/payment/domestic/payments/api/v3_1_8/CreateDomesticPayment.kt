@@ -15,6 +15,7 @@ import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
@@ -37,7 +38,8 @@ class CreateDomesticPayment(
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
-    private val createPaymentUrl = createDomesticPaymentsConsentsApi.paymentLinks.CreateDomesticPayment
+    private val paymentLinks = getPaymentsApiLinks(version)
+    private val createPaymentUrl = paymentLinks.CreateDomesticPayment
 
     fun createDomesticPaymentsTest() {
         // Given
@@ -261,7 +263,7 @@ class CreateDomesticPayment(
 
     private fun getPatchedConsent(consent: OBWriteDomesticConsentResponse5): OBWriteDomesticConsentResponse5 {
         val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticConsentResponse5>(
-            createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsent,
+            paymentLinks.GetDomesticPaymentConsent,
             consent.data.consentId,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
         )

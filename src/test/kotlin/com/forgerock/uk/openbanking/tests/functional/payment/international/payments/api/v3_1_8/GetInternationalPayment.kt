@@ -9,6 +9,7 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8.CreateInternationalPaymentsConsents
@@ -22,6 +23,7 @@ class GetInternationalPayment(
 ) {
 
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
 
     fun getInternationalPayments_rateType_AGREED_Test() {
         // Given
@@ -41,7 +43,7 @@ class GetInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -67,7 +69,7 @@ class GetInternationalPayment(
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -83,7 +85,7 @@ class GetInternationalPayment(
         // When
         val result = PaymentRS().getPayment<OBWriteInternationalResponse5>(
             PaymentFactory.urlWithInternationalPaymentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPayment,
+                paymentLinks.GetInternationalPayment,
                 submissionResponse.data.internationalPaymentId
             ),
             accessTokenClientCredentials,
@@ -118,7 +120,7 @@ class GetInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -144,7 +146,7 @@ class GetInternationalPayment(
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -160,7 +162,7 @@ class GetInternationalPayment(
         // When
         val result = PaymentRS().getPayment<OBWriteInternationalResponse5>(
             PaymentFactory.urlWithInternationalPaymentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPayment,
+                paymentLinks.GetInternationalPayment,
                 submissionResponse.data.internationalPaymentId
             ),
             accessTokenClientCredentials,
@@ -194,7 +196,7 @@ class GetInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -220,7 +222,7 @@ class GetInternationalPayment(
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -236,7 +238,7 @@ class GetInternationalPayment(
         // When
         val result = PaymentRS().getPayment<OBWriteInternationalResponse5>(
             PaymentFactory.urlWithInternationalPaymentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPayment,
+                paymentLinks.GetInternationalPayment,
                 submissionResponse.data.internationalPaymentId
             ),
             accessTokenClientCredentials,
@@ -268,7 +270,7 @@ class GetInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -294,7 +296,7 @@ class GetInternationalPayment(
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -310,7 +312,7 @@ class GetInternationalPayment(
         // When
         val result = PaymentRS().getPayment<OBWriteInternationalResponse5>(
             PaymentFactory.urlWithInternationalPaymentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPayment,
+                paymentLinks.GetInternationalPayment,
                 submissionResponse.data.internationalPaymentId
             ),
             accessTokenClientCredentials,
@@ -343,7 +345,7 @@ class GetInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -370,7 +372,7 @@ class GetInternationalPayment(
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -386,7 +388,7 @@ class GetInternationalPayment(
         // When
         val result = PaymentRS().getPayment<OBWriteInternationalResponse5>(
             PaymentFactory.urlWithInternationalPaymentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPayment,
+                paymentLinks.GetInternationalPayment,
                 submissionResponse.data.internationalPaymentId
             ),
             accessTokenClientCredentials,

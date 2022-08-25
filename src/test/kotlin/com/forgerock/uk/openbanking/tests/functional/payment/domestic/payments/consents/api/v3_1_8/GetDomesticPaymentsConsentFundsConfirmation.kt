@@ -7,6 +7,7 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
@@ -21,6 +22,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 ) {
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_false() {
         // Given
@@ -40,7 +42,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -71,7 +73,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+                    paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -106,7 +108,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode

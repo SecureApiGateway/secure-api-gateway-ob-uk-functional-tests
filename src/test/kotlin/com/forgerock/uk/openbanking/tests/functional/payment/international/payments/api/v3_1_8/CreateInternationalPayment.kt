@@ -17,6 +17,7 @@ import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8.CreateInternationalPaymentsConsents
@@ -29,8 +30,8 @@ class CreateInternationalPayment(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
 
     fun createInternationalPayment_rateType_AGREED_Test() {
         // Given
@@ -46,7 +47,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -73,7 +74,7 @@ class CreateInternationalPayment(
 
         // When
         val result = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -105,7 +106,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -132,7 +133,7 @@ class CreateInternationalPayment(
 
         // When
         val result = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -163,7 +164,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -190,7 +191,7 @@ class CreateInternationalPayment(
 
         // When
         val result = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -219,7 +220,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -246,7 +247,7 @@ class CreateInternationalPayment(
 
         // When
         val result = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -274,7 +275,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -298,7 +299,7 @@ class CreateInternationalPayment(
             tppResource.tpp.signingKid
         )
         val result = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+            paymentLinks.CreateInternationalPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -309,7 +310,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 signedPayload,
@@ -336,7 +337,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -357,7 +358,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 INVALID_FORMAT_DETACHED_JWS,
@@ -384,7 +385,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -406,7 +407,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPaymentNoDetachedJws<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode
             )
@@ -430,7 +431,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -459,7 +460,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 signedPayload,
@@ -486,7 +487,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -514,7 +515,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 signedPayload,
@@ -541,7 +542,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -575,7 +576,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 signedPayload,
@@ -602,7 +603,7 @@ class CreateInternationalPayment(
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp
@@ -636,7 +637,7 @@ class CreateInternationalPayment(
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-                createInternationalPaymentsConsents.paymentLinks.CreateInternationalPayment,
+                paymentLinks.CreateInternationalPayment,
                 paymentSubmissionRequest,
                 accessTokenAuthorizationCode,
                 signedPayload,

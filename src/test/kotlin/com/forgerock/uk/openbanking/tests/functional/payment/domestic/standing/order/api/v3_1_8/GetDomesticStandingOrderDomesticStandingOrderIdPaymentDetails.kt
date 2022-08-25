@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
@@ -14,9 +15,8 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
-    private val createDomesticStandingOrderConsentsApi = CreateDomesticStandingOrderConsents(version, tppResource)
     private val createDomesticStandingOrderApi = CreateDomesticStandingOrder(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest() {
@@ -51,7 +51,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails(
 
     private fun getDomesticStandingOrderPaymentDetails(standingOrderResponse: OBWriteDomesticStandingOrderResponse6): OBWritePaymentDetailsResponse1 {
         val getDomesticStandingOrderDetailsUrl = PaymentFactory.urlWithDomesticStandingOrderId(
-            createDomesticStandingOrderConsentsApi.paymentLinks.GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails,
+            paymentLinks.GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails,
             standingOrderResponse.data.domesticStandingOrderId
         )
         return paymentApiClient.sendGetRequest<OBWritePaymentDetailsResponse1>(

@@ -15,6 +15,7 @@ import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
@@ -36,7 +37,8 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     private val createDomesticStandingOrderConsentsApi = CreateDomesticStandingOrderConsents(version, tppResource)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
-    private val createPaymentUrl = createDomesticStandingOrderConsentsApi.paymentLinks.CreateDomesticStandingOrder
+    private val paymentLinks = getPaymentsApiLinks(version)
+    private val createPaymentUrl = paymentLinks.CreateDomesticStandingOrder
 
     fun createDomesticStandingOrderTest() {
         // Given
@@ -134,7 +136,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         val patchedConsent = PaymentRS().getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createDomesticStandingOrderConsentsApi.paymentLinks.GetDomesticStandingOrderConsent,
+                paymentLinks.GetDomesticStandingOrderConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -297,7 +299,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     private fun getPatchedConsent(consent: OBWriteDomesticStandingOrderConsentResponse6): OBWriteDomesticStandingOrderConsentResponse6 {
         val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticStandingOrderConsentResponse6>(
-            createDomesticStandingOrderConsentsApi.paymentLinks.GetDomesticStandingOrderConsent,
+            paymentLinks.GetDomesticStandingOrderConsent,
             consent.data.consentId,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
         )

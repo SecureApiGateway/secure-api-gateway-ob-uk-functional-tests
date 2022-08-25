@@ -9,11 +9,7 @@ import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
-import com.forgerock.securebanking.framework.http.fuel.defaultMapper
-import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.constants.INVALID_FORMAT_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.constants.INVALID_SIGNING_KID
 import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
@@ -22,18 +18,16 @@ import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
-    val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun createInternationalPaymentsConsents() {

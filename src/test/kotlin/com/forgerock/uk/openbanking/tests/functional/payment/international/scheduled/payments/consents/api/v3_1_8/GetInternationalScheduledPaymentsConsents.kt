@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
@@ -18,9 +19,9 @@ class GetInternationalScheduledPaymentsConsents(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
     private val createInternationalScheduledPaymentsConsents =
         CreateInternationalScheduledPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_Test() {
         // Given
@@ -41,7 +42,7 @@ class GetInternationalScheduledPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -76,7 +77,7 @@ class GetInternationalScheduledPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -111,7 +112,7 @@ class GetInternationalScheduledPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,

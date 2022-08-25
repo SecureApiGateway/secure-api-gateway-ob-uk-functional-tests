@@ -37,8 +37,7 @@ class CreateInternationalScheduledPaymentsConsents(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
-    val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun createInternationalScheduledPaymentsConsentsTest() {

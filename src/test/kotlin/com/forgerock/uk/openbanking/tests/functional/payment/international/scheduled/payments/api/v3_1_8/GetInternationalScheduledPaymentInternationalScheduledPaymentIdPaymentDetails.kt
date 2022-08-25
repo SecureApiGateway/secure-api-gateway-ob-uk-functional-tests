@@ -9,6 +9,7 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8.CreateInternationalScheduledPaymentsConsents
@@ -20,10 +21,10 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
     private val createInternationalScheduledPaymentsConsents =
         CreateInternationalScheduledPaymentsConsents(version, tppResource)
-
+    private val paymentLinks = getPaymentsApiLinks(version)
+    
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test() {
         // Given
         val consentRequest =
@@ -45,7 +46,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -75,7 +76,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse5>(
-            createInternationalScheduledPaymentsConsents.paymentLinks.CreateInternationalScheduledPayment,
+            paymentLinks.CreateInternationalScheduledPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -91,7 +92,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             PaymentFactory.urlWithInternationalScheduledPaymentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -126,7 +127,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -156,7 +157,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse5>(
-            createInternationalScheduledPaymentsConsents.paymentLinks.CreateInternationalScheduledPayment,
+            paymentLinks.CreateInternationalScheduledPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -172,7 +173,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             PaymentFactory.urlWithInternationalScheduledPaymentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -207,7 +208,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -237,7 +238,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse5>(
-            createInternationalScheduledPaymentsConsents.paymentLinks.CreateInternationalScheduledPayment,
+            paymentLinks.CreateInternationalScheduledPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -253,7 +254,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             PaymentFactory.urlWithInternationalScheduledPaymentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -285,7 +286,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
 
         val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentConsent,
+                paymentLinks.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -315,7 +316,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         )
 
         val submissionResponse = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse5>(
-            createInternationalScheduledPaymentsConsents.paymentLinks.CreateInternationalScheduledPayment,
+            paymentLinks.CreateInternationalScheduledPayment,
             standingOrderSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -331,7 +332,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             PaymentFactory.urlWithInternationalScheduledPaymentId(
-                createInternationalScheduledPaymentsConsents.paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,

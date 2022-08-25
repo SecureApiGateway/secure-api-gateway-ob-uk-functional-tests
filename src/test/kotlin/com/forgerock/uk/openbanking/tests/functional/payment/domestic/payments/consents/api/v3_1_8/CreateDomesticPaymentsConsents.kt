@@ -27,8 +27,8 @@ import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFact
 
 class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
-    val paymentLinks = getPaymentsApiLinks(version)
-    val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun createDomesticPaymentsConsentsTest() {
         // Given

@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
@@ -18,8 +19,8 @@ class GetInternationalPaymentsConsents(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
 
     fun shouldGetInternationalPaymentsConsents_rateType_AGREED_Test() {
         // Given
@@ -38,7 +39,7 @@ class GetInternationalPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -71,7 +72,7 @@ class GetInternationalPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -104,7 +105,7 @@ class GetInternationalPaymentsConsents(
         // When
         val result = PaymentRS().getConsent<OBWriteInternationalConsentResponse6>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsent,
+                paymentLinks.GetInternationalPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,

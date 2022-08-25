@@ -8,6 +8,7 @@ import assertk.assertions.isNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
@@ -16,7 +17,9 @@ import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTes
 
 class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
-    val createDomesticScheduledPaymentsConsents = CreateDomesticScheduledPaymentsConsents(version, tppResource)
+    private val createDomesticScheduledPaymentsConsents = CreateDomesticScheduledPaymentsConsents(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
+    private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun shouldGetDomesticScheduledPaymentsConsentsTest() {
         // Given
@@ -66,9 +69,9 @@ class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResour
     }
 
     private fun getConsent(consentId: String): OBWriteDomesticScheduledConsentResponse5 {
-        return createDomesticScheduledPaymentsConsents.paymentApiClient.sendGetRequest<OBWriteDomesticScheduledConsentResponse5>(
+        return paymentApiClient.sendGetRequest<OBWriteDomesticScheduledConsentResponse5>(
             PaymentFactory.urlWithConsentId(
-                createDomesticScheduledPaymentsConsents.paymentLinks.GetDomesticScheduledPaymentConsent,
+                paymentLinks.GetDomesticScheduledPaymentConsent,
                 consentId
             ), PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
         )

@@ -10,6 +10,7 @@ import com.forgerock.securebanking.framework.signature.signPayloadSubmitPayment
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.errors.INVALID_CONSENT_STATUS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
@@ -26,7 +27,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 ) {
 
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
-
+    private val paymentLinks = getPaymentsApiLinks(version)
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
@@ -46,7 +47,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -80,7 +81,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -114,7 +115,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -147,7 +148,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -177,7 +178,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
             )
 
         val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             consentRequest,
             tppResource.tpp,
             version,
@@ -201,7 +202,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -231,7 +232,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
             )
 
         val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             consentRequest,
             tppResource.tpp,
             version,
@@ -255,7 +256,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -281,7 +282,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
             )
 
         val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             consentRequest,
             tppResource.tpp,
             version,
@@ -301,7 +302,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -325,7 +326,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
             )
 
         val consent = PaymentRS().consent<OBWriteInternationalConsentResponse6>(
-            createInternationalPaymentsConsents.paymentLinks.CreateInternationalPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             consentRequest,
             tppResource.tpp,
             version,
@@ -350,7 +351,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    createInternationalPaymentsConsents.paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenAuthorizationCode

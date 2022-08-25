@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
@@ -21,6 +22,7 @@ class GetDomesticPayment(
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val createDomesticPaymentApi = CreateDomesticPayment(version, tppResource)
+    private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
     fun getDomesticPaymentsTest() {
@@ -69,7 +71,7 @@ class GetDomesticPayment(
 
     private fun getDomesticPayment(paymentResponse: OBWriteDomesticResponse5): OBWriteDomesticResponse5 {
         val getDomesticPaymentUrl = PaymentFactory.urlWithDomesticPaymentId(
-            createDomesticPaymentsConsentsApi.paymentLinks.GetDomesticPayment,
+            paymentLinks.GetDomesticPayment,
             paymentResponse.data.domesticPaymentId
         )
         return paymentApiClient.sendGetRequest(
