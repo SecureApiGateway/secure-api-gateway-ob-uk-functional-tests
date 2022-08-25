@@ -119,7 +119,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
 
     private fun getInternationalScheduledPayment(paymentResponse: OBWriteInternationalScheduledResponse5): OBWriteInternationalScheduledResponse5 {
         val getDomesticPaymentUrl = PaymentFactory.urlWithInternationalScheduledPaymentId(
-            paymentLinks.GetInternationalPayment,
+            paymentLinks.GetInternationalScheduledPayment,
             paymentResponse.data.internationalScheduledPaymentId
         )
         return paymentApiClient.sendGetRequest(
