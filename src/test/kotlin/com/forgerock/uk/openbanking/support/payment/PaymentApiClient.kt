@@ -5,6 +5,7 @@ import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
+import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.discovery.rsDiscovery
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Request
@@ -12,7 +13,7 @@ import com.github.kittinunf.fuel.core.isSuccessful
 import java.util.*
 
 val defaultPaymentScopesForAccessToken =
-    com.forgerock.uk.openbanking.support.discovery.asDiscovery.scopes_supported.intersect(
+    asDiscovery.scopes_supported.intersect(
         listOf(
             OBConstants.Scope.OPENID,
             OBConstants.Scope.ACCOUNTS,
@@ -133,4 +134,14 @@ class PaymentApiClient(val tpp: Tpp) {
         body: Any
     ) = newPostRequestBuilder(url, accessToken, body)
         .addIdempotencyKeyHeader()
+
+    /**
+     * Get an Access Token using the Client Credential grant using the following scopes:
+     * - openid
+     * - accounts
+     * - payments
+     */
+    fun getClientCredentialsAccessToken(tpp: Tpp): AccessToken {
+        return tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
+    }
 }
