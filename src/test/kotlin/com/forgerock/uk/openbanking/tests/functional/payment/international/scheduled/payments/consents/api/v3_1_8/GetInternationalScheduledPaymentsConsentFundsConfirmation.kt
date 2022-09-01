@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8
 
 import assertk.assertThat
 import assertk.assertions.*
@@ -11,19 +11,20 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.github.kittinunf.fuel.core.FuelError
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
+import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
 
-class GetInternationalPaymentsConsentFundsConfirmation(
+class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-    private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
+    private val createInternationalScheduledPaymentsConsents =
+        CreateInternationalScheduledPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -38,9 +39,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -57,9 +58,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -76,9 +77,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -93,9 +94,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -112,9 +113,9 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -131,10 +132,10 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
-        val (consent, _) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
+        val (consent, _) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
 
@@ -151,19 +152,18 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
-        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndReject(
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
+        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
-        val patchedConsent = createInternationalPaymentsConsents.getPatchedConsent(consent)
+        val patchedConsent = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
 
-        val payment: OBWriteInternationalResponse5 = paymentApiClient.submitPayment(
-            paymentLinks.CreateInternationalPayment,
-            accessTokenAuthorizationCode,
+        val payment: OBWriteInternationalScheduledResponse5 = paymentApiClient.submitPayment(
+            paymentLinks.CreateInternationalScheduledPayment,
+            authorizationToken,
             paymentSubmissionRequest
         )
 
@@ -172,7 +172,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenAuthorizationCode)
+            getFundsConfirmation(consent, authorizationToken)
         }
 
         // Then
@@ -180,30 +180,34 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
-    private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteInternationalConsent5): OBWriteFundsConfirmationResponse1 {
-        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+    private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteFundsConfirmationResponse1 {
+        val (consent, accessTokenAuthorizationCode) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
         return getFundsConfirmation(consent, accessTokenAuthorizationCode)
     }
 
     private fun getFundsConfirmation(
-        consent: OBWriteInternationalConsentResponse6,
+        consent: OBWriteInternationalScheduledConsentResponse6,
         accessTokenAuthorizationCode: AccessToken
     ): OBWriteFundsConfirmationResponse1 {
         return paymentApiClient.sendGetRequest(
             PaymentFactory.urlWithConsentId(
-                paymentLinks.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ), accessTokenAuthorizationCode
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
-        return OBWriteInternational3().data(
-            OBWriteInternational3Data()
+    private fun createPaymentRequest(patchedConsent: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduled3 {
+        return OBWriteInternationalScheduled3().data(
+            OBWriteInternationalScheduled3Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
-        ).risk(patchedConsent.risk)
+                .initiation(
+                    PaymentFactory.mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
+                        patchedConsent.data.initiation
+                    )
+                )
+        )
     }
 }

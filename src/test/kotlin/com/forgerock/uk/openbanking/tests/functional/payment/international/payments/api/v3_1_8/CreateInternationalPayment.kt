@@ -23,13 +23,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8.CreateInternationalPaymentsConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationInstructedAmount
-import uk.org.openbanking.datamodel.payment.OBWriteInternational3
-import uk.org.openbanking.datamodel.payment.OBWriteInternational3Data
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class CreateInternationalPayment(
@@ -52,7 +46,10 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     fun createInternationalPayment_rateType_ACTUAL_Test() {
@@ -69,6 +66,11 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     fun createInternationalPayment_rateType_INDICATIVE_Test() {
@@ -85,6 +87,10 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     fun createInternationalPayment_mandatoryFields_Test() {
@@ -99,6 +105,10 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     fun shouldCreateInternationalPayment_throwsInternationalPaymentAlreadyExists_Test() {
@@ -281,7 +291,8 @@ class CreateInternationalPayment(
                 .consentId(patchedConsent.data.consentId)
                 .initiation(PaymentFactory.copyOBWriteInternational3DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
-        paymentSubmissionInvalidAmount.data.initiation.instructedAmount = OBWriteDomestic2DataInitiationInstructedAmount().amount("123123").currency("GBP")
+        paymentSubmissionInvalidAmount.data.initiation.instructedAmount =
+            OBWriteDomestic2DataInitiationInstructedAmount().amount("123123").currency("GBP")
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
             defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)

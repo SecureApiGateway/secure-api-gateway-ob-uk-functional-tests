@@ -53,7 +53,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     fun createInternationalScheduledPayment_rateType_ACTUAL_Test() {
@@ -71,6 +74,11 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     fun createInternationalScheduledPayment_rateType_INDICATIVE_Test() {
@@ -88,17 +96,27 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     fun createInternationalScheduledPayment_mandatoryFields_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent5MandatoryFields()
+
         // When
         val result = submitPayment(consentRequest)
+
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     fun shouldCreateInternationalScheduledPayment_throwsInternationalScheduledPaymentAlreadyExists_Test() {

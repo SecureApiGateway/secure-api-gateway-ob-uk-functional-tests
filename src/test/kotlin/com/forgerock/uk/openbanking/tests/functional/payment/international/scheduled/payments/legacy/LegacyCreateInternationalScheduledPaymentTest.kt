@@ -65,6 +65,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -115,7 +119,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     @EnabledIfVersion(
@@ -151,6 +163,11 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.expirationDateTime).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -201,6 +218,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -236,6 +262,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -286,6 +316,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -318,6 +356,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -368,6 +410,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -993,6 +1043,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -1044,7 +1098,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     @EnabledIfVersion(
@@ -1080,6 +1142,11 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.expirationDateTime).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -1131,6 +1198,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -1166,6 +1242,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -1217,6 +1297,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -1249,6 +1337,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -1300,6 +1392,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -2008,6 +2108,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -2063,7 +2167,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     @EnabledIfVersion(
@@ -2099,6 +2211,11 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.expirationDateTime).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -2154,6 +2271,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -2189,6 +2315,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -2244,6 +2374,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -2276,6 +2414,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -2331,6 +2473,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -3079,6 +3229,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -3135,7 +3289,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     @EnabledIfVersion(
@@ -3171,6 +3333,11 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.expirationDateTime).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -3227,6 +3394,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -3262,6 +3438,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -3318,6 +3498,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -3350,6 +3538,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -3406,6 +3598,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -4154,6 +4354,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -4206,7 +4410,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
     }
 
     @EnabledIfVersion(
@@ -4242,6 +4454,11 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.expirationDateTime).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -4294,6 +4511,15 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
+        assertThat(result.data.exchangeRateInformation.expirationDateTime).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -4329,6 +4555,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -4381,6 +4611,13 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(consent.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @EnabledIfVersion(
@@ -4413,6 +4650,10 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.data.exchangeRateInformation).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(consent.data.exchangeRateInformation.exchangeRate).isNotNull()
 
         // accessToken to submit payment use the grant type authorization_code
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
@@ -4465,6 +4706,14 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.rateType).isNotNull()
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")

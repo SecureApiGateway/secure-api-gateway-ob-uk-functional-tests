@@ -37,7 +37,8 @@ class PaymentAS : GeneralAS() {
         consentId: String,
         registrationResponse: RegistrationResponse,
         psu: UserRegistrationRequest,
-        tpp: Tpp
+        tpp: Tpp,
+        decision: String = "Authorised"
     ): AccessToken {
         val authenticationURL = generateAuthenticationURL(
             consentId, registrationResponse, psu, tpp, asDiscovery.scopes_supported.intersect(
@@ -54,7 +55,7 @@ class PaymentAS : GeneralAS() {
         val consentRequest = continueAuthorize(authorizeURL, cookie)
         val consentDetails = getConsentDetails(consentRequest)
         val debtorAccount = getDebtorAccountFromConsentDetails(consentDetails)
-        val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount)
+        val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount, decision)
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
         return exchangeCode(registrationResponse, tpp, authCode)
     }
@@ -76,9 +77,10 @@ class PaymentAS : GeneralAS() {
 
     private fun sendConsentDecision(
         consentRequest: String,
-        consentedAccount: FRFinancialAccount
+        consentedAccount: FRFinancialAccount,
+        decision: String
     ): SendConsentDecisionResponseBody {
-        val body = SendConsentDecisionRequestBody(consentRequest, "Authorised", consentedAccount)
+        val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount)
         val (_, response, result) = Fuel.post("$RCS_SERVER/api/rcs/consent/decision/")
             .jsonBody(body)
             .responseObject<SendConsentDecisionResponseBody>()

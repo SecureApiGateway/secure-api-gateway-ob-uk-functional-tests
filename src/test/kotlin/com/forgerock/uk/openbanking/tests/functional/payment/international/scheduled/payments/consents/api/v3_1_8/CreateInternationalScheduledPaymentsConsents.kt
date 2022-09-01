@@ -161,6 +161,19 @@ class CreateInternationalScheduledPaymentsConsents(
         return consent to accessTokenAuthorizationCode
     }
 
+    fun createInternationalScheduledPaymentConsentAndReject(consentRequest: OBWriteInternationalScheduledConsent5): Pair<OBWriteInternationalScheduledConsentResponse6, AccessToken> {
+        val consent = createInternationalScheduledPaymentConsent(consentRequest)
+        // accessToken to submit payment use the grant type authorization_code
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp
+        )
+
+        return consent to accessTokenAuthorizationCode
+    }
+
     fun getPatchedConsent(consent: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduledConsentResponse6 {
         val patchedConsent = paymentApiClient.getConsent<OBWriteInternationalScheduledConsentResponse6>(
             paymentLinks.GetInternationalScheduledPaymentConsent,

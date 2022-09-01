@@ -23,6 +23,8 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -132,6 +134,20 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
+        )
+        return consent to accessTokenAuthorizationCode
+    }
+
+
+    fun createInternationalPaymentConsentAndReject(consentRequest: OBWriteInternationalConsent5): Pair<OBWriteInternationalConsentResponse6, AccessToken> {
+        val consent = createInternationalPaymentConsent(consentRequest)
+        // accessToken to submit payment use the grant type authorization_code
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp,
+            "Rejected"
         )
         return consent to accessTokenAuthorizationCode
     }
