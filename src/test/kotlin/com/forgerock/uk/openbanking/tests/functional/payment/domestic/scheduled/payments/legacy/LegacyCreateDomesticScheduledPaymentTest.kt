@@ -117,6 +117,9 @@ class LegacyCreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallbac
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty()) {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -793,6 +796,9 @@ class LegacyCreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallbac
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty()) {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
@@ -1560,6 +1566,9 @@ class LegacyCreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallbac
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty()) {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")

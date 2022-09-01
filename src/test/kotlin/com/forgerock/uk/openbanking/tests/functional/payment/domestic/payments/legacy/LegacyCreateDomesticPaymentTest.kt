@@ -116,6 +116,10 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
@@ -784,6 +788,10 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
@@ -1543,6 +1551,10 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        if (consent.data.charges.isNullOrEmpty())
+        {
+            assertThat(result.data.charges).isNotEmpty()
+        }
     }
 
     @EnabledIfVersion(
