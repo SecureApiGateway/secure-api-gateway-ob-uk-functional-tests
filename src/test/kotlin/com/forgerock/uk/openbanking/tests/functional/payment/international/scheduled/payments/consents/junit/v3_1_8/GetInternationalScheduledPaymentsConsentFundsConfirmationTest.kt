@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled("Not implemented")
 class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
 
     private lateinit var getInternationalScheduledPaymentsConsentFundsConfirmation: GetInternationalScheduledPaymentsConsentFundsConfirmation

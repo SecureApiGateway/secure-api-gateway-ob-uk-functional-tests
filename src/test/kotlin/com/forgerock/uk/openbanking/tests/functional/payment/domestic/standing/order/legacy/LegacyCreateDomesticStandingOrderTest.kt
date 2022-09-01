@@ -117,8 +117,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -203,8 +202,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -883,8 +881,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -971,8 +968,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -1742,8 +1738,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -1830,8 +1825,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -2593,8 +2587,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
@@ -2681,8 +2674,7 @@ class LegacyCreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.T
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        if (consent.data.charges.isNullOrEmpty())
-        {
+        if (consent.data.charges.isNullOrEmpty()) {
             assertThat(result.data.charges).isNotEmpty()
         }
     }
