@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled("Not implemented")
 class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
 
     private lateinit var getInternationalScheduledPaymentsConsentFundsConfirmation: GetInternationalScheduledPaymentsConsentFundsConfirmation
@@ -22,8 +21,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -34,8 +33,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -46,8 +45,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -58,8 +57,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -70,8 +69,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -82,8 +81,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -95,8 +94,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -104,11 +103,12 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
         getInternationalScheduledPaymentsConsentFundsConfirmation.shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test()
     }
 
+    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test

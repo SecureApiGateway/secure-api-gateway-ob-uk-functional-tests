@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled("Not implemented")
 class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
 
     lateinit var getInternationalPaymentsConsentFundsConfirmation: GetInternationalPaymentsConsentFundsConfirmation
@@ -104,6 +103,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         getInternationalPaymentsConsentFundsConfirmation.shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test()
     }
 
+    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",

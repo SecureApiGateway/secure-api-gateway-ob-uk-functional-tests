@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.legacy
+package com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.consents.legacy
 
 import assertk.assertThat
 import assertk.assertions.*
@@ -24,20 +24,20 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.*
+import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.*
 
 @Disabled("Not implemented")
-class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -48,8 +48,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -73,7 +73,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -90,13 +90,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -109,8 +109,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -133,7 +133,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -150,13 +150,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -169,8 +169,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -193,7 +193,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -210,13 +210,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -227,8 +227,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -252,7 +252,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -269,13 +269,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -288,8 +288,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -312,7 +312,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -329,13 +329,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -348,8 +348,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -372,7 +372,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -390,13 +390,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -405,8 +405,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -425,7 +425,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -441,13 +441,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_4() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -456,8 +456,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -477,9 +477,9 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
             tppResource.tpp
         )
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse5>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse5>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetInternationalPaymentConsent,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -492,8 +492,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteInternational3().data(
-            OBWriteInternational3Data()
+        val paymentSubmissionRequest = OBWriteInternationalScheduled3().data(
+            OBWriteInternationalScheduled3Data()
                 .consentId(patchedConsent.data.consentId)
                 .initiation(patchedConsent.data.initiation)
         ).risk(patchedConsent.risk)
@@ -504,8 +504,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
             tppResource.tpp.signingKid
         )
 
-        val payment = PaymentRS().submitPayment<OBWriteInternationalResponse5>(
-            payment3_1_4.Links.links.CreateInternationalPayment,
+        val payment = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse5>(
+            payment3_1_4.Links.links.CreateInternationalScheduledPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -517,7 +517,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_4.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_4.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenAuthorizationCode
@@ -532,13 +532,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -549,8 +549,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -574,7 +574,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -591,13 +591,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -610,8 +610,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -634,7 +634,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -651,13 +651,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -670,8 +670,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -694,7 +694,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -711,13 +711,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -728,8 +728,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -753,7 +753,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -770,13 +770,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -789,8 +789,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -813,7 +813,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -830,13 +830,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -849,8 +849,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -873,7 +873,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -891,13 +891,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -906,8 +906,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -926,7 +926,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -942,13 +942,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_3() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent4()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent4()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -957,8 +957,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -978,9 +978,9 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
             tppResource.tpp
         )
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse4>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse4>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetInternationalPaymentConsent,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -993,8 +993,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteInternational3().data(
-            OBWriteInternational3Data()
+        val paymentSubmissionRequest = OBWriteInternationalScheduled3().data(
+            OBWriteInternationalScheduled3Data()
                 .consentId(patchedConsent.data.consentId)
                 .initiation(patchedConsent.data.initiation)
         ).risk(patchedConsent.risk)
@@ -1007,8 +1007,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 true
             )
 
-        val payment = PaymentRS().submitPayment<OBWriteInternationalResponse4>(
-            payment3_1_3.Links.links.CreateInternationalPayment,
+        val payment = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse4>(
+            payment3_1_3.Links.links.CreateInternationalScheduledPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -1019,7 +1019,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_3.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_3.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenAuthorizationCode
@@ -1035,13 +1035,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -1052,8 +1052,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1077,7 +1077,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1094,13 +1094,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1113,8 +1113,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1137,7 +1137,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1154,13 +1154,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1173,8 +1173,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1197,7 +1197,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1214,13 +1214,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -1231,8 +1231,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1256,7 +1256,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1273,13 +1273,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1292,8 +1292,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1316,7 +1316,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1333,13 +1333,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1352,8 +1352,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1376,7 +1376,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1394,13 +1394,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -1409,8 +1409,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1429,7 +1429,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -1445,13 +1445,13 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_2() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_2() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent3()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent3()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -1460,8 +1460,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_2,
@@ -1481,9 +1481,9 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
             tppResource.tpp
         )
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse3>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_2.Links.links.GetInternationalPaymentConsent,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -1496,10 +1496,10 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteInternational2().data(
-            OBWriteDataInternational2()
+        val paymentSubmissionRequest = OBWriteInternationalScheduled2().data(
+            OBWriteDataInternationalScheduled2()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteInternational2DataInitiationToOBInternational2(patchedConsent.data.initiation))
+                .initiation(PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1510,8 +1510,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 true
             )
 
-        val payment = PaymentRS().submitPayment<OBWriteInternationalResponse3>(
-            payment3_1_2.Links.links.CreateInternationalPayment,
+        val payment = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse3>(
+            payment3_1_2.Links.links.CreateInternationalScheduledPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -1522,7 +1522,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_2.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_2.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenAuthorizationCode
@@ -1537,14 +1537,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -1555,8 +1555,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1580,7 +1580,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1597,14 +1597,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1617,8 +1617,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1641,7 +1641,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1658,14 +1658,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1678,8 +1678,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1702,7 +1702,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1719,14 +1719,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -1737,8 +1737,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1762,7 +1762,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1779,14 +1779,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1799,8 +1799,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1823,7 +1823,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1840,14 +1840,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -1860,8 +1860,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1884,7 +1884,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         // When
         val result = PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ),
             accessTokenAuthorizationCode
@@ -1902,14 +1902,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -1918,8 +1918,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1938,7 +1938,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenClientCredentials
@@ -1954,14 +1954,14 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"],
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1"]
     )
     @Test
-    fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_1() {
+    fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_1() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent2()
+        val consentRequest = aValidOBWriteInternationalScheduledConsent2()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -1970,8 +1970,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteInternationalConsentResponse2>(
-            payment3_1_1.Links.links.CreateInternationalPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteInternationalScheduledConsentResponse2>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_1,
@@ -1991,9 +1991,9 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
             tppResource.tpp
         )
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalConsentResponse3>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteInternationalScheduledConsentResponse3>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_1.Links.links.GetInternationalPaymentConsent,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -2006,10 +2006,10 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteInternational2().data(
-            OBWriteDataInternational2()
+        val paymentSubmissionRequest = OBWriteInternationalScheduled2().data(
+            OBWriteDataInternationalScheduled2()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteInternational2DataInitiationToOBInternational2(patchedConsent.data.initiation))
+                .initiation(PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -2020,8 +2020,8 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
                 true
             )
 
-        val payment = PaymentRS().submitPayment<OBWriteInternationalResponse3>(
-            payment3_1_1.Links.links.CreateInternationalPayment,
+        val payment = PaymentRS().submitPayment<OBWriteInternationalScheduledResponse3>(
+            payment3_1_1.Links.links.CreateInternationalScheduledPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -2033,7 +2033,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         val exception = assertThrows(AssertionError::class.java) {
             PaymentRS().getFundsConfirmation<OBWriteFundsConfirmationResponse1>(
                 PaymentFactory.urlWithConsentId(
-                    payment3_1_1.Links.links.GetInternationalPaymentConsentsConsentIdFundsConfirmation,
+                    payment3_1_1.Links.links.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                     consent.data.consentId
                 ),
                 accessTokenAuthorizationCode

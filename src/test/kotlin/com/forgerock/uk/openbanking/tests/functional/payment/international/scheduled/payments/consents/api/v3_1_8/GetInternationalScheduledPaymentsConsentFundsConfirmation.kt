@@ -10,10 +10,7 @@ import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
 
 class GetInternationalScheduledPaymentsConsentFundsConfirmation(
@@ -158,16 +155,24 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent5()
+        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        val patchedConsent = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
+        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val payment: OBWriteInternationalScheduledResponse5 = paymentApiClient.submitPayment(
+            paymentLinks.CreateInternationalScheduledPayment,
+            authorizationToken,
+            paymentSubmissionRequest
+        )
 
         //An ASPSP can only respond to a funds confirmation request if the international-payment-consent resource has an Authorised status.
         // If the status is not Authorised, an ASPSP must respond with a 400 (Bad Request) and a UK.OBIE.Resource.InvalidConsentStatus error code
-        val (consent, accessTokenAuthorizationCode) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndReject(
-            consentRequest
-        )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenAuthorizationCode)
+            getFundsConfirmation(consent, authorizationToken)
         }
 
         // Then
@@ -191,6 +196,18 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
                 paymentLinks.GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ), accessTokenAuthorizationCode
+        )
+    }
+
+    private fun createPaymentRequest(patchedConsent: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduled3 {
+        return OBWriteInternationalScheduled3().data(
+            OBWriteInternationalScheduled3Data()
+                .consentId(patchedConsent.data.consentId)
+                .initiation(
+                    PaymentFactory.mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
+                        patchedConsent.data.initiation
+                    )
+                )
         )
     }
 }

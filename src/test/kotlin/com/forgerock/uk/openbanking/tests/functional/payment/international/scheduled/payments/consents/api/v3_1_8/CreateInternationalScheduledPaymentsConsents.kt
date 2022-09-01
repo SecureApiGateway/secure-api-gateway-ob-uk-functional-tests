@@ -168,9 +168,9 @@ class CreateInternationalScheduledPaymentsConsents(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
-            tppResource.tpp,
-            "Rejected"
+            tppResource.tpp
         )
+
         return consent to accessTokenAuthorizationCode
     }
 

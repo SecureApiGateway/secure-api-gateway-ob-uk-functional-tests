@@ -10,10 +10,7 @@ import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
 
 class GetInternationalPaymentsConsentFundsConfirmation(
@@ -154,15 +151,24 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
+    
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
-
-        //An ASPSP can only respond to a funds confirmation request if the international-payment-consent resource has an Authorised status.
-        // If the status is not Authorised, an ASPSP must respond with a 400 (Bad Request) and a UK.OBIE.Resource.InvalidConsentStatus error code
         val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndReject(
             consentRequest
         )
+        val patchedConsent = createInternationalPaymentsConsents.getPatchedConsent(consent)
+        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val payment: OBWriteInternationalResponse5 = paymentApiClient.submitPayment(
+            paymentLinks.CreateInternationalPayment,
+            accessTokenAuthorizationCode,
+            paymentSubmissionRequest
+        )
+
+        //An ASPSP can only respond to a funds confirmation request if the international-payment-consent resource has an Authorised status.
+        // If the status is not Authorised, an ASPSP must respond with a 400 (Bad Request) and a UK.OBIE.Resource.InvalidConsentStatus error code
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -191,5 +197,13 @@ class GetInternationalPaymentsConsentFundsConfirmation(
                 consent.data.consentId
             ), accessTokenAuthorizationCode
         )
+    }
+
+    private fun createPaymentRequest(patchedConsent: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
+        return OBWriteInternational3().data(
+            OBWriteInternational3Data()
+                .consentId(patchedConsent.data.consentId)
+                .initiation(patchedConsent.data.initiation)
+        ).risk(patchedConsent.risk)
     }
 }

@@ -22,8 +22,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_v3_1_9() {
@@ -33,8 +33,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_v3_1_9() {
@@ -44,8 +44,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_v3_1_9() {
@@ -55,8 +55,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_v3_1_9() {
@@ -66,8 +66,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_v3_1_9() {
@@ -77,8 +77,8 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_v3_1_9() {
@@ -89,19 +89,20 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_9() {
         getInternationalScheduledPaymentsConsentFundsConfirmation.shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test()
     }
 
+    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
-        operations = ["CreateInternationalPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
-        apis = ["international-payment-consents"]
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
     )
     @Test
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_9() {
