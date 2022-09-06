@@ -88,4 +88,16 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsRequestExecutionTimeInThePast_v3_1_8() {
         createDomesticScheduledPaymentsConsentsApi.shouldCreateDomesticScheduledPaymentsConsents_throwsRequestExecutionTimeInThePastTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticScheduledPaymentConsent"],
+        apis = ["domestic-scheduled-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun shouldCreateDomesticScheduledPaymentsConsents_throwsRejectedConsent_v3_1_8() {
+        createDomesticScheduledPaymentsConsentsApi.shouldCreateDomesticScheduledPaymentsConsents_throwsRejectedConsentTest()
+    }
 }

@@ -11,16 +11,9 @@ import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.constants.INVALID_FREQUENCY
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FREQUENCY_VALUE
-import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
+import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
@@ -83,7 +76,8 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer())
+                .sendRequest()
         }
 
         // Then
@@ -113,7 +107,12 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                DefaultJwsSignatureProducer(
+                    tppResource.tpp,
+                    false
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -128,12 +127,32 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                InvalidKidJwsSignatureProducer(
+                    tppResource.tpp
+                )
+            ).sendRequest()
         }
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+    }
+
+    fun shouldCreateDomesticStandingOrdersConsents_throwsRejectedConsentTest() {
+        // Given
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticStandingOrderConsentAndReject(
+                consentRequest
+            )
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(CONSENT_NOT_AUTHORISED)
     }
 
     fun createDomesticStandingOrderConsent(consentRequest: OBWriteDomesticStandingOrderConsent5): OBWriteDomesticStandingOrderConsentResponse6 {
@@ -155,6 +174,18 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
+        )
+        return consent to accessTokenAuthorizationCode
+    }
+
+    fun createDomesticStandingOrderConsentAndReject(consentRequest: OBWriteDomesticStandingOrderConsent5): Pair<OBWriteDomesticStandingOrderConsentResponse6, AccessToken> {
+        val consent = createDomesticStandingOrderConsent(consentRequest)
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp,
+            "Rejected"
         )
         return consent to accessTokenAuthorizationCode
     }

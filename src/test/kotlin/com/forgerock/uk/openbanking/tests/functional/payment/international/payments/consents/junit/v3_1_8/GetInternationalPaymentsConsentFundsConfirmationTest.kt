@@ -104,7 +104,6 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         getInternationalPaymentsConsentFundsConfirmation.shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test()
     }
 
-    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",

@@ -2,10 +2,13 @@ package com.forgerock.uk.openbanking.support.general
 
 import com.forgerock.securebanking.framework.configuration.PLATFORM_SERVER
 import com.forgerock.securebanking.framework.configuration.RCS_SERVER
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
 import com.forgerock.securebanking.framework.data.*
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
+import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
+import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
+import com.forgerock.uk.openbanking.framework.errors.LOCATION_HEADER_ERROR
+import com.forgerock.uk.openbanking.framework.errors.LOCATION_HEADER_NOT_EXISTS
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 import com.github.kittinunf.fuel.Fuel
@@ -39,7 +42,7 @@ open class GeneralAS {
     &nonce=10d260bf-a7d9-444a-92d9-7b7a5f088208&request=eyJraWQiOiIyeU5qUE9DanBPOHJjS2c2X2xWdFd6QVFSMFUiLCJhbGciOiJQUzI1NiJ9.eyJhdWQiOiJodHRwczovL29wZW5hbS1mb3JnZXJvY2stc2VjdXJlYmFua2luZ2FjY2VsZXJhdG8uZm9yZ2VibG9ja3MuY29tOjQ0My9hbS9vYXV0aDIvcmVhbG1zL3Jvb3QvcmVhbG1zL2FscGhhIiwiY2xhaW1zIjp7ImlkX3Rva2VuIjp7ImFjciI6eyJlc3NlbnRpYWwiOnRydWUsInZhbHVlIjoidXJuOm9wZW5iYW5raW5nOnBzZDI6Y2EifSwib3BlbmJhbmtpbmdfaW50ZW50X2lkIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiJBQUNfZTViOTJkNjUtYmMxNy00MWY0LTk0NTctY2ZkMWUwZTU2NmM3In19LCJ1c2VyaW5mbyI6eyJvcGVuYmFua2luZ19pbnRlbnRfaWQiOnsiZXNzZW50aWFsIjp0cnVlLCJ2YWx1ZSI6IkFBQ19lNWI5MmQ2NS1iYzE3LTQxZjQtOTQ1Ny1jZmQxZTBlNTY2YzcifX19LCJjbGllbnRfaWQiOiIyMTlmNzQ5Zi1jZDM5LTQzYjQtYTJlMS03NmZlMWZkNzk1M2YiLCJleHAiOjE2NDcyNjAyMzgsImlhdCI6MTY0NzI1OTYzOCwianRpIjoiMTNhNDBmNGYtZWFmZi00ZDY0LTg2N2YtMWU5ZGQ1ZWYyYjVhIiwiaXNzIjoiMjE5Zjc0OWYtY2QzOS00M2I0LWEyZTEtNzZmZTFmZDc5NTNmIiwibm9uY2UiOiIxMGQyNjBiZi1hN2Q5LTQ0NGEtOTJkOS03YjdhNWYwODgyMDgiLCJyZWRpcmVjdF91cmkiOiJodHRwczovL2dvb2dsZS5jb20iLCJyZXNwb25zZV90eXBlIjoiY29kZSBpZF90b2tlbiIsInNjb3BlIjoib3BlbmlkIGFjY291bnRzIiwic3RhdGUiOiIxMGQyNjBiZi1hN2Q5LTQ0NGEtOTJkOS03YjdhNWYwODgyMDgifQ.i8UU8MrHXhlcl7VBh3nVTIYbOAlvAIJL7ivkgMqrbHLycdGxjw81IwuEssDWZBXf_PFMnDItWpsz_y10u4G4I6n0nq7E6q4PZJlx_bQyJk8LVX98n77Erk1avAZCP6gdbBeeqdi8YhriinSBrUd1GSoR-mgDbWkA99xMAexL9cBarNMSYfmlghuVm7HtXCPc1KvaRALr6y6lS9kN7CG3noXJUwn0SX8FFtfVPHfGdKZvPN-6T7d5ZbtUXg-k_CjR_fUbxBDmBqo9RSQRxOBN-4xLRSzy3H_6cUjI0CEbfyF0dhQfVbZHFgVPPzXv2QgN8hfe13bu1HZuUPAn-693yw
     &scope=openid%20accounts&username=psu&password=0penBanking!&acr=urn%3Aopenbanking%3Apsd2%3Aca&acr_sig=1CV3mNNno7XVBxmVlhU3Q3_1Z5OdpshVpqtVIGcgg3U
      */
-    protected fun  generateAuthenticationURL(
+    protected fun generateAuthenticationURL(
         consentId: String,
         registrationResponse: RegistrationResponse,
         psu: UserRegistrationRequest,
@@ -191,11 +194,16 @@ open class GeneralAS {
     private fun getLocationFromHeaders(response: Response): String {
         try {
             var location = response.header("Location").firstOrNull().toString()
-            if (location.contains("error_description"))
-                throw AssertionError("Location header contains an error")
+            if (location.contains("error_description")) {
+                if (location.contains("Resource%20Owner%20did%20not%20authorize%20the%20request")) {
+                    throw AssertionError(CONSENT_NOT_AUTHORISED)
+                } else {
+                    throw AssertionError(LOCATION_HEADER_ERROR)
+                }
+            }
             return location
         } catch (e: Exception) {
-            throw AssertionError("Location header doesn't exist")
+            throw AssertionError(LOCATION_HEADER_NOT_EXISTS)
         }
     }
 

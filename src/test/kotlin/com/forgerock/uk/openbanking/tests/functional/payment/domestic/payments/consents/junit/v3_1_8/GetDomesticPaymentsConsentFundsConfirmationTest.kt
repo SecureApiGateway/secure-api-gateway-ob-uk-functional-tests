@@ -54,4 +54,16 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true_v3_1_8() {
         getDomesticPaymentsConsentFundsConfirmationApi.shouldGetDomesticPaymentConsentsFundsConfirmation_true()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent", "GetDomesticPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_8() {
+        getDomesticPaymentsConsentFundsConfirmationApi.shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test()
+    }
 }

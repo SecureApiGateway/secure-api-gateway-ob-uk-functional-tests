@@ -75,4 +75,16 @@ class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppRe
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJws_v3_1_8() {
         createDomesticPaymentsConsentsApi.shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJwsTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun shouldCreateDomesticPaymentsConsents_throwsRejectedConsent_v3_1_8() {
+        createDomesticPaymentsConsentsApi.shouldCreateDomesticPaymentsConsents_throwsRejectedConsent_Test()
+    }
 }

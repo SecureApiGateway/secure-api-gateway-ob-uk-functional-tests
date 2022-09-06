@@ -10,16 +10,9 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.errors.REQUEST_EXECUTION_TIME_IN_THE_PAST
-import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
+import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
@@ -50,7 +43,8 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer())
+                .sendRequest()
         }
 
         // Then
@@ -76,7 +70,12 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                DefaultJwsSignatureProducer(
+                    tppResource.tpp,
+                    false
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -89,7 +88,11 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                InvalidKidJwsSignatureProducer(
+                    tppResource.tpp
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -110,6 +113,21 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat(exception.message.toString()).contains(REQUEST_EXECUTION_TIME_IN_THE_PAST)
+    }
+
+    fun shouldCreateDomesticScheduledPaymentsConsents_throwsRejectedConsentTest() {
+        // Given
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticScheduledPaymentConsentAndReject(
+                consentRequest
+            )
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(CONSENT_NOT_AUTHORISED)
     }
 
     fun createDomesticScheduledPaymentConsent(
@@ -133,6 +151,18 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
+        )
+        return consent to accessTokenAuthorizationCode
+    }
+
+    fun createDomesticScheduledPaymentConsentAndReject(consentRequest: OBWriteDomesticScheduledConsent4): Pair<OBWriteDomesticScheduledConsentResponse5, AccessToken> {
+        val consent = createDomesticScheduledPaymentConsent(consentRequest)
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp,
+            "Rejected"
         )
         return consent to accessTokenAuthorizationCode
     }

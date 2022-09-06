@@ -87,4 +87,16 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJws_v3_1_8() {
         createInternationalPaymentsConsents.shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJwsTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateInternationalPaymentConsent"],
+        apis = ["international-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun shouldCreateInternationalPaymentConsents_throwsRejectedConsent_v3_1_8() {
+        createInternationalPaymentsConsents.shouldCreateInternationalPaymentConsents_throwsRejectedConsent_Test()
+    }
 }

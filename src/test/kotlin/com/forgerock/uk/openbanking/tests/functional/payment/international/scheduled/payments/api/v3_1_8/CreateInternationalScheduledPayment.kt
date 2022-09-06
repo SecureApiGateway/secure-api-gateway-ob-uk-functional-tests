@@ -11,10 +11,7 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.constants.INVALID_CONSENT_ID
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
-import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
@@ -23,12 +20,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.map
 import com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8.CreateInternationalScheduledPaymentsConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduled3
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduled3Data
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledResponse5
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
 
@@ -365,6 +357,6 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
                         patchedConsent.data.initiation
                     )
                 )
-            )
+        )
     }
 }

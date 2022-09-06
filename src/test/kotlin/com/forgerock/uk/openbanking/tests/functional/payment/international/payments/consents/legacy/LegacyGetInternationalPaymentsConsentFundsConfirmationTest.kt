@@ -437,7 +437,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
+    
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
@@ -938,7 +938,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
+    
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
@@ -1441,7 +1441,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
+    
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
@@ -1950,7 +1950,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    @Disabled("The consent status is not changed to Consumed after the payment is submitted. This functionality should be implemented.")
+    
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",

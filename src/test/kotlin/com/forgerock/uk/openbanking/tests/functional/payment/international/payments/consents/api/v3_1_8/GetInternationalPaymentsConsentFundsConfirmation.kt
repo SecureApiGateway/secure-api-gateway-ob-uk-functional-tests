@@ -155,7 +155,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
-        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndReject(
+        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
         val patchedConsent = createInternationalPaymentsConsents.getPatchedConsent(consent)
