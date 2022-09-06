@@ -10,9 +10,7 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
@@ -97,6 +95,21 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
     }
 
+    fun shouldCreateDomesticPaymentsConsents_throwsRejectedConsent_Test() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticPaymentsConsentAndReject(
+                consentRequest
+            )
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(CONSENT_NOT_AUTHORISED)
+    }
+
     fun createDomesticPaymentsConsent(
         consent: OBWriteDomesticConsent4,
     ): OBWriteDomesticConsentResponse5 {
@@ -121,6 +134,19 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         )
         return consent to accessTokenAuthorizationCode
     }
+
+    fun createDomesticPaymentsConsentAndReject(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteDomesticConsentResponse5, AccessToken> {
+        val consent = createDomesticPaymentsConsent(consentRequest)
+        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp,
+            "Rejected"
+        )
+        return consent to accessTokenAuthorizationCode
+    }
+
     fun getPatchedConsent(consent: OBWriteDomesticConsentResponse5): OBWriteDomesticConsentResponse5 {
         val patchedConsent = paymentApiClient.getConsent<OBWriteDomesticConsentResponse5>(
             paymentLinks.GetDomesticPaymentConsent,

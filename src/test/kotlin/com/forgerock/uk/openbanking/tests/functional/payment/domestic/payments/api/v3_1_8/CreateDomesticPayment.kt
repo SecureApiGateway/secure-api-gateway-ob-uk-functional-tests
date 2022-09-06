@@ -23,11 +23,7 @@ import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDataDomestic2
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticResponse5
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
 class CreateDomesticPayment(

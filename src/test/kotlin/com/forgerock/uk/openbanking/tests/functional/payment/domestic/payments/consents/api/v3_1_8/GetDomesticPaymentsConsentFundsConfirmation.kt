@@ -1,21 +1,17 @@
 package com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.consents.api.v3_1_8
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
-import assertk.assertions.isNotNull
-import assertk.assertions.isTrue
+import assertk.assertions.*
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
+import com.forgerock.uk.openbanking.framework.errors.INVALID_CONSENT_STATUS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
-import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4
 
 class GetDomesticPaymentsConsentFundsConfirmation(
@@ -50,7 +46,8 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
         // client_credentials access token must not allow us to get the funds confirmation
         val accessTokenClientCredentials = tppResource.tpp.getClientCredentialsAccessToken(
-            defaultPaymentScopesForAccessToken)
+            defaultPaymentScopesForAccessToken
+        )
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             getFundsConfirmation(consent, accessTokenClientCredentials)
@@ -58,6 +55,34 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         // Then
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
+    }
+
+    fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
+        // Given
+        val consentRequest = aValidOBWriteDomesticConsent4()
+        val (consent, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+            consentRequest
+        )
+        val patchedConsent = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
+        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val payment: OBWriteDomesticResponse5 = paymentApiClient.submitPayment(
+            paymentLinks.CreateDomesticPayment,
+            accessTokenAuthorizationCode,
+            paymentSubmissionRequest
+        )
+
+        //An ASPSP can only respond to a funds confirmation request if the domestic-payment-consent resource has an Authorised status.
+        // If the status is not Authorised, an ASPSP must respond with a 400 (Bad Request) and a UK.OBIE.Resource.InvalidConsentStatus error code
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            getFundsConfirmation(consent, accessTokenAuthorizationCode)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(INVALID_CONSENT_STATUS)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true() {
@@ -92,5 +117,13 @@ class GetDomesticPaymentsConsentFundsConfirmation(
                 consent.data.consentId
             ), accessTokenAuthorizationCode
         )
+    }
+
+    private fun createPaymentRequest(patchedConsent: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
+        return OBWriteDomestic2().data(
+            OBWriteDataDomestic2()
+                .consentId(patchedConsent.data.consentId)
+                .initiation(PaymentFactory.mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+        ).risk(patchedConsent.risk)
     }
 }

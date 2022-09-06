@@ -10,10 +10,7 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
-import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
-import com.forgerock.uk.openbanking.framework.errors.REQUEST_EXECUTION_TIME_IN_THE_PAST
-import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
@@ -137,6 +134,22 @@ class CreateInternationalScheduledPaymentsConsents(
         assertThat(exception.message.toString()).contains(REQUEST_EXECUTION_TIME_IN_THE_PAST)
     }
 
+    fun shouldCreateInternationalScheduledPaymentConsents_throwsRejectedConsent_Test() {
+        // Given
+        val consentRequest =
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createInternationalScheduledPaymentConsentAndReject(
+                consentRequest
+            )
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(CONSENT_NOT_AUTHORISED)
+    }
+
     fun createInternationalScheduledPaymentConsent(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledConsentResponse6 {
         return buildCreateConsentRequest(consentRequest).sendRequest()
     }
@@ -168,7 +181,8 @@ class CreateInternationalScheduledPaymentsConsents(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
-            tppResource.tpp
+            tppResource.tpp,
+            "Rejected"
         )
 
         return consent to accessTokenAuthorizationCode

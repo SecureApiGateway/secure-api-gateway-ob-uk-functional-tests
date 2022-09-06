@@ -93,4 +93,15 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
     fun shouldCreateInternationalScheduledPaymentConsents_throwsRequestExecutionTimeInThePast_v3_1_9() {
         createInternationalScheduledPaymentsConsents.shouldCreateInternationalScheduledPaymentConsents_throwsRequestExecutionTimeInThePast_Test()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalScheduledPaymentConsents_throwsRejectedConsent_v3_1_9() {
+        createInternationalScheduledPaymentsConsents.shouldCreateInternationalScheduledPaymentConsents_throwsRejectedConsent_Test()
+    }
 }
