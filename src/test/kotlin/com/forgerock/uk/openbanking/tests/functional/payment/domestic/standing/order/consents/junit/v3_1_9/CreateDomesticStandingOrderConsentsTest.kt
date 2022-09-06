@@ -92,4 +92,15 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_9() {
         createDomesticStandingOrderConsents.shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJwsTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateDomesticStandingOrdersConsents_throwsRejectedConsent_v3_1_9() {
+        createDomesticStandingOrderConsents.shouldCreateDomesticStandingOrdersConsents_throwsRejectedConsentTest()
+    }
 }
