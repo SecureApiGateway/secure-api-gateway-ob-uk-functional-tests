@@ -1,5 +1,4 @@
-
-FROM adoptopenjdk/openjdk14:jdk-14.0.2_12-alpine-slim
+FROM gcr.io/forgerock-io/java-17:latest
 
 COPY src /opt/functional-tests/src
 COPY build.gradle.kts /opt/functional-tests/build.gradle.kts
