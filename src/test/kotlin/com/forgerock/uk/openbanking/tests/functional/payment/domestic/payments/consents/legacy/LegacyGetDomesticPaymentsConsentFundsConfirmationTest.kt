@@ -81,7 +81,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isTrue()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -138,7 +138,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isFalse()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -247,7 +247,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isTrue()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -305,7 +305,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isFalse()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -415,7 +415,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isTrue()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -473,7 +473,7 @@ class LegacyGetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: Cre
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isFalse()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 

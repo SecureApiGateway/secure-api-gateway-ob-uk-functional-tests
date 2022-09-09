@@ -25,7 +25,8 @@ import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.mapOBWriteDomestic2DataInitiationToOBDomestic2
+import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.copyOBWriteDomestic2DataInitiation
+import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.mapOBDomestic2ToOBWriteDomestic2DataInitiation
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
@@ -91,9 +92,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -177,9 +178,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -259,9 +260,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -337,9 +338,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -412,9 +413,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -497,9 +498,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -581,16 +582,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.consentId = INVALID_CONSENT_ID
         val paymentSubmissionWithInvalidConsentId = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -671,16 +672,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.initiation.instructedAmount.amount = "123123"
         val paymentSubmissionInvalidAmount = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -762,9 +763,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -850,9 +851,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -936,9 +937,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -1014,9 +1015,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -1089,9 +1090,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
 
@@ -1175,9 +1176,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1259,9 +1260,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1343,16 +1344,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.consentId = INVALID_CONSENT_ID
         val paymentSubmissionWithInvalidConsentId = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -1434,16 +1435,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.initiation.instructedAmount.amount = "123123"
         val paymentSubmissionInvalidAmount = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -1525,9 +1526,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1613,9 +1614,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1699,9 +1700,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -1776,9 +1777,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         // When
@@ -1851,9 +1852,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1936,9 +1937,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -2021,9 +2022,9 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -2106,16 +2107,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.consentId = INVALID_CONSENT_ID
         val paymentSubmissionWithInvalidConsentId = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -2197,16 +2198,16 @@ class LegacyCreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppReso
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         patchedConsent.data.initiation.instructedAmount.amount = "123123"
         val paymentSubmissionInvalidAmount = OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(mapOBDomestic2ToOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(

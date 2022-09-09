@@ -19,15 +19,11 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.copyOBWriteDomesticStandingOrder3DataInitiation
+import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3Data
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse6
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderResponse6
+import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
 class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -299,7 +295,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         return OBWriteDomesticStandingOrder3().data(
             OBWriteDomesticStandingOrder3Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(copyOBWriteDomesticStandingOrder3DataInitiation(patchedConsent.data.initiation))
+                .initiation(mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
     }
 }
