@@ -72,7 +72,8 @@ class PaymentApiClient(val tpp: Tpp) {
 
             if (!response.isSuccessful) {
                 throw AssertionError(
-                    "Could not create the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
+                    "API call: " +request.method + " "+ request.url + " returned an error response:\n"
+                            + result.component2()?.errorData?.toString(Charsets.UTF_8),
                     result.component2()
                 )
             }

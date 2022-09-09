@@ -274,9 +274,9 @@ class CreateDomesticPayment(
 
     private fun createPaymentRequest(patchedConsent: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
         return OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
     }
 }

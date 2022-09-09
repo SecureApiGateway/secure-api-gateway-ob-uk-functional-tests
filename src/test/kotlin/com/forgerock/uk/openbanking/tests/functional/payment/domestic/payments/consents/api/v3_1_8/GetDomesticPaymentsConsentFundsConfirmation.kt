@@ -33,7 +33,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isFalse()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -96,7 +96,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.isFundsAvailable).isTrue()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -121,9 +121,9 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
     private fun createPaymentRequest(patchedConsent: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
         return OBWriteDomestic2().data(
-            OBWriteDataDomestic2()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteDomestic2DataInitiationToOBDomestic2(patchedConsent.data.initiation))
+                OBWriteDomestic2Data()
+                        .consentId(patchedConsent.data.consentId)
+                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
     }
 }

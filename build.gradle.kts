@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.4-SNAPSHOT"))
+    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.7-SNAPSHOT"))
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-common")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel")
@@ -230,7 +230,7 @@ tasks.withType<Test>().configureEach {
 // tests properties
 val packagePrefix = "com.forgerock.uk.openbanking.tests.functional."
 val suffixPattern = ".*"
-val apiVersions = arrayOf("v3_1_8", "v3_1_9")
+val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10")
 
 // Add test tasks for each supported apiVersion
 for (apiVersion in apiVersions) {
