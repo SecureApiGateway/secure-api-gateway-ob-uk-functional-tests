@@ -45,7 +45,7 @@ steps:
   # step to mark the pipeline as failed if the tests failed
   check_for_failures:
     image: alpine
-    fail_fast: false
+    stage: test
     commands:
       - exit 1
     when:
