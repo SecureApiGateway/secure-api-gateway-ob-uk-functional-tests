@@ -37,7 +37,7 @@ steps:
         PROJECT_ID=${{PROJECT_ID}}
         gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
         SLACK_WEBHOOK_URL=$(gcloud --project $PROJECT_ID secrets versions access latest --secret="slack-webhook")
-        curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
+        curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!:alarm::alarm:\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
     when:
       condition:
         all:
