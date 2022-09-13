@@ -14,12 +14,41 @@ steps:
       - echo "$OB_WAC_KEY_B64" | base64 -d > certificates/OBWac.key
       - echo "$OB_SEAL_PEM_B64" | base64 -d > certificates/OBSeal.pem
       - echo "$OB_SEAL_KEY_B64" | base64 -d > certificates/OBSeal.key
-  test:
+  run_tests:
     title: "Running tests: gradle task [[${{TEST_TASK}}]]"
     image: eu.gcr.io/sbat-gcr-develop/securebanking/tests/${{SPEC_IMAGE}}:${{TAG}} # The image and tag in which command will be executed
     stage: test
+    fail_fast: false # won't fail fast, will continue to the notification step
     working_directory: IMAGE_WORK_DIR # the working root directory defined in the image to find the certificates properly
     volumes:
       - ./certificates:/opt/functional-tests/certificates # host path is relative to /codefresh/volume
     commands:
       - "./gradlew cleanTest ${{TEST_TASK}} -Pprofile=${{PROFILE}} -Djunit.jupiter.extensions.autodetection.enabled=true"
+
+  notify_slack:
+    image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
+    stage: test
+    commands:
+      - |
+        set -x
+        echo "$GKE_CREDS" | base64 -d > credentials.json
+        CLIENT_EMAIL=$(echo $GKE_CREDS | base64 -d | jq -r .client_email)
+        GOOGLE_APPLICATION_CREDENTIALS="$PWD/credentials.json"
+        PROJECT_ID=${{PROJECT_ID}}
+        gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+        SLACK_WEBHOOK_URL=$(gcloud --project $PROJECT_ID secrets versions access latest --secret="slack-webhook")
+        curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!:alarm::alarm:\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
+    when:
+      condition:
+        all:
+          myCondition: run_tests.result == 'failure'
+  # step to mark the pipeline as failed if the tests failed
+  check_for_failures:
+    image: alpine
+    stage: test
+    commands:
+      - exit 1
+    when:
+      condition:
+        all:
+          myCondition: run_tests.result == 'failure'
