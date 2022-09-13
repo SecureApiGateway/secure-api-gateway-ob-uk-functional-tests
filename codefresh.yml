@@ -29,14 +29,15 @@ steps:
     image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
     stage: test
     commands:
-      - set -x
-      - echo "$GKE_CREDS" | base64 -d > credentials.json
-      - CLIENT_EMAIL=$(echo $GKE_CREDS | base64 -d | jq -r .client_email)
-      - GOOGLE_APPLICATION_CREDENTIALS="$PWD/credentials.json"
-      - PROJECT_ID=${{PROJECT_ID}}
-      - gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-      - SLACK_WEBHOOK_URL=$(gcloud --project $PROJECT_ID secrets versions access latest --secret="slack-webhook")
-      - curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
+      - |
+        set -x
+        echo "$GKE_CREDS" | base64 -d > credentials.json
+        CLIENT_EMAIL=$(echo $GKE_CREDS | base64 -d | jq -r .client_email)
+        GOOGLE_APPLICATION_CREDENTIALS="$PWD/credentials.json"
+        PROJECT_ID=${{PROJECT_ID}}
+        gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+        SLACK_WEBHOOK_URL=$(gcloud --project $PROJECT_ID secrets versions access latest --secret="slack-webhook")
+        curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
     when:
       condition:
         all:
@@ -45,7 +46,8 @@ steps:
   check_for_failures:
     image: alpine
     fail_fast: false
-    commands: exit 1
+    commands:
+      - exit 1
     when:
       condition:
         all:
