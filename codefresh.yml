@@ -41,7 +41,8 @@ steps:
     when:
       condition:
         all:
-          myCondition: run_tests.result == 'failure'
+          testFailures: run_tests.result == 'failure'
+          notificationsEnabled: ${{NOTIFY_SLACK}} == 'true'
   # step to mark the pipeline as failed if the tests failed
   check_for_failures:
     image: alpine
@@ -51,4 +52,4 @@ steps:
     when:
       condition:
         all:
-          myCondition: run_tests.result == 'failure'
+          testFailures: run_tests.result == 'failure'
