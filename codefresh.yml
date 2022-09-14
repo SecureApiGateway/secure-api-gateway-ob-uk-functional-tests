@@ -23,7 +23,33 @@ steps:
     volumes:
       - ./certificates:/opt/functional-tests/certificates # host path is relative to /codefresh/volume
     commands:
-      - "./gradlew cleanTest ${{TEST_TASK}} -Pprofile=${{PROFILE}} -Djunit.jupiter.extensions.autodetection.enabled=true"
+      - |
+        set +e
+        ./gradlew cleanTest ${{TEST_TASK}} -Pprofile=${{PROFILE}} -Djunit.jupiter.extensions.autodetection.enabled=true
+        gradle_exit_code=$?
+        
+        set -x
+        echo "Copying test reports to CF volume"
+        mkdir /codefresh/volume/test-reports/
+        cp -r ./build/reports/tests /codefresh/volume/test-reports/
+        exit ${gradle_exit_code}
+
+  store_test_report:
+    image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
+    stage: test
+    fail_fast: false
+    working_directory: IMAGE_WORK_DIR
+    commands:
+      - |
+        echo "$GKE_CREDS" | base64 -d > credentials.json
+        CLIENT_EMAIL=$(echo $GKE_CREDS | base64 -d | jq -r .client_email)
+        GOOGLE_APPLICATION_CREDENTIALS="$PWD/credentials.json"
+        PROJECT_ID=${{PROJECT_ID}}
+        gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+        TEST_REPORT_GCP_BUCKET_PATH="gs://sbat-functional-test-reports/$(date '+%Y%m%d')/${{CF_BUILD_ID}}"
+        cf_export TEST_REPORT_GCP_BUCKET_PATH=${TEST_REPORT_GCP_BUCKET_PATH}
+        gsutil -m cp -r /codefresh/volume/test-reports/ ${TEST_REPORT_GCP_BUCKET_PATH}
+
 
   notify_slack:
     image: eu.gcr.io/sbat-gcr-develop/ci/gcloud-tools:latest
@@ -37,7 +63,8 @@ steps:
         PROJECT_ID=${{PROJECT_ID}}
         gcloud auth activate-service-account $CLIENT_EMAIL --key-file=$GOOGLE_APPLICATION_CREDENTIALS
         SLACK_WEBHOOK_URL=$(gcloud --project $PROJECT_ID secrets versions access latest --secret="slack-webhook")
-        curl -X POST --data-urlencode 'payload={"text":"Functional tests failed!:alarm::alarm:\n Build information: ${{CF_BUILD_URL}}"}' $SLACK_WEBHOOK_URL
+        SLACK_MSG="{\"blocks\":[{\"type\":\"context\",\"elements\":[{\"type\":\"mrkdwn\",\"text\":\"Functional tests failed:alarm::alarm:\nCodefresh build:${{CF_BUILD_URL}}\nDownload test report:\n\`gsutil -m cp -r ${TEST_REPORT_GCP_BUCKET_PATH} .\`\"}]}]}"
+        curl -X POST --data-urlencode "payload=${SLACK_MSG}" ${SLACK_WEBHOOK_URL}
     when:
       condition:
         all:
