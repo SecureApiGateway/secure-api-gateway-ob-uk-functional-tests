@@ -30,7 +30,9 @@ steps:
         
         set -x
         echo "Copying test reports to CF volume"
-        mkdir /codefresh/volume/test-reports/
+        # volume is shared by subsequent builds, clear test report output
+        rm -rf /codefresh/volume/test-reports/*
+        mkdir -p /codefresh/volume/test-reports/
         cp -r ./build/reports/tests /codefresh/volume/test-reports/
         exit ${gradle_exit_code}
 
