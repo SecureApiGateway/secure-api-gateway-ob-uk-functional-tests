@@ -30,7 +30,6 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         getDomesticPaymentsConsentFundsConfirmationApi.shouldGetDomesticPaymentConsentsFundsConfirmation_false()
     }
 
-    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
