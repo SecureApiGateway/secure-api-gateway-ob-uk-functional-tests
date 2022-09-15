@@ -85,7 +85,6 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         getInternationalPaymentsConsentFundsConfirmation.shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_Test()
     }
 
-    @Disabled("Enhancement: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/337")
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",
