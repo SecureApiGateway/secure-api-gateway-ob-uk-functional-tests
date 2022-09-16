@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.*
 
-@Disabled("Not implemented")
 class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
@@ -437,7 +436,7 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
@@ -938,7 +937,7 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
@@ -1441,7 +1440,7 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
@@ -1499,7 +1498,11 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         val paymentSubmissionRequest = OBWriteInternationalScheduled2().data(
             OBWriteDataInternationalScheduled2()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(patchedConsent.data.initiation))
+                .initiation(
+                    PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(
+                        patchedConsent.data.initiation
+                    )
+                )
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -1950,7 +1953,7 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
@@ -2009,7 +2012,11 @@ class LegacyGetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tp
         val paymentSubmissionRequest = OBWriteInternationalScheduled2().data(
             OBWriteDataInternationalScheduled2()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(patchedConsent.data.initiation))
+                .initiation(
+                    PaymentFactory.mapOBWriteInternationalScheduled2DataInitiationToOBWriteDataInternationalScheduled2(
+                        patchedConsent.data.initiation
+                    )
+                )
         ).risk(patchedConsent.risk)
 
         val signedPayload =
