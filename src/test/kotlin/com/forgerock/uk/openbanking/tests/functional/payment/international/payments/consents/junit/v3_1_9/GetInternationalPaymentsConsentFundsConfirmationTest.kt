@@ -5,10 +5,8 @@ import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.tests.functional.payment.international.payments.consents.api.v3_1_8.GetInternationalPaymentsConsentFundsConfirmation
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled("Not implemented")
 class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
 
     lateinit var getInternationalPaymentsConsentFundsConfirmation: GetInternationalPaymentsConsentFundsConfirmation
@@ -96,7 +94,7 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
         getInternationalPaymentsConsentFundsConfirmation.shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test()
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.9",

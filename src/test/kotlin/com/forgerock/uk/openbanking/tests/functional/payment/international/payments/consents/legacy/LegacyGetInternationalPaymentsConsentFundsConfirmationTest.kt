@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.*
 
-@Disabled("Not implemented")
 class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
@@ -437,7 +436,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
@@ -938,7 +937,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
@@ -1441,7 +1440,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
@@ -1950,7 +1949,7 @@ class LegacyGetInternationalPaymentsConsentFundsConfirmationTest(val tppResource
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
