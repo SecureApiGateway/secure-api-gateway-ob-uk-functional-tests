@@ -58,7 +58,7 @@ class GetDomesticPaymentsConsentFundsConfirmationTest(val tppResource: CreateTpp
         apis = ["domestic-payment-consents"]
     )
     @Test
-    fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_8() {
+    fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_9() {
         getDomesticPaymentsConsentFundsConfirmationApi.shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test()
     }
 }
