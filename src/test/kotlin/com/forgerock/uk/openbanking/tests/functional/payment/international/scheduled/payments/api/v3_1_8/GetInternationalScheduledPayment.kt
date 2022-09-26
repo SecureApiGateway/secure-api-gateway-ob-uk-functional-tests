@@ -36,6 +36,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
         assertThat(result).isNotNull()
         assertThat(result.data.internationalScheduledPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
+        assertThat(result.data.charges).isNotNull().isNotEmpty()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }

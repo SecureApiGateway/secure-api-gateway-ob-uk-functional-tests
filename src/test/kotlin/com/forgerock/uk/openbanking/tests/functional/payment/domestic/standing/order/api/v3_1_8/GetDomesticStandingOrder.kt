@@ -36,6 +36,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
         assertThat(getStandingOrderResponse).isNotNull()
         assertThat(getStandingOrderResponse.data.domesticStandingOrderId).isNotEmpty()
         assertThat(getStandingOrderResponse.data.creationDateTime).isNotNull()
+        assertThat(getStandingOrderResponse.data.charges).isNotNull().isNotEmpty()
         Assertions.assertThat(getStandingOrderResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 

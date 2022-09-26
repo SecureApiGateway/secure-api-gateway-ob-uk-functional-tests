@@ -43,6 +43,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
+        assertThat(result.data.charges).isNotNull().isNotEmpty()
         assertThat(result.data.consentId).isNotEmpty()
     }
 

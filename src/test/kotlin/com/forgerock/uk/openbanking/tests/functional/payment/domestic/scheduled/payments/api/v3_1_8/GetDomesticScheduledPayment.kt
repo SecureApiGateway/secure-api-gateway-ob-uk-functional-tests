@@ -35,6 +35,7 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
         assertThat(getPaymentResponse).isNotNull()
         assertThat(getPaymentResponse.data.domesticScheduledPaymentId).isNotEmpty()
         assertThat(getPaymentResponse.data.creationDateTime).isNotNull()
+        assertThat(getPaymentResponse.data.charges).isNotNull().isNotEmpty()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 
