@@ -45,6 +45,7 @@ class CreateDomesticPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isNotEmpty()
     }
 
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExistsTest() {

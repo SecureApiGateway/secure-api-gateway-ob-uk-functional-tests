@@ -46,6 +46,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat(paymentResponse).isNotNull()
         assertThat(paymentResponse.data).isNotNull()
+        assertThat(paymentResponse.data.charges).isNotNull().isNotEmpty()
         assertThat(paymentResponse.data.consentId).isNotEmpty()
     }
 
