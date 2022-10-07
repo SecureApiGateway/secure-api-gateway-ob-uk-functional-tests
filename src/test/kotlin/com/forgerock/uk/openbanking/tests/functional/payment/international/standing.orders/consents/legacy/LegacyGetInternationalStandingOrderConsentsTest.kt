@@ -27,6 +27,58 @@ import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderC
 class LegacyGetInternationalStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.6, v.3.1.7, v.3.1.8"]
+    )
+    @Test
+    fun shouldGetInternationalStandingOrdersConsents_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+
+        val consent = PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+            payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_5,
+            signedPayloadConsent
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+
+        // When
+        val result = PaymentRS().getConsent<OBWriteInternationalStandingOrderConsentResponse7>(
+            PaymentFactory.urlWithConsentId(
+                payment3_1_5.Links.links.GetInternationalStandingOrderConsent,
+                consent.data.consentId
+            ),
+            tppResource.tpp,
+            OBVersion.v3_1_5
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.risk).isNotNull()
+        assertThat(result.data).isEqualTo(consent.data)
+        assertThat(result.risk).isEqualTo(consent.risk)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
         apiVersion = "v3.1.4",
         operations = ["CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
         apis = ["international-standing-order-consents"]

@@ -34,6 +34,232 @@ import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderC
 class LegacyCreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.6, v.3.1.7, v.3.1.8"]
+    )
+    @Test
+    fun createInternationalStandingOrdersConsents_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        // When
+        val consent = PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+            payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_5,
+            signedPayloadConsent
+        )
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun createInternationalStandingOrdersConsents_mandatoryFields_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6MandatoryFields()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        // When
+        val consent = PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+            payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+            consentRequest,
+            tppResource.tpp,
+            OBVersion.v3_1_5,
+            signedPayloadConsent
+        )
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrdersConsents_throwsInvalidFrequencyValue_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+        consentRequest.data.initiation.frequency = INVALID_FREQUENCY
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid
+            )
+
+        // When
+        val exception = assertThrows(AssertionError::class.java) {
+            PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+                payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+                consentRequest,
+                tppResource.tpp,
+                OBVersion.v3_1_5,
+                signedPayloadConsent
+            )
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(INVALID_FREQUENCY_VALUE)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrdersConsents_throwsSendInvalidFormatDetachedJws_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+
+        // When
+        val exception = assertThrows(AssertionError::class.java) {
+            PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+                payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+                consentRequest,
+                tppResource.tpp,
+                OBVersion.v3_1_5,
+                INVALID_FORMAT_DETACHED_JWS
+            )
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(INVALID_FORMAT_DETACHED_JWS_ERROR)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrdersConsents_throwsNoDetachedJws_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+
+        // When
+        val exception = assertThrows(AssertionError::class.java) {
+            PaymentRS().consentNoDetachedJwt<OBWriteInternationalStandingOrderConsentResponse7>(
+                payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+                consentRequest,
+                tppResource.tpp,
+                OBVersion.v3_1_5
+            )
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(NO_DETACHED_JWS)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrdersConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+        val signedPayload =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                tppResource.tpp.signingKid,
+                true
+            )
+
+        // When
+        val exception = assertThrows(AssertionError::class.java) {
+            PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+                payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+                consentRequest,
+                tppResource.tpp,
+                OBVersion.v3_1_5,
+                signedPayload
+            )
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.5",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrdersConsents_throwsSendInvalidKidDetachedJws_v3_1_5() {
+        // Given
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
+
+        val signedPayloadConsent =
+            signPayloadSubmitPayment(
+                defaultMapper.writeValueAsString(consentRequest),
+                tppResource.tpp.signingKey,
+                INVALID_SIGNING_KID
+            )
+
+        // When
+        val exception = assertThrows(AssertionError::class.java) {
+            PaymentRS().consent<OBWriteInternationalStandingOrderConsentResponse7>(
+                payment3_1_5.Links.links.CreateInternationalStandingOrderConsent,
+                consentRequest,
+                tppResource.tpp,
+                OBVersion.v3_1_5,
+                signedPayloadConsent
+            )
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(SIGNATURE_VALIDATION_FAILED)
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
         apiVersion = "v3.1.4",
         operations = ["CreateInternationalStandingOrderConsent"],
         apis = ["international-standing-order-consents"]
@@ -41,7 +267,7 @@ class LegacyCreateInternationalStandingOrderConsentsTest(val tppResource: Create
     @Test
     fun createInternationalStandingOrdersConsents_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteInternationalStandingOrderConsent5()
+        val consentRequest = aValidOBWriteInternationalStandingOrderConsent6()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
