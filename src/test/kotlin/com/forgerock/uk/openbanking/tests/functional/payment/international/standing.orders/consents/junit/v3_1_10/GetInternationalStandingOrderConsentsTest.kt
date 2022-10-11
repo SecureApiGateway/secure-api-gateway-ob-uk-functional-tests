@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.international.standing.orders.consents.junit.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.international.standing.orders.consents.junit.v3_1_10
 
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -13,18 +13,18 @@ class GetInternationalStandingOrderConsentsTest(val tppResource: CreateTppCallba
 
     @BeforeEach
     fun setUp() {
-        getInternationalStandingOrderConsents = GetInternationalStandingOrderConsents(OBVersion.v3_1_8, tppResource)
+        getInternationalStandingOrderConsents = GetInternationalStandingOrderConsents(OBVersion.v3_1_10, tppResource)
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.10",
         operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
         apis = ["international-standing-orders", "international-standing-order-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+        compatibleVersions = ["v.3.1.9", "v.3.1.8", "v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun createInternationalStandingOrder_v3_1_8() {
+    fun createInternationalStandingOrder_v3_1_10() {
         getInternationalStandingOrderConsents.shouldGetInternationalStandingOrdersConsents_Test()
     }
 }
