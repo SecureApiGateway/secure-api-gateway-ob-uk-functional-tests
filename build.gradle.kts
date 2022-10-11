@@ -290,6 +290,15 @@ for (apiVersion in apiVersions) {
         failFast = false
     }
 
+    tasks.register<Test>("international_standing_order_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the international standing order tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
+        }
+        failFast = false
+    }
+
     /* ALL IMPLEMENTED TESTS */
     tasks.register<Test>("tests_$apiVersion") {
         group = "tests"
@@ -301,6 +310,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.domestic.standing.order" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
         }
         failFast = false
     }
