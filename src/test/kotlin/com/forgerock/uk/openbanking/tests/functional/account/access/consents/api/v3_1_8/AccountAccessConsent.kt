@@ -40,13 +40,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         // Given
         val consent = createConsent(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
         // When
-        val deletedConsent = deleteConsent(consent.data.consentId)
-
-        // Then
-        assertThat(deletedConsent).isNotNull()
-        assertThat(deletedConsent.data).isNotNull()
-        assertThat(deletedConsent.data.consentId).isEqualTo(consent.data.consentId)
-        Assertions.assertThat(deletedConsent.data.status.toString()).`is`(Status.consentCondition)
+        deleteConsent(consent.data.consentId)
 
         // Verify we cannot get the consent anymore
         val error = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -86,8 +80,8 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         return consent to accessToken
     }
 
-    override fun deleteConsent(consentId: String): OBReadConsentResponse1 {
-        return AccountRS().deleteConsent(
+    override fun deleteConsent(consentId: String) {
+        AccountRS().deleteConsent(
             AccountFactory.urlWithConsentId(
                 accountsApiLinks.DeleteAccountAccessConsent,
                 consentId

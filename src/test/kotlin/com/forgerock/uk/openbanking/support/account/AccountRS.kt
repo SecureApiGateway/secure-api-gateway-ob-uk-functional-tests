@@ -11,6 +11,8 @@ import com.github.kittinunf.fuel.core.ResponseResultOf
 import com.github.kittinunf.fuel.core.isSuccessful
 import uk.org.openbanking.datamodel.account.OBReadAccount3
 
+const val HTTP_STATUS_CODE_NO_CONTENT = 204
+
 class AccountRS {
 
     fun getClientCredentialsAccessToken(tpp: Tpp): AccessToken {
@@ -44,17 +46,19 @@ class AccountRS {
         return r.get()
     }
 
-    inline fun <reified T : Any> deleteConsent(consentUrl: String, tpp: Tpp): T {
+    inline fun deleteConsent(consentUrl: String, tpp: Tpp) {
         val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.delete(consentUrl)
             .header("Authorization", "Bearer $accessToken")
             .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
-            .responseObject<T>()
-        if (!consentResponse.isSuccessful) throw AssertionError(
-            "Could not create consent: ${String(consentResponse.data)}",
+            .response()
+        if (consentResponse.statusCode != HTTP_STATUS_CODE_NO_CONTENT) throw AssertionError(
+            "Failed to delete consent, expected HTTP 204 response, got response: ${consentResponse.statusCode}",
             r.component2()
         )
-        return r.get()
+        if (r.get().isNotEmpty()) {
+            throw AssertionError("Failed to delete consent, expected empty response body")
+        }
     }
 
     inline fun <reified T : Any> getAccountsData(

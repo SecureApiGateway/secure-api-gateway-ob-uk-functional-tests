@@ -7,6 +7,6 @@ import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
 interface AccountAccessConsentApi {
     fun createConsent(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1
     fun createConsentAndGetAccessToken(permissions: List<OBExternalPermissions1Code>): Pair<OBReadConsentResponse1, AccessToken>
-    fun deleteConsent(consentId: String): OBReadConsentResponse1
+    fun deleteConsent(consentId: String)
     fun getConsent(consentId: String): OBReadConsentResponse1
 }
