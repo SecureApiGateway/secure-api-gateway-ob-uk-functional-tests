@@ -335,7 +335,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_4_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5MandatoryFields()
 
@@ -745,7 +745,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_3_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()
 
@@ -1157,7 +1157,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_2_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -1569,7 +1569,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_1_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -1981,7 +1981,7 @@ class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val 
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2MandatoryFields()
 

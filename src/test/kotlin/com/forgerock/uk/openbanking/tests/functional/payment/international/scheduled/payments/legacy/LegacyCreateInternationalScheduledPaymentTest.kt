@@ -333,7 +333,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun createInternationalScheduledPayment_v3_1_4_mandatoryFields() {
+    fun createInternationalScheduledPayment_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent5MandatoryFields()
 
@@ -1314,7 +1314,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun createInternationalScheduledPayment_v3_1_3_mandatoryFields() {
+    fun createInternationalScheduledPayment_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent4MandatoryFields()
 
@@ -2391,7 +2391,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun createInternationalScheduledPayment_v3_1_2_mandatoryFields() {
+    fun createInternationalScheduledPayment_mandatoryFields_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
 
@@ -3515,7 +3515,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun createInternationalScheduledPayment_v3_1_1_mandatoryFields() {
+    fun createInternationalScheduledPayment_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent3MandatoryFields()
 
@@ -4627,7 +4627,7 @@ class LegacyCreateInternationalScheduledPaymentTest(val tppResource: CreateTppCa
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun createInternationalScheduledPayment_v3_1_mandatoryFields() {
+    fun createInternationalScheduledPayment_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent2MandatoryFields()
 

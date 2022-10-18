@@ -93,8 +93,8 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     }
 
     private fun getPaymentDetails(paymentResponse: OBWriteInternationalScheduledResponse5): OBWritePaymentDetailsResponse1 {
-        val getInternationalPaymentDetails = PaymentFactory.urlWithInternationalPaymentId(
-            paymentLinks.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+        val getInternationalPaymentDetails = PaymentFactory.urlWithInternationalScheduledPaymentId(
+            paymentLinks.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
             paymentResponse.data.internationalScheduledPaymentId
         )
         return paymentApiClient.sendGetRequest(

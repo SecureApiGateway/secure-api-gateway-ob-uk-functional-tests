@@ -57,7 +57,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPayments_v3_1_10_mandatoryFields() {
+    fun getInternationalScheduledPayments__mandatoryFieldsv3_1_10() {
         getInternationalScheduledPayment.getInternationalScheduledPayments_mandatoryFields_Test()
     }
 

@@ -347,7 +347,7 @@ class LegacyGetInternationalPaymentTest(val tppResource: CreateTppCallback.TppRe
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPayments_v3_1_4_mandatoryFields() {
+    fun getInternationalPayments_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5MandatoryFields()
 
@@ -884,7 +884,7 @@ class LegacyGetInternationalPaymentTest(val tppResource: CreateTppCallback.TppRe
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
-    fun getInternationalPayments_v3_1_3_mandatoryFields() {
+    fun getInternationalPayments_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()
 
@@ -1301,7 +1301,7 @@ class LegacyGetInternationalPaymentTest(val tppResource: CreateTppCallback.TppRe
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPayments_v3_1_2_mandatoryFields() {
+    fun getInternationalPayments_mandatoryFields_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -1731,7 +1731,7 @@ class LegacyGetInternationalPaymentTest(val tppResource: CreateTppCallback.TppRe
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPayments_v3_1_1_mandatoryFields() {
+    fun getInternationalPayments_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -2152,7 +2152,7 @@ class LegacyGetInternationalPaymentTest(val tppResource: CreateTppCallback.TppRe
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPayments_v3_1_mandatoryFields() {
+    fun getInternationalPayments_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2MandatoryFields()
 

@@ -35,7 +35,7 @@ class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(val tppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_v3_1_10_mandatoryFields() {
+    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_mandatoryFields_v3_1_10() {
         getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails.getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_mandatoryFieldsTest()
     }
 }

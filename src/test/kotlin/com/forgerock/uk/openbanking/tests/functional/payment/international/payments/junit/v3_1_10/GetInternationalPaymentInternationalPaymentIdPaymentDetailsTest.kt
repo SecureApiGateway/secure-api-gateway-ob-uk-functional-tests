@@ -57,7 +57,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_10_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_10() {
         getInternationalPaymentInternationalPaymentIdPaymentDetails.getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_Test()
     }
 }

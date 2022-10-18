@@ -129,7 +129,7 @@ class LegacyGetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(va
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_v3_1_4_mandatoryFields() {
+    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
 
@@ -329,7 +329,7 @@ class LegacyGetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(va
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_v3_1_3_mandatoryFields() {
+    fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()
 

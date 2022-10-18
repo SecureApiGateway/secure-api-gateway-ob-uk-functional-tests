@@ -20,20 +20,20 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_v3_1_8() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test()
+    fun getInternationalScheduledPaymentPaymentIdPaymentDetails_rateType_AGREED_v3_1_8() {
+             getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test()
     }
 
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -44,8 +44,8 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
@@ -56,12 +56,12 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.8",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
-        apis = ["international-payments", "international-payment-consents"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_8_mandatoryFields() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_mandatoryFields_v3_1_8() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test()
     }
 }

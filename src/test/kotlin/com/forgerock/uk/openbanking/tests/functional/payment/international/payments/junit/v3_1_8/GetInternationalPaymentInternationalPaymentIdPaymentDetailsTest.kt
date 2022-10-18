@@ -61,7 +61,7 @@ class GetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppRes
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_v3_1_8_mandatoryFields() {
+    fun getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_v3_1_8() {
         getInternationalPaymentInternationalPaymentIdPaymentDetails.getInternationalPaymentInternationalPaymentIdPaymentDetails_mandatoryFields_Test()
     }
 }

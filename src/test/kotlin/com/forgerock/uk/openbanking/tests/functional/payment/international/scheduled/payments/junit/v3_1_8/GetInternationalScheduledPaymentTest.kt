@@ -61,7 +61,7 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun getInternationalScheduledPayments_v3_1_8_mandatoryFields() {
+    fun getInternationalScheduledPayments_mandatoryFields_v3_1_8() {
         getInternationalScheduledPayment.getInternationalScheduledPayments_mandatoryFields_Test()
     }
 

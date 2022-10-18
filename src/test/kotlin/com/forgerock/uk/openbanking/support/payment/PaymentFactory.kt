@@ -569,5 +569,83 @@ class PaymentFactory {
             }
             return outputInitiation
         }
+
+        fun mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(inputInitiation: OBWriteInternationalStandingOrderConsentResponse7DataInitiation): OBWriteInternationalStandingOrder4DataInitiation? {
+            val outputInitiation = OBWriteInternationalStandingOrder4DataInitiation()
+                .frequency(inputInitiation.frequency)
+                .reference(inputInitiation.reference)
+                .numberOfPayments(inputInitiation.numberOfPayments)
+                .firstPaymentDateTime(inputInitiation.firstPaymentDateTime)
+                .finalPaymentDateTime(inputInitiation.finalPaymentDateTime)
+                .supplementaryData(inputInitiation.supplementaryData)
+
+            if (inputInitiation.instructedAmount != null) {
+                outputInitiation.instructedAmount(
+                    OBWriteDomestic2DataInitiationInstructedAmount()
+                        .amount(inputInitiation.instructedAmount?.amount)
+                        .currency(inputInitiation.instructedAmount?.currency)
+                )
+            }
+
+            if (inputInitiation.debtorAccount != null) {
+                outputInitiation.debtorAccount(
+                    OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
+                        .schemeName(inputInitiation.debtorAccount?.schemeName)
+                        .identification(inputInitiation.debtorAccount?.identification)
+                        .name(inputInitiation.debtorAccount?.name)
+                        .secondaryIdentification(inputInitiation.debtorAccount?.secondaryIdentification)
+                )
+            }
+
+            if (inputInitiation.creditorAccount != null) {
+                outputInitiation.creditorAccount(
+                    OBWriteInternationalStandingOrder4DataInitiationCreditorAccount()
+                        .schemeName(inputInitiation.creditorAccount?.schemeName)
+                        .identification(inputInitiation.creditorAccount?.identification)
+                        .name(inputInitiation.creditorAccount?.name)
+                        .secondaryIdentification(inputInitiation.creditorAccount?.secondaryIdentification)
+                )
+            }
+
+            if (inputInitiation.purpose != null) {
+                outputInitiation.purpose(inputInitiation.purpose)
+            }
+
+            if (inputInitiation.extendedPurpose != null) {
+                outputInitiation.extendedPurpose(inputInitiation.extendedPurpose)
+            }
+
+            if (inputInitiation.chargeBearer != null) {
+                outputInitiation.chargeBearer(inputInitiation.chargeBearer)
+            }
+
+            if (inputInitiation.currencyOfTransfer != null) {
+                outputInitiation.currencyOfTransfer(inputInitiation.currencyOfTransfer)
+            }
+
+            if (inputInitiation.destinationCountryCode != null) {
+                outputInitiation.destinationCountryCode(inputInitiation.destinationCountryCode)
+            }
+
+            if (inputInitiation.creditor != null) {
+                outputInitiation.creditor(
+                    OBWriteInternationalScheduledConsentResponse6DataInitiationCreditor()
+                        .name(inputInitiation.creditor?.name)
+                        .postalAddress(inputInitiation.creditor?.postalAddress)
+                )
+            }
+
+            if (inputInitiation.creditorAgent != null) {
+                outputInitiation.creditorAgent(
+                    OBWriteInternationalStandingOrder4DataInitiationCreditorAgent()
+                        .schemeName(inputInitiation.creditorAgent?.schemeName)
+                        .identification(inputInitiation.creditorAgent?.identification)
+                        .name(inputInitiation.creditorAgent?.name)
+                        .postalAddress(inputInitiation.creditorAgent?.postalAddress)
+                )
+            }
+
+            return outputInitiation
+        }
     }
 }

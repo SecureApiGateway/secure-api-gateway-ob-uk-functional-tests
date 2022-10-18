@@ -57,7 +57,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_v3_1_9_mandatoryFields() {
+    fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_mandatoryFields_v3_1_9() {
         getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test()
     }
 }
