@@ -290,7 +290,7 @@ for (apiVersion in apiVersions) {
         failFast = false
     }
 
-    tasks.register<Test>("international_standing_order_$apiVersion") {
+    tasks.register<Test>("international_standing_orders_$apiVersion") {
         group = "payments-tests"
         description = "Runs the international standing order tests with the version $apiVersion"
         filter {
