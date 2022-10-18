@@ -22,11 +22,11 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.*
 
-class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetInternationalScheduledPaymentPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -111,7 +111,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_4.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -127,7 +127,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -213,7 +213,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_4.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -229,7 +229,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -315,7 +315,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_4.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -331,7 +331,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -414,7 +414,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_4.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_4.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -430,7 +430,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -517,7 +517,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_3.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -533,7 +533,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -621,7 +621,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_3.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -637,7 +637,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -725,7 +725,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_3.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -741,7 +741,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -826,7 +826,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_3.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_3.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -842,7 +842,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -933,7 +933,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_2.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -949,7 +949,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1041,7 +1041,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_2.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1057,7 +1057,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1149,7 +1149,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_2.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1165,7 +1165,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.2",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1254,7 +1254,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_2.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_2.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1270,7 +1270,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1357,7 +1357,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1373,7 +1373,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1461,7 +1461,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1477,7 +1477,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1565,7 +1565,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1581,7 +1581,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1666,7 +1666,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1682,7 +1682,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1769,7 +1769,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1785,7 +1785,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1873,7 +1873,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1889,7 +1889,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -1977,7 +1977,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
@@ -1993,7 +1993,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -2078,7 +2078,7 @@ class LegacyGetInternationalScheduledPaymentInternationalScheduledPaymentIdPayme
         // When
         val result = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
             urlWithInternationalScheduledPaymentId(
-                payment3_1.Links.links.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails,
+                payment3_1.Links.links.GetInternationalScheduledPaymentPaymentIdPaymentDetails,
                 submissionResponse.data.internationalScheduledPaymentId
             ),
             accessTokenClientCredentials,
