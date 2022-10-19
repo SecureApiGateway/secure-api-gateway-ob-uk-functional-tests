@@ -140,7 +140,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrders_v3_1_4_mandatoryFields() {
+    fun getDomesticStandingOrders_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
 
@@ -462,7 +462,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         compatibleVersions = ["v.3.1.2"]
     )
     @Test
-    fun getDomesticStandingOrders_v3_1_3_mandatoryFields() {
+    fun getDomesticStandingOrders_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent4MandatoryFields()
 
@@ -670,7 +670,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrders_v3_1_1_mandatoryFields() {
+    fun getDomesticStandingOrders_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent3MandatoryFields()
 
@@ -878,7 +878,7 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrders_v3_1_mandatoryFields() {
+    fun getDomesticStandingOrders_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteDomesticStandingOrderConsent2MandatoryFields()
 

@@ -333,7 +333,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun createInternationalPayment_v3_1_4_mandatoryFields() {
+    fun createInternationalPayment_mandatoryFields_v3_1_4() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5MandatoryFields()
 
@@ -1314,7 +1314,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun createInternationalPayment_v3_1_3_mandatoryFields() {
+    fun createInternationalPayment_mandatoryFields_v3_1_3() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent4MandatoryFields()
 
@@ -2378,7 +2378,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun createInternationalPayment_v3_1_2_mandatoryFields() {
+    fun createInternationalPayment_mandatoryFields_v3_1_2() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -3445,7 +3445,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun createInternationalPayment_v3_1_1_mandatoryFields() {
+    fun createInternationalPayment_mandatoryFields_v3_1_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent3MandatoryFields()
 
@@ -4514,7 +4514,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
-    fun createInternationalPayment_v3_1_mandatoryFields() {
+    fun createInternationalPayment_mandatoryFields_v3_1() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent2MandatoryFields()
 

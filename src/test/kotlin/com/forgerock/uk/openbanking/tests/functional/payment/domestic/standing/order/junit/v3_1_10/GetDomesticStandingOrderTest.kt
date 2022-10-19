@@ -35,7 +35,7 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
     @Test
-    fun getDomesticStandingOrders_v3_1_10_mandatoryFields() {
+    fun getDomesticStandingOrders_mandatoryFields_v3_1_10() {
         getDomesticStandingOrder.getDomesticStandingOrders_mandatoryFieldsTest()
     }
 
