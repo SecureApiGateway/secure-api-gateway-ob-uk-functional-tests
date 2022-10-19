@@ -3,18 +3,18 @@ package com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.api.v3_1_8.GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails
+import com.forgerock.uk.openbanking.tests.functional.payment.domestic.standing.order.api.v3_1_8.GetDomesticStandingOrderDetails
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class GetDomesticStandingOrderDetailsTest(val tppResource: CreateTppCallback.TppResource) {
 
-    lateinit var getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails: GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails
+    lateinit var getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails: GetDomesticStandingOrderDetails
 
     @BeforeEach
     fun setUp() {
         getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails =
-            GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails(OBVersion.v3_1_8, tppResource)
+            GetDomesticStandingOrderDetails(OBVersion.v3_1_8, tppResource)
     }
 
     @EnabledIfVersion(

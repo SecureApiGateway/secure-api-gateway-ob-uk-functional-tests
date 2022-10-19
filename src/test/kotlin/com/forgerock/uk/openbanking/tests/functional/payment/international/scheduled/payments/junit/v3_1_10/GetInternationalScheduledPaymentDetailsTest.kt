@@ -3,18 +3,18 @@ package com.forgerock.uk.openbanking.tests.functional.payment.international.sche
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.api.v3_1_8.GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails
+import com.forgerock.uk.openbanking.tests.functional.payment.international.scheduled.payments.api.v3_1_8.GetInternationalScheduledPaymentDetails
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class GetInternationalScheduledPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
 
-    lateinit var getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails: GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails
+    lateinit var getInternationalScheduledPaymentDetails: GetInternationalScheduledPaymentDetails
 
     @BeforeEach
     fun setUp() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails =
-            GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails(OBVersion.v3_1_10, tppResource)
+        getInternationalScheduledPaymentDetails =
+            GetInternationalScheduledPaymentDetails(OBVersion.v3_1_10, tppResource)
     }
 
     @EnabledIfVersion(
@@ -25,7 +25,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_v3_1_10() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test()
+        getInternationalScheduledPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_AGREED_Test()
     }
 
     @EnabledIfVersion(
@@ -36,7 +36,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_v3_1_10() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_Test()
+        getInternationalScheduledPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_ACTUAL_Test()
     }
 
     @EnabledIfVersion(
@@ -47,7 +47,7 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_v3_1_10() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_Test()
+        getInternationalScheduledPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_rateType_INDICATIVE_Test()
     }
 
     @EnabledIfVersion(
@@ -58,6 +58,6 @@ class GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDeta
     )
     @Test
     fun getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_mandatoryFields_v3_1_10() {
-        getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test()
+        getInternationalScheduledPaymentDetails.getInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails_Test()
     }
 }

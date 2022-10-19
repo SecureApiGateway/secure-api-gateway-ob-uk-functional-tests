@@ -11,7 +11,7 @@ import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderRes
 import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderConsentTestDataFactory
 
-class GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails(
+class GetInternationalStandingOrderDetails(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {

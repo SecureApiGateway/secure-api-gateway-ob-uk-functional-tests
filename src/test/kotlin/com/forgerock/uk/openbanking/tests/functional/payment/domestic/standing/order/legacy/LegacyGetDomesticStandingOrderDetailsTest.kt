@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.*
 
-class LegacyGetDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetDomesticStandingOrderDetailsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",

@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.*
 
-class LegacyGetInternationalPaymentInternationalPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetInternationalPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",

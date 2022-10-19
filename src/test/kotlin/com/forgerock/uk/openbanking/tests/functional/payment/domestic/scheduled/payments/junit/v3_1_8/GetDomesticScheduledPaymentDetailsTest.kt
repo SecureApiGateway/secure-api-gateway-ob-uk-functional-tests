@@ -3,10 +3,10 @@ package com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled.payments.api.v3_1_8.GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails
+import com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled.payments.api.v3_1_8.GetDomesticScheduledPaymentDetails
 import org.junit.jupiter.api.Test
 
-class GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class GetDomesticScheduledPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
 
     @EnabledIfVersion(
         type = "payments",
@@ -17,7 +17,7 @@ class GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val tppReso
     )
     @Test
     fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetails_v3_1_8() {
-        GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails(
+        GetDomesticScheduledPaymentDetails(
             OBVersion.v3_1_8,
             tppResource
         ).getDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest()

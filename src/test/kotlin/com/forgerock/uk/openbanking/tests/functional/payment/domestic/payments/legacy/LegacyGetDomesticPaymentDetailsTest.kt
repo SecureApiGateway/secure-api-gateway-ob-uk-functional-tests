@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled.payments.legacy
+package com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.legacy
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -15,25 +15,27 @@ import com.forgerock.uk.openbanking.support.discovery.payment3_1_3
 import com.forgerock.uk.openbanking.support.discovery.payment3_1_4
 import com.forgerock.uk.openbanking.support.payment.PaymentAS
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
-import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.urlWithDomesticScheduledPaymentId
+import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.copyOBWriteDomestic2DataInitiation
+import com.forgerock.uk.openbanking.support.payment.PaymentFactory.Companion.urlWithDomesticPaymentId
 import com.forgerock.uk.openbanking.support.payment.PaymentRS
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent3
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent3
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4
 
-class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class LegacyGetDomesticPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.4",
-        operations = ["GetDomesticScheduledPayment", "CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails"],
-        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
+        operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent", "GetDomesticPaymentDomesticPaymentIdPaymentDetails"],
+        apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
-    fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetails_v3_1_4() {
+    fun getDomesticPaymentDomesticPaymentIdPaymentDetails_v3_1_4() {
         // Given
-        val consentRequest = aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = aValidOBWriteDomesticConsent4()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -42,8 +44,8 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteDomesticScheduledConsentResponse4>(
-            payment3_1_4.Links.links.CreateDomesticScheduledPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse4>(
+            payment3_1_4.Links.links.CreateDomesticPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_4,
@@ -66,9 +68,9 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         // accessToken to get the payment use the grant type client_credentials
         val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse4>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteDomesticConsentResponse4>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_4.Links.links.GetDomesticScheduledPaymentConsent,
+                payment3_1_4.Links.links.GetDomesticPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -81,10 +83,10 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteDomesticScheduled2().data(
-            OBWriteDomesticScheduled2Data()
+        val paymentSubmissionRequest = OBWriteDomestic2().data(
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload = signPayloadSubmitPayment(
@@ -93,8 +95,8 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
             tppResource.tpp.signingKid
         )
 
-        val submissionResponse = PaymentRS().submitPayment<OBWriteDomesticScheduledResponse4>(
-            payment3_1_4.Links.links.CreateDomesticScheduledPayment,
+        val submissionResponse = PaymentRS().submitPayment<OBWriteDomesticResponse4>(
+            payment3_1_4.Links.links.CreateDomesticPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -105,13 +107,13 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         assertThat(submissionResponse).isNotNull()
         assertThat(submissionResponse.data).isNotNull()
         assertThat(submissionResponse.data.consentId).isEqualTo(patchedConsent.data.consentId)
-        assertThat(submissionResponse.data.domesticScheduledPaymentId).isNotEmpty()
+        assertThat(submissionResponse.data.domesticPaymentId).isNotEmpty()
 
         // When
         val paymentResult = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
-            urlWithDomesticScheduledPaymentId(
-                payment3_1_4.Links.links.GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails,
-                submissionResponse.data.domesticScheduledPaymentId
+            urlWithDomesticPaymentId(
+                payment3_1_4.Links.links.GetDomesticPaymentDomesticPaymentIdPaymentDetails,
+                submissionResponse.data.domesticPaymentId
             ),
             accessTokenClientCredentials,
             tppResource.tpp
@@ -126,13 +128,13 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.3",
-        operations = ["GetDomesticScheduledPayment", "CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails"],
-        apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
+        operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent", "GetDomesticPaymentDomesticPaymentIdPaymentDetails"],
+        apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
-    fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetails_v3_1_3() {
+    fun getDomesticPaymentDomesticPaymentIdPaymentDetails_v3_1_3() {
         // Given
-        val consentRequest = aValidOBWriteDomesticScheduledConsent3()
+        val consentRequest = aValidOBWriteDomesticConsent3()
 
         val signedPayloadConsent =
             signPayloadSubmitPayment(
@@ -141,8 +143,8 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
                 tppResource.tpp.signingKid
             )
 
-        val consent = PaymentRS().consent<OBWriteDomesticScheduledConsentResponse3>(
-            payment3_1_3.Links.links.CreateDomesticScheduledPaymentConsent,
+        val consent = PaymentRS().consent<OBWriteDomesticConsentResponse3>(
+            payment3_1_3.Links.links.CreateDomesticPaymentConsent,
             consentRequest,
             tppResource.tpp,
             OBVersion.v3_1_3,
@@ -165,9 +167,9 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         // accessToken to get the payment use the grant type client_credentials
         val accessTokenClientCredentials = PaymentRS().getClientCredentialsAccessToken(tppResource.tpp)
 
-        val patchedConsent = PaymentRS().getConsent<OBWriteDomesticScheduledConsentResponse3>(
+        val patchedConsent = PaymentRS().getConsent<OBWriteDomesticConsentResponse3>(
             PaymentFactory.urlWithConsentId(
-                payment3_1_3.Links.links.GetDomesticScheduledPaymentConsent,
+                payment3_1_3.Links.links.GetDomesticPaymentConsent,
                 consent.data.consentId
             ),
             tppResource.tpp,
@@ -180,10 +182,10 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         assertThat(patchedConsent.data.consentId).isNotEmpty()
         Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = OBWriteDomesticScheduled2().data(
-            OBWriteDomesticScheduled2Data()
+        val paymentSubmissionRequest = OBWriteDomestic2().data(
+            OBWriteDomestic2Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
+                .initiation(copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
 
         val signedPayload =
@@ -194,8 +196,8 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
                 true
             )
 
-        val submissionResponse = PaymentRS().submitPayment<OBWriteDomesticScheduledResponse3>(
-            payment3_1_3.Links.links.CreateDomesticScheduledPayment,
+        val submissionResponse = PaymentRS().submitPayment<OBWriteDomesticResponse3>(
+            payment3_1_3.Links.links.CreateDomesticPayment,
             paymentSubmissionRequest,
             accessTokenAuthorizationCode,
             signedPayload,
@@ -206,13 +208,13 @@ class LegacyGetDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest(val t
         assertThat(submissionResponse).isNotNull()
         assertThat(submissionResponse.data).isNotNull()
         assertThat(submissionResponse.data.consentId).isEqualTo(patchedConsent.data.consentId)
-        assertThat(submissionResponse.data.domesticScheduledPaymentId).isNotEmpty()
+        assertThat(submissionResponse.data.domesticPaymentId).isNotEmpty()
 
         // When
         val paymentResult = PaymentRS().getPayment<OBWritePaymentDetailsResponse1>(
-            urlWithDomesticScheduledPaymentId(
-                payment3_1_3.Links.links.GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails,
-                submissionResponse.data.domesticScheduledPaymentId
+            urlWithDomesticPaymentId(
+                payment3_1_3.Links.links.GetDomesticPaymentDomesticPaymentIdPaymentDetails,
+                submissionResponse.data.domesticPaymentId
             ),
             accessTokenClientCredentials,
             tppResource.tpp

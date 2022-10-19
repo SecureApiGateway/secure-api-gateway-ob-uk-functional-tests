@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.domestic.scheduled.payments.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.domestic.payments.api.v3_1_8
 
 import assertk.assertThat
 import assertk.assertions.isNotNull
@@ -8,25 +8,25 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
-class GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails(
+class GetDomesticPaymentDetails(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
-    private val createDomesticScheduledPayments = CreateDomesticScheduledPayment(version, tppResource)
+    private val createDomesticPaymentApi = CreateDomesticPayment(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
-    fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest() {
+    fun getDomesticPaymentDomesticPaymentIdPaymentDetailsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
-        val paymentResponse = createDomesticScheduledPayments.submitPayment(consentRequest)
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val paymentResponse = createDomesticPaymentApi.submitPayment(consentRequest)
 
         // When
-        val getDomesticPaymentDetailsUrl = PaymentFactory.urlWithDomesticScheduledPaymentId(
-            paymentLinks.GetDomesticScheduledPaymentDomesticPaymentIdPaymentDetails,
-            paymentResponse.data.domesticScheduledPaymentId
+        val getDomesticPaymentDetailsUrl = PaymentFactory.urlWithDomesticPaymentId(
+            paymentLinks.GetDomesticPaymentDomesticPaymentIdPaymentDetails,
+            paymentResponse.data.domesticPaymentId
         )
         val paymentDetailsResponse = paymentApiClient.sendGetRequest<OBWritePaymentDetailsResponse1>(
             getDomesticPaymentDetailsUrl,

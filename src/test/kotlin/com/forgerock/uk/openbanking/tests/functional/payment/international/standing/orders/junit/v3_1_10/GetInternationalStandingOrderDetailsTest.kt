@@ -3,18 +3,18 @@ package com.forgerock.uk.openbanking.tests.functional.payment.international.stan
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.tests.functional.payment.international.standing.orders.api.v3_1_8.GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails
+import com.forgerock.uk.openbanking.tests.functional.payment.international.standing.orders.api.v3_1_8.GetInternationalStandingOrderDetails
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetailsTest(val tppResource: CreateTppCallback.TppResource) {
+class GetInternationalStandingOrderDetailsTest(val tppResource: CreateTppCallback.TppResource) {
 
-    lateinit var getInternationalStandingOrderInternationalStandingOrderIdPaymentDetails: GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails
+    lateinit var getInternationalStandingOrderInternationalStandingOrderIdPaymentDetails: GetInternationalStandingOrderDetails
 
     @BeforeEach
     fun setUp() {
         getInternationalStandingOrderInternationalStandingOrderIdPaymentDetails =
-            GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails(OBVersion.v3_1_10, tppResource)
+            GetInternationalStandingOrderDetails(OBVersion.v3_1_10, tppResource)
     }
 
     @EnabledIfVersion(
