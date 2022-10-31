@@ -91,7 +91,7 @@ data class Tpp(
     fun dynamicRegistration(
         registrationRequest: RegistrationRequest = RegistrationRequest(
             software_statement = generateSsa(),
-            iss = softwareStatement.id
+            iss = OB_SOFTWARE_ID
         )
     ): RegistrationResponse {
         val signed = signRegistrationRequest(registrationRequest)
