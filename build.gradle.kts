@@ -74,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.7-SNAPSHOT"))
+    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.8-SNAPSHOT"))
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-common")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel")
     implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel")
@@ -103,6 +103,7 @@ dependencies {
     testImplementation("org.apache.httpcomponents:httpclient:4.5.9")
     testImplementation("org.assertj:assertj-core:3.13.2")
     testImplementation("com.nimbusds:nimbus-jose-jwt:9.0.1")
+    testImplementation("commons-io:commons-io:2.6")
 }
 
 /*
@@ -299,6 +300,15 @@ for (apiVersion in apiVersions) {
         failFast = false
     }
 
+    tasks.register<Test>("file_payments_$apiVersion") {
+        group = "payments-tests"
+        description = "Runs the file payments tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
+        }
+        failFast = false
+    }
+
     /* ALL IMPLEMENTED TESTS */
     tasks.register<Test>("tests_$apiVersion") {
         group = "tests"
@@ -311,6 +321,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.international.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
         }
         failFast = false
     }

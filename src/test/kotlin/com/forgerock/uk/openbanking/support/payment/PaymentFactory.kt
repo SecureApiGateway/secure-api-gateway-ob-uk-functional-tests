@@ -2,13 +2,19 @@ package com.forgerock.uk.openbanking.support.payment
 
 import com.forgerock.uk.openbanking.support.general.GeneralFactory.Companion.urlSubstituted
 import com.google.common.base.Preconditions
+import org.apache.commons.io.FileUtils
 import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.common.OBCashAccount3
+import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.testsupport.payment.OBWriteFileConsentTestDataFactory
+import java.io.File
+import java.io.StringReader
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
+import javax.xml.bind.JAXB
 
 /**
  * Generate common OB payment URLs
@@ -39,6 +45,9 @@ class PaymentFactory {
         fun urlWithFilePaymentId(url: String, filePaymentId: String) =
             urlSubstituted(url, mapOf("FilePaymentId" to filePaymentId))
 
+        fun urlWithFilePaymentSubmitFileId(url: String, filePaymentId: String) =
+            urlSubstituted(url, mapOf("ConsentId" to filePaymentId))
+
         fun computeSHA256FullHash(contentToEncode: String): String {
             Preconditions.checkNotNull(contentToEncode, "Cannot hash null")
             try {
@@ -48,6 +57,55 @@ class PaymentFactory {
             } catch (ex: NoSuchAlgorithmException) {
                 throw IllegalStateException("Unknown algorithm for file hash: SHA-256")
             }
+        }
+
+        fun getXMLFileAsString(): String {
+            val filePath = "/com/forgerock/securebanking/payment/file/UK_OBIE_pain_001_001_08.xml"
+            try {
+                return FileUtils.readFileToString(
+                    File(object {}.javaClass.getResource(filePath)?.file.toString()),
+                    StandardCharsets.UTF_8
+                )
+            } catch (e: NullPointerException) {
+                throw AssertionError("Could not load file: $filePath")
+            }
+        }
+
+        fun getJSONFileAsString(): String {
+            val filePath = "/com/forgerock/securebanking/payment/file/UK_OBIE_PaymentInitiation_3_1.json"
+            try {
+                return FileUtils.readFileToString(
+                    File(object {}.javaClass.getResource(filePath)?.file.toString()),
+                    StandardCharsets.UTF_8
+                )
+            } catch (e: NullPointerException) {
+                throw AssertionError("Could not load file: $filePath")
+            }
+        }
+
+        fun createOBWriteFileConsent3WithFileInfo(fileContent: String, fileType: String): OBWriteFileConsent3 {
+            val document = JAXB.unmarshal(
+                StringReader(fileContent),
+                com.forgerock.generated.xml.model.pain00100108.Document::class.java
+            )
+            val numberOfTransactions = document.cstmrCdtTrfInitn.grpHdr.nbOfTxs.toString()
+            val fileHashString = computeSHA256FullHash(fileContent)
+            val controlSum = document.cstmrCdtTrfInitn.grpHdr.ctrlSum
+            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(fileType, fileHashString, numberOfTransactions, controlSum)
+        }
+
+        fun createJsonOBWriteFileConsent3WithFileInfo(fileHash: String, controlSum: String, numberOfPayments: String, fileType: String): OBWriteFileConsent3 {
+
+            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(fileType, fileHash, numberOfPayments, controlSum.toBigDecimal())
+        }
+
+        fun createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(fileContent: String, fileType: String): OBWriteFileConsent3 {
+            val document = JAXB.unmarshal(
+                StringReader(fileContent),
+                com.forgerock.generated.xml.model.pain00100108.Document::class.java
+            )
+            val fileHashString = computeSHA256FullHash(fileContent)
+            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3MandatoryFields(fileType, fileHashString)
         }
 
         fun mapOBDomestic2ToOBWriteDomestic2DataInitiation(obDomestic2: OBDomestic2): OBWriteDomestic2DataInitiation {

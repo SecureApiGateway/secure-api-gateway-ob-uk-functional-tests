@@ -48,6 +48,22 @@ class PaymentApiClient(val tpp: Tpp) {
             return this
         }
 
+        fun addXmlFileBody(body: Any): PaymentApiRequestBuilder {
+            // store the body string in a field, which allows us to compute a JWS signature later (if required)
+            jsonBody = body.toString()
+            request.header("Content-Type" to "text/xml")
+            request.body(body.toString()!!)
+            return this
+        }
+
+        fun addJsonFileBody(body: Any): PaymentApiRequestBuilder {
+            // store the body string in a field, which allows us to compute a JWS signature later (if required)
+            jsonBody = body.toString()
+            request.header("Content-Type" to "application/json")
+            request.body(body.toString()!!)
+            return this
+        }
+
         fun addAuthorization(accessToken: AccessToken): PaymentApiRequestBuilder {
             request.header("Authorization", "Bearer ${accessToken.access_token}")
             return this
@@ -85,6 +101,72 @@ class PaymentApiClient(val tpp: Tpp) {
             }
             return result.get()
         }
+
+        inline fun sendFileRequest(): Boolean {
+            if (jwsSignatureProducer != null && jsonBody != null) {
+                val detachedSignature = jwsSignatureProducer?.createDetachedSignature(jsonBody!!)
+                if (detachedSignature != null) {
+                    request.header("x-jws-signature", detachedSignature)
+                }
+            }
+
+            request.header("Content-Type", "text/xml")
+
+            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
+            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+
+
+
+            val (_, response, result) = request.response()
+
+            if (!response.isSuccessful) {
+                throw AssertionError(
+                    "API call: " +request.method + " "+ request.url + " returned an error response:\n"
+                            + result.component2()?.errorData?.toString(Charsets.UTF_8),
+                    result.component2()
+                )
+            }
+
+            if (response.header("x-jws-signature").isNullOrEmpty()) {
+                throw AssertionError(
+                    "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+                )
+            }
+            return response.isSuccessful
+        }
+
+        inline fun sendJsonFileRequest(): Boolean {
+            if (jwsSignatureProducer != null && jsonBody != null) {
+                val detachedSignature = jwsSignatureProducer?.createDetachedSignature(jsonBody!!)
+                if (detachedSignature != null) {
+                    request.header("x-jws-signature", detachedSignature)
+                }
+            }
+
+            request.header("Content-Type", "application/json")
+
+            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
+            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+
+
+
+            val (_, response, result) = request.response()
+
+            if (!response.isSuccessful) {
+                throw AssertionError(
+                    "API call: " +request.method + " "+ request.url + " returned an error response:\n"
+                            + result.component2()?.errorData?.toString(Charsets.UTF_8),
+                    result.component2()
+                )
+            }
+
+            if (response.header("x-jws-signature").isNullOrEmpty()) {
+                throw AssertionError(
+                    "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
+                )
+            }
+            return response.isSuccessful
+        }
     }
 
     fun newPostRequestBuilder(url: String): PaymentApiRequestBuilder {
@@ -106,6 +188,18 @@ class PaymentApiClient(val tpp: Tpp) {
         accessToken: AccessToken,
         body: Any
     ) = newPostRequestBuilder(url).addAuthorization(accessToken).addBody(body).configureDefaultJwsSignatureProducer()
+
+    fun newFilePostRequestBuilder(
+        url: String,
+        accessToken: AccessToken,
+        body: Any
+    ) = newPostRequestBuilder(url).addAuthorization(accessToken).addXmlFileBody(body).configureDefaultJwsSignatureProducer()
+
+    fun newJsonFilePostRequestBuilder(
+        url: String,
+        accessToken: AccessToken,
+        body: Any
+    ) = newPostRequestBuilder(url).addAuthorization(accessToken).addJsonFileBody(body).configureDefaultJwsSignatureProducer()
 
     /**
      * Submits a HTTP GET request using default configuration
