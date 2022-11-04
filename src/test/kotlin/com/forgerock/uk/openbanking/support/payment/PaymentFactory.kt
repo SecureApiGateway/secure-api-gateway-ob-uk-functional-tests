@@ -20,6 +20,12 @@ import javax.xml.bind.JAXB
  * Generate common OB payment URLs
  */
 class PaymentFactory {
+
+    object FilePaths {
+        const val XML_FILE_PATH = "/com/forgerock/securebanking/payment/file/UK_OBIE_pain_001_001_08.xml"
+        const val JSON_FILE_PATH = "/com/forgerock/securebanking/payment/file/UK_OBIE_PaymentInitiation_3_1.json"
+    }
+
     companion object {
         fun urlWithConsentId(url: String, consentId: String) =
             urlSubstituted(url, mapOf("ConsentId" to consentId))
@@ -59,20 +65,7 @@ class PaymentFactory {
             }
         }
 
-        fun getXMLFileAsString(): String {
-            val filePath = "/com/forgerock/securebanking/payment/file/UK_OBIE_pain_001_001_08.xml"
-            try {
-                return FileUtils.readFileToString(
-                    File(object {}.javaClass.getResource(filePath)?.file.toString()),
-                    StandardCharsets.UTF_8
-                )
-            } catch (e: NullPointerException) {
-                throw AssertionError("Could not load file: $filePath")
-            }
-        }
-
-        fun getJSONFileAsString(): String {
-            val filePath = "/com/forgerock/securebanking/payment/file/UK_OBIE_PaymentInitiation_3_1.json"
+        fun getFileAsString(filePath: String): String {
             try {
                 return FileUtils.readFileToString(
                     File(object {}.javaClass.getResource(filePath)?.file.toString()),

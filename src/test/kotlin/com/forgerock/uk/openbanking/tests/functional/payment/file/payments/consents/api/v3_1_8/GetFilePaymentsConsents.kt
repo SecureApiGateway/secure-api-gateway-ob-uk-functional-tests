@@ -18,7 +18,7 @@ class GetFilePaymentsConsents(val version: OBVersion, val tppResource: CreateTpp
 
     fun shouldGetFilePaymentsConsents() {
         // Given
-        val fileContent = PaymentFactory.getXMLFileAsString()
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
             PaymentFileType.UK_OBIE_PAIN_001_001_008.type
@@ -44,7 +44,7 @@ class GetFilePaymentsConsents(val version: OBVersion, val tppResource: CreateTpp
 
     fun shouldGetFilePaymentsConsents_withoutOptionalDebtorAccountTest() {
         // Given
-        val fileContent = PaymentFactory.getXMLFileAsString()
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
             PaymentFileType.UK_OBIE_PAIN_001_001_008.type

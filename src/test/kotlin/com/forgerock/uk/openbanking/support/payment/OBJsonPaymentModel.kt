@@ -1,9 +1,5 @@
 package com.forgerock.uk.openbanking.support.payment
 
-// To parse the JSON, install jackson-module-kotlin and do:
-//
-//   val welcome = Welcome.fromJson(jsonString)
-
 import com.fasterxml.jackson.annotation.*
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.module.kotlin.*
