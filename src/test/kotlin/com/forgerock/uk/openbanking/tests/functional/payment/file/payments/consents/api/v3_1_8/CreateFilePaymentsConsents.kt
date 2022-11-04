@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.file.payments.consents.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.file.payments.api.v3_1_8
 
 import assertk.assertThat
 import assertk.assertions.*

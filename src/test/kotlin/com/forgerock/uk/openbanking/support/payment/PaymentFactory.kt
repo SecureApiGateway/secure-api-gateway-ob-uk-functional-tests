@@ -698,5 +698,44 @@ class PaymentFactory {
 
             return outputInitiation
         }
+
+        fun mapOBWriteFileConsentResponse4DataInitiationToOBWriteFile2DataInitiation
+                    (inputInitiation:  OBWriteFile2DataInitiation): OBWriteFile2DataInitiation? {
+            val outputInitiation = OBWriteFile2DataInitiation()
+                .fileHash(inputInitiation.fileHash)
+                .fileReference(inputInitiation.fileReference)
+                .fileType(inputInitiation.fileType)
+                .numberOfTransactions(inputInitiation.numberOfTransactions)
+                .requestedExecutionDateTime(inputInitiation.requestedExecutionDateTime)
+                .localInstrument(inputInitiation.localInstrument)
+                .controlSum(inputInitiation.controlSum)
+
+
+            if (inputInitiation.debtorAccount != null) {
+                outputInitiation.debtorAccount(
+                    OBWriteDomestic2DataInitiationDebtorAccount()
+                        .schemeName(inputInitiation.debtorAccount?.schemeName)
+                        .identification(inputInitiation.debtorAccount?.identification)
+                        .name(inputInitiation.debtorAccount?.name)
+                        .secondaryIdentification(inputInitiation.debtorAccount?.secondaryIdentification)
+                )
+            }
+
+            if (inputInitiation.remittanceInformation != null) {
+                outputInitiation.remittanceInformation(
+                    OBWriteDomestic2DataInitiationRemittanceInformation()
+                        .unstructured(inputInitiation.remittanceInformation?.unstructured)
+                        .reference(inputInitiation.remittanceInformation?.reference)
+                )
+            }
+
+            if (inputInitiation.supplementaryData != null) {
+                outputInitiation.supplementaryData(
+                    OBSupplementaryData1()
+                )
+            }
+
+            return outputInitiation
+        }
     }
 }
