@@ -5,7 +5,7 @@ import com.forgerock.securebanking.framework.configuration.RCS_SERVER
 import com.forgerock.securebanking.framework.data.*
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
+import com.forgerock.securebanking.framework.configuration.REDIRECT_URI
 import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
 import com.forgerock.uk.openbanking.framework.errors.LOCATION_HEADER_ERROR
 import com.forgerock.uk.openbanking.framework.errors.LOCATION_HEADER_NOT_EXISTS

@@ -38,3 +38,5 @@ val ISS_CLAIM_VALUE = "CN=${System.getenv("commonName") ?: "0015800001041REAAY"}
         "organizationIdentifier=${System.getenv("organizationIdentifier") ?: "PSDGB-OB-Unknown0015800001041REAAY"}," +
         "O=${System.getenv("organization") ?: "FORGEROCK LIMITED"}," +
         "C=${System.getenv("country") ?: "GB"}"
+
+val REDIRECT_URI = System.getenv("redirectUri") ?: "https://www.google.co.uk"
