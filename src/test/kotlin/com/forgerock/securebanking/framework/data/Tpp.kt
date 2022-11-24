@@ -17,7 +17,7 @@ import com.forgerock.uk.openbanking.framework.configuration.OB_ORGANISATION_ID
 import com.forgerock.uk.openbanking.framework.configuration.OB_SOFTWARE_ID
 import com.forgerock.uk.openbanking.framework.configuration.SSA_MATLS_URL_SANDBOX
 import com.forgerock.uk.openbanking.framework.configuration.TOKEN_URL_SANDBOX
-import com.forgerock.uk.openbanking.framework.constants.REDIRECT_URI
+import com.forgerock.securebanking.framework.configuration.REDIRECT_URI
 import com.forgerock.uk.openbanking.support.general.GeneralAS.Companion
 import com.forgerock.uk.openbanking.support.general.GeneralAS.GrantTypes
 import com.forgerock.uk.openbanking.support.payment.PaymentApiClient
