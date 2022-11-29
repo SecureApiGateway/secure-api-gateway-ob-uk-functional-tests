@@ -11,6 +11,7 @@ data class RequestParameters(
     val client_id: String,
     val exp: Long = System.currentTimeMillis() / 1000 + 600,
     val iat: Long = System.currentTimeMillis() / 1000,
+    val nbf: Long = System.currentTimeMillis() / 1000,
     val jti: UUID = UUID.randomUUID(),
     val iss: String,
     val nonce: String = "10d260bf-a7d9-444a-92d9-7b7a5f088208",
