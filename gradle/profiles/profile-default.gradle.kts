@@ -46,8 +46,6 @@ val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
 val rcsServer by extra("https://rcs.$environment.forgerock.financial")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
-// cookie name
-val cookieName by extra("iPlanetDirectoryPro")
 
 //User's Password
 val userPassword by extra("0penBanking!")
@@ -70,4 +68,4 @@ val organizationIdentifier by extra("PSDGB-OB-Unknown$obOrganisationId")
 val organization by extra("FORGEROCK LIMITED")
 val country by extra("GB")
 val issClaimValue by extra("CN=$commonName,organizationIdentifier=$organizationIdentifier,O=$organization,C=$country")
-val redirectUri by extra("https://www.google.co.uk")
+val redirectUri by extra("https://postman-echo.com/get")
