@@ -40,7 +40,7 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  * Functional tests configuration
  */
 // servers
-val environment by extra("dev")
+val environment by extra(System.getenv('TEST_ENVIRONMENT'))
 val rsServer by extra("https://rs.$environment.forgerock.financial")
 val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
