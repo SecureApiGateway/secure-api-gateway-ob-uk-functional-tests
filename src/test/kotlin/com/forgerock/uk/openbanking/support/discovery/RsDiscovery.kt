@@ -325,7 +325,10 @@ data class RsDiscovery(
                     val GetInternationalStandingOrderConsent: String,
                     val GetDomesticStandingOrderDomesticStandingOrderIdPaymentDetails: String,
                     val GetInternationalScheduledPaymentPaymentIdPaymentDetails:String,
-                    val GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails:String
+                    val GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails:String,
+                    val CreateDomesticVRPConsent: String,
+                    val GetDomesticVRPConsent: String
+
                 )
             }
         }

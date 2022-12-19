@@ -325,10 +325,23 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
+            if (apiVersion == ("v3_1_10")) {
+                includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
+            }
         }
         failFast = false
     }
 }
+
+tasks.register<Test>("domestic_vrps_v3_1_10") {
+    group = "payments-tests"
+    description = "Runs the domestic vrps tests with the version v3_1_10"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v3_1_10")
+    }
+    failFast = false
+}
+
 tasks.register<Test>("singleTest") {
     description = "Runs open banking single functional tests"
 }
