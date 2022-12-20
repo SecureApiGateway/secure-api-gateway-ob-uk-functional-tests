@@ -11,4 +11,7 @@ build
 .idea/
 gradle/profiles/*
 !gradle/profiles/profile-default.gradle.kts
+!gradle/profiles/profile-devops.gradle.kts
+!gradle/profiles/profile-nightly.gradle.kts
+
 /certificates
