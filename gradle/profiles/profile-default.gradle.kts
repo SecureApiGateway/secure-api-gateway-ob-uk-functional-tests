@@ -46,8 +46,6 @@ val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
 val rcsServer by extra("https://rcs.$environment.forgerock.financial")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
-// cookie name
-val cookieName by extra("iPlanetDirectoryPro")
 
 //User's Password
 val userPassword by extra("0penBanking!")
