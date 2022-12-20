@@ -224,6 +224,9 @@ tasks.withType<Test>().configureEach {
     maxParallelForks = 1
     testLogging.showStandardStreams = true
     testLogging.exceptionFormat = TestExceptionFormat.FULL
+
+    // Disable test output caching as these are integration tests and therefore are environment dependent
+    outputs.upToDateWhen { false }
 }
 /* ********************************************* */
 /*                 TEST TASKS                    */
