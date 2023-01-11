@@ -54,7 +54,7 @@ jobs:
         with:
           args: '-v SPEC_IMAGE=${{ env.SPEC_IMAGE }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-functional-tests'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-functionaltest
         id: run-tests
