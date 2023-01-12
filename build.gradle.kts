@@ -325,9 +325,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.international.scheduled.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
-            if (apiVersion == ("v3_1_10")) {
-                includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
-            }
+            includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
         }
         failFast = false
     }

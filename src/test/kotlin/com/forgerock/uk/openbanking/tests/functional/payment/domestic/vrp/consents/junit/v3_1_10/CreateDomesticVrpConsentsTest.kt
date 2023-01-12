@@ -3,7 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.conse
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_8.CreateDomesticVrpConsents
+import com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_10.CreateDomesticVrpConsents
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

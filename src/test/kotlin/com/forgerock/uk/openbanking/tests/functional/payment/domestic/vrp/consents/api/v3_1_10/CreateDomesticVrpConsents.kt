@@ -1,4 +1,4 @@
-package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_8
+package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_10
 
 import assertk.assertThat
 import assertk.assertions.contains
