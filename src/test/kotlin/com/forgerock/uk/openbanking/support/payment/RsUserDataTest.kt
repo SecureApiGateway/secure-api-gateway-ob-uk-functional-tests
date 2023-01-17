@@ -4,10 +4,10 @@ import com.forgerock.securebanking.framework.configuration.PSU_USER_ID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RSDebtorAccountDiscoveryTest {
+class RsUserDataTest {
 
     @Test
-    fun haveDebtorAccount(){
+    fun shouldRetrieveUserDataFromRS(){
         // When
         var userName = rsUserData.userName
 
