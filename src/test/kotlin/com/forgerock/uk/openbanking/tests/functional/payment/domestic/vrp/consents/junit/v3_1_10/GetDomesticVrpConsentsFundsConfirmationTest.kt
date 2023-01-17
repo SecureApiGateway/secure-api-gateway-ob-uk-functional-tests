@@ -20,7 +20,7 @@ class GetDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["CreateDomesticVRPConsent", "GetDomesticVRPPaymentConsentsConsentIdFundsConfirmation"],
+        operations = ["CreateDomesticVRPConsent", "CreateDomesticVRPConsentsConsentIdFundsConfirmation"],
         apis = ["domestic-vrp-consents"]
     )
     @Test
@@ -31,7 +31,7 @@ class GetDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["CreateDomesticVRPConsent", "GetDomesticVRPPaymentConsentsConsentIdFundsConfirmation"],
+        operations = ["CreateDomesticVRPConsent", "CreateDomesticVRPConsentsConsentIdFundsConfirmation"],
         apis = ["domestic-vrp-consents"]
     )
     @Test
@@ -42,7 +42,7 @@ class GetDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["CreateDomesticVRPConsent", "GetDomesticVRPPaymentConsentsConsentIdFundsConfirmation"],
+        operations = ["CreateDomesticVRPConsent", "CreateDomesticVRPConsentsConsentIdFundsConfirmation"],
         apis = ["domestic-vrp-consents"]
     )
     @Test
@@ -53,7 +53,7 @@ class GetDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["CreateDomesticVRPConsent", "GetDomesticVRPPaymentConsentsConsentIdFundsConfirmation"],
+        operations = ["CreateDomesticVRPConsent", "CreateDomesticVRPConsentsConsentIdFundsConfirmation"],
         apis = ["domestic-vrp-consents"]
     )
     @Test

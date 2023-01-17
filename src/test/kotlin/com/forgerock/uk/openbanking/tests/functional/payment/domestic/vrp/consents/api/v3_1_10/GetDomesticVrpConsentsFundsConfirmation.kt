@@ -116,7 +116,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
     ): OBVRPFundsConfirmationResponse {
         return paymentApiClient.sendGetRequest(
             PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticVRPPaymentConsentsConsentIdFundsConfirmation,
+                paymentLinks.CreateDomesticVRPConsentsConsentIdFundsConfirmation,
                 consent.data.consentId
             ), accessTokenAuthorizationCode
         )
