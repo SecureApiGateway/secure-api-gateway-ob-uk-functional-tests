@@ -47,7 +47,9 @@ val amCookieName by extra("80d4a6cdee74c6e")
 val rcsServer by extra("https://rcs.$environment.forgerock.financial")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
 
-//User's Password
+// PSU User configuration
+// needs to be a UUID and match with the value set in the use data initialiser
+val userId by extra ("4737f9f9-fa0a-4159-bc61-7da31542e624")
 val userPassword by extra("0penBanking!")
 val username by extra("psu4test")
 
