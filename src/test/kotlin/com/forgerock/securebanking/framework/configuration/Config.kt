@@ -11,6 +11,7 @@ val IG_SERVER = System.getenv("igServer") ?: "https://obdemo.dev.forgerock.finan
 val TRUSTSTORE_PATH = System.getenv("truststorePath") ?: "/com/forgerock/securebanking/truststore.jks"
 val TRUSTSTORE_PASSWORD = System.getenv("truststorePassword") ?: "changeit"
 
+val PSU_USER_ID = System.getenv("userId") ?: "4737f9f9-fa0a-4159-bc61-7da31542e624"
 val PSU_PASSWORD = System.getenv("userPassword") ?: "password"
 val PSU_USERNAME = System.getenv("username") ?: "username"
 
