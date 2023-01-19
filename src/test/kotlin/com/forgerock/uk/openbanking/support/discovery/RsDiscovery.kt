@@ -327,7 +327,7 @@ data class RsDiscovery(
                     val GetInternationalScheduledPaymentPaymentIdPaymentDetails: String,
                     val GetInternationalStandingOrderInternationalStandingOrderIdPaymentDetails: String,
                     val CreateDomesticVRPConsent: String,
-                    val CreateDomesticVRPPayment: String,
+                    val CreateDomesticVrpPayment: String,
                     val GetDomesticVRPConsent: String,
                     val GetDomesticVRP: String,
                     val GetDomesticVRPPaymentDomesticPaymentIdPaymentDetails: String,

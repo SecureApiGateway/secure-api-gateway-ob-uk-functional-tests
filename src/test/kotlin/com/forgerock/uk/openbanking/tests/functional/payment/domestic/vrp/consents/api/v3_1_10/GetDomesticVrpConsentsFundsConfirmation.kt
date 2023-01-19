@@ -11,6 +11,7 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
+import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
 import uk.org.openbanking.datamodel.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
@@ -34,7 +35,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable.value).isEqualTo("NotAvailable")
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -68,7 +69,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
 
         val payment: OBDomesticVRPConsentResponse = paymentApiClient.submitPayment(
-            paymentLinks.CreateDomesticVRPPayment,
+            paymentLinks.CreateDomesticVrpPayment,
             accessTokenAuthorizationCode,
             paymentSubmissionRequest
         )
@@ -97,11 +98,11 @@ class GetDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable.value).isEqualTo("Available")
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    private fun createConsentAndGetFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): OBVRPFundsConfirmationResponse {
+    private fun createConsentAndGetFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): OBWriteFundsConfirmationResponse1 {
         val (consent, accessTokenAuthorizationCode) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
             consentRequest
         )
@@ -111,7 +112,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
     private fun getFundsConfirmation(
         consent: OBDomesticVRPConsentResponse,
         accessTokenAuthorizationCode: AccessToken
-    ): OBVRPFundsConfirmationResponse {
+    ): OBWriteFundsConfirmationResponse1 {
         return paymentApiClient.sendGetRequest(
             PaymentFactory.urlWithConsentId(
                 paymentLinks.CreateDomesticVRPConsentsConsentIdFundsConfirmation,
