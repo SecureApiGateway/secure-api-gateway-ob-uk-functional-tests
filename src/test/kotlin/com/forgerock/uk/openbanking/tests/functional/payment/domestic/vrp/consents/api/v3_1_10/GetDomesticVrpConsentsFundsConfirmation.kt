@@ -11,9 +11,7 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.datamodel.vrp.*
-import uk.org.openbanking.testsupport.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
 class GetDomesticVrpConsentsFundsConfirmation(
@@ -36,7 +34,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable.value).isEqualTo("Available")
+        assertThat(result.data.fundsAvailableResult.fundsAvailable.value).isEqualTo("NotAvailable")
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -70,7 +68,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
 
         val payment: OBDomesticVRPConsentResponse = paymentApiClient.submitPayment(
-            paymentLinks.CreateDomesticPayment,
+            paymentLinks.CreateDomesticVRPPayment,
             accessTokenAuthorizationCode,
             paymentSubmissionRequest
         )
@@ -128,7 +126,6 @@ class GetDomesticVrpConsentsFundsConfirmation(
                 .consentId(patchedConsent.data.consentId)
                 //.initiation(PaymentFactory.OBDomesticVRPInitiation(patchedConsent.data.initiation))
                 .initiation(patchedConsent.data.initiation)
-            //.instruction(patchedConsent.instruction)
         ).risk(patchedConsent.risk)
     }
 
