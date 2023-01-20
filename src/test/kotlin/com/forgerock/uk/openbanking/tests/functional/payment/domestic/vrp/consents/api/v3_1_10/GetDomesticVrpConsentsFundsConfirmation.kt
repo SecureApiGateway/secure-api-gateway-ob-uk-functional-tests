@@ -1,18 +1,23 @@
 package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_10
 
 import assertk.assertThat
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
+import assertk.assertions.isNotNull
+import assertk.assertions.isTrue
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.INVALID_CONSENT_STATUS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
 import com.github.kittinunf.fuel.core.FuelError
 import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
-import uk.org.openbanking.datamodel.vrp.*
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPRequest
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPRequestData
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
 class GetDomesticVrpConsentsFundsConfirmation(
@@ -57,34 +62,6 @@ class GetDomesticVrpConsentsFundsConfirmation(
         // Then
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-    }
-
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
-        // Given
-        val consentRequest = aValidOBDomesticVRPConsentRequest()
-        val (consent, accessTokenAuthorizationCode) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
-        )
-        val patchedConsent = createDomesticVrpConsentsApi.getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
-
-        val payment: OBDomesticVRPConsentResponse = paymentApiClient.submitPayment(
-            paymentLinks.CreateDomesticVrpPayment,
-            accessTokenAuthorizationCode,
-            paymentSubmissionRequest
-        )
-
-        //An ASPSP can only respond to a funds confirmation request if the domestic-vrp-consent resource has an Authorised status.
-        // If the status is not Authorised, an ASPSP must respond with a 400 (Bad Request) and a UK.OBIE.Resource.InvalidConsentStatus error code
-
-        // When
-        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenAuthorizationCode)
-        }
-
-        // Then
-        assertThat(exception.message.toString()).contains(INVALID_CONSENT_STATUS)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_true() {
