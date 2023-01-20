@@ -7,6 +7,8 @@ import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.common.OBCashAccount3
 import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPInstruction
 import uk.org.openbanking.testsupport.payment.OBWriteFileConsentTestDataFactory
 import java.io.File
 import java.io.StringReader
@@ -53,6 +55,9 @@ class PaymentFactory {
 
         fun urlWithFilePaymentSubmitFileId(url: String, filePaymentId: String) =
             urlSubstituted(url, mapOf("ConsentId" to filePaymentId))
+
+        fun urlWithDomesticVrpPaymentId(url: String, domesticVrpPaymentId: String) =
+            urlSubstituted(url, mapOf("DomesticVRPId" to domesticVrpPaymentId))
 
         fun computeSHA256FullHash(contentToEncode: String): String {
             Preconditions.checkNotNull(contentToEncode, "Cannot hash null")
@@ -737,5 +742,15 @@ class PaymentFactory {
 
             return outputInitiation
         }
+
+        fun buildVrpInstruction(patchedConsent: OBDomesticVRPConsentResponse): OBDomesticVRPInstruction? {
+            val instruction = OBDomesticVRPInstruction().creditorAccount(patchedConsent.data.initiation.creditorAccount)
+                .instructedAmount(patchedConsent.data.controlParameters.maximumIndividualAmount);
+            if (patchedConsent.data.initiation.creditorPostalAddress != null) {
+                instruction.creditorPostalAddress = patchedConsent.data.initiation.creditorPostalAddress
+            }
+            return instruction;
+        }
+
     }
 }
