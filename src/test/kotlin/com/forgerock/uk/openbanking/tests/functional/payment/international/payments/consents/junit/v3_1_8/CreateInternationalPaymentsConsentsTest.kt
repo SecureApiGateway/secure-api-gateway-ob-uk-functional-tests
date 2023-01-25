@@ -36,6 +36,30 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
+    fun createInternationalPaymentsConsents_withDebtorAccount_v3_1_8() {
+        createInternationalPaymentsConsents.createInternationalPaymentsConsents_withDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateInternationalPaymentConsent"],
+        apis = ["international-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createInternationalPaymentsConsents_thowsInvalidDebtorAccount_v3_1_8() {
+        createInternationalPaymentsConsents.createInternationalPaymentsConsents_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateInternationalPaymentConsent"],
+        apis = ["international-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
     fun createInternationalPaymentsConsents_mandatoryFields_v3_1_8() {
         createInternationalPaymentsConsents.createInternationalPaymentsConsents_mandatoryFieldsTest()
     }

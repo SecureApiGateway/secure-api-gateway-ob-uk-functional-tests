@@ -35,6 +35,28 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    fun createInternationalScheduledPaymentsConsents_withDebtorAccount_v3_1_9() {
+        createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_withDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
+    fun createInternationalScheduledPaymentsConsents_throwsInvalidDebtorAccount_v3_1_9() {
+        createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
     fun createInternationalScheduledPaymentsConsents_mandatoryFields_v3_1_9() {
         createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_mandatoryFields_Test()
     }

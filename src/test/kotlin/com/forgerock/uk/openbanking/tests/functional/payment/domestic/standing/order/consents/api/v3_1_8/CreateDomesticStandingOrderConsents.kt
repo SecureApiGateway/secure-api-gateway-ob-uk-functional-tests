@@ -16,6 +16,7 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
@@ -37,6 +38,53 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticStandingOrdersConsents_withDebtorAccountTest() {
+        // Given
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        // optional debtor account
+        val debtorAccount = RsUserData().getDebtorAccount()
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+        )
+
+        val consent = createDomesticStandingOrderConsent(consentRequest)
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticStandingOrdersConsents_throwsInvalidDebtorAccountTest() {
+        // Given
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        // optional debtor account (wrong debtor account)
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
+                .identification("Identification")
+                .name("name")
+                .schemeName("SchemeName")
+                .secondaryIdentification("SecondaryIdentification")
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticStandingOrderConsent(consentRequest)
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Invalid debtor account")
     }
 
     fun createDomesticStandingOrdersConsents_mandatoryFields() {
