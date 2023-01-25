@@ -35,6 +35,28 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
+    fun createDomesticScheduledPaymentsConsents_withDebtorAccount_v3_1_9() {
+        createDomesticScheduledPaymentsConsentsApi.createDomesticScheduledPaymentsConsents_withDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateDomesticScheduledPaymentConsent"],
+        apis = ["domestic-scheduled-payment-consents"]
+    )
+    @Test
+    fun createDomesticScheduledPaymentsConsents_throwsInvalidDebtorAccount_v3_1_9() {
+        createDomesticScheduledPaymentsConsentsApi.createDomesticScheduledPaymentsConsents_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateDomesticScheduledPaymentConsent"],
+        apis = ["domestic-scheduled-payment-consents"]
+    )
+    @Test
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidFormatDetachedJws_v3_1_9() {
         createDomesticScheduledPaymentsConsentsApi.shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidFormatDetachedJwsTest()
     }

@@ -12,13 +12,10 @@ import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.framework.errors.*
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
+import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
@@ -39,6 +36,51 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticPaymentsConsents_withDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        // optional debtor account
+        val debtorAccount = RsUserData().getDebtorAccount()
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+        )
+
+        val consent = createDomesticPaymentsConsent(consentRequest)
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticPaymentsConsents_throwsInvalidDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        // optional debtor account (wrong debtor account)
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification("Identification")
+                .name("name")
+                .schemeName("SchemeName")
+                .secondaryIdentification("SecondaryIdentification")
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticPaymentsConsent(consentRequest)
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Invalid debtor account")
     }
 
     fun shouldCreateDomesticPaymentsConsents_throwsNoDetachedJwsTest() {

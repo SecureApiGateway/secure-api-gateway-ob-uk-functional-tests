@@ -16,6 +16,7 @@ import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
@@ -36,6 +37,51 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticScheduledPaymentsConsents_withDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        // optional debtor account
+        val debtorAccount = RsUserData().getDebtorAccount()
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+        )
+
+        val consent = createDomesticScheduledPaymentConsent(consentRequest)
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticScheduledPaymentsConsents_throwsInvalidDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        // optional debtor account
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification("Identification")
+                .name("Name")
+                .schemeName("SchemeName")
+                .secondaryIdentification("SecondaryIdentification")
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticScheduledPaymentConsent(consentRequest)
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Invalid debtor account")
     }
 
     fun shouldCreateDomesticScheduledPaymentsConsents_throwsSendInvalidFormatDetachedJwsTest() {

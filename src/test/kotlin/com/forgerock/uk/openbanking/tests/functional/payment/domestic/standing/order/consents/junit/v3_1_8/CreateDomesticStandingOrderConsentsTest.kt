@@ -36,6 +36,30 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
+    fun createDomesticStandingOrdersConsents_withDebtorAccount_v3_1_8() {
+        createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_withDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-order-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createDomesticStandingOrdersConsents_throwsInvalidDebtorAccount_v3_1_8() {
+        createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-order-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
     fun createDomesticStandingOrdersConsents_mandatoryFields_v3_1_8() {
         createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_mandatoryFields()
     }

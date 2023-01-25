@@ -10,16 +10,17 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.*
+import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
+import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
+import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
+import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
-import com.forgerock.uk.openbanking.support.payment.BadJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.DefaultJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProducer
-import com.forgerock.uk.openbanking.support.payment.PaymentAS
-import com.forgerock.uk.openbanking.support.payment.defaultPaymentScopesForAccessToken
+import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -38,6 +39,51 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createInternationalPaymentsConsents_withDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        // optional debtor account
+        val debtorAccount = RsUserData().getDebtorAccount()
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+        )
+
+        val consent = createInternationalPaymentConsent(consentRequest)
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consent.risk).isNotNull()
+    }
+
+    fun createInternationalPaymentsConsents_throwsInvalidDebtorAccountTest() {
+        // Given
+        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        // optional debtor account (wrong debtor account)
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification("Identification")
+                .name("name")
+                .schemeName("SchemeName")
+                .secondaryIdentification("SecondaryIdentification")
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createInternationalPaymentConsent(consentRequest)
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Invalid debtor account")
     }
 
     fun createInternationalPaymentsConsents_mandatoryFieldsTest() {
@@ -60,7 +106,8 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer())
+                .sendRequest()
         }
 
         // Then
@@ -88,7 +135,12 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                DefaultJwsSignatureProducer(
+                    tppResource.tpp,
+                    false
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -102,7 +154,11 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                InvalidKidJwsSignatureProducer(
+                    tppResource.tpp
+                )
+            ).sendRequest()
         }
 
         // Then

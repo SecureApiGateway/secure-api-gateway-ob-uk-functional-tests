@@ -34,6 +34,17 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
+    fun createDomesticVrpConsents_throwsInvalidDebtorAccount_v3_1_10() {
+        createDomesticVrpConsents.createDomesticVrpConsent_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticVRPConsent"],
+        apis = ["domestic-vrp-consents"]
+    )
+    @Test
     fun createDomesticVrpConsents_mandatoryFields_v3_1_10() {
         createDomesticVrpConsents.createDomesticVrpConsents_mandatoryFieldsTest()
     }
@@ -45,7 +56,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrpConsentss_throwsSendInvalidFormatDetachedJws_v3_1_10() {
+    fun shouldCreateDomesticVrpConsents_throwsSendInvalidFormatDetachedJws_v3_1_10() {
         createDomesticVrpConsents.createDomesticVrpConsents_mandatoryFieldsTest()
     }
 
@@ -56,7 +67,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrpConsentss_throwsNoDetachedJws_v3_1_10() {
+    fun shouldCreateDomesticVrpConsents_throwsNoDetachedJws_v3_1_10() {
         createDomesticVrpConsents.shouldCreateDomesticVrpConsents_throwsNoDetachedJwsTest()
     }
 
@@ -67,7 +78,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrpConsentss_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_10() {
+    fun shouldCreateDomesticVrpConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_v3_1_10() {
         createDomesticVrpConsents.shouldCreateDomesticVrpConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest()
     }
 
@@ -78,7 +89,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrpConsentss_throwsSendInvalidKidDetachedJws_v3_1_10() {
+    fun shouldCreateDomesticVrpConsents_throwsSendInvalidKidDetachedJws_v3_1_10() {
         createDomesticVrpConsents.shouldCreateDomesticVrpConsents_throwsSendInvalidKidDetachedJwsTest()
     }
 
@@ -89,7 +100,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrpConsentss_throwsRejectedConsent_v3_1_10() {
+    fun shouldCreateDomesticVrpConsents_throwsRejectedConsent_v3_1_10() {
         createDomesticVrpConsents.shouldCreateDomesticVrpConsents_throwsRejectedConsent_Test()
     }
 }

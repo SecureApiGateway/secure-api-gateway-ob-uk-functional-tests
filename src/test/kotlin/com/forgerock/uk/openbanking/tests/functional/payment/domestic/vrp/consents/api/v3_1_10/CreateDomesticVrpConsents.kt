@@ -10,7 +10,10 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.*
+import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
+import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
+import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
+import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
@@ -28,7 +31,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun createDomesticVrpConsent() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
 
         val consent = createDomesticVrpConsent(consentRequest)
 
@@ -40,11 +43,33 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
         assertThat(consent.risk).isNotNull()
     }
 
+    fun createDomesticVrpConsent_throwsInvalidDebtorAccountTest() {
+        // Given
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        // optional debtor account (wrong debtor account)
+        consentRequest.data.initiation.debtorAccount(
+            OBCashAccountDebtorWithName()
+                .identification("Identification")
+                .name("name")
+                .schemeName("SchemeName")
+                .secondaryIdentification("SecondaryIdentification")
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticVrpConsent(consentRequest)
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Invalid debtor account")
+    }
+
     fun createDomesticVrpConsents_mandatoryFieldsTest() {
         // Given
         val consentRequest =
             OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         val consent = createDomesticVrpConsent(consentRequest)
 
         // Then
@@ -58,10 +83,11 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun shouldCreateDomesticVrpConsents_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(BadJwsSignatureProducer())
+                .sendRequest()
         }
 
         // Then
@@ -72,7 +98,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun shouldCreateDomesticVrpConsents_throwsNoDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(null).sendRequest()
@@ -86,10 +112,15 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun shouldCreateDomesticVrpConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                DefaultJwsSignatureProducer(
+                    tppResource.tpp,
+                    false
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -100,10 +131,14 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun shouldCreateDomesticVrpConsents_throwsSendInvalidKidDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+            buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(
+                InvalidKidJwsSignatureProducer(
+                    tppResource.tpp
+                )
+            ).sendRequest()
         }
 
         // Then
@@ -114,7 +149,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     fun shouldCreateDomesticVrpConsents_throwsRejectedConsent_Test() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -141,7 +176,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     )
 
     fun createDomesticVrpConsentAndAuthorize(consentRequest: OBDomesticVRPConsentRequest): Pair<OBDomesticVRPConsentResponse, AccessToken> {
-        updateDebtorAccount(consentRequest)
+        populateDebtorAccount(consentRequest)
         val consent = createDomesticVrpConsent(consentRequest)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
             consent.data.consentId,
@@ -180,7 +215,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
         return patchedConsent
     }
 
-    private fun updateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest){
+    private fun populateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest) {
         val debtorAccount = RsUserData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBCashAccountDebtorWithName()

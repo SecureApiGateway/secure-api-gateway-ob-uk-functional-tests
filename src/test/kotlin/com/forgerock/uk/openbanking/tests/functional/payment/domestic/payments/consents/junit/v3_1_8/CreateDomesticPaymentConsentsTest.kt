@@ -36,6 +36,30 @@ class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppRe
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
+    fun createDomesticPaymentsConsents_withDebtorAccount_v3_1_8() {
+        createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_withDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createDomesticPaymentsConsents_withNonExistentDebtorAccount_v3_1_8() {
+        createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_throwsInvalidDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
     fun shouldCreateDomesticPaymentsConsents_throwsNoDetachedJws_v3_1_8() {
         createDomesticPaymentsConsentsApi.shouldCreateDomesticPaymentsConsents_throwsNoDetachedJwsTest()
     }
