@@ -23,6 +23,7 @@ import com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consen
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.vrp.*
+import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 
 
@@ -278,7 +279,14 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         patchedConsent: OBDomesticVRPConsentResponse,
         authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
+
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
+        if(patchedConsent.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount==null){
+                paymentSubmissionRequest.data.instruction.creditorAccount(
+                    OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
+                )
+        }
         return paymentApiClient.submitPayment(
             createPaymentUrl,
             authorizationToken,
