@@ -58,6 +58,12 @@ class PaymentApiClient(val tpp: Tpp) {
             return this
         }
 
+        fun addHeaders(headers: Headers): PaymentApiRequestBuilder {
+            // add extra headers to request
+            request.headers.putAll(headers)
+            return this
+        }
+
         fun addAuthorization(accessToken: AccessToken): PaymentApiRequestBuilder {
             request.header(Headers.AUTHORIZATION, "Bearer ${accessToken.access_token}")
             return this
@@ -148,14 +154,19 @@ class PaymentApiClient(val tpp: Tpp) {
         url: String,
         accessToken: AccessToken,
         body: Any
-    ) = newPostRequestBuilder(url).addAuthorization(accessToken).addBody(body).configureDefaultJwsSignatureProducer()
+    ) = newPostRequestBuilder(url)
+        .addAuthorization(accessToken)
+        .addBody(body)
+        .configureDefaultJwsSignatureProducer()
 
     fun newFilePostRequestBuilder(
         url: String,
         accessToken: AccessToken,
         body: Any,
         contentType: String
-    ) = newPostRequestBuilder(url).addAuthorization(accessToken).addFileBody(body, contentType)
+    ) = newPostRequestBuilder(url)
+        .addAuthorization(accessToken)
+        .addFileBody(body, contentType)
         .configureDefaultJwsSignatureProducer()
 
     /**

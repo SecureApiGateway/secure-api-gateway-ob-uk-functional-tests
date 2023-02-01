@@ -35,6 +35,17 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
         apis = ["domestic-vrps", "domestic-vrp-consents"]
     )
     @Test
+    fun createDomesticVrpPayment_v3_1_10_limitBreachSimulation() {
+        createDomesticVrpPayment.limitBreachSimulationDomesticVrpPaymentTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticVrpPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],
+        apis = ["domestic-vrps", "domestic-vrp-consents"]
+    )
+    @Test
     fun createDomesticVrpPayment_mandatoryFields_v3_1_10() {
         createDomesticVrpPayment.createDomesticVrpPayment_mandatoryFieldsTest()
     }

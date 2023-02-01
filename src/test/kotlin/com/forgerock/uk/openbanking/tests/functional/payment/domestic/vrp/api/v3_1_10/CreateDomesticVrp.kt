@@ -21,8 +21,10 @@ import com.forgerock.uk.openbanking.support.payment.InvalidKidJwsSignatureProduc
 import com.forgerock.uk.openbanking.support.payment.PaymentFactory
 import com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_10.CreateDomesticVrpConsents
 import com.github.kittinunf.fuel.core.FuelError
+import com.github.kittinunf.fuel.core.Headers
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.vrp.*
+import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 
 
@@ -43,6 +45,42 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
+    }
+
+    fun limitBreachSimulationDomesticVrpPaymentTest() {
+        // Given
+        val headers = Headers()
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val (consentResponse, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+            consentRequest
+        )
+        val patchedConsent = getPatchedConsent(consentResponse)
+        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
+//        if(patchedConsent.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount==null){
+//            paymentSubmissionRequest.data.instruction.creditorAccount(
+//                OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
+//            )
+//        }
+
+        val periodType = consentRequest.data.controlParameters.periodicLimits[0].periodType.value
+        val periodAlignment = consentRequest.data.controlParameters.periodicLimits[0].periodAlignment.value
+        headers["x-vrp-limit-breach-response-simulation"] = "$periodType-$periodAlignment"
+
+        // Then
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl, authorizationToken, paymentSubmissionRequest
+            ).addHeaders(headers).sendRequest()
+        }
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        val amount = consentRequest.data.controlParameters.periodicLimits[0].amount
+        val currency = consentRequest.data.controlParameters.periodicLimits[0].currency
+        assertThat(exception.message.toString()).contains(
+            "Unable to complete payment due to payment limit breach, periodic limit of '" + amount + "' '" + currency + "' " +
+                    "for period '" + periodType + "' '" + periodAlignment + "' has been breached"
+        )
     }
 
     fun createDomesticVrpPayment_mandatoryFieldsTest() {
@@ -246,7 +284,8 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest).configureDefaultJwsSignatureProducer()
+            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
+                .configureDefaultJwsSignatureProducer()
                 .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
@@ -278,7 +317,14 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         patchedConsent: OBDomesticVRPConsentResponse,
         authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
+
         val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
+        if (patchedConsent.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount == null) {
+            paymentSubmissionRequest.data.instruction.creditorAccount(
+                OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
+            )
+        }
         return paymentApiClient.submitPayment(
             createPaymentUrl,
             authorizationToken,
@@ -294,5 +340,4 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
                 .instruction(PaymentFactory.buildVrpInstruction(patchedConsent))
         ).risk(patchedConsent.risk)
     }
-
 }
