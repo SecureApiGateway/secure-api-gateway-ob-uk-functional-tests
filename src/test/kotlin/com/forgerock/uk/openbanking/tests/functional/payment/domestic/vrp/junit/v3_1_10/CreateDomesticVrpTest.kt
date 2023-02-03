@@ -113,7 +113,7 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
     )
     @Test
     fun shouldCreateDomesticVrp_throwsBadRequestHasDifferentVrpTypeOtherThanSweeping_v3_1_10() {
-        createDomesticVrpPayment.shouldCreateDomesticVrp_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest()
+        createDomesticVrpPayment.shouldCreateDomesticVrpConsent_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest()
     }
 
     @EnabledIfVersion(

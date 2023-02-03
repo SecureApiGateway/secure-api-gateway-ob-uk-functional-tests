@@ -268,40 +268,20 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
     }
 
-    fun shouldCreateDomesticVrp_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest() {
+    fun shouldCreateDomesticVrpConsent_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.vrPType = listOf("UK.OBIE.VRPType.Other", "UK.OBIE.VRPType.Sweeping")
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
-        )
-
-        /*assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)*/
-
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
-
-
-        val paymentSubmissionInvalidVrpType = createPaymentRequest(patchedConsent)
-
-        val signatureWithInvalidVrpType = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-            defaultMapper.writeValueAsString(paymentSubmissionInvalidVrpType)
-        )
-
-        // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidVrpType)).sendRequest()
+            createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
+            )
         }
 
-        // Then
-        val vrPType = consentRequest.data.controlParameters.vrPType
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(BAD_REQUEST)
-        assertThat(exception.message.toString()).contains("Invalid VRPType, only Sweeping payments are supported" + vrPType)
+        assertThat(exception.message.toString()).contains("[Invalid VRP type, only Sweeping payments are supported.]")
+
     }
 
     fun shouldCreateDomesticVrp_throwsPolicyValidationErrorTest() {
