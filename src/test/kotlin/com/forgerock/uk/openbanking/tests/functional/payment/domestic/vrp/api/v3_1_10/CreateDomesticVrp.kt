@@ -268,7 +268,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
     }
 
-    fun shouldCreateDomesticVrpConsent_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest() {
+    fun shouldCreateDomesticVrpConsent_throwsBadRequestWhenNotSweepingVrpTypeTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.vrPType = listOf("UK.OBIE.VRPType.Other", "UK.OBIE.VRPType.Sweeping")

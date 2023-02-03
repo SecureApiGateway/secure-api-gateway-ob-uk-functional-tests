@@ -112,8 +112,8 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
         apis = ["domestic-vrps", "domestic-vrp-consents"]
     )
     @Test
-    fun shouldCreateDomesticVrp_throwsBadRequestHasDifferentVrpTypeOtherThanSweeping_v3_1_10() {
-        createDomesticVrpPayment.shouldCreateDomesticVrpConsent_throwsBadRequestHasDifferentVrpTypeOtherThanSweepingTest()
+    fun shouldCreateDomesticVrp_throwsBadRequestWhenNotSweepingVrpType_v3_1_10() {
+        createDomesticVrpPayment.shouldCreateDomesticVrpConsent_throwsBadRequestWhenNotSweepingVrpTypeTest()
     }
 
     @EnabledIfVersion(
