@@ -23,6 +23,8 @@ import com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consen
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
 import org.assertj.core.api.Assertions
+import com.forgerock.uk.openbanking.framework.errors.BAD_REQUEST
+import uk.org.openbanking.datamodel.common.OBVRPConsentType
 import uk.org.openbanking.datamodel.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
@@ -264,6 +266,22 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(UNAUTHORIZED)
+    }
+
+    fun shouldCreateDomesticVrpConsent_throwsBadRequestWhenNotSweepingVrpTypeTest() {
+        // Given
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        consentRequest.data.controlParameters.vrPType = listOf("UK.OBIE.VRPType.Other", "UK.OBIE.VRPType.Sweeping")
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
+            )
+        }
+
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(BAD_REQUEST)
+        assertThat(exception.message.toString()).contains("[Invalid VRP type, only Sweeping payments are supported.]")
+
     }
 
     fun shouldCreateDomesticVrp_throwsPolicyValidationErrorTest() {

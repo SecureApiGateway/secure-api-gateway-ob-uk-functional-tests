@@ -14,4 +14,5 @@ const val REQUEST_EXECUTION_TIME_IN_THE_PAST = "Invalid RequestedExecutionDateTi
 const val LOCATION_HEADER_ERROR = "Location header contains an error"
 const val LOCATION_HEADER_NOT_EXISTS = "Location header doesn't exist"
 const val CONSENT_NOT_AUTHORISED = "Resource Owner did not authorize the request"
+const val BAD_REQUEST = "Bad Request"
 
