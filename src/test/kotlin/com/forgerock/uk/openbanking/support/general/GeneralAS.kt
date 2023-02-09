@@ -1,7 +1,7 @@
 package com.forgerock.uk.openbanking.support.general
 
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.configuration.PLATFORM_SERVER
-import com.forgerock.securebanking.framework.configuration.RCS_SERVER
 import com.forgerock.securebanking.framework.data.*
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.framework.signature.signPayload
@@ -129,8 +129,9 @@ open class GeneralAS {
         }
     }
 
-    protected fun getConsentDetails(consentRequest: String): String {
-        val (_, response, result) = Fuel.post("$RCS_SERVER/rcs/api/consent/details/")
+    protected fun getConsentDetails(consentRequest: String, cookie: String): String {
+        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/details/")
+            .header("Cookie", cookie)
             .body(consentRequest)
             .header("Content-Type", "application/jwt")
             .responseString()

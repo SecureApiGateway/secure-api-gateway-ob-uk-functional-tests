@@ -2,7 +2,7 @@ package com.forgerock.uk.openbanking.support.payment
 
 import com.forgerock.securebanking.common.openbanking.uk.forgerock.datamodel.account.FRFinancialAccount
 import com.forgerock.securebanking.framework.configuration.AM_COOKIE_NAME
-import com.forgerock.securebanking.framework.configuration.RCS_SERVER
+import com.forgerock.securebanking.framework.configuration.IG_SERVER
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.data.RegistrationResponse
 import com.forgerock.securebanking.framework.data.Tpp
@@ -53,7 +53,7 @@ class PaymentAS : GeneralAS() {
         val authorizeURL = response.successUrl
         val cookie = "$AM_COOKIE_NAME=${response.tokenId}"
         val consentRequest = continueAuthorize(authorizeURL, cookie)
-        val consentDetails = getConsentDetails(consentRequest)
+        val consentDetails = getConsentDetails(consentRequest, cookie)
         val debtorAccount = getDebtorAccountFromConsentDetails(consentDetails)
         val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount, decision)
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
@@ -81,7 +81,7 @@ class PaymentAS : GeneralAS() {
         decision: String
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount)
-        val (_, response, result) = Fuel.post("$RCS_SERVER/rcs/api/consent/decision/")
+        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/decision/")
             .jsonBody(body)
             .responseObject<SendConsentDecisionResponseBody>()
         if (!response.isSuccessful) throw AssertionError(

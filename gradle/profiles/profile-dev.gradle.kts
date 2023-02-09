@@ -44,7 +44,6 @@ val environment by extra("dev")
 val rsServer by extra("https://rs.$environment.forgerock.financial")
 val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
-val rcsServer by extra("https://rcs.$environment.forgerock.financial")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
 
 // PSU User configuration

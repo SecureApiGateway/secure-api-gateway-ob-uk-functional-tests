@@ -5,7 +5,6 @@ import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 
 val RS_SERVER = System.getenv("rsServer") ?: "https://rs.dev.forgerock.financial"
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
-val RCS_SERVER = System.getenv("rcsServer") ?: "https://rcs.dev.forgerock.financial"
 val IG_SERVER = System.getenv("igServer") ?: "https://obdemo.dev.forgerock.financial"
 
 val TRUSTSTORE_PATH = System.getenv("truststorePath") ?: "/com/forgerock/securebanking/truststore.jks"
