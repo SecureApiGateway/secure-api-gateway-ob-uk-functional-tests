@@ -130,7 +130,7 @@ open class GeneralAS {
     }
 
     protected fun getConsentDetails(consentRequest: String): String {
-        val (_, response, result) = Fuel.post("$RCS_SERVER/api/rcs/consent/details/")
+        val (_, response, result) = Fuel.post("$RCS_SERVER/rcs/api/consent/details/")
             .body(consentRequest)
             .header("Content-Type", "application/jwt")
             .responseString()

@@ -78,7 +78,7 @@ class AccountAS : GeneralAS() {
         consentedAccount: ArrayList<String>
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, "Authorised", consentedAccount.toList())
-        val (_, response, result) = Fuel.post("$RCS_SERVER/api/rcs/consent/decision/")
+        val (_, response, result) = Fuel.post("$RCS_SERVER/rcs/api/consent/decision/")
             .jsonBody(body)
             .responseObject<SendConsentDecisionResponseBody>()
         if (!response.isSuccessful) throw AssertionError(
