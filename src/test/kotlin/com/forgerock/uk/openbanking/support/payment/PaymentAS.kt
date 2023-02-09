@@ -55,7 +55,7 @@ class PaymentAS : GeneralAS() {
         val consentRequest = continueAuthorize(authorizeURL, cookie)
         val consentDetails = getConsentDetails(consentRequest, cookie)
         val debtorAccount = getDebtorAccountFromConsentDetails(consentDetails)
-        val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount, decision)
+        val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount, decision, cookie)
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
         return exchangeCode(registrationResponse, tpp, authCode)
     }
@@ -78,12 +78,14 @@ class PaymentAS : GeneralAS() {
     private fun sendConsentDecision(
         consentRequest: String,
         consentedAccount: FRFinancialAccount,
-        decision: String
+        decision: String,
+        cookie: String
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount)
         val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/decision/")
-            .jsonBody(body)
-            .responseObject<SendConsentDecisionResponseBody>()
+                                        .header("Cookie", cookie)
+                                        .jsonBody(body)
+                                        .responseObject<SendConsentDecisionResponseBody>()
         if (!response.isSuccessful) throw AssertionError(
             "Could not send consent decision",
             result.component2()
