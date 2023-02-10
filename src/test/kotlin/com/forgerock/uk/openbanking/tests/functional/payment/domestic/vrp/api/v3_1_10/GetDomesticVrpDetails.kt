@@ -1,6 +1,7 @@
 package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.api.v3_1_10
 
 import assertk.assertThat
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
@@ -36,12 +37,14 @@ class GetDomesticVrpDetails(
     fun getDomesticVrpDetailsWithMultiplePaymentsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val result1 = createDomesticVrpApi.submitPayment(consentRequest)
-        val result2 = createDomesticVrpApi.submitPayment(consentRequest)
+        val payment1 = createDomesticVrpApi.submitPayment(consentRequest)
+        val payment2 = createDomesticVrpApi.submitPayment(consentRequest)
+
+        assertThat(payment1.data.domesticVRPId).isNotEqualTo(payment2.data.domesticVRPId)
 
         // When
-        val domesticVrpDetails1 = getDomesticVrpDetails(result1)
-        val domesticVrpDetails2 = getDomesticVrpDetails(result1)
+        val domesticVrpDetails1 = getDomesticVrpDetails(payment1)
+        val domesticVrpDetails2 = getDomesticVrpDetails(payment2)
 
         // Then
         assertThat(domesticVrpDetails1).isNotNull()
