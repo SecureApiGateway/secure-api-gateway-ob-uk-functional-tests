@@ -33,6 +33,26 @@ class GetDomesticVrpDetails(
         assertThat(domesticVrpDetails.data.paymentStatus).isNotNull()
     }
 
+    fun getDomesticVrpDetailsWithMultiplePaymentsTest() {
+        // Given
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val result1 = createDomesticVrpApi.submitPayment(consentRequest)
+        val result2 = createDomesticVrpApi.submitPayment(consentRequest)
+
+        // When
+        val domesticVrpDetails1 = getDomesticVrpDetails(result1)
+        val domesticVrpDetails2 = getDomesticVrpDetails(result1)
+
+        // Then
+        assertThat(domesticVrpDetails1).isNotNull()
+        assertThat(domesticVrpDetails1.data).isNotNull()
+        assertThat(domesticVrpDetails1.data.paymentStatus).isNotNull()
+
+        assertThat(domesticVrpDetails2).isNotNull()
+        assertThat(domesticVrpDetails2.data).isNotNull()
+        assertThat(domesticVrpDetails2.data.paymentStatus).isNotNull()
+    }
+
     fun getDomesticVrpDetails_mandatoryFieldsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
@@ -50,7 +70,7 @@ class GetDomesticVrpDetails(
     private fun getDomesticVrpDetails(domesticVrpResponse: OBDomesticVRPResponse): OBWritePaymentDetailsResponse1 {
         val getDomesticVrpDetailsUrl = PaymentFactory.urlWithDomesticVrpPaymentId(
             paymentLinks.GetDomesticVrpPaymentDetails,
-            domesticVrpResponse.data.consentId
+            domesticVrpResponse.data.domesticVRPId
         )
         return paymentApiClient.sendGetRequest(
             getDomesticVrpDetailsUrl,
