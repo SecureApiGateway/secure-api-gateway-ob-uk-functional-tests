@@ -273,7 +273,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
     }
 
     private fun populateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest) {
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBCashAccountDebtorWithName()
                 .identification(debtorAccount?.Identification)

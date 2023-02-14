@@ -20,21 +20,6 @@ private fun initializeUser(): UserRegistrationRequest {
     return UserRegistrationRequest(PSU_USERNAME, PSU_PASSWORD)
 }
 
-@Deprecated("To delete")
-fun populateRSData(psu: UserRegistrationRequest) {
-    val parameters = listOf(
-        "userId" to psu.user.uid,
-        "username" to psu.user.uid,
-        "profile" to "random"
-    )
-    val (_, response, result) = Fuel.post("$RS_SERVER/admin/fake-data/generate", parameters = parameters)
-        .responseString()
-    if (!response.isSuccessful) throw AssertionError(
-        "Could not populate RS Data for user with the uid: ${psu.user.uid}",
-        result.component2()
-    )
-}
-
 fun registerDirectoryUser(): UserRegistrationRequest {
     return initializeUser()
 }

@@ -7,7 +7,7 @@ import assertk.assertions.isNotNull
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.support.payment.RsUserData
+import com.forgerock.uk.openbanking.support.payment.PsuData
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.vrp.OBCashAccountDebtorWithName
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
@@ -44,7 +44,7 @@ class GetDomesticVrpConsents(
     }
 
     private fun populateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest){
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBCashAccountDebtorWithName()
                 .identification(debtorAccount?.Identification)

@@ -41,7 +41,6 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  */
 // servers
 val environment by extra("dev")
-val rsServer by extra("https://rs.$environment.forgerock.financial")
 val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
 val igServer by extra("https://obdemo.$environment.forgerock.financial")
@@ -51,6 +50,7 @@ val igServer by extra("https://obdemo.$environment.forgerock.financial")
 val userId by extra ("4737f9f9-fa0a-4159-bc61-7da31542e624")
 val userPassword by extra("0penBanking!")
 val username by extra("psu4test")
+val userDebtorAccountIdentification by extra("01233243245676")
 
 // Kid's
 val eidasTestSigningKid by extra("zPeFbX7nJokEVpynzayWvgtFBxo")

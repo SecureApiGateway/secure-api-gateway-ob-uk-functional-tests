@@ -100,7 +100,7 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)
