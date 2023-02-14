@@ -45,7 +45,7 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)

@@ -42,7 +42,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)
