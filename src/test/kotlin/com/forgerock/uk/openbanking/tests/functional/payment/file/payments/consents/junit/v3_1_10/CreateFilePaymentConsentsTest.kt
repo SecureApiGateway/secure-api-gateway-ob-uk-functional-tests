@@ -34,6 +34,17 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
+    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10() {
+        createFilePaymentsConsentsApi.createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
+    )
+    @Test
     fun submitJSONFile_v3_1_10() {
         createFilePaymentsConsentsApi.submitJSONFileTest()
     }

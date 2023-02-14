@@ -35,6 +35,17 @@ class CreateDomesticScheduledPaymentsConsentsTest(val tppResource: CreateTppCall
         apis = ["domestic-scheduled-payment-consents"]
     )
     @Test
+    fun createDomesticScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_9() {
+        createDomesticScheduledPaymentsConsentsApi.createDomesticScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateDomesticScheduledPaymentConsent"],
+        apis = ["domestic-scheduled-payment-consents"]
+    )
+    @Test
     fun createDomesticScheduledPaymentsConsents_withDebtorAccount_v3_1_9() {
         createDomesticScheduledPaymentsConsentsApi.createDomesticScheduledPaymentsConsents_withDebtorAccountTest()
     }

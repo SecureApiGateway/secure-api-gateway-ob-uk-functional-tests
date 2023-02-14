@@ -38,6 +38,25 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         assertThat(consent.risk).isNotNull()
     }
 
+    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+
+        // when
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newPostRequestBuilder(
+                paymentLinks.CreateDomesticPaymentConsent,
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consentRequest
+            ).deleteIdempotencyKeyHeader().sendRequest<OBWriteDomesticConsentResponse5>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+    }
+
     fun createDomesticPaymentsConsents_withDebtorAccountTest() {
         // Given
         val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
@@ -153,7 +172,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
     }
 
     fun createDomesticPaymentsConsent(
-        consent: OBWriteDomesticConsent4,
+        consent: OBWriteDomesticConsent4
     ): OBWriteDomesticConsentResponse5 {
         return buildCreateConsentRequest(consent).sendRequest()
     }

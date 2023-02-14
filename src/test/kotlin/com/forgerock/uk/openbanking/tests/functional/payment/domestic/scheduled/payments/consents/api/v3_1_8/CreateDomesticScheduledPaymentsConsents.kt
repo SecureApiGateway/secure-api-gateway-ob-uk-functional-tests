@@ -17,6 +17,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
@@ -37,6 +38,25 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+
+        // when
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newPostRequestBuilder(
+                paymentLinks.CreateDomesticScheduledPaymentConsent,
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consentRequest
+            ).deleteIdempotencyKeyHeader().sendRequest<OBWriteDomesticScheduledConsentResponse5>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
     }
 
     fun createDomesticScheduledPaymentsConsents_withDebtorAccountTest() {

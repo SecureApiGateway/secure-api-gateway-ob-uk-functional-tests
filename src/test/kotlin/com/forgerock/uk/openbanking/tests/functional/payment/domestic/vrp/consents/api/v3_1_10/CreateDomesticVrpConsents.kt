@@ -43,6 +43,26 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
         assertThat(consent.risk).isNotNull()
     }
 
+    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        populateDebtorAccount(consentRequest)
+
+        // when
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newPostRequestBuilder(
+                paymentLinks.CreateDomesticVRPConsent,
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consentRequest
+            ).deleteIdempotencyKeyHeader().sendRequest<OBDomesticVRPConsentResponse>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+    }
+
     fun createDomesticVrpConsent_throwsInvalidDebtorAccountTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()

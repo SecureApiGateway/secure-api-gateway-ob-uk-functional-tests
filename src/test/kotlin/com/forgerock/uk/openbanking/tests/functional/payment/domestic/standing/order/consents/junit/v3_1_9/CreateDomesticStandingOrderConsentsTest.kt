@@ -34,6 +34,17 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    fun createDomesticStandingOrdersConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_9(){
+        createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-order-consents"]
+    )
+    @Test
     fun createDomesticStandingOrdersConsents_withDebtorAccount_v3_1_9() {
         createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_withDebtorAccountTest()
     }

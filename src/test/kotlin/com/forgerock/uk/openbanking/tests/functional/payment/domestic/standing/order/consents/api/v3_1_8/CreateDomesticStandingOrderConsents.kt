@@ -16,6 +16,7 @@ import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse6
@@ -38,6 +39,26 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticStandingOrdersConsents_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+
+        // when
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newPostRequestBuilder(
+                paymentLinks.CreateDomesticStandingOrderConsent,
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consentRequest
+            ).deleteIdempotencyKeyHeader().sendRequest<OBWriteDomesticStandingOrderConsentResponse6>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
     }
 
     fun createDomesticStandingOrdersConsents_withDebtorAccountTest() {

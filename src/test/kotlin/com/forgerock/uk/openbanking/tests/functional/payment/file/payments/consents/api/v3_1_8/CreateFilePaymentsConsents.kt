@@ -7,7 +7,10 @@ import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
-import com.forgerock.uk.openbanking.framework.errors.*
+import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
+import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
+import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
+import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
@@ -38,6 +41,29 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+    }
+
+    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+
+        // when
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newPostRequestBuilder(
+                paymentLinks.CreateFilePaymentConsent,
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consentRequest
+            ).deleteIdempotencyKeyHeader().sendRequest<OBWriteFileConsentResponse4>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
     }
 
     fun submitXMLFileTest() {
@@ -215,7 +241,11 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         consent
     )
 
-    private fun sendSubmitFileRequest(consentRequest: OBWriteFileConsent3, fileContent: String, contentType: String): Boolean {
+    private fun sendSubmitFileRequest(
+        consentRequest: OBWriteFileConsent3,
+        fileContent: String,
+        contentType: String
+    ): Boolean {
         val consent = createFilePaymentConsent(consentRequest)
         return buildSubmitFileRequest(fileContent, consent.data.consentId, contentType).sendFileRequest(contentType)
     }
