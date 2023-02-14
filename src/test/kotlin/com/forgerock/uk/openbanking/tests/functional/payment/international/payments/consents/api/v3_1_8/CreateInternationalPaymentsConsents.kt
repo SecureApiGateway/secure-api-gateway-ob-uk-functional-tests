@@ -45,7 +45,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)

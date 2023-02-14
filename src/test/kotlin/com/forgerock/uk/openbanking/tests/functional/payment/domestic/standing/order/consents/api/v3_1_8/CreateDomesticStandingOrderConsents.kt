@@ -45,7 +45,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)

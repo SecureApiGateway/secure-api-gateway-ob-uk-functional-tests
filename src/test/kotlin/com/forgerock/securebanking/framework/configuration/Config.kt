@@ -3,7 +3,6 @@ package com.forgerock.securebanking.framework.configuration
 import com.forgerock.uk.openbanking.support.registerPSU
 import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 
-val RS_SERVER = System.getenv("rsServer") ?: "https://rs.dev.forgerock.financial"
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
 val IG_SERVER = System.getenv("igServer") ?: "https://obdemo.dev.forgerock.financial"
 
@@ -13,6 +12,8 @@ val TRUSTSTORE_PASSWORD = System.getenv("truststorePassword") ?: "changeit"
 val PSU_USER_ID = System.getenv("userId") ?: "4737f9f9-fa0a-4159-bc61-7da31542e624"
 val PSU_PASSWORD = System.getenv("userPassword") ?: "password"
 val PSU_USERNAME = System.getenv("username") ?: "username"
+// The value must match the Identification field for an Account owned by the PSU
+val PSU_DEBTOR_ACCOUNT_IDENTIFICATION = System.getenv("userDebtorAccountIdentification") ?: "01233243245676"
 
 val OB_TPP_OB_EIDAS_TEST_SIGNING_KID =
     System.getenv("eidasTestSigningKid") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"

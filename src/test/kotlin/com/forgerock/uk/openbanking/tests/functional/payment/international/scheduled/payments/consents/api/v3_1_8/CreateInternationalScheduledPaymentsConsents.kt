@@ -47,7 +47,7 @@ class CreateInternationalScheduledPaymentsConsents(
         val consentRequest =
             OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         // optional debtor account
-        val debtorAccount = RsUserData().getDebtorAccount()
+        val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
                 .identification(debtorAccount?.Identification)
