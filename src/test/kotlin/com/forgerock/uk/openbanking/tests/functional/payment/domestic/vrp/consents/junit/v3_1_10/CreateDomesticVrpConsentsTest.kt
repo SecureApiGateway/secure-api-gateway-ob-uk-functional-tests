@@ -34,6 +34,17 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10(){
+        createDomesticVrpConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticVRPConsent"],
+        apis = ["domestic-vrp-consents"]
+    )
+    @Test
     fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10(){
         createDomesticVrpConsents.createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest()
     }

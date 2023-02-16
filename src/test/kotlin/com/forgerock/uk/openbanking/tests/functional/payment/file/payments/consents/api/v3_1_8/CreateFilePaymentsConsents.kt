@@ -19,6 +19,7 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBWriteFileConsent3
 import uk.org.openbanking.datamodel.payment.OBWriteFileConsentResponse4
 import java.math.BigDecimal
+import java.util.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -41,6 +42,42 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+    }
+
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+        // Given
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+        val idempotencyKey = UUID.randomUUID().toString()
+        // when
+        // first request
+        val consentResponse1 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateFilePaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteFileConsentResponse4>()
+        // second request with the same idempotencyKey
+        val consentResponse2 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateFilePaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteFileConsentResponse4>()
+
+        // Then
+        assertThat(consentResponse1).isNotNull()
+        assertThat(consentResponse1.data).isNotNull()
+        assertThat(consentResponse1.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse1.data.status.toString()).`is`(Status.consentCondition)
+
+        assertThat(consentResponse2).isNotNull()
+        assertThat(consentResponse2.data).isNotNull()
+        assertThat(consentResponse2.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
+
+        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
     fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {

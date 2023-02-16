@@ -17,10 +17,10 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
+import java.util.*
 
 class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -38,6 +38,43 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+        // Given
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val idempotencyKey = UUID.randomUUID().toString()
+
+        // when
+        // first request
+        val consentResponse1 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateDomesticScheduledPaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteDomesticScheduledConsentResponse5>()
+
+        // when
+        // second request with the same idempotencyKey
+        val consentResponse2 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateDomesticScheduledPaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteDomesticScheduledConsentResponse5>()
+
+        // Then
+        assertThat(consentResponse1).isNotNull()
+        assertThat(consentResponse1.data).isNotNull()
+        assertThat(consentResponse1.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse1.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse1.risk).isNotNull()
+
+        assertThat(consentResponse2).isNotNull()
+        assertThat(consentResponse2.data).isNotNull()
+        assertThat(consentResponse2.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse2.risk).isNotNull()
+
+        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
     fun createDomesticScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {

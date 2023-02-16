@@ -19,6 +19,7 @@ import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtor
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
+import java.util.UUID
 
 class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -36,6 +37,41 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val idempotencyKey = UUID.randomUUID().toString()
+
+        // when
+        // first request
+        val consentResponse1 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateDomesticPaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteDomesticConsentResponse5>()
+        // second request with the same idempotencyKey
+        val consentResponse2 = paymentApiClient.newPostRequestBuilder(
+            paymentLinks.CreateDomesticPaymentConsent,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            consentRequest
+        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteDomesticConsentResponse5>()
+
+        // Then
+        assertThat(consentResponse1).isNotNull()
+        assertThat(consentResponse1.data).isNotNull()
+        assertThat(consentResponse1.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse1.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse1.risk).isNotNull()
+
+        assertThat(consentResponse2).isNotNull()
+        assertThat(consentResponse2.data).isNotNull()
+        assertThat(consentResponse2.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse2.risk).isNotNull()
+
+        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
     fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {

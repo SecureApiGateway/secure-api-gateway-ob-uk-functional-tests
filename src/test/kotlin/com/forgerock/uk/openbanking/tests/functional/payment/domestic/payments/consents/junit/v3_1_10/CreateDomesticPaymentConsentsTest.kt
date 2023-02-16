@@ -34,6 +34,17 @@ class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppRe
         apis = ["domestic-payment-consents"]
     )
     @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10(){
+        createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest();
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticPaymentConsent"],
+        apis = ["domestic-payment-consents"]
+    )
+    @Test
     fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10(){
         createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
