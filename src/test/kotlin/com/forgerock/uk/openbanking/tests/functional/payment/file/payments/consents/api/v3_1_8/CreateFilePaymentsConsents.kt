@@ -103,6 +103,69 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
     }
 
+    fun submitFile_SameIdempotencyKeyMultipleRequestTest() {
+        // Given
+        val idempotencyKey = UUID.randomUUID().toString()
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+
+        // when
+        val consent = createFilePaymentConsent(consentRequest)
+        // first request
+        val response1 = paymentApiClient.newFilePostRequestBuilder(
+            PaymentFactory.urlWithFilePaymentSubmitFileId(paymentLinks.CreateFilePaymentFile, consent.data.consentId),
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            fileContent,
+            ContentType.TEXT_XML.mimeType
+        ).addIdempotencyKeyHeader(idempotencyKey).sendFileRequest(ContentType.TEXT_XML.mimeType)
+
+        // second request with the same idempotencyKey
+        val response2 = paymentApiClient.newFilePostRequestBuilder(
+            PaymentFactory.urlWithFilePaymentSubmitFileId(paymentLinks.CreateFilePaymentFile, consent.data.consentId),
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+            fileContent,
+            ContentType.TEXT_XML.mimeType
+        ).addIdempotencyKeyHeader(idempotencyKey).sendFileRequest(ContentType.TEXT_XML.mimeType)
+
+        // Then
+        assertThat(response1).isNotNull()
+        assertThat(response1).isTrue()
+        assertThat(response2).isNotNull()
+        assertThat(response2).isTrue()
+        assertThat(response1).equals(response2)
+    }
+
+    fun submitFile_NoIdempotencyKey_throwsBadRequestTest() {
+        // Given
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+
+        // when
+        val consent = createFilePaymentConsent(consentRequest)
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.newFilePostRequestBuilder(
+                PaymentFactory.urlWithFilePaymentSubmitFileId(
+                    paymentLinks.CreateFilePaymentFile,
+                    consent.data.consentId
+                ),
+                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
+                consent,
+                ContentType.TEXT_XML.mimeType
+            ).deleteIdempotencyKeyHeader().sendRequest<Boolean>()
+        }
+
+        // Then
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.body()).isNotNull()
+        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+    }
+
     fun submitXMLFileTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
@@ -288,13 +351,13 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
     }
 
     private fun buildSubmitFileRequest(
-        consent: String,
+        fileContent: String,
         consentId: @NotNull @Size(max = 128, min = 1) String,
         contentType: String
     ) = paymentApiClient.newFilePostRequestBuilder(
         PaymentFactory.urlWithFilePaymentSubmitFileId(paymentLinks.CreateFilePaymentFile, consentId),
         tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
-        consent,
+        fileContent,
         contentType
     )
 

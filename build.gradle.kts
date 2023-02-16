@@ -138,7 +138,7 @@ java {
 /** ************************************************* */
 // @See README file
 // default environment profile
-var profile = "jorge"
+var profile = "dev"
 var profilePath = "gradle/profiles/profile-$profile.gradle.kts"
 
 if (project.hasProperty("profile")) {
