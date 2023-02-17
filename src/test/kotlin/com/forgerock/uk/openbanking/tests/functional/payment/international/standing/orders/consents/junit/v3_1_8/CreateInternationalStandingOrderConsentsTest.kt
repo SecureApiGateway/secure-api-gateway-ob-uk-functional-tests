@@ -13,7 +13,8 @@ class CreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCal
 
     @BeforeEach
     fun setUp() {
-        createInternationalStandingOrderConsents = CreateInternationalStandingOrderConsents(OBVersion.v3_1_8, tppResource)
+        createInternationalStandingOrderConsents =
+            CreateInternationalStandingOrderConsents(OBVersion.v3_1_8, tppResource)
     }
 
     @EnabledIfVersion(
@@ -26,6 +27,30 @@ class CreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCal
     @Test
     fun createInternationalStandingOrdersConsents_v3_1_8() {
         createInternationalStandingOrderConsents.createInternationalStandingOrdersConsentsTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_8() {
+        createInternationalStandingOrderConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.8",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_8() {
+        createInternationalStandingOrderConsents.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
 
     @EnabledIfVersion(

@@ -74,6 +74,11 @@ class PaymentApiClient(val tpp: Tpp) {
             return this
         }
 
+        fun deleteIdempotencyKeyHeader(): PaymentApiRequestBuilder {
+            request.headers.remove("x-idempotency-key")
+            return this;
+        }
+
         inline fun <reified T : Any> sendRequest(): T {
             if (jwsSignatureProducer != null && jsonBody != null) {
                 val detachedSignature = jwsSignatureProducer?.createDetachedSignature(jsonBody!!)
@@ -155,6 +160,7 @@ class PaymentApiClient(val tpp: Tpp) {
         accessToken: AccessToken,
         body: Any
     ) = newPostRequestBuilder(url)
+        .addIdempotencyKeyHeader()
         .addAuthorization(accessToken)
         .addBody(body)
         .configureDefaultJwsSignatureProducer()
@@ -165,6 +171,7 @@ class PaymentApiClient(val tpp: Tpp) {
         body: Any,
         contentType: String
     ) = newPostRequestBuilder(url)
+        .addIdempotencyKeyHeader()
         .addAuthorization(accessToken)
         .addFileBody(body, contentType)
         .configureDefaultJwsSignatureProducer()

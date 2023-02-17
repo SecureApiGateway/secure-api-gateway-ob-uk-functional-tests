@@ -36,6 +36,30 @@ class CreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCal
         compatibleVersions = ["v.3.1.9", "v.3.1.8", "v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10() {
+        createInternationalStandingOrderConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.9", "v.3.1.8", "v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
+    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10() {
+        createInternationalStandingOrderConsents.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalStandingOrderConsent"],
+        apis = ["international-standing-order-consents"],
+        compatibleVersions = ["v.3.1.9", "v.3.1.8", "v.3.1.7", "v.3.1.6", "v.3.1.5"]
+    )
+    @Test
     fun createInternationalStandingOrdersConsents_withDebtorAccount_v3_1_10() {
         createInternationalStandingOrderConsents.createInternationalStandingOrdersConsents_withDebtorAccountTest()
     }

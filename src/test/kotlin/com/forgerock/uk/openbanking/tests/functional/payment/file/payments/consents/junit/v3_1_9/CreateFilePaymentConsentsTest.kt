@@ -34,6 +34,50 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_9(){
+        createFilePaymentsConsentsApi.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
+    )
+    @Test
+    fun submitFile_SameIdempotencyKeyMultipleRequestTest_v3_1_9(){
+        createFilePaymentsConsentsApi.submitFile_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
+    )
+    @Test
+    fun submitFile_NoIdempotencyKey_throwsBadRequestTest_v3_1_9(){
+        createFilePaymentsConsentsApi.submitFile_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
+    )
+    @Test
+    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_9() {
+        createFilePaymentsConsentsApi.createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.9",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
+    )
+    @Test
     fun submitJSONFile_v3_1_9() {
         createFilePaymentsConsentsApi.submitJSONFileTest()
     }

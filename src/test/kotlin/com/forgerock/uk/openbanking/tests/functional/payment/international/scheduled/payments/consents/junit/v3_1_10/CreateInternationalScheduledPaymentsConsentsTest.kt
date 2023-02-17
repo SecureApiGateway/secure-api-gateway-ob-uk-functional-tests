@@ -35,6 +35,28 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10(){
+        createInternationalScheduledPaymentsConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
+    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10(){
+        createInternationalScheduledPaymentsConsents.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
     fun createInternationalScheduledPaymentsConsents_withDebtorAccount_v3_1_10() {
         createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_withDebtorAccountTest()
     }
