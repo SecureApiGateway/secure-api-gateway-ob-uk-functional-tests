@@ -1,10 +1,7 @@
 package com.forgerock.uk.openbanking.tests.functional.payment.domestic.vrp.consents.api.v3_1_10
 
 import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEmpty
-import assertk.assertions.isNotNull
+import assertk.assertions.*
 import com.forgerock.securebanking.framework.conditions.Status
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.data.AccessToken
@@ -14,6 +11,8 @@ import com.forgerock.uk.openbanking.framework.errors.CONSENT_NOT_AUTHORISED
 import com.forgerock.uk.openbanking.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR
 import com.forgerock.uk.openbanking.framework.errors.NO_DETACHED_JWS
 import com.forgerock.uk.openbanking.framework.errors.UNAUTHORIZED
+import com.forgerock.uk.openbanking.support.account.AccountFactory
+import com.forgerock.uk.openbanking.support.account.AccountRS
 import com.forgerock.uk.openbanking.support.discovery.getPaymentsApiLinks
 import com.forgerock.uk.openbanking.support.payment.*
 import com.github.kittinunf.fuel.core.FuelError
@@ -42,6 +41,22 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+    }
+
+    fun deleteDomesticVrpConsent(){
+        // Given
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        populateDebtorAccount(consentRequest)
+        val consent = createDomesticVrpConsent(consentRequest)
+
+        // When
+        deleteConsent(consent.data.consentId)
+        // Verify we cannot get the consent anymore
+        val error = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            getPatchedConsent(consent)
+        }
+        // then
+        assertThat(error.message).matchesPredicate { msg -> msg!!.contains("\"ErrorCode\":\"UK.OBIE.NotFound\",\"Message\":\"Resource not found\"") }
     }
 
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
@@ -280,6 +295,14 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
                 .name(debtorAccount?.Name)
                 .schemeName(debtorAccount?.SchemeName)
                 .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+        )
+    }
+
+    private fun deleteConsent(consentId: String) {
+        paymentApiClient.deleteConsent(
+            paymentLinks.DeleteDomesticVRPConsent,
+            consentId,
+            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
         )
     }
 }

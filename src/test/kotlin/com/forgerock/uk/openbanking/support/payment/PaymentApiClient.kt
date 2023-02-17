@@ -5,6 +5,7 @@ import com.forgerock.securebanking.framework.data.Tpp
 import com.forgerock.securebanking.framework.http.fuel.defaultMapper
 import com.forgerock.securebanking.framework.http.fuel.responseObject
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBConstants
+import com.forgerock.uk.openbanking.support.account.HTTP_STATUS_CODE_NO_CONTENT
 import com.forgerock.uk.openbanking.support.discovery.asDiscovery
 import com.forgerock.uk.openbanking.support.discovery.rsDiscovery
 import com.github.kittinunf.fuel.Fuel
@@ -107,6 +108,20 @@ class PaymentApiClient(val tpp: Tpp) {
             return result.get()
         }
 
+        inline fun sendDeleteRequest() {
+            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
+            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+            val (_, response, result) = request.response()
+
+            if (response.statusCode != HTTP_STATUS_CODE_NO_CONTENT) throw AssertionError(
+                "Failed to delete consent, expected HTTP 204 response, got response: ${response.statusCode}",
+                result.component2()
+            )
+            if (result.get().isNotEmpty()) {
+                throw AssertionError("Failed to delete consent, expected empty response body")
+            }
+        }
+
         inline fun sendFileRequest(contentType: String): Boolean {
             if (jwsSignatureProducer != null && jsonBody != null) {
                 val detachedSignature = jwsSignatureProducer?.createDetachedSignature(jsonBody!!)
@@ -147,6 +162,10 @@ class PaymentApiClient(val tpp: Tpp) {
 
     fun newGetRequestBuilder(url: String): PaymentApiRequestBuilder {
         return PaymentApiRequestBuilder(Fuel.get(url))
+    }
+
+    fun newDeleteRequestBuilder(url: String): PaymentApiRequestBuilder {
+        return PaymentApiRequestBuilder(Fuel.delete(url))
     }
 
     /**
@@ -190,8 +209,19 @@ class PaymentApiClient(val tpp: Tpp) {
         return newPostRequestBuilder(url, accessToken, body).sendRequest()
     }
 
+    /**
+     * Submits a HTTP DELETE request using default configuration
+     */
+    inline fun sendDeleteRequest(url: String, accessToken: AccessToken) {
+        return newDeleteRequestBuilder(url).addAuthorization(accessToken).sendDeleteRequest()
+    }
+
     inline fun <reified T : Any> getConsent(url: String, consentId: String, accessToken: AccessToken): T {
         return sendGetRequest(PaymentFactory.urlWithConsentId(url, consentId), accessToken)
+    }
+
+    inline fun deleteConsent(url: String, consentId: String, accessToken: AccessToken) {
+        return sendDeleteRequest(PaymentFactory.urlWithConsentId(url, consentId), accessToken)
     }
 
     inline fun <reified T : Any> submitPayment(url: String, accessToken: AccessToken, body: Any): T {

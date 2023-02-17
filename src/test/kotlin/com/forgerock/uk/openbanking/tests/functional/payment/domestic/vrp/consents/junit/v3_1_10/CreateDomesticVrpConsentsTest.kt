@@ -30,6 +30,17 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
+        operations = ["DeleteDomesticVRPConsent"],
+        apis = ["domestic-vrp-consents"]
+    )
+    @Test
+    fun deleteDomesticVrpConsent_v3_1_10(){
+        createDomesticVrpConsents.deleteDomesticVrpConsent()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
         operations = ["CreateDomesticVRPConsent"],
         apis = ["domestic-vrp-consents"]
     )
