@@ -4,7 +4,9 @@ import com.forgerock.uk.openbanking.support.registerPSU
 import com.forgerock.uk.openbanking.support.registration.UserRegistrationRequest
 
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
-val IG_SERVER = System.getenv("igServer") ?: "https://obdemo.dev.forgerock.financial"
+val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financial"
+// mtls is a subdomain of the gateway domain
+val MTLS_SERVER = IG_SERVER.replace("https://", "https://mtls.")
 
 val TRUSTSTORE_PATH = System.getenv("truststorePath") ?: "/com/forgerock/securebanking/truststore.jks"
 val TRUSTSTORE_PASSWORD = System.getenv("truststorePassword") ?: "changeit"
