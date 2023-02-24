@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.scheduled.payments
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -45,13 +46,12 @@ class LegacyGetAccountScheduledPaymentsTest(val tppResource: CreateTppCallback.T
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadScheduledPayment2>(
             AccountFactory.urlWithAccountId(
                 accountAndTransaction3_1.Links.links.GetAccountScheduledPayments,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -86,13 +86,12 @@ class LegacyGetAccountScheduledPaymentsTest(val tppResource: CreateTppCallback.T
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadScheduledPayment2>(
             AccountFactory.urlWithAccountId(
                 accountAndTransaction3_1_2.Links.links.GetAccountScheduledPayments,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -127,13 +126,12 @@ class LegacyGetAccountScheduledPaymentsTest(val tppResource: CreateTppCallback.T
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_4.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadScheduledPayment3>(
             AccountFactory.urlWithAccountId(
                 accountAndTransaction3_1_4.Links.links.GetAccountScheduledPayments,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

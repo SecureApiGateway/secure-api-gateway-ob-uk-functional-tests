@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.standing.orders.ap
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountFactory
@@ -19,13 +20,12 @@ class GetAccountStandingOrders(version: OBVersion, tppResource: CreateTppCallbac
         val permissions =
             listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL, OBExternalPermissions1Code.READSTANDINGORDERSDETAIL)
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
-        val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadStandingOrder6>(
             AccountFactory.urlWithAccountId(
                 accountsApiLinks.GetAccountStandingOrders,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

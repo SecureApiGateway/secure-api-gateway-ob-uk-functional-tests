@@ -16,6 +16,7 @@ val PSU_PASSWORD = System.getenv("userPassword") ?: "password"
 val PSU_USERNAME = System.getenv("username") ?: "username"
 // The value must match the Identification field for an Account owned by the PSU
 val PSU_DEBTOR_ACCOUNT_IDENTIFICATION = System.getenv("userDebtorAccountIdentification") ?: "01233243245676"
+val USER_ACCOUNT_ID = System.getenv("userAccountId") ?: "01233243245676"
 
 val OB_TPP_OB_EIDAS_TEST_SIGNING_KID =
     System.getenv("eidasTestSigningKid") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
