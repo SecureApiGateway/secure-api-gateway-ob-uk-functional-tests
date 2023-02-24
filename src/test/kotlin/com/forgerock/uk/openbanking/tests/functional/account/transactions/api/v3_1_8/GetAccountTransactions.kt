@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.transactions.api.v
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountFactory
@@ -23,13 +24,12 @@ class GetAccountTransactions(version: OBVersion, tppResource: CreateTppCallback.
             OBExternalPermissions1Code.READTRANSACTIONSDETAIL
         )
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
-        val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadTransaction6>(
             AccountFactory.urlWithAccountId(
                 accountsApiLinks.GetAccountTransactions,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

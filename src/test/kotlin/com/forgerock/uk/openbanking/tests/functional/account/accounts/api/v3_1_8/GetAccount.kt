@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountRS
@@ -17,19 +18,17 @@ class GetAccount(version: OBVersion, tppResource: CreateTppCallback.TppResource)
         val permissions = listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL)
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
 
-        val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
-
         // When
         val result = AccountRS().getAccountData<OBReadAccount6>(
             accountsApiLinks.GetAccount,
             accessToken,
-            accountId
+            USER_ACCOUNT_ID
         )
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data.account).isNotEmpty()
         assertThat(result.data.account.size).isEqualTo(1)
-        assertThat(result.data.account[0].accountId).isEqualTo(accountId)
+        assertThat(result.data.account[0].accountId).isEqualTo(USER_ACCOUNT_ID)
     }
 }
