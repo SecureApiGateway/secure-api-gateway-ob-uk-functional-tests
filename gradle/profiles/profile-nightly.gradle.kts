@@ -43,7 +43,7 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
 val environment by extra ("nightly")
 val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("80d4a6cdee74c6e")
-val igServer by extra("https://obdemo.$environment.forgerock.financial")
+val igServer by extra("https://sapig.$environment.forgerock.financial")
 
 // PSU User configuration
 // needs to be a UUID and match with the value set in the use data initialiser
