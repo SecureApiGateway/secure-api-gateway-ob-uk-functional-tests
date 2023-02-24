@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.standing.orders.le
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -44,13 +45,12 @@ class LegacyGetAccountStandingOrdersTest(val tppResource: CreateTppCallback.TppR
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadStandingOrder4>(
             urlWithAccountId(
                 accountAndTransaction3_1.Links.links.GetAccountStandingOrders,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -85,13 +85,12 @@ class LegacyGetAccountStandingOrdersTest(val tppResource: CreateTppCallback.TppR
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadStandingOrder5>(
             urlWithAccountId(
                 accountAndTransaction3_1_2.Links.links.GetAccountStandingOrders,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -126,13 +125,12 @@ class LegacyGetAccountStandingOrdersTest(val tppResource: CreateTppCallback.TppR
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_4.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadStandingOrder6>(
             urlWithAccountId(
                 accountAndTransaction3_1_4.Links.links.GetAccountStandingOrders,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

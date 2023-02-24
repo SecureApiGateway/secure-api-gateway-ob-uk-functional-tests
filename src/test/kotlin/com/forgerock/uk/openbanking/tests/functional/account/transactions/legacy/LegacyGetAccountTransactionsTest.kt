@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.transactions.legac
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -51,13 +52,12 @@ class LegacyGetAccountTransactionsTest(val tppResource: CreateTppCallback.TppRes
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadTransaction4>(
             urlWithAccountId(
                 accountAndTransaction3_1.Links.links.GetAccountTransactions,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -99,13 +99,12 @@ class LegacyGetAccountTransactionsTest(val tppResource: CreateTppCallback.TppRes
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadTransaction5>(
             urlWithAccountId(
                 accountAndTransaction3_1_2.Links.links.GetAccountTransactions,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
@@ -147,13 +146,12 @@ class LegacyGetAccountTransactionsTest(val tppResource: CreateTppCallback.TppRes
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_4.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadTransaction5>(
             urlWithAccountId(
                 accountAndTransaction3_1_4.Links.links.GetAccountTransactions,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

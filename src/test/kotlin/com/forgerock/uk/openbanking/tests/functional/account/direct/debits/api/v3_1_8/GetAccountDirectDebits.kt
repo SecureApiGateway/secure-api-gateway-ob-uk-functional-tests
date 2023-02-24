@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.direct.debits.api.
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountFactory
@@ -19,13 +20,12 @@ class GetAccountDirectDebits(version: OBVersion, tppResource: CreateTppCallback.
             OBExternalPermissions1Code.READDIRECTDEBITS
         )
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
-        val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadDirectDebit2>(
             AccountFactory.urlWithAccountId(
                 accountsApiLinks.GetAccountDirectDebits,
-                accountId
+                USER_ACCOUNT_ID
             ),
             accessToken
         )

@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.parties.legacy
 import assertk.assertThat
 import assertk.assertions.isGreaterThanOrEqualTo
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -43,13 +44,12 @@ class LegacyGetAccountPartiesTest(val tppResource: CreateTppCallback.TppResource
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadParty3>(
             urlWithAccountId(
                 accountAndTransaction3_1_2.Links.links.GetAccountParties,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 

@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.configuration.psu
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.framework.extensions.junit.EnabledIfVersion
@@ -42,21 +43,20 @@ class LegacyGetAccountTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_2.Links.links.GetAccounts, accessToken)
 
         // When
         val result =
             AccountRS().getAccountData<OBReadAccount4>(
                 accountAndTransaction3_1_2.Links.links.GetAccount,
                 accessToken,
-                accountId
+                USER_ACCOUNT_ID
             )
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data.account).isNotEmpty()
         assertThat(result.data.account.size).isEqualTo(1)
-        assertThat(result.data.account[0].accountId).isEqualTo(accountId)
+        assertThat(result.data.account[0].accountId).isEqualTo(USER_ACCOUNT_ID)
     }
 
     @EnabledIfVersion(
@@ -81,20 +81,19 @@ class LegacyGetAccountTest(val tppResource: CreateTppCallback.TppResource) {
             psu,
             tppResource.tpp
         )
-        val accountId = AccountRS().getFirstAccountId(accountAndTransaction3_1_5.Links.links.GetAccounts, accessToken)
 
         // When
         val result =
             AccountRS().getAccountData<OBReadAccount5>(
                 accountAndTransaction3_1_5.Links.links.GetAccount,
                 accessToken,
-                accountId
+                USER_ACCOUNT_ID
             )
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data.account).isNotEmpty()
         assertThat(result.data.account.size).isEqualTo(1)
-        assertThat(result.data.account[0].accountId).isEqualTo(accountId)
+        assertThat(result.data.account[0].accountId).isEqualTo(USER_ACCOUNT_ID)
     }
 }

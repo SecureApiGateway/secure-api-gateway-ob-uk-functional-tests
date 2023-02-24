@@ -3,6 +3,7 @@ package com.forgerock.uk.openbanking.tests.functional.account.balances.api.v3_1_
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import com.forgerock.securebanking.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.securebanking.framework.extensions.junit.CreateTppCallback
 import com.forgerock.securebanking.openbanking.uk.common.api.meta.obie.OBVersion
 import com.forgerock.uk.openbanking.support.account.AccountFactory
@@ -19,13 +20,12 @@ class GetAccountBalances(version: OBVersion, tppResource: CreateTppCallback.TppR
             OBExternalPermissions1Code.READBALANCES
         )
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
-        val accountId = AccountRS().getFirstAccountId(accountsApiLinks.GetAccounts, accessToken)
 
         // When
         val result = AccountRS().getAccountsData<OBReadBalance1>(
             AccountFactory.urlWithAccountId(
                 accountsApiLinks.GetAccountBalances,
-                accountId
+                USER_ACCOUNT_ID
             ), accessToken
         )
 
