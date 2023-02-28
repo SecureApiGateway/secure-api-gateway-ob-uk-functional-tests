@@ -108,38 +108,6 @@ fun signPayloadSubmitPaymentInvalidB64ClaimTrue(
         .compact()
 }
 
-fun verifyDetachedJws(detachedJws: String, payload: String, version: OBVersion, tpp: Tpp) {
-    val isDetached = DETACHED_SIGNATURE_PATTERN.matcher(detachedJws).find()
-    val parsedJWSObject =
-        if (isDetached) JWSObject.parse(detachedJws, Payload(payload)) else JWSObject.parse(detachedJws)
-
-    // Validate crit claims - If this fails stop the flow, no point in continuing with the signature validation.
-    validateCriticalParameters(parsedJWSObject.header, version, tpp)
-
-    // Validate signature
-    //TODO: Replace the jwks_uri after the issue https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/293 is implemented
-    val jwk = getJwkSet(tpp.registrationResponse.jwks_uri).getKeyByKeyId(parsedJWSObject.header.keyID)
-        ?: throw AssertionError("$INVALID_DETACHED_JWS_ERROR Exception getting the JWK")
-    val rsaPublicKey = (jwk as RSAKey).toRSAPublicKey()
-    val verifier = RSASSAVerifier(rsaPublicKey, getCriticalHeaders(version))
-    if (!parsedJWSObject.verify(verifier)) {
-        throw AssertionError("$INVALID_DETACHED_JWS_ERROR Signature validation failed")
-    }
-
-    // Rebuild jwt from the response body
-    if (!isDetached) {
-        val jwtElements = detachedJws.split(".")
-        val rebuiltJwt = jwtElements[0] + "." + Base64.getEncoder().withoutPadding()
-            .encodeToString(payload.toByteArray()) + "." + jwtElements[2]
-        println("The rebuilt JWT : $rebuiltJwt")
-        val jwsObject = JWSObject.parse(rebuiltJwt)
-        val isValidJws = jwsObject.verify(verifier)
-        println("Signature validation result: $isValidJws")
-
-        if (!isValidJws) throw AssertionError("$INVALID_DETACHED_JWS_ERROR Signature validation failed")
-    }
-}
-
 fun validateCriticalParameters(headers: JWSHeader, version: OBVersion, tpp: Tpp) {
     // alg
     if (headers.algorithm.name != "PS256")
