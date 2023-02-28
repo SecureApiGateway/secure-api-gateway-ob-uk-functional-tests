@@ -66,7 +66,6 @@ data class RegistrationResponse(
     val user_info_response_format_selector: String,
     val tls_client_certificate_bound_access_tokens: Boolean,
     val backchannel_logout_session_required: Boolean,
-    val client_name: String,
     val default_max_age_enabled: Boolean,
     val token_intro_response_format_selector: String,
     val jwt_token_lifetime: Long,
