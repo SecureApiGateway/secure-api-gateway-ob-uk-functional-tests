@@ -7,4 +7,4 @@
  * in the user manual at https://docs.gradle.org/7.4.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = "securebanking-openbanking-uk-functional-tests"
+rootProject.name = "secure-api-gateway-ob-uk-functional-tests"
