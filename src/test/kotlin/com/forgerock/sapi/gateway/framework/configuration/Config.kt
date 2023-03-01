@@ -32,15 +32,6 @@ val OB_TPP_EIDAS_SIGNING_PEM_PATH = System.getenv("eidasOBSealPem") ?: "./certs/
 val OB_TPP_EIDAS_TRANSPORT_KEY_PATH = System.getenv("eidasOBWacKey") ?: "./certs/OBWac.key"
 val OB_TPP_EIDAS_TRANSPORT_PEM_PATH = System.getenv("eidasOBWacPem") ?: "./certs/OBWac.pem"
 
-// ISS claim values (expected from client cert)
-val COMMON_NAME = System.getenv("commonName") ?: "0015800001041REAAY"
-val ORGANIZATION_IDENTIFIER = System.getenv("organizationIdentifier") ?: "PSDGB-OB-Unknown0015800001041REAAY"
-val ORGANIZATION = System.getenv("organization") ?: "FORGEROCK LIMITED"
-val COUNTRY = System.getenv("country") ?: "GB"
-
-val ISS_CLAIM_VALUE = "CN=${System.getenv("commonName") ?: "0015800001041REAAY"}," +
-        "organizationIdentifier=${System.getenv("organizationIdentifier") ?: "PSDGB-OB-Unknown0015800001041REAAY"}," +
-        "O=${System.getenv("organization") ?: "FORGEROCK LIMITED"}," +
-        "C=${System.getenv("country") ?: "GB"}"
+val ISS_CLAIM_VALUE = System.getenv("obOrganisationId") + "/" + System.getenv("obSoftwareId")
 
 val REDIRECT_URI = System.getenv("redirectUri") ?: "https://www.google.co.uk"

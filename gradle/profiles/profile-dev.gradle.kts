@@ -40,7 +40,7 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  * Functional tests configuration
  */
 // servers
-val environment by extra("dev")
+val environment by extra("dbadham-fr")
 val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
 val igServer by extra("https://sapig.$environment.forgerock.financial")
@@ -64,10 +64,4 @@ val eidasOBSealPem by extra("./certificates/OBSeal.pem")
 val eidasOBWacKey by extra("./certificates/OBWac.key")
 val eidasOBWacPem by extra("./certificates/OBWac.pem")
 
-// ISS claim values (expected from client cert)
-val commonName by extra("$obOrganisationId")
-val organizationIdentifier by extra("PSDGB-OB-Unknown$obOrganisationId")
-val organization by extra("FORGEROCK LIMITED")
-val country by extra("GB")
-val issClaimValue by extra("CN=$commonName,organizationIdentifier=$organizationIdentifier,O=$organization,C=$country")
 val redirectUri by extra("https://www.google.co.uk")
