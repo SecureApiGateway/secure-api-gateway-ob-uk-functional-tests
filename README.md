@@ -2,11 +2,11 @@
 
 |         | Current Status                                                                                                                                                                                                                                                                                                                                      |
 |---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Build   | [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FSecureBankingAcceleratorToolkit%2Fsecurebanking-openbanking-uk-functional-tests%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests/goto?ref=master) |
-| Release | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests.svg)](https://img.shields.io/github/v/release/SecureBankingAcceleratorToolkit/securebanking-openbanking-uk-functional-tests)                                                              |
+| Build   | [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FSecureApiGateway%2Fsecure-api-gateway-ob-uk-functional-tests%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/SecureApiGateway/secure-api-gateway-ob-uk-functional-tests/goto?ref=master) |
+| Release | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecureApiGateway/secure-api-gateway-ob-uk-functional-tests.svg)](https://img.shields.io/github/v/release/SecureApiGateway/secure-api-gateway-ob-uk-functional-tests)                                                              |
 | License | ![license](https://img.shields.io/github/license/ACRA/acra.svg)                                                                                                                                                                                                                                                                                     |
 
-# securebanking functional tests (Open Banking UK)
+# secure API Gateway functional tests (Open Banking UK)
 Software testing to validate and coverage the implemented open banking functionalities and ensure that these satisfies the functional requirements.
 
 ## Setup
@@ -17,15 +17,15 @@ Software testing to validate and coverage the implemented open banking functiona
 
 It's important to have the VM argument `-Djunit.jupiter.extensions.autodetection.enabled=true` when running the tests.
 Fortunately this is already in the tasks defined in the gradle configuration in the [build.gradle.kts](./build.gradle.kts). This VM argument tells JUnit to automatically load the ExecutionCondition
-[modules](./src/test/kotlin/com/forgerock/openbanking/junit) defined in [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension).
+[modules](./src/test/kotlin/com/forgerock/sapi/gateway/framework/extensions/junit) defined in [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension).
 
 For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#extensions-registration-automatic
 
 ### `source` Folders structure
-- **_src/test/kotlin/com/forgerock_**: The root folder source structure.
+- **_src/test/kotlin/com/forgerock/sapi/gateway_**: The root folder source structure.
 
-- **_{Root}/securebanking_**: Folder source container that contains all related with the functional tests transversal framework for generic purposes.
-- **_{Root}/uk_**: Folder source container that contains all related with a specific functional test implementation for Open banking UK spec.
+- **_{Root}/framework_**: Folder source container that contains all related with the functional tests transversal framework for generic purposes.
+- **_{Root}/ob/uk_**: Folder source container that contains all related with a specific functional test implementation for Open banking UK spec.
   - **_/framework_**: configuration, constants etc for uk spec tests
   - **_/support_**: instrumentalization support classes for uk spec tests
   - **_/tests_**: Where functional tests implementation live.
@@ -51,7 +51,7 @@ The certificates are protected, and you can't find them in the repository, for t
 - Copy the certificates to `certificates` folder created in the above step.
 
 ## Adding a new ExecutionCondition
-1. Copy from [examples](./src/test/kotlin/com/forgerock/securebanking/framework/extensions/junit)
+1. Copy from [examples](./src/test/kotlin/com/forgerock/sapi/gateway/framework/extensions/junit)
 1. Update the execution condition logic
 1. Add FQN of ExecutionCondition class to [org.junit.jupiter.api.extension.Extension](./src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension)
 1. Add your annotations to classes
@@ -61,11 +61,11 @@ Functional test project has been implemented with a gradle strategy to be able t
 against different environments using different profiles files, let's go how works.
 
 The profiles file lives in `gradle/profiles` folder, and they need to be named following the pattern `profile-${profile-name}.gradle.kts`
-as example we provide the default profile `profile-default.gradle.kts`, with all mandatory properties, where `default` is the `${profile-name}`.
+as example we provide the default profile `profile-dev.gradle.kts`, with all mandatory properties, where `dev` is the `${profile-name}`.
 
-For default the functional tests are executed with the `default` profile if another profile is not provided. 
+For default the functional tests are executed with the `dev` profile if another profile is not provided. 
 
-The `profile` file contains all properties/values that will be necessary to run the tests against an environment.
+The `profile-${profile-name}.gradle.kts` file contains all properties/values that will be necessary to run the tests against an environment.
 
 ## How run tests with a custom profile?
 First you will need to create a new profile file in `gradle/profile` following the pattern defined for the profile file name.
@@ -77,10 +77,10 @@ gradle -Pprofile=MY_CUSTOM_PROFILE_NAME
 ```
 **Check your values**
 ```shell
-gradle properties -q -Pprofile=jorge
+gradle properties -q -Pprofile=dev
 ```
 ```shell
-gradle properties -q -Pprofile=jorge
+gradle properties -q -Pprofile=dev
 ```
 ### How overwrite a property supplied by a profile file?
 To overwrite a property defined in a profile file we can use system properties passed by command line.
@@ -116,9 +116,11 @@ The tasks are grouped by types
 |--------------------------|-----------------------------------------------------|
 | domestic_payments_v3_1_8 | Runs the domestic payments tests for version v3.1.8 |
 
-| tests        | Description                                                      |
-|--------------|------------------------------------------------------------------|
-| tests_v3_1_8 | Runs the accounts and domestic payments tests for version v3.1.8 |
+| tests         | Description                                                       |
+|---------------|-------------------------------------------------------------------|
+| tests_v3_1_8  | Runs the accounts and domestic payments tests for version v3.1.8  |
+| tests_v3_1_9  | Runs the accounts and domestic payments tests for version v3.1.9  |
+| tests_v3_1_10 | Runs the accounts and domestic payments tests for version v3.1.10 |
 
 | deprecated | Description                                                         |
 |------------|---------------------------------------------------------------------|
@@ -139,12 +141,12 @@ The tasks are grouped by types
 
 **Run configuration examples**
 
-| Run                                                                                                                                          | profile | Description                                                                                                             |
-|----------------------------------------------------------------------------------------------------------------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------|
-| `accounts_v3_1_8`                                                                                                                            | default | runs the task `accounts_v3_1_8` with profile `viper-default.gradle.kts`                                                 |
-| `accounts_v3_1_8 -Pprofile=jorge`                                                                                                            | jorge   | runs the task with the profile `viper-jorge.gradle.kts`                                                                 |
-| `:singleTest --tests "com.forgerock.securebanking.tests.functional.account.parties.GetPartyTest.shouldGetParty_v3_1_8" -Pprofile=jorge`      | jorge   | Runs the single test method `shouldGetParty_v3_1_8` defined on `GetPartyTest` with `viper-jorge.gradle.kts` profile     |
-| `:singleTest --tests "com.forgerock.securebanking.tests.functional.account.accounts.GetAccountsTest.shouldGetAccounts_v3_1_8" -Pprofile=dev` | dev     | Runs the single test method `shouldGetAccounts_v3_1_8` defined on `GetAccountsTest` with `viper-dev.gradle.kts` profile |
+| Run                                                                                                                                               | profile | Description                                                                                                               |
+|---------------------------------------------------------------------------------------------------------------------------------------------------|---------|---------------------------------------------------------------------------------------------------------------------------|
+| `accounts_v3_1_8`                                                                                                                                 | dev     | runs the task `accounts_v3_1_8` with profile `profile-dev.gradle.kts`                                                     |
+| `accounts_v3_1_8 -Pprofile=dev`                                                                                                                   | dev     | runs the task with the profile `profile-dev.gradle.kts`                                                                   |
+| `:singleTest --tests "com.forgerock.sapi.gateway.ob.uk.tests.functional.account.parties.GetPartyTest.shouldGetParty_v3_1_8" -Pprofile=dev`        | dev     | Runs the single test method `shouldGetParty_v3_1_8` defined on `GetPartyTest` with `profile-dev.gradle.kts` profile       |
+| `:singleTest --tests "com.forgerock.sapi.gateway.ob.uk.tests.functional.account.accounts.GetAccountsTest.shouldGetAccounts_v3_1_8" -Pprofile=dev` | dev     | Runs the single test method `shouldGetAccounts_v3_1_8` defined on `GetAccountsTest` with `profile-dev.gradle.kts` profile |
 
 ## Run gradle tests manually
 > When a task has been run, and you want to run again the test task you need use the flag `--rerun-tasks` to avoid
@@ -182,7 +184,7 @@ gradle all [--rerun-tasks] [-Pprofile]
   ```
   Example 
   ```bash
-  gradle test --tests "com.forgerock.securebanking.openbanking.uk.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pprofile=my-profile
+  gradle test --tests "com.forgerock.sapi.gateway.ob.uk.tests.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pprofile=my-profile
   ```
 # Pipelines
 ## Codefresh pipeline variables table

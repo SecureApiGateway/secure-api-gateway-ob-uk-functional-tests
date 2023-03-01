@@ -32,11 +32,11 @@ plugins {
  */
 publishing {
     publications {
-        register("securebanking-openbanking-uk-functional-tests", MavenPublication::class) {
+        register("secure-api-gateway-ob-uk-functional-tests", MavenPublication::class) {
             pom {
-                name.set("securebanking-openbanking-uk-functional-tests")
-                groupId = "com.forgerock.securebanking.test"
-                artifactId = "securebanking-openbanking-uk-functional-tests"
+                name.set("secure-api-gateway-ob-uk-functional-tests")
+                groupId = "com.forgerock.sapi.gateway"
+                artifactId = "secure-api-gateway-ob-uk-functional-tests"
                 version = project.version.toString()
             }
         }
@@ -47,7 +47,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://www.jitpack.io")
-    maven("https://maven.forgerock.org:443/repo/community")
+    maven("https://maven.forgerock.org/repo/community")
 }
 
 configurations.all {
@@ -74,12 +74,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.securebanking.uk:securebanking-openbanking-uk-bom:1.1.9-SNAPSHOT"))
-    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-common")
-    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel")
-    implementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel")
-    testImplementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-obie-datamodel:jar:tests")
-    testImplementation("com.forgerock.securebanking.uk:securebanking-openbanking-uk-forgerock-datamodel:jar:tests")
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:0.9.0-SNAPSHOT"))
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
+    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
+    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
 
     testImplementation("org.bouncycastle:bcprov-jdk15on:1.70")
     testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
@@ -115,12 +115,12 @@ xjcGeneration {
     schemas {
         "schema-pain.001.001.08" {
             taskName = "gen-pain00100108-source"
-            schemaRootDir = "src/test/resources/com/forgerock/securebanking/payment/file"
+            schemaRootDir = "src/test/resources/com/forgerock/sapi/gateway/ob/uk/payment/file"
             schemaFile = "pain.001.001.08.xsd"
             // In local environment run first the task schemaGen-xxx or xjcGeneration to generate the objects
             // Remember use this package in kotlin test to resolve the object reference
             // @see line 92 from FilePaymentTest.kt
-            javaPackageName = "com.forgerock.generated.xml.model.pain00100108"
+            javaPackageName = "com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108"
         }
     }
 }
@@ -188,7 +188,7 @@ tasks.register<Jar>("generateTestJar") {
     manifest {
         attributes(
             mapOf(
-                "Specification-Title" to "Secure Banking Accelerator Functional Tests",
+                "Specification-Title" to "Secure API Gateway Functional Tests",
                 "Implementation-Title" to project.name,
                 "Implementation-Version" to project.version,
                 "Created-by" to "${project.version} (forgerock)",
@@ -232,7 +232,7 @@ tasks.withType<Test>().configureEach {
 /*                 TEST TASKS                    */
 /* ********************************************* */
 // tests properties
-val packagePrefix = "com.forgerock.uk.openbanking.tests.functional."
+val packagePrefix = "com.forgerock.sapi.gateway.ob.uk.tests.functional."
 val suffixPattern = ".*"
 val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10")
 

@@ -3,7 +3,7 @@
 /* ************************************************* */
 
 // Truststore configuration
-val truststorePath by extra("/com/forgerock/securebanking/truststore.jks")
+val truststorePath by extra("/com/forgerock/sapi/gateway/ob/uk/truststore.jks")
 val truststorePassword by extra("changeit")
 /**
  * OB configuration: Used Create a Software Statement Assertion (SSA) using an API call for Dynamic Registration
