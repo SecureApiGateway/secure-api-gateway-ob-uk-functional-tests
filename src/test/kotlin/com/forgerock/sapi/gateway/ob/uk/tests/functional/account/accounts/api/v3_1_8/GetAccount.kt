@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+
 import com.forgerock.sapi.gateway.framework.configuration.USER_ACCOUNT_ID
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
