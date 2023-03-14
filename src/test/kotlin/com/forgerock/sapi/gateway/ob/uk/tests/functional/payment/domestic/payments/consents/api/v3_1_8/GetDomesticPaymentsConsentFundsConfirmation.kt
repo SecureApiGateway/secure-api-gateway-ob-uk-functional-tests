@@ -25,7 +25,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         val consentRequest = aValidOBWriteDomesticConsent4()
         consentRequest.data.initiation.instructedAmount.amount("1000000")
         // When
-        val result = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -33,6 +33,10 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult).isNotNull()
         assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
+                paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+                consent.data.consentId
+        ))
     }
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsWrongGrantType() {
@@ -88,7 +92,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         val consentRequest = aValidOBWriteDomesticConsent4()
         consentRequest.data.initiation.instructedAmount.amount("3")
         // When
-        val result = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -96,13 +100,17 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         assertThat(result.data.fundsAvailableResult).isNotNull()
         assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
+                paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+                consent.data.consentId
+        ))
     }
 
-    private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteDomesticConsent4): OBWriteFundsConfirmationResponse1 {
+    private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteFundsConfirmationResponse1, OBWriteDomesticConsentResponse5> {
         val (consent, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
-        return getFundsConfirmation(consent, accessTokenAuthorizationCode)
+        return getFundsConfirmation(consent, accessTokenAuthorizationCode) to consent
     }
 
     private fun getFundsConfirmation(
