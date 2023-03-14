@@ -40,6 +40,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         assertThat(result.data).isNotNull()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticStandingOrderId)
     }
 
     fun createDomesticStandingOrder_mandatoryFieldsTest() {
