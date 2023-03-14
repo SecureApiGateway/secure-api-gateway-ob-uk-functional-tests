@@ -39,6 +39,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(paymentResponse.data).isNotNull()
         assertThat(paymentResponse.data.charges).isNotNull().isNotEmpty()
         assertThat(paymentResponse.data.consentId).isNotEmpty()
+        assertThat(paymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + paymentResponse.data.domesticScheduledPaymentId)
     }
 
     fun shouldCreateDomesticScheduledPayments_throwsPaymentAlreadyExists() {

@@ -41,6 +41,7 @@ class CreateDomesticPayment(
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticPaymentId)
     }
 
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExistsTest() {

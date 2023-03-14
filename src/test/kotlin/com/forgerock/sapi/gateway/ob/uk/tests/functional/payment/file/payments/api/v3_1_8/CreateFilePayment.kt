@@ -39,6 +39,7 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat(result.data).isNotNull()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
         assertThat(result.data.consentId).isNotEmpty()
+        assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.filePaymentId)
     }
 
     fun createFilePayment_mandatoryFieldsTest() {
