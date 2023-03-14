@@ -33,7 +33,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("1000000")
 
         // When
-        val result = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -41,6 +41,10 @@ class GetDomesticVrpConsentsFundsConfirmation(
         assertThat(result.data.fundsAvailableResult).isNotNull()
         assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
+                paymentLinks.GetDomesticVRPConsentsConsentIdFundsConfirmation,
+                consent.data.consentId
+        ))
     }
 
     fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsWrongGrantType() {
@@ -68,7 +72,7 @@ class GetDomesticVrpConsentsFundsConfirmation(
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")
         // When
-        val result = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
@@ -76,13 +80,17 @@ class GetDomesticVrpConsentsFundsConfirmation(
         assertThat(result.data.fundsAvailableResult).isNotNull()
         assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
+                paymentLinks.GetDomesticVRPConsentsConsentIdFundsConfirmation,
+                consent.data.consentId
+        ))
     }
 
-    private fun createConsentAndGetFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): OBWriteFundsConfirmationResponse1 {
+    private fun createConsentAndGetFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): Pair<OBWriteFundsConfirmationResponse1, OBDomesticVRPConsentResponse> {
         val (consent, accessTokenAuthorizationCode) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
             consentRequest
         )
-        return getFundsConfirmation(consent, accessTokenAuthorizationCode)
+        return getFundsConfirmation(consent, accessTokenAuthorizationCode) to consent
     }
 
     private fun getFundsConfirmation(
