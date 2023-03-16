@@ -36,7 +36,6 @@ class PaymentRS {
             val (_, consentResponse, result) = Fuel.post(consentUrl)
                 .jsonBody(consentRequest)
                 .header("Authorization", "Bearer $accessToken")
-                .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
                 .header("x-jws-signature", detachedJwt)
                 .responseObject<T>()
             if (!consentResponse.isSuccessful) {
@@ -76,7 +75,6 @@ class PaymentRS {
             val (_, consentResponse, r) = Fuel.post(consentUrl)
                 .jsonBody(consentRequest)
                 .header("Authorization", "Bearer $accessToken")
-                .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
                 .responseObject<T>()
             if (!consentResponse.isSuccessful) {
                 throw AssertionError(
@@ -96,7 +94,6 @@ class PaymentRS {
         val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, result) = Fuel.get(consentUrl)
             .header("Authorization", "Bearer $accessToken")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
             "Could not get the consent: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
@@ -140,7 +137,6 @@ class PaymentRS {
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-jws-signature", detachedJwt)
             .header("x-idempotency-key", UUID.randomUUID())
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!response.isSuccessful) throw AssertionError(
             "Could not create the payment submission: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
@@ -173,7 +169,6 @@ class PaymentRS {
             .jsonBody(paymentRequest)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-idempotency-key", UUID.randomUUID())
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!response.isSuccessful) throw AssertionError(
             "Could not create the payment submission: \n" + r.component2()?.errorData?.toString(Charsets.UTF_8),
@@ -206,7 +201,6 @@ class PaymentRS {
     ): T {
         val (_, response, result) = Fuel.get(url)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseString()
         if (!response.isSuccessful) throw AssertionError(
             "Error executing the get call: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
@@ -236,7 +230,6 @@ class PaymentRS {
     ): T {
         val (_, response, result) = Fuel.get(url)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseString()
         if (!response.isSuccessful) throw AssertionError(
             "Error executing the get call: \n" + result.component2()?.errorData?.toString(Charsets.UTF_8),
