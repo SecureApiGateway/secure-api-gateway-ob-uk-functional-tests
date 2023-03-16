@@ -88,8 +88,7 @@ class PaymentApiClient(val tpp: Tpp) {
                 }
             }
 
-            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
-            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+
             val (_, response, result) = request.responseObject<T>()
 
             if (!response.isSuccessful) {
@@ -109,8 +108,7 @@ class PaymentApiClient(val tpp: Tpp) {
         }
 
         inline fun sendDeleteRequest() {
-            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
-            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+
             val (_, response, result) = request.response()
 
             if (response.statusCode != HTTP_STATUS_CODE_NO_CONTENT) throw AssertionError(
@@ -132,8 +130,7 @@ class PaymentApiClient(val tpp: Tpp) {
 
             request.header(Headers.CONTENT_TYPE, contentType)
 
-            // TODO x-fapi-financial-id is not necessary anymore, only add it for the legacy versions which need it
-            request.header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
+
 
 
 

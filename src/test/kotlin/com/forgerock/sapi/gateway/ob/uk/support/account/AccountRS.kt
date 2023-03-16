@@ -24,7 +24,6 @@ class AccountRS {
         val (_, consentResponse, r) = Fuel.post(consentUrl)
             .jsonBody(consentRequest)
             .header("Authorization", "Bearer $accessToken")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
             "Could not create consent: ${String(consentResponse.data)}",
@@ -37,7 +36,6 @@ class AccountRS {
         val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.get(consentUrl)
             .header("Authorization", "Bearer $accessToken")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .responseObject<T>()
         if (!consentResponse.isSuccessful) throw AssertionError(
             "Could not get consent: ${String(consentResponse.data)}",
@@ -50,7 +48,6 @@ class AccountRS {
         val accessToken = getClientCredentialsAccessToken(tpp).access_token
         val (_, consentResponse, r) = Fuel.delete(consentUrl)
             .header("Authorization", "Bearer $accessToken")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .response()
         if (consentResponse.statusCode != HTTP_STATUS_CODE_NO_CONTENT) throw AssertionError(
             "Failed to delete consent, expected HTTP 204 response, got response: ${consentResponse.statusCode}",
@@ -68,7 +65,6 @@ class AccountRS {
         val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("x-ob-url", xObURL)
             .responseObject<T>()
         if (!accountResult.isSuccessful) throw AssertionError(
@@ -88,7 +84,6 @@ class AccountRS {
         val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("x-ob-url", xObURL)
             .responseObject<T>()
         if (!accountResult.isSuccessful) throw AssertionError(
@@ -114,7 +109,6 @@ class AccountRS {
             )
         )
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("x-ob-url", xObURL)
             .responseObject<T>()
         if (!accountResult.isSuccessful) throw AssertionError(
@@ -135,7 +129,6 @@ class AccountRS {
             ResponseResultOf<ByteArray> {
         return Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
-            .header("x-fapi-financial-id", rsDiscovery.Data.FinancialId ?: "")
             .header("Accept", acceptHeaderValue)
             .response()
     }
