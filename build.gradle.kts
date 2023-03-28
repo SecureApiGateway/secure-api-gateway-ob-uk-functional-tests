@@ -85,7 +85,7 @@ dependencies {
     testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
     testImplementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:5.7.0")
 
     // Test libraries
