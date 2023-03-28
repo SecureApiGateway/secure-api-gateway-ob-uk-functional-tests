@@ -97,7 +97,7 @@ dependencies {
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
     testImplementation("io.jsonwebtoken:jjwt-api:0.10.7")
-    testImplementation("io.jsonwebtoken:jjwt-impl:0.10.7")
+    testImplementation("io.jsonwebtoken:jjwt-impl:0.11.5")
     testImplementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
     testImplementation("io.r2:simple-pem-keystore:0.1")
     testImplementation("org.apache.httpcomponents:httpclient:4.5.9")
