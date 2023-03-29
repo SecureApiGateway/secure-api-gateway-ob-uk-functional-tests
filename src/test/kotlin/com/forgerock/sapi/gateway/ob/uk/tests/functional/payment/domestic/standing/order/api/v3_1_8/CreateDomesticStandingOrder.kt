@@ -18,6 +18,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.common.OBRisk1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
@@ -102,7 +103,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
@@ -128,7 +133,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(null).sendRequest()
         }
 
@@ -154,7 +163,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
@@ -180,7 +193,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
@@ -214,7 +231,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, standingOrderSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                standingOrderSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
@@ -248,7 +269,11 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
@@ -292,7 +317,15 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         return OBWriteDomesticStandingOrder3().data(
             OBWriteDomesticStandingOrder3Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation(patchedConsent.data.initiation))
-        ).risk(patchedConsent.risk)
+                .initiation(
+                    mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation(
+                        patchedConsent.data.initiation
+                    )
+                )
+        ).risk(
+            OBRisk1().merchantCustomerIdentification(patchedConsent.risk.merchantCustomerIdentification)
+                .merchantCategoryCode(patchedConsent.risk.merchantCategoryCode)
+                .paymentContextCode(patchedConsent.risk.paymentContextCode)
+        )
     }
 }
