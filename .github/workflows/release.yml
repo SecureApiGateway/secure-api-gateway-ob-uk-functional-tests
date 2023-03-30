@@ -2,7 +2,7 @@ name: create-release
 run-name: Create release '${{ inputs.release_version_number }}'
 # What it does:
 # - Call release-prepare-no-maven
-# - Call release-publish-docker workflow
+# - release_docker job: builds and push the release docker image
 # - Call release-publish-draft-and-pr (skip PR creation)
 on:
   workflow_dispatch:
