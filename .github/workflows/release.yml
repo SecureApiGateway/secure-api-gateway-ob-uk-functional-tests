@@ -1,0 +1,81 @@
+name: create-release
+run-name: Create release '${{ inputs.release_version_number }}'
+# What it does:
+# - Call release-prepare-no-maven
+# - Call release-publish-docker workflow
+# - Call release-publish-draft-and-pr (skip PR creation)
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Release notes"
+        required: false
+        type: string
+        default: ''
+      release_version_number:
+        description: "Provide release version number"
+        required: true
+        type: string
+
+env:
+  SERVICE_NAME: uk-functional-tests
+
+jobs:
+
+  release_prepare_no_maven: # prepare for a release in scm, creates the tag and release branch with the proper release versions
+    name: Call release prepare no maven
+    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-prepare-no-maven.yml@master
+    with:
+      release_version_number: ${{ inputs.release_version_number }}
+    secrets:
+      GIT_COMMIT_USERNAME_BOT: ${{ secrets.GIT_COMMIT_USERNAME_BOT }}
+      GIT_COMMIT_AUTHOR_EMAIL_BOT: ${{ secrets.GIT_COMMIT_AUTHOR_EMAIL_BOT }}
+
+  release_docker:
+    runs-on: ubuntu-latest
+    name: Release docker
+    needs: [ release_prepare_no_maven ]
+    steps:
+      - uses: actions/checkout@v3
+        id: checkout_tag
+        name: checkout tag
+        with:
+          ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
+
+      - uses: google-github-actions/auth@v0
+        id: gcloud_auth
+        with:
+          credentials_json: ${{ secrets.GCR_CREDENTIALS_JSON }}
+
+      - name: Set up Cloud SDK
+        id: gcloud_sdk
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Set up docker auth
+        id: gcloud_docker_auth
+        run: |
+          gcloud auth configure-docker
+
+      - name: prepare context
+        id: prepare_context
+        run: |
+          echo "GIT_SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build Docker Image
+        id: build_docker
+        run: |
+          make docker tag=${{ env.GIT_SHA_SHORT }} repo=${{ secrets.GCR_RELEASE_REPO }}
+          docker tag eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:latest
+          docker tag eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
+          docker push --all-tags eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}
+
+  release_draft:
+    name: Call publish release draft
+    needs: [release_prepare_no_maven, release_docker ]
+    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-publish-draft-and-pr.yml@master
+    with:
+      release_version_number: ${{ inputs.release_version_number }}
+      release_branch_ref: ${{ needs.release_prepare_no_maven.outputs.release_branch_ref }}
+      release_tag_ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
+      release_notes: ${{ inputs.notes }}
+      create_pr: false # skip create the pull request
