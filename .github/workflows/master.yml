@@ -1,5 +1,4 @@
-name: pull-request
-
+name: merge-master
 on:
   push:
     branches:
