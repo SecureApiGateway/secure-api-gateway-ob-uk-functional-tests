@@ -36,7 +36,7 @@ jobs:
       - name: 'Run Functional Tests'
         uses: codefresh-io/codefresh-pipeline-runner@master
         with:
-          args: '-v SPEC_IMAGE=${{ env.SPEC_IMAGE }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
+          args: '-v SPEC_IMAGE=${{ env.SERVICE_NAME }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
         env:
           PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-functional-tests'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
