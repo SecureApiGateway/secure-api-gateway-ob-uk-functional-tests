@@ -136,4 +136,15 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createInternationalPayment.shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+        apis = ["international-payments", "international-payment-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalPayments_throwsInvalidRiskTest_v3_1_10() {
+        createInternationalPayment.shouldCreateInternationalPayments_throwsInvalidRiskTest()
+    }
 }

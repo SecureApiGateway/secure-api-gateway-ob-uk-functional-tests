@@ -14,8 +14,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory.Companion.mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.consents.api.v3_1_8.CreateInternationalStandingOrderConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
@@ -23,7 +23,8 @@ import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderC
 
 class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
-    private val createInternationalStandingOrderConsentsApi = CreateInternationalStandingOrderConsents(version, tppResource)
+    private val createInternationalStandingOrderConsentsApi =
+        CreateInternationalStandingOrderConsents(version, tppResource)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateInternationalStandingOrder
@@ -101,7 +102,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
@@ -127,7 +132,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(null).sendRequest()
         }
 
@@ -153,7 +162,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
@@ -179,7 +192,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
@@ -213,7 +230,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, standingOrderSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                standingOrderSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
@@ -247,13 +268,46 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
                 .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+    }
+
+    fun shouldCreateInternationalStandingOrder_throwsInvalidRiskTest() {
+        // Given
+        val consentRequest =
+            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val (consent, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+            consentRequest
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+
+        // When
+        val patchedConsent = getPatchedConsent(consent)
+
+        // Alter Risk Merchant
+        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+
+        // Submit standing order
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun submitStandingOrder(consentRequest: OBWriteInternationalStandingOrderConsent6): OBWriteInternationalStandingOrderResponse7 {
@@ -291,7 +345,11 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         return OBWriteInternationalStandingOrder4().data(
             OBWriteInternationalStandingOrder4Data()
                 .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(patchedConsent.data.initiation))
+                .initiation(
+                    mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(
+                        patchedConsent.data.initiation
+                    )
+                )
         ).risk(patchedConsent.risk)
     }
 }

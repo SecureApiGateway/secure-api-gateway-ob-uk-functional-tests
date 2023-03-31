@@ -14,8 +14,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory.Companion.mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.common.OBRisk1
@@ -280,6 +280,35 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+    }
+
+    fun shouldCreateDomesticStandingOrder_throwsInvalidRiskTest() {
+        // Given
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val (consent, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+            consentRequest
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+
+        // When
+        val patchedConsent = getPatchedConsent(consent)
+
+        // Alter Risk Merchant
+        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+
+        // Submit standing order
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun submitStandingOrder(consentRequest: OBWriteDomesticStandingOrderConsent5): OBWriteDomesticStandingOrderResponse6 {

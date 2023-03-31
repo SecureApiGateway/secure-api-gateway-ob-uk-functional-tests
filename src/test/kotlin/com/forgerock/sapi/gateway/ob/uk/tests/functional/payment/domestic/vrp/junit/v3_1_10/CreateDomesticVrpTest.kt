@@ -137,5 +137,4 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldCreateDomesticVrp_throwsPolicyValidationErrorConsent_v3_1_10() {
         createDomesticVrpPayment.shouldCreateDomesticVrp_throwsPolicyValidationErrorTest()
     }
-
 }

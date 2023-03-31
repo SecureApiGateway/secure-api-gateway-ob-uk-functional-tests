@@ -320,6 +320,34 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
     }
 
+    fun shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest() {
+        // Given
+        val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+
+        // When
+        val patchedConsent = getPatchedConsent(consent)
+
+        // Alter Risk Merchant
+        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+
+        // Submit payment
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
     fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse5 {
         val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest

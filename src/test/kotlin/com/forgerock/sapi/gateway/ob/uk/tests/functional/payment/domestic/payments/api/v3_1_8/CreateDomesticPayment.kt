@@ -256,7 +256,7 @@ class CreateDomesticPayment(
         // Alter Risk Merchant
         patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
 
-        // Submit first payment
+        // Submit payment
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
         }
@@ -299,9 +299,9 @@ class CreateDomesticPayment(
 
     private fun createPaymentRequest(patchedConsent: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
         return OBWriteDomestic2().data(
-                OBWriteDomestic2Data()
-                        .consentId(patchedConsent.data.consentId)
-                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
+            OBWriteDomestic2Data()
+                .consentId(patchedConsent.data.consentId)
+                .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
         ).risk(patchedConsent.risk)
     }
 }
