@@ -103,4 +103,15 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createDomesticPaymentApi.shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payments", "domestic-payment-consents"]
+    )
+    @Test
+    fun shouldCreateDomesticPayments_throwsInvalidRisk_v3_1_10() {
+        createDomesticPaymentApi.shouldCreateDomesticPayments_throwsInvalidRiskTest()
+    }
 }

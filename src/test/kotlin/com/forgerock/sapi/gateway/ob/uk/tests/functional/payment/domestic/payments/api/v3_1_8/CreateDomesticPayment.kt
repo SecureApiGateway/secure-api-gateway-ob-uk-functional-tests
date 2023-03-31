@@ -14,8 +14,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
@@ -236,6 +236,34 @@ class CreateDomesticPayment(
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+    }
+
+    fun shouldCreateDomesticPayments_throwsInvalidRiskTest() {
+        // Given
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val (consent, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+            consentRequest
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+
+        // When
+        val patchedConsent = getPatchedConsent(consent)
+
+        // Alter Risk Merchant
+        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+
+        // Submit first payment
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun submitPayment(consentRequest: OBWriteDomesticConsent4): OBWriteDomesticResponse5 {
