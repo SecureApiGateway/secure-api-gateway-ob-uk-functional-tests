@@ -138,4 +138,15 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createInternationalScheduledPayment.shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest_v3_1_10() {
+        createInternationalScheduledPayment.shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest()
+    }
 }

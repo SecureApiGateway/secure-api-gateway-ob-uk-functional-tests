@@ -105,4 +105,15 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createDomesticScheduledPayment.shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payments", "domestic-payment-consents"]
+    )
+    @Test
+    fun shouldCreateDomesticPayments_throwsInvalidRisk_v3_1_10() {
+        createDomesticScheduledPayment.shouldCreateDomesticScheduledPayments_throwsInvalidRiskTest()
+    }
 }

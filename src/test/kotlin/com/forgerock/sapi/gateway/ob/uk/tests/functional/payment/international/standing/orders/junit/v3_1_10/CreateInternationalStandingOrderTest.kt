@@ -116,4 +116,15 @@ class CreateInternationalStandingOrderTest(val tppResource: CreateTppCallback.Tp
     fun shouldCreateInternationalStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createInternationalStandingOrder.shouldCreateInternationalStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
+        apis = ["international-standing-orders", "international-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateInternationalStandingOrder_throwsInvalidRiskTest_v3_1_10() {
+        createInternationalStandingOrder.shouldCreateInternationalStandingOrder_throwsInvalidRiskTest()
+    }
 }

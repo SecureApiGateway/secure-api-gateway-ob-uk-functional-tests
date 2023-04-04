@@ -14,10 +14,11 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory.Companion.mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8.CreateInternationalScheduledPaymentsConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.common.OBRisk1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
@@ -319,6 +320,34 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
     }
 
+    fun shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest() {
+        // Given
+        val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+
+        // When
+        val patchedConsent = getPatchedConsent(consent)
+
+        // Alter Risk Merchant
+        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+
+        // Submit payment
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
     fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse5 {
         val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -359,6 +388,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
                         patchedConsent.data.initiation
                     )
                 )
+        ).risk(
+            OBRisk1().merchantCustomerIdentification(patchedConsent.risk.merchantCustomerIdentification)
+                .merchantCategoryCode(patchedConsent.risk.merchantCategoryCode)
+                .paymentContextCode(patchedConsent.risk.paymentContextCode)
         )
     }
 }

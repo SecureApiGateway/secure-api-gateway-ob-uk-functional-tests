@@ -116,4 +116,15 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createDomesticStandingOrder.shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
+    )
+    @Test
+    fun shouldCreateDomesticStandingOrder_throwsInvalidRiskTest_v3_1_10() {
+        createDomesticStandingOrder.shouldCreateDomesticStandingOrder_throwsInvalidRiskTest()
+    }
 }
