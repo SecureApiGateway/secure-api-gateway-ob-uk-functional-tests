@@ -10,9 +10,10 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  * Global Variables
  */
 // project version
-version = "0.9.1"
-// commit hash or release name to find the proper library aligned with the services deployed on a cluster
-val release = "0.9.1"
+// pom artifact version used when the built artifact is published
+version = "1.0.0"
+// Test jar library version used in the task 'generateTestJar'
+val release = "1.0.0"
 val jaxbVersion = "2.2.11"
 
 plugins {
@@ -74,7 +75,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:0.9.1"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:1.0.0"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
