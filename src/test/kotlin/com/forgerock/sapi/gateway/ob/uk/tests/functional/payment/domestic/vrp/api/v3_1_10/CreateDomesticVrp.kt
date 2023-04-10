@@ -303,8 +303,8 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         }
 
         // Then
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
-        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.BAD_REQUEST)
     }
 
     fun submitPayment(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPResponse {
