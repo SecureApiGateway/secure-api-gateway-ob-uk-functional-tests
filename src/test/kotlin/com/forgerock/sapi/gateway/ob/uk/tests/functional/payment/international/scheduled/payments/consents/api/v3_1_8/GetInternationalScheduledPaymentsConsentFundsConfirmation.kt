@@ -154,11 +154,11 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalScheduledConsent5()
-        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
-        val patchedConsent = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         val payment: OBWriteInternationalScheduledResponse5 = paymentApiClient.submitPayment(
             paymentLinks.CreateInternationalScheduledPayment,
@@ -171,7 +171,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, authorizationToken)
+            getFundsConfirmation(consentResponse, authorizationToken)
         }
 
         // Then
@@ -198,19 +198,15 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduled3 {
+    private fun createPaymentRequest(consentResponse: OBWriteInternationalScheduledConsentResponse6): OBWriteInternationalScheduled3 {
         return OBWriteInternationalScheduled3().data(
             OBWriteInternationalScheduled3Data()
-                .consentId(patchedConsent.data.consentId)
+                .consentId(consentResponse.data.consentId)
                 .initiation(
                     PaymentFactory.mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
-                        patchedConsent.data.initiation
+                            consentResponse.data.initiation
                     )
                 )
-        ).risk(
-            OBRisk1().merchantCustomerIdentification(patchedConsent.risk.merchantCustomerIdentification)
-                .merchantCategoryCode(patchedConsent.risk.merchantCategoryCode)
-                .paymentContextCode(patchedConsent.risk.paymentContextCode)
-        )
+        ).risk(consentResponse.risk)
     }
 }

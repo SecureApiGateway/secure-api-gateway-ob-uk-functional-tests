@@ -380,17 +380,4 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         return consent to accessTokenAuthorizationCode
     }
 
-    fun getPatchedConsent(consent: OBWriteFileConsentResponse4): OBWriteFileConsentResponse4 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteFileConsentResponse4>(
-            paymentLinks.GetFilePaymentConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
-    }
-
 }

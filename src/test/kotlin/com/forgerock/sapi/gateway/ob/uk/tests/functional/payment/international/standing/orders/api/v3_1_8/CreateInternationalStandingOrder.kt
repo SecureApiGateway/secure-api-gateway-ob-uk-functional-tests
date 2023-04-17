@@ -60,24 +60,23 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
         // Submit first payment
-        submitStandingOrderForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+        submitStandingOrderForConsent(consentResponse, accessTokenAuthorizationCode)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             // Verify we fail to submit a second payment
-            submitStandingOrderForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+            submitStandingOrderForConsent(consentResponse, accessTokenAuthorizationCode)
         }
 
         // Then
@@ -89,16 +88,16 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -119,16 +118,16 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -149,16 +148,16 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -179,16 +178,16 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -209,20 +208,19 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val standingOrderSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val standingOrderSubmissionRequest = createStandingOrderRequest(consentResponse)
 
-        patchedConsent.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
-        val standingOrderSubmissionRequestWithInvalidConsentId = createStandingOrderRequest(patchedConsent)
+        consentResponse.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
+        val standingOrderSubmissionRequestWithInvalidConsentId = createStandingOrderRequest(consentResponse)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
             defaultMapper.writeValueAsString(standingOrderSubmissionRequestWithInvalidConsentId)
@@ -247,20 +245,19 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
-        patchedConsent.data.initiation.instructedAmount.amount = "123123"
-        val paymentSubmissionInvalidAmount = createStandingOrderRequest(patchedConsent)
+        consentResponse.data.initiation.instructedAmount.amount = "123123"
+        val paymentSubmissionInvalidAmount = createStandingOrderRequest(consentResponse)
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
             defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
@@ -285,24 +282,23 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val (consent, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
 
         // Alter Risk Merchant
-        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+        consentResponse.risk.merchantCategoryCode = "wrongMerchant"
 
         // Submit standing order
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+            submitStandingOrderForConsent(consentResponse, authorizationToken)
         }
 
         // Then
@@ -311,29 +307,24 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
     }
 
     fun submitStandingOrder(consentRequest: OBWriteInternationalStandingOrderConsent6): OBWriteInternationalStandingOrderResponse7 {
-        val (consent, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
-        return submitStandingOrder(consent, authorizationToken)
+        return submitStandingOrder(consentResponse, authorizationToken)
     }
 
     fun submitStandingOrder(
         consentResponse: OBWriteInternationalStandingOrderConsentResponse7,
         authorizationToken: AccessToken
     ): OBWriteInternationalStandingOrderResponse7 {
-        val patchedConsent = getPatchedConsent(consentResponse)
-        return submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+        return submitStandingOrderForConsent(consentResponse, authorizationToken)
     }
 
-    private fun getPatchedConsent(consent: OBWriteInternationalStandingOrderConsentResponse7): OBWriteInternationalStandingOrderConsentResponse7 {
-        return createInternationalStandingOrderConsentsApi.getPatchedConsent(consent)
-    }
-
-    private fun submitStandingOrderForPatchedConsent(
-        patchedConsent: OBWriteInternationalStandingOrderConsentResponse7,
+    private fun submitStandingOrderForConsent(
+        consentResponse: OBWriteInternationalStandingOrderConsentResponse7,
         authorizationToken: AccessToken
     ): OBWriteInternationalStandingOrderResponse7 {
-        val paymentSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
         return paymentApiClient.submitPayment(
             createPaymentUrl,
             authorizationToken,
@@ -341,15 +332,15 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         )
     }
 
-    private fun createStandingOrderRequest(patchedConsent: OBWriteInternationalStandingOrderConsentResponse7): OBWriteInternationalStandingOrder4 {
+    private fun createStandingOrderRequest(consentResponse: OBWriteInternationalStandingOrderConsentResponse7): OBWriteInternationalStandingOrder4 {
         return OBWriteInternationalStandingOrder4().data(
             OBWriteInternationalStandingOrder4Data()
-                .consentId(patchedConsent.data.consentId)
+                .consentId(consentResponse.data.consentId)
                 .initiation(
                     mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(
-                        patchedConsent.data.initiation
+                            consentResponse.data.initiation
                     )
                 )
-        ).risk(patchedConsent.risk)
+        ).risk(consentResponse.risk)
     }
 }

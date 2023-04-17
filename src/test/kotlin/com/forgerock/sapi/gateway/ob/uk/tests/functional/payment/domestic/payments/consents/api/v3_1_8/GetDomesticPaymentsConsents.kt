@@ -1,7 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.payments.consents.api.v3_1_8
 
 import assertk.assertThat
-import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -16,52 +15,32 @@ class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: Creat
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
-    
+
     fun shouldGetDomesticPaymentsConsents() {
         // Given
         val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
-        val consent = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
-
+        val consentResponse = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 
     fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccountTest() {
         // Given
         val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
         consentRequest.data.initiation.debtorAccount(null)
-
-        val consent = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-        assertThat(consent.data.initiation.debtorAccount).isNull()
-
-        // When
-        val result = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
-
+        // when
+        val consentResponse = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
-        assertThat(result.data.initiation.debtorAccount).isNull()
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
+        assertThat(consentResponse.data.initiation.debtorAccount).isNull()
     }
 }

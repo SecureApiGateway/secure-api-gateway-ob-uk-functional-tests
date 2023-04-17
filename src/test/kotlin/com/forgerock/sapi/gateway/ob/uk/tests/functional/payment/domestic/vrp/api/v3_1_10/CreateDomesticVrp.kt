@@ -14,8 +14,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.vrp.consents.api.v3_1_10.CreateDomesticVrpConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
 import org.assertj.core.api.Assertions
@@ -49,10 +49,9 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val headers = Headers()
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+                consentRequest
         )
-        val patchedConsent = getPatchedConsent(consentResponse)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
         // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
 //        if(patchedConsent.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount==null){
 //            paymentSubmissionRequest.data.instruction.creditorAccount(
@@ -67,7 +66,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Then
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl, authorizationToken, paymentSubmissionRequest
+                    createPaymentUrl, authorizationToken, paymentSubmissionRequest
             ).addHeaders(headers).sendRequest()
         }
         // Then
@@ -75,15 +74,15 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val amount = consentRequest.data.controlParameters.periodicLimits[0].amount
         val currency = consentRequest.data.controlParameters.periodicLimits[0].currency
         assertThat(exception.message.toString()).contains(
-            "Unable to complete payment due to payment limit breach, periodic limit of '" + amount + "' '" + currency + "' " +
-                    "for period '" + periodType + "' '" + periodAlignment + "' has been breached"
+                "Unable to complete payment due to payment limit breach, periodic limit of '" + amount + "' '" + currency + "' " +
+                        "for period '" + periodType + "' '" + periodAlignment + "' has been breached"
         )
     }
 
     fun createDomesticVrpPayment_mandatoryFieldsTest() {
         // Given
         val consentRequest =
-            OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
+                OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
         // When
         val result = submitPayment(consentRequest)
 
@@ -97,21 +96,21 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
         // Then
@@ -122,21 +121,21 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsNoDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(null).sendRequest()
+                    .configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -147,21 +146,21 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -172,21 +171,21 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsSendInvalidKidDetachedJwsTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                    .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -197,29 +196,28 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
-        patchedConsent.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
-        val paymentSubmissionWithInvalidConsentId = createPaymentRequest(patchedConsent)
+        consentResponse.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
+        val paymentSubmissionWithInvalidConsentId = createPaymentRequest(consentResponse)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-            defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
+                defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
         // Then
@@ -230,32 +228,31 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
-        val initialAmount = patchedConsent.data.controlParameters.maximumIndividualAmount.amount;
-        patchedConsent.data.controlParameters.maximumIndividualAmount.amount = "12312132233"
-        val paymentSubmissionInvalidAmount = createPaymentRequest(patchedConsent)
+        val initialAmount = consentResponse.data.controlParameters.maximumIndividualAmount.amount;
+        consentResponse.data.controlParameters.maximumIndividualAmount.amount = "12312132233"
+        val paymentSubmissionInvalidAmount = createPaymentRequest(consentResponse)
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-            defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
+                defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
         )
 
-        patchedConsent.data.controlParameters.maximumIndividualAmount.amount = initialAmount
+        consentResponse.data.controlParameters.maximumIndividualAmount.amount = initialAmount
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
@@ -269,7 +266,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         consentRequest.data.controlParameters.vrPType = listOf("UK.OBIE.VRPType.Other", "UK.OBIE.VRPType.Sweeping")
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+                    consentRequest
             )
         }
 
@@ -282,24 +279,23 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateDomesticVrp_throwsPolicyValidationErrorTest() {
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
-        val (consent, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        patchedConsent.data.initiation.debtorAccount.name = "fake name"
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        consentResponse.data.initiation.debtorAccount.name = "fake name"
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                .configureDefaultJwsSignatureProducer()
-                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                    .configureDefaultJwsSignatureProducer()
+                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -309,48 +305,43 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
 
     fun submitPayment(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPResponse {
         val (consent, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-            consentRequest
+                consentRequest
         )
         return submitPayment(consent, authorizationToken)
     }
 
     fun submitPayment(
-        consentResponse: OBDomesticVRPConsentResponse,
-        authorizationToken: AccessToken
+            consentResponse: OBDomesticVRPConsentResponse,
+            authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
-        val patchedConsent = getPatchedConsent(consentResponse)
-        return submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        return submitPaymentForConsent(consentResponse, authorizationToken)
     }
 
-    private fun getPatchedConsent(consent: OBDomesticVRPConsentResponse): OBDomesticVRPConsentResponse {
-        return createDomesticVrpConsentsApi.getPatchedConsent(consent)
-    }
-
-    private fun submitPaymentForPatchedConsent(
-        patchedConsent: OBDomesticVRPConsentResponse,
-        authorizationToken: AccessToken
+    private fun submitPaymentForConsent(
+            consentResponse: OBDomesticVRPConsentResponse,
+            authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
 
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
         // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
-        if (patchedConsent.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount == null) {
+        if (consentResponse.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount == null) {
             paymentSubmissionRequest.data.instruction.creditorAccount(
-                OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
+                    OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
             )
         }
         return paymentApiClient.submitPayment(
-            createPaymentUrl,
-            authorizationToken,
-            paymentSubmissionRequest
+                createPaymentUrl,
+                authorizationToken,
+                paymentSubmissionRequest
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBDomesticVRPConsentResponse): OBDomesticVRPRequest {
+    private fun createPaymentRequest(consentResponse: OBDomesticVRPConsentResponse): OBDomesticVRPRequest {
         return OBDomesticVRPRequest().data(
-            OBDomesticVRPRequestData()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
-                .instruction(PaymentFactory.buildVrpInstruction(patchedConsent))
-        ).risk(patchedConsent.risk)
+                OBDomesticVRPRequestData()
+                        .consentId(consentResponse.data.consentId)
+                        .initiation(consentResponse.data.initiation)
+                        .instruction(PaymentFactory.buildVrpInstruction(consentResponse))
+        ).risk(consentResponse.risk)
     }
 }

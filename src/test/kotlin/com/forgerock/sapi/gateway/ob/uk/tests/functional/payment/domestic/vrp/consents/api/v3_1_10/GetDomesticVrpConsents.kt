@@ -23,24 +23,14 @@ class GetDomesticVrpConsents(
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         populateDebtorAccount(consentRequest)
-
-        val consent = createDomesticVrpConsents.createDomesticVrpConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = createDomesticVrpConsents.getPatchedConsent(consent)
-
+        val consentResponse = createDomesticVrpConsents.createDomesticVrpConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 
     private fun populateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest){

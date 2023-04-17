@@ -18,7 +18,6 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standi
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBRisk1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
@@ -61,24 +60,23 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
         // Submit first payment
-        submitStandingOrderForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+        submitStandingOrderForConsent(consentResponse, accessTokenAuthorizationCode)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             // Verify we fail to submit a second payment
-            submitStandingOrderForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+            submitStandingOrderForConsent(consentResponse, accessTokenAuthorizationCode)
         }
 
         // Then
@@ -90,16 +88,16 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -120,16 +118,16 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -150,16 +148,16 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -180,16 +178,16 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createStandingOrderRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -210,20 +208,19 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val standingOrderSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val standingOrderSubmissionRequest = createStandingOrderRequest(consentResponse)
 
-        patchedConsent.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
-        val standingOrderSubmissionRequestWithInvalidConsentId = createStandingOrderRequest(patchedConsent)
+        consentResponse.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
+        val standingOrderSubmissionRequestWithInvalidConsentId = createStandingOrderRequest(consentResponse)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
             defaultMapper.writeValueAsString(standingOrderSubmissionRequestWithInvalidConsentId)
@@ -248,20 +245,19 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
 
-        patchedConsent.data.initiation.firstPaymentAmount.amount = "123123"
-        val paymentSubmissionInvalidAmount = createStandingOrderRequest(patchedConsent)
+        consentResponse.data.initiation.firstPaymentAmount.amount = "123123"
+        val paymentSubmissionInvalidAmount = createStandingOrderRequest(consentResponse)
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
             defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
@@ -286,24 +282,23 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val (consent, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
 
         // Alter Risk Merchant
-        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+        consentResponse.risk.merchantCategoryCode = "wrongMerchant"
 
         // Submit standing order
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+            submitStandingOrderForConsent(consentResponse, authorizationToken)
         }
 
         // Then
@@ -322,19 +317,14 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         consentResponse: OBWriteDomesticStandingOrderConsentResponse6,
         authorizationToken: AccessToken
     ): OBWriteDomesticStandingOrderResponse6 {
-        val patchedConsent = getPatchedConsent(consentResponse)
-        return submitStandingOrderForPatchedConsent(patchedConsent, authorizationToken)
+        return submitStandingOrderForConsent(consentResponse, authorizationToken)
     }
 
-    private fun getPatchedConsent(consent: OBWriteDomesticStandingOrderConsentResponse6): OBWriteDomesticStandingOrderConsentResponse6 {
-        return createDomesticStandingOrderConsentsApi.getPatchedConsent(consent)
-    }
-
-    private fun submitStandingOrderForPatchedConsent(
-        patchedConsent: OBWriteDomesticStandingOrderConsentResponse6,
-        authorizationToken: AccessToken
+    private fun submitStandingOrderForConsent(
+            consentResponse: OBWriteDomesticStandingOrderConsentResponse6,
+            authorizationToken: AccessToken
     ): OBWriteDomesticStandingOrderResponse6 {
-        val paymentSubmissionRequest = createStandingOrderRequest(patchedConsent)
+        val paymentSubmissionRequest = createStandingOrderRequest(consentResponse)
         return paymentApiClient.submitPayment(
             createPaymentUrl,
             authorizationToken,
@@ -351,10 +341,6 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
                         patchedConsent.data.initiation
                     )
                 )
-        ).risk(
-            OBRisk1().merchantCustomerIdentification(patchedConsent.risk.merchantCustomerIdentification)
-                .merchantCategoryCode(patchedConsent.risk.merchantCategoryCode)
-                .paymentContextCode(patchedConsent.risk.paymentContextCode)
-        )
+        ).risk(patchedConsent.risk)
     }
 }
