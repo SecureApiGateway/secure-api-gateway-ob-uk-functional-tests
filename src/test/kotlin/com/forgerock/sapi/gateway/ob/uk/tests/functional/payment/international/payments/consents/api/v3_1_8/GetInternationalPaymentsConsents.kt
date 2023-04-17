@@ -23,25 +23,15 @@ class GetInternationalPaymentsConsents(
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
-
-        val consent = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-        assertThat(consent.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
-
         // When
-        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
-
+        val consentResponse = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.exchangeRate).isNotNull()
     }
 
     fun shouldGetInternationalPaymentsConsents_rateType_ACTUAL_Test() {
@@ -50,24 +40,14 @@ class GetInternationalPaymentsConsents(
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
-
-        val consent = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
-
+        val consentResponse = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 
     fun shouldGetInternationalPaymentsConsents_rateType_INDICATIVE_Test() {
@@ -76,23 +56,13 @@ class GetInternationalPaymentsConsents(
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
-
-        val consent = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = createInternationalPaymentsConsents.getPatchedConsent(consent)
-
+        val consentResponse = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 }

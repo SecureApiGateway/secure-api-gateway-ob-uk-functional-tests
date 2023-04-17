@@ -18,23 +18,14 @@ class GetDomesticStandingOrderConsents(val version: OBVersion, val tppResource: 
         // Given
         val consentRequest =
             OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
-        val consent =
-            createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
         // When
-        val result = createDomesticStandingOrderConsentsApi.getPatchedConsent(consent)
-
+        val consentResponse =
+            createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 }

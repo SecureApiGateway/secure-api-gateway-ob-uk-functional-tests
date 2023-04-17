@@ -290,18 +290,4 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
         )
         return consent to accessTokenAuthorizationCode
     }
-
-    fun getPatchedConsent(consent: OBWriteInternationalStandingOrderConsentResponse7): OBWriteInternationalStandingOrderConsentResponse7 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteInternationalStandingOrderConsentResponse7>(
-            paymentLinks.GetInternationalStandingOrderConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
-    }
 }

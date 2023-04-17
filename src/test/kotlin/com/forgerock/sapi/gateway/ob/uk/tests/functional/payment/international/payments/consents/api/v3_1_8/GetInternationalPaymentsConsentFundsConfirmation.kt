@@ -132,7 +132,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
-        val (consent, _) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, _) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
 
@@ -141,7 +141,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenClientCredentials)
+            getFundsConfirmation(consentResponse, accessTokenClientCredentials)
         }
 
         // Then
@@ -153,11 +153,11 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteInternationalConsent5()
-        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
-        val patchedConsent = createInternationalPaymentsConsents.getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         val payment: OBWriteInternationalResponse5 = paymentApiClient.submitPayment(
             paymentLinks.CreateInternationalPayment,
@@ -170,7 +170,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenAuthorizationCode)
+            getFundsConfirmation(consentResponse, accessTokenAuthorizationCode)
         }
 
         // Then
@@ -179,10 +179,10 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     }
 
     private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteInternationalConsent5): OBWriteFundsConfirmationResponse1 {
-        val (consent, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
-        return getFundsConfirmation(consent, accessTokenAuthorizationCode)
+        return getFundsConfirmation(consentResponse, accessTokenAuthorizationCode)
     }
 
     private fun getFundsConfirmation(
@@ -197,11 +197,11 @@ class GetInternationalPaymentsConsentFundsConfirmation(
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
+    private fun createPaymentRequest(consentResponse: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
         return OBWriteInternational3().data(
             OBWriteInternational3Data()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(patchedConsent.data.initiation)
-        ).risk(patchedConsent.risk)
+                .consentId(consentResponse.data.consentId)
+                .initiation(consentResponse.data.initiation)
+        ).risk(consentResponse.risk)
     }
 }

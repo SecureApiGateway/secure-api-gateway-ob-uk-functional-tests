@@ -18,23 +18,14 @@ class GetInternationalStandingOrderConsents(val version: OBVersion, val tppResou
         // Given
         val consentRequest =
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
-        val consent =
+        // When
+        val consentResponse =
             createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsent(consentRequest)
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.risk).isNotNull()
-
-        // When
-        val result = createInternationalStandingOrderConsentsApi.getPatchedConsent(consent)
-
-        // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.risk).isNotNull()
     }
 }

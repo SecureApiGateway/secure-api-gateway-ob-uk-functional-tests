@@ -114,24 +114,23 @@ class CreateInternationalPayment(
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
 
-        val (consent, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
         // Submit first payment
-        submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        submitPaymentForConsent(consentResponse, authorizationToken)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             // Verify we fail to submit a second payment
-            submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+            submitPaymentForConsent(consentResponse, authorizationToken)
         }
 
         // Then
@@ -142,16 +141,16 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsSendInvalidFormatDetachedJws_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -167,16 +166,16 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsNoDetachedJws_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -191,16 +190,16 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -216,16 +215,16 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsSendInvalidKidDetachedJws_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createPaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -241,20 +240,19 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
-        patchedConsent.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
-        val paymentSubmissionWithInvalidConsentId = createPaymentRequest(patchedConsent)
+        consentResponse.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
+        val paymentSubmissionWithInvalidConsentId = createPaymentRequest(consentResponse)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
                 defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
@@ -273,23 +271,22 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
         val paymentSubmissionInvalidAmount = OBWriteInternational3().data(
                 OBWriteInternational3Data()
-                        .consentId(patchedConsent.data.consentId)
-                        .initiation(PaymentFactory.copyOBWriteInternational3DataInitiation(patchedConsent.data.initiation))
-        ).risk(patchedConsent.risk)
+                        .consentId(consentResponse.data.consentId)
+                        .initiation(PaymentFactory.copyOBWriteInternational3DataInitiation(consentResponse.data.initiation))
+        ).risk(consentResponse.risk)
         paymentSubmissionInvalidAmount.data.initiation.instructedAmount =
                 OBWriteDomestic2DataInitiationInstructedAmount().amount("123123").currency("GBP")
 
@@ -311,24 +308,23 @@ class CreateInternationalPayment(
     fun shouldCreateInternationalPayments_throwsInvalidRiskTest() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
-        val (consent, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
 
         // Alter Risk Merchant
-        patchedConsent.risk.merchantCategoryCode = "wrongMerchant"
+        consentResponse.risk.merchantCategoryCode = "wrongMerchant"
 
         // Submit payment
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+            submitPaymentForConsent(consentResponse, authorizationToken)
         }
 
         // Then
@@ -337,29 +333,24 @@ class CreateInternationalPayment(
     }
 
     fun submitPayment(consentRequest: OBWriteInternationalConsent5): OBWriteInternationalResponse5 {
-        val (consent, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+        val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
                 consentRequest
         )
-        return submitPayment(consent, authorizationToken)
+        return submitPayment(consentResponse, authorizationToken)
     }
 
     fun submitPayment(
             consentResponse: OBWriteInternationalConsentResponse6,
             authorizationToken: AccessToken
     ): OBWriteInternationalResponse5 {
-        val patchedConsent = getPatchedConsent(consentResponse)
-        return submitPaymentForPatchedConsent(patchedConsent, authorizationToken)
+        return submitPaymentForConsent(consentResponse, authorizationToken)
     }
 
-    private fun getPatchedConsent(consent: OBWriteInternationalConsentResponse6): OBWriteInternationalConsentResponse6 {
-        return createInternationalPaymentsConsents.getPatchedConsent(consent)
-    }
-
-    private fun submitPaymentForPatchedConsent(
-            patchedConsent: OBWriteInternationalConsentResponse6,
+    private fun submitPaymentForConsent(
+            consentResponse: OBWriteInternationalConsentResponse6,
             authorizationToken: AccessToken
     ): OBWriteInternationalResponse5 {
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
         return paymentApiClient.submitPayment(
                 createPaymentUrl,
                 authorizationToken,
@@ -367,11 +358,11 @@ class CreateInternationalPayment(
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
+    private fun createPaymentRequest(consentResponse: OBWriteInternationalConsentResponse6): OBWriteInternational3 {
         return OBWriteInternational3().data(
                 OBWriteInternational3Data()
-                        .consentId(patchedConsent.data.consentId)
-                        .initiation(patchedConsent.data.initiation)
-        ).risk(patchedConsent.risk)
+                        .consentId(consentResponse.data.consentId)
+                        .initiation(consentResponse.data.initiation)
+        ).risk(consentResponse.risk)
     }
 }
