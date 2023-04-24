@@ -95,7 +95,7 @@ dependencies {
     testImplementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
     testImplementation("com.google.code.gson:gson:2.9.0")
     testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8")
-    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
     testImplementation("io.jsonwebtoken:jjwt-api:0.10.7")
     testImplementation("io.jsonwebtoken:jjwt-impl:0.10.7")
