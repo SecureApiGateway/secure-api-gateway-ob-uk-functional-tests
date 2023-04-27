@@ -53,7 +53,7 @@ repositories {
 
 configurations.all {
     exclude("org.springframework.boot")
-    exclude("org.springframework")
+    exclude("org.springframework.data")
     exclude("org.springframework.plugin")
     exclude("io.springfox")
     exclude("io.swagger.core")
@@ -75,10 +75,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:1.0.0"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:1.0.1"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-error")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
 
@@ -328,7 +329,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
         }
-        failFast = false
+        failFast = true
     }
 }
 

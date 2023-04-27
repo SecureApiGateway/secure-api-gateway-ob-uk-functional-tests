@@ -29,6 +29,28 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
     }
 
     @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+            apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+    )
+    @Test
+    fun createInternationalScheduledPayment_invalidInitiation_v3_1_10() {
+        createInternationalScheduledPayment.shouldCreateInternationalScheduledPayment_throwsInvalidInitiation_Test()
+    }
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+            apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+    )
+    @Test
+    fun createInternationalScheduledPayment_WithDebtorAccount_v3_1_10() {
+        createInternationalScheduledPayment.createInternationalScheduledPayment_withDebtorAccount_Test()
+    }
+
+    @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
         operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],

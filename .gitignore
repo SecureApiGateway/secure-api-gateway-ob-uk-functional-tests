@@ -15,4 +15,3 @@ gradle/profiles/*
 !gradle/profiles/profile-nightly.gradle.kts
 
 /certificates
-temp

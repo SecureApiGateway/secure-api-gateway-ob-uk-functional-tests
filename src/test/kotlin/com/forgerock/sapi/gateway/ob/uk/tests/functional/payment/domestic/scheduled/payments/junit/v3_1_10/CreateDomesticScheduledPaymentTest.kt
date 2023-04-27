@@ -28,6 +28,29 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
         createDomesticScheduledPayment.createDomesticScheduledPaymentsTest()
     }
 
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
+            apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
+    )
+    @Test
+    fun createDomesticScheduledPayments_throwsInvalidInitiation_v3_1_10() {
+        createDomesticScheduledPayment.shouldCreateDomesticScheduledPayments_throwsInvalidInitiation()
+    }
+
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticScheduledPayment", "CreateDomesticScheduledPaymentConsent", "GetDomesticScheduledPaymentConsent"],
+            apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"]
+    )
+    @Test
+    fun createDomesticScheduledPayments_withDebtorAccount_v3_1_10() {
+        createDomesticScheduledPayment.createDomesticScheduledPaymentsWithDebtorAccountTest()
+    }
+
     @Disabled("Bug: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/336")
     @EnabledIfVersion(
         type = "payments",

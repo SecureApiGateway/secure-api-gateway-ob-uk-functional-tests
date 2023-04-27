@@ -66,7 +66,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
             consentRequest
         )
 
-        val paymentSubmissionRequest = createPaymentRequest(consentResponse)
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val payment: OBWriteDomesticResponse5 = paymentApiClient.submitPayment(
             paymentLinks.CreateDomesticPayment,
@@ -125,11 +125,11 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         )
     }
 
-    private fun createPaymentRequest(consentResponse: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
+    private fun createPaymentRequest(consentId:  String, consentRequest: OBWriteDomesticConsent4): OBWriteDomestic2 {
         return OBWriteDomestic2().data(
                 OBWriteDomestic2Data()
-                        .consentId(consentResponse.data.consentId)
-                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(consentResponse.data.initiation))
-        ).risk(consentResponse.risk)
+                        .consentId(consentId)
+                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(consentRequest.data.initiation))
+        ).risk(consentRequest.risk)
     }
 }

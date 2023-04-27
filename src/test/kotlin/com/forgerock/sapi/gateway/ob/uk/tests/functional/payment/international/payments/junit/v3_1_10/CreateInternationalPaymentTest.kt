@@ -39,6 +39,28 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
     }
 
     @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+            apis = ["international-payments", "international-payment-consents"]
+    )
+    @Test
+    fun createInternationalPayment_throwsInvalidInitiation_v3_1_10() {
+        createInternationalPayment.shouldCreateInternationalPayment_throwsInvalidInitiation_Test()
+    }
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+            apis = ["international-payments", "international-payment-consents"]
+    )
+    @Test
+    fun createInternationalPayment_withDebtorAccount_v3_1_10() {
+        createInternationalPayment.createInternationalPayment_withDebtorAccount_Test()
+    }
+
+    @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
         operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],

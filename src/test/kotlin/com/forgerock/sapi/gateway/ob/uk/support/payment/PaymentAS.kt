@@ -16,6 +16,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.google.gson.JsonParser
+import java.util.*
 
 
 /**
@@ -26,7 +27,8 @@ class PaymentAS : GeneralAS() {
     data class SendConsentDecisionRequestBody(
         val consentJwt: String,
         val decision: String,
-        val debtorAccount: FRFinancialAccount
+        val debtorAccount: FRFinancialAccount,
+        val debtorAccountProvided: Boolean
     )
 
     /**
@@ -54,20 +56,38 @@ class PaymentAS : GeneralAS() {
         val cookie = "$AM_COOKIE_NAME=${response.tokenId}"
         val consentRequest = continueAuthorize(authorizeURL, cookie)
         val consentDetails = getConsentDetails(consentRequest, cookie)
-        val debtorAccount = getDebtorAccountFromConsentDetails(consentDetails)
-        val consentDecisionResponse = sendConsentDecision(consentRequest, debtorAccount, decision, cookie)
+        val consentedAccount = getConsentedAccountFromConsentDetails(consentDetails)
+        val isDebtorAccountProvided = isDebtorAccountProvided(consentDetails)
+        val consentDecisionResponse = sendConsentDecision(
+                consentRequest,
+                consentedAccount,
+                decision,
+                isDebtorAccountProvided,
+                cookie
+        )
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
         return exchangeCode(registrationResponse, tpp, authCode)
     }
 
-    private fun getDebtorAccountFromConsentDetails(consentDetails: String): FRFinancialAccount {
-        try {
-            val str = JsonParser().parse(consentDetails).asJsonObject
-            val accounts = str.getAsJsonArray("accounts")
-            val account =
-                accounts[0].asJsonObject.get("account").asJsonObject
+    private fun isDebtorAccountProvided(consentDetails: String): Boolean {
+        val str = JsonParser.parseString(consentDetails).asJsonObject
+        val initiation = str.getAsJsonObject("initiation")
+        if(Objects.nonNull(initiation)){
+            if(Objects.nonNull(initiation.getAsJsonObject("debtorAccount"))){
+                return true
+            }
+        }
+        return false
+    }
 
-            return gson.fromJson(account, FRFinancialAccount::class.java)
+    private fun getConsentedAccountFromConsentDetails(consentDetails: String): FRFinancialAccount {
+        try {
+            val str = JsonParser.parseString(consentDetails).asJsonObject
+                val accounts = str.getAsJsonArray("accounts")
+                val account =
+                        accounts[0].asJsonObject.get("account").asJsonObject
+
+                return gson.fromJson(account, FRFinancialAccount::class.java)
         } catch (e: Exception) {
             throw AssertionError(
                 "The response body doesn't have the expected format"
@@ -79,9 +99,10 @@ class PaymentAS : GeneralAS() {
         consentRequest: String,
         consentedAccount: FRFinancialAccount,
         decision: String,
+        isDebtorAccountProvided: Boolean,
         cookie: String
     ): SendConsentDecisionResponseBody {
-        val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount)
+        val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount, isDebtorAccountProvided)
         val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/decision/")
                                         .header("Cookie", cookie)
                                         .jsonBody(body)

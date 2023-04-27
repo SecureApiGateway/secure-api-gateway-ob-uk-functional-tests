@@ -23,8 +23,30 @@ class CreateDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) 
         apis = ["domestic-payments", "domestic-payment-consents"]
     )
     @Test
+    fun createDomesticPayments_withDebtorAccount_v3_1_10() {
+        createDomesticPaymentApi.createDomesticPaymentsWithDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+            apis = ["domestic-payments", "domestic-payment-consents"]
+    )
+    @Test
     fun createDomesticPayments_v3_1_10() {
         createDomesticPaymentApi.createDomesticPaymentsTest()
+    }
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+            apis = ["domestic-payments", "domestic-payment-consents"]
+    )
+    @Test
+    fun createDomesticPayments_ThrowsInvalidInitiation_v3_1_10() {
+        createDomesticPaymentApi.createDomesticPayments_throwsInvalidInitiationTest()
     }
 
     @EnabledIfVersion(

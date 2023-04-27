@@ -24,7 +24,7 @@ class GetDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
         apis = ["domestic-vrps", "domestic-vrp-consents"]
     )
     @Test
-    fun getDomesticPayments_v3_1_10() {
+    fun getDomesticVrpPayments_v3_1_10() {
         getDomesticVrpPaymentApi.getDomesticVrpPaymentsTest()
     }
 

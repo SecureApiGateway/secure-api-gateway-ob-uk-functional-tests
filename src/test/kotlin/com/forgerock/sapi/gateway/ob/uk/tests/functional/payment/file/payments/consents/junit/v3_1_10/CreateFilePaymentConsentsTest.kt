@@ -94,6 +94,17 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
     }
 
     @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateFilePaymentConsent"],
+            apis = ["file-payment-consents"]
+    )
+    @Test
+    fun createFilePaymentsConsents_WithDebtorAccount_v3_1_10() {
+        createFilePaymentsConsentsApi.createFilePaymentsConsentsWithDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
         operations = ["CreateFilePaymentConsent"],

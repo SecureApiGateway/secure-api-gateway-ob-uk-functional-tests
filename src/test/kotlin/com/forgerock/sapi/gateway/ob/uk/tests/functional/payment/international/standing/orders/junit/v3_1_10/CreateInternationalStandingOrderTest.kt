@@ -29,6 +29,28 @@ class CreateInternationalStandingOrderTest(val tppResource: CreateTppCallback.Tp
     }
 
     @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
+            apis = ["international-standing-orders", "international-standing-order-consents"]
+    )
+    @Test
+    fun createInternationalStandingOrder_throwsInvalidInitiation_v3_1_10() {
+        createInternationalStandingOrder.shouldCreateInternationalStandingOrder_throwsInvalidInitiationTest()
+    }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
+        apis = ["international-standing-orders", "international-standing-order-consents"]
+    )
+    @Test
+    fun createInternationalStandingOrder_WithDebtorAccount_v3_1_10() {
+        createInternationalStandingOrder.createInternationalStandingOrderWithDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
         operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],

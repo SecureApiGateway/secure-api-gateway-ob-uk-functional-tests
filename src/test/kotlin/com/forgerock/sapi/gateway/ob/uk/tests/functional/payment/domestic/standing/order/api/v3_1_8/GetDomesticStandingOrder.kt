@@ -71,7 +71,9 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
         assertThat(consent.data.readRefundAccount).isEqualTo(OBReadRefundAccountEnum.YES)
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
-        val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consent, accessTokenAuthorizationCode)
+        val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(
+                consent.data.consentId, consentRequest, accessTokenAuthorizationCode
+        )
 
         // When
         val getStandingOrderResponse = getStandingOrder(standingOrderResponse)
