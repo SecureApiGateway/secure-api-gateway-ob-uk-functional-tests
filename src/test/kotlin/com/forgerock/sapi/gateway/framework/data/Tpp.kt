@@ -95,7 +95,7 @@ data class Tpp(
 
 
     fun unregister(): Triple<Request, Response, Result<String, FuelError>> {
-        return unregisterTpp(registrationResponse.client_id)
+        return unregisterTpp(registrationResponse.client_id, registrationResponse.registration_access_token)
     }
 
     private fun signRegistrationRequest(registrationRequest: RegistrationRequest): String {

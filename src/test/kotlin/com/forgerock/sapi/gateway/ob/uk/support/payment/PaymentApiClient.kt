@@ -6,7 +6,6 @@ import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
 import com.forgerock.sapi.gateway.ob.uk.support.account.HTTP_STATUS_CODE_NO_CONTENT
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.asDiscovery
-import com.forgerock.sapi.gateway.ob.uk.support.discovery.rsDiscovery
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.Headers
@@ -98,7 +97,6 @@ class PaymentApiClient(val tpp: Tpp) {
                     result.component2()
                 )
             }
-
             if (response.header("x-jws-signature").isNullOrEmpty()) {
                 throw AssertionError(
                     "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
