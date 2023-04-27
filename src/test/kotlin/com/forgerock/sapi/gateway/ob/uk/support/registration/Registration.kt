@@ -13,6 +13,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
+import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.result.Result
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -24,8 +25,10 @@ data class UserRegistrationRequest(val user: User) {
 
 data class User(val userName: String, val password: String, var uid: String?)
 
-fun unregisterTpp(id: String): Triple<Request, Response, Result<String, FuelError>> {
+fun unregisterTpp(id: String, registrationAccessToken: String): Triple<Request, Response, Result<String, FuelError>> {
     return Fuel.delete("${asDiscovery.registration_endpoint!!}/$id")
+        .authentication()
+        .bearer(registrationAccessToken)
         .responseObject()
 }
 
