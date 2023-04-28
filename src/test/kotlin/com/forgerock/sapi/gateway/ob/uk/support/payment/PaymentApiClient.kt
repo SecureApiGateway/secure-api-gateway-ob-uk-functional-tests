@@ -91,12 +91,20 @@ class PaymentApiClient(val tpp: Tpp) {
             val (_, response, result) = request.responseObject<T>()
 
             if (!response.isSuccessful) {
+                var fapiInteractionId = "no id"
+                val fapiInteractionIdHeaderVals = response.headers.get("x-fapi-interaction-id");
+                if(fapiInteractionIdHeaderVals.isNotEmpty()){
+                    fapiInteractionId = fapiInteractionIdHeaderVals.first()
+                }
+
                 throw AssertionError(
                     "API call: " + request.method + " " + request.url + " returned an error response:\n"
-                            + result.component2()?.errorData?.toString(Charsets.UTF_8),
+                            + result.component2()?.errorData?.toString(Charsets.UTF_8) + "\n x-fapi-interaction-id: "
+                            + fapiInteractionId,
                     result.component2()
                 )
             }
+
             if (response.header("x-jws-signature").isNullOrEmpty()) {
                 throw AssertionError(
                     "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
