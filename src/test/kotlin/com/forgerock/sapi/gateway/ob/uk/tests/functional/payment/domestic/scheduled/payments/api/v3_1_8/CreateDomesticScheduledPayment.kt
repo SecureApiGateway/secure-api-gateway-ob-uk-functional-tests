@@ -48,11 +48,11 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
-                OBWriteDomestic2DataInitiationDebtorAccount()
-                        .identification(debtorAccount?.Identification)
-                        .name(debtorAccount?.Name)
-                        .schemeName(debtorAccount?.SchemeName)
-                        .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount.Identification)
+                .name(debtorAccount.Name)
+                .schemeName(debtorAccount.SchemeName)
+                .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )
 
         // When
@@ -70,7 +70,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
@@ -91,12 +91,11 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
     }
 
 
-
     fun shouldCreateDomesticScheduledPayments_throwsPaymentAlreadyExists() {
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
@@ -121,7 +120,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -133,8 +132,12 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
@@ -145,7 +148,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -157,8 +160,12 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(null).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -170,7 +177,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -182,8 +189,12 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -195,7 +206,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -207,8 +218,12 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -220,7 +235,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -233,13 +248,17 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         val paymentSubmissionWithInvalidConsentId = createPaymentRequest(INVALID_CONSENT_ID, consentRequest)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
+            defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
         // Then
@@ -251,7 +270,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -263,19 +282,23 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
         val paymentSubmissionInvalidAmount = createPaymentRequest(consentResponse.data.consentId, consentRequest)
         paymentSubmissionInvalidAmount.data.initiation.instructedAmount =
-                OBWriteDomestic2DataInitiationInstructedAmount()
-                        .amount("123123")
-                        .currency("EUR")
+            OBWriteDomestic2DataInitiationInstructedAmount()
+                .amount("123123")
+                .currency("EUR")
 
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
+            defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessTokenAuthorizationCode, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
+            paymentApiClient.buildSubmitPaymentRequest(
+                createPaymentUrl,
+                accessTokenAuthorizationCode,
+                paymentSubmissionRequest
+            )
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
@@ -287,7 +310,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Given
         val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
         val (consentResponse, authorizationToken) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -312,40 +335,40 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun submitPayment(consentRequest: OBWriteDomesticScheduledConsent4): OBWriteDomesticScheduledResponse5 {
         val (consent, authorizationToken) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         return submitPayment(consent.data.consentId, consentRequest, authorizationToken)
     }
 
     fun submitPayment(
-            consentId: String,
-            consentRequest: OBWriteDomesticScheduledConsent4,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBWriteDomesticScheduledConsent4,
+        authorizationToken: AccessToken
     ): OBWriteDomesticScheduledResponse5 {
         return submitPaymentForConsent(consentId, consentRequest, authorizationToken)
     }
 
     private fun submitPaymentForConsent(
-            consentId: String,
-            consentRequest: OBWriteDomesticScheduledConsent4,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBWriteDomesticScheduledConsent4,
+        authorizationToken: AccessToken
     ): OBWriteDomesticScheduledResponse5 {
         val paymentSubmissionRequest = createPaymentRequest(consentId, consentRequest)
         return paymentApiClient.submitPayment(
-                createPaymentUrl,
-                authorizationToken,
-                paymentSubmissionRequest
+            createPaymentUrl,
+            authorizationToken,
+            paymentSubmissionRequest
         )
     }
 
     private fun createPaymentRequest(
-            consentId: String,
-            consentRequest: OBWriteDomesticScheduledConsent4
+        consentId: String,
+        consentRequest: OBWriteDomesticScheduledConsent4
     ): OBWriteDomesticScheduled2 {
         return OBWriteDomesticScheduled2().data(
-                OBWriteDomesticScheduled2Data()
-                        .consentId(consentId)
-                        .initiation(PaymentFactory.copyOBWriteDomesticScheduled2DataInitiation(consentRequest.data.initiation))
+            OBWriteDomesticScheduled2Data()
+                .consentId(consentId)
+                .initiation(PaymentFactory.copyOBWriteDomesticScheduled2DataInitiation(consentRequest.data.initiation))
         ).risk(consentRequest.risk)
     }
 }

@@ -36,11 +36,11 @@ class PaymentAS : GeneralAS() {
      * in subsequent operations on the consent (such as making a payment)
      */
     fun authorizeConsent(
-            consentId: String,
-            registrationResponse: RegistrationResponse,
-            psu: UserRegistrationRequest,
-            tpp: Tpp,
-            decision: String = "Authorised"
+        consentId: String,
+        registrationResponse: RegistrationResponse,
+        psu: UserRegistrationRequest,
+        tpp: Tpp,
+        decision: String = "Authorised"
     ): AccessToken {
         val authenticationURL = generateAuthenticationURL(
             consentId, registrationResponse, psu, tpp, asDiscovery.scopes_supported.intersect(
@@ -59,11 +59,11 @@ class PaymentAS : GeneralAS() {
         val consentedAccount = getConsentedAccountFromConsentDetails(consentDetails)
         val isDebtorAccountProvided = isDebtorAccountProvided(consentDetails)
         val consentDecisionResponse = sendConsentDecision(
-                consentRequest,
-                consentedAccount,
-                decision,
-                isDebtorAccountProvided,
-                cookie
+            consentRequest,
+            consentedAccount,
+            decision,
+            isDebtorAccountProvided,
+            cookie
         )
         val authCode = getAuthCode(consentDecisionResponse.consentJwt, consentDecisionResponse.redirectUri, cookie)
         return exchangeCode(registrationResponse, tpp, authCode)
@@ -72,8 +72,8 @@ class PaymentAS : GeneralAS() {
     private fun isDebtorAccountProvided(consentDetails: String): Boolean {
         val str = JsonParser.parseString(consentDetails).asJsonObject
         val initiation = str.getAsJsonObject("initiation")
-        if(Objects.nonNull(initiation)){
-            if(Objects.nonNull(initiation.getAsJsonObject("debtorAccount"))){
+        if (Objects.nonNull(initiation)) {
+            if (Objects.nonNull(initiation.getAsJsonObject("debtorAccount"))) {
                 return true
             }
         }
@@ -83,11 +83,10 @@ class PaymentAS : GeneralAS() {
     private fun getConsentedAccountFromConsentDetails(consentDetails: String): FRFinancialAccount {
         try {
             val str = JsonParser.parseString(consentDetails).asJsonObject
-                val accounts = str.getAsJsonArray("accounts")
-                val account =
-                        accounts[0].asJsonObject.get("account").asJsonObject
+            val accounts = str.getAsJsonArray("accounts")
+            val account = accounts[0].asJsonObject.get("account").asJsonObject
 
-                return gson.fromJson(account, FRFinancialAccount::class.java)
+            return gson.fromJson(account, FRFinancialAccount::class.java)
         } catch (e: Exception) {
             throw AssertionError(
                 "The response body doesn't have the expected format"
@@ -104,9 +103,9 @@ class PaymentAS : GeneralAS() {
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount, isDebtorAccountProvided)
         val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/decision/")
-                                        .header("Cookie", cookie)
-                                        .jsonBody(body)
-                                        .responseObject<SendConsentDecisionResponseBody>()
+            .header("Cookie", cookie)
+            .jsonBody(body)
+            .responseObject<SendConsentDecisionResponseBody>()
         if (!response.isSuccessful) throw AssertionError(
             "Could not send consent decision",
             result.component2()
