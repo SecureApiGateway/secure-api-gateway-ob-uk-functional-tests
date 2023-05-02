@@ -2,8 +2,8 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.file.payments.
 
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.file.payments.consents.api.v3_1_8.CreateFilePaymentsConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -34,7 +34,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10(){
+    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10() {
         createFilePaymentsConsentsApi.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
     }
 
@@ -56,7 +56,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    fun submitFile_SameIdempotencyKeyMultipleRequestTest_v3_1_10(){
+    fun submitFile_SameIdempotencyKeyMultipleRequestTest_v3_1_10() {
         createFilePaymentsConsentsApi.submitFile_SameIdempotencyKeyMultipleRequestTest()
     }
 
@@ -67,7 +67,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    fun submitFile_NoIdempotencyKey_throwsBadRequestTest_v3_1_10(){
+    fun submitFile_NoIdempotencyKey_throwsBadRequestTest_v3_1_10() {
         createFilePaymentsConsentsApi.submitFile_NoIdempotencyKey_throwsBadRequestTest()
     }
 
@@ -94,10 +94,10 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateFilePaymentConsent"],
-            apis = ["file-payment-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateFilePaymentConsent"],
+        apis = ["file-payment-consents"]
     )
     @Test
     fun createFilePaymentsConsents_WithDebtorAccount_v3_1_10() {

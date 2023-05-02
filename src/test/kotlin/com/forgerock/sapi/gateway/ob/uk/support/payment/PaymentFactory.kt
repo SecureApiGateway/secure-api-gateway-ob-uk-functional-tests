@@ -301,11 +301,7 @@ class PaymentFactory {
                 .firstPaymentDateTime(initiation.firstPaymentDateTime)
                 .recurringPaymentDateTime(initiation.recurringPaymentDateTime)
                 .finalPaymentDateTime(initiation.finalPaymentDateTime)
-                .firstPaymentAmount(
-                    OBWriteDomesticStandingOrder3DataInitiationFirstPaymentAmount()
-                        .amount(initiation.firstPaymentAmount.amount)
-                        .currency(initiation.firstPaymentAmount.currency)
-                )
+                .firstPaymentAmount(initiation.firstPaymentAmount)
                 .recurringPaymentAmount(initiation.recurringPaymentAmount)
                 .finalPaymentAmount((initiation.finalPaymentAmount))
                 .debtorAccount(initiation.debtorAccount)

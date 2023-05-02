@@ -8,7 +8,6 @@ import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.common.OBRisk1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
 
@@ -204,7 +203,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
                 .consentId(consentResponse.data.consentId)
                 .initiation(
                     PaymentFactory.mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
-                            consentResponse.data.initiation
+                        consentResponse.data.initiation
                     )
                 )
         ).risk(consentResponse.risk)

@@ -46,11 +46,11 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
-                OBCashAccountDebtorWithName()
-                        .identification(debtorAccount?.Identification)
-                        .name(debtorAccount?.Name)
-                        .schemeName(debtorAccount?.SchemeName)
-                        .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+            OBCashAccountDebtorWithName()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
         )
         val result = submitPayment(consentRequest)
 
@@ -67,7 +67,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val headers = Headers()
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
         // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
@@ -84,7 +84,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Then
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                    createPaymentUrl, authorizationToken, paymentSubmissionRequest
+                createPaymentUrl, authorizationToken, paymentSubmissionRequest
             ).addHeaders(headers).sendRequest()
         }
         // Then
@@ -92,15 +92,15 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val amount = consentRequest.data.controlParameters.periodicLimits[0].amount
         val currency = consentRequest.data.controlParameters.periodicLimits[0].currency
         assertThat(exception.message.toString()).contains(
-                "Unable to complete payment due to payment limit breach, periodic limit of '" + amount + "' '" + currency + "' " +
-                        "for period '" + periodType + "' '" + periodAlignment + "' has been breached"
+            "Unable to complete payment due to payment limit breach, periodic limit of '" + amount + "' '" + currency + "' " +
+                "for period '" + periodType + "' '" + periodAlignment + "' has been breached"
         )
     }
 
     fun createDomesticVrpPayment_mandatoryFieldsTest() {
         // Given
         val consentRequest =
-                OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
+            OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
         // When
         val result = submitPayment(consentRequest)
 
@@ -115,7 +115,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -128,7 +128,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
         // Then
@@ -140,7 +140,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -153,7 +153,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(null).sendRequest()
+                .configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -165,7 +165,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -178,7 +178,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -190,7 +190,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -203,7 +203,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -215,7 +215,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -229,13 +229,13 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val paymentSubmissionWithInvalidConsentId = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
+            defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
         // Then
@@ -247,7 +247,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -262,7 +262,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         val paymentSubmissionInvalidAmount = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
+            defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
         )
 
         consentRequest.data.controlParameters.maximumIndividualAmount.amount = initialAmount
@@ -270,7 +270,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
@@ -284,7 +284,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         consentRequest.data.controlParameters.vrPType = listOf("UK.OBIE.VRPType.Other", "UK.OBIE.VRPType.Sweeping")
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                    consentRequest
+                consentRequest
             )
         }
 
@@ -298,7 +298,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         val (consentResponse, accessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -307,18 +307,18 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         consentRequest.data.initiation.debtorAccount =
-                OBCashAccountDebtorWithName()
-                        .identification("12341325")
-                        .name("diff name")
-                        .schemeName("UK.OBIE.SortCodeAccountNumber")
+            OBCashAccountDebtorWithName()
+                .identification("12341325")
+                .name("diff name")
+                .schemeName("UK.OBIE.SortCodeAccountNumber")
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureDefaultJwsSignatureProducer()
-                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                .configureDefaultJwsSignatureProducer()
+                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -328,54 +328,54 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
 
     fun submitPayment(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPResponse {
         val (consent, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         return submitPayment(consent.data.consentId, consentRequest, authorizationToken)
     }
 
     fun submitPayment(
-            consentId: String,
-            consentRequest: OBDomesticVRPConsentRequest,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBDomesticVRPConsentRequest,
+        authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
         return submitPaymentForConsent(consentId, consentRequest, authorizationToken)
     }
 
     private fun submitPaymentForConsent(
-            consentId: String,
-            consentRequest: OBDomesticVRPConsentRequest,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBDomesticVRPConsentRequest,
+        authorizationToken: AccessToken
     ): OBDomesticVRPResponse {
 
         val paymentSubmissionRequest = createPaymentRequest(consentId, consentRequest)
         // If the CreditorAccount was not specified in the consent, the CreditorAccount must be specified in the instruction
         if (consentRequest.data.initiation.creditorAccount == null && paymentSubmissionRequest.data.instruction.creditorAccount == null) {
             paymentSubmissionRequest.data.instruction.creditorAccount(
-                    OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
+                OBDomesticVrpCommonTestDataFactory.aValidOBCashAccountCreditor3()
             )
         }
         return paymentApiClient.submitPayment(
-                createPaymentUrl,
-                authorizationToken,
-                paymentSubmissionRequest
+            createPaymentUrl,
+            authorizationToken,
+            paymentSubmissionRequest
         )
     }
 
     private fun createPaymentRequest(
-            consentId: String,
-            consentRequest: OBDomesticVRPConsentRequest
+        consentId: String,
+        consentRequest: OBDomesticVRPConsentRequest
     ): OBDomesticVRPRequest {
         return OBDomesticVRPRequest().data(
-                OBDomesticVRPRequestData()
-                        .consentId(consentId)
-                        .initiation(PaymentFactory.copyOBDomesticVRPInitiation(consentRequest.data.initiation))
-                        .instruction(buildVrpInstruction(consentRequest))
+            OBDomesticVRPRequestData()
+                .consentId(consentId)
+                .initiation(PaymentFactory.copyOBDomesticVRPInitiation(consentRequest.data.initiation))
+                .instruction(buildVrpInstruction(consentRequest))
         ).risk(consentRequest.risk)
     }
 
     private fun buildVrpInstruction(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPInstruction? {
         val instruction = OBDomesticVRPInstruction().creditorAccount(consentRequest.data.initiation.creditorAccount)
-                .instructedAmount(consentRequest.data.controlParameters.maximumIndividualAmount);
+            .instructedAmount(consentRequest.data.controlParameters.maximumIndividualAmount);
         if (consentRequest.data.initiation.creditorPostalAddress != null) {
             instruction.creditorPostalAddress = consentRequest.data.initiation.creditorPostalAddress
         }

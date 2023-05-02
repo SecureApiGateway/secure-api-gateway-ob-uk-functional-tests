@@ -329,7 +329,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
         }
-        failFast = true
+        failFast = false
     }
 }
 

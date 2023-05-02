@@ -2,8 +2,8 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.api.v3_1_8.CreateInternationalStandingOrder
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -29,10 +29,10 @@ class CreateInternationalStandingOrderTest(val tppResource: CreateTppCallback.Tp
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
-            apis = ["international-standing-orders", "international-standing-order-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalStandingOrder", "CreateInternationalStandingOrderConsent", "GetInternationalStandingOrderConsent"],
+        apis = ["international-standing-orders", "international-standing-order-consents"]
     )
     @Test
     fun createInternationalStandingOrder_throwsInvalidInitiation_v3_1_10() {

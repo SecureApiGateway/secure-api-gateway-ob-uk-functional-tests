@@ -45,17 +45,17 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
-                OBWriteDomestic2DataInitiationDebtorAccount()
-                        .identification(debtorAccount?.Identification)
-                        .name(debtorAccount?.Name)
-                        .schemeName(debtorAccount?.SchemeName)
-                        .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
         )
         val consent = createFilePaymentConsent(consentRequest)
 

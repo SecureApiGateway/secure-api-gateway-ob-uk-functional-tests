@@ -2,8 +2,8 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.scheduled.payments.api.v3_1_8.CreateInternationalScheduledPayment
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -29,10 +29,10 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-            apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_invalidInitiation_v3_1_10() {
@@ -40,10 +40,10 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
-            apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
     @Test
     fun createInternationalScheduledPayment_WithDebtorAccount_v3_1_10() {

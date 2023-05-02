@@ -21,7 +21,7 @@ import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConse
 class CreateInternationalScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val createInternationalScheduledPaymentsConsents =
-            CreateInternationalScheduledPaymentsConsents(version, tppResource)
+        CreateInternationalScheduledPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateInternationalScheduledPayment
     private val paymentApiClient = tppResource.tpp.paymentApiClient
@@ -29,7 +29,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_AGREED_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
 
         // When
@@ -49,9 +49,9 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsInvalidInitiation_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -77,16 +77,16 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_withDebtorAccount_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
-                OBWriteDomestic2DataInitiationDebtorAccount()
-                        .identification(debtorAccount?.Identification)
-                        .name(debtorAccount?.Name)
-                        .schemeName(debtorAccount?.SchemeName)
-                        .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
         )
 
         // When
@@ -106,7 +106,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_ACTUAL_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -129,7 +129,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -166,9 +166,9 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsInternationalScheduledPaymentAlreadyExists_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -194,10 +194,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -210,7 +210,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
         // Then
@@ -221,10 +221,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -237,7 +237,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(null).sendRequest()
+                .configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -248,10 +248,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -264,7 +264,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -275,10 +275,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -291,7 +291,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -302,9 +302,9 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -319,13 +319,13 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         val paymentSubmissionWithInvalidConsentId = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
+            defaultMapper.writeValueAsString(paymentSubmissionWithInvalidConsentId)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
         // Then
@@ -336,10 +336,10 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -350,20 +350,20 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         paymentSubmissionRequest.data.initiation.instructedAmount =
-                OBWriteDomestic2DataInitiationInstructedAmount()
-                        .amount("123123")
-                        .currency("EUR")
+            OBWriteDomestic2DataInitiationInstructedAmount()
+                .amount("123123")
+                .currency("EUR")
 
         val paymentSubmissionInvalidAmount = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-                defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
+            defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(createPaymentUrl, accessToken, paymentSubmissionRequest)
-                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
+                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
@@ -375,7 +375,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // Given
         val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
 
         assertThat(consentResponse).isNotNull()
@@ -400,40 +400,40 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse5 {
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest
         )
         return submitPayment(consentResponse.data.consentId, consentRequest, authorizationToken)
     }
 
     fun submitPayment(
-            consentId: String,
-            consentRequest: OBWriteInternationalScheduledConsent5,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBWriteInternationalScheduledConsent5,
+        authorizationToken: AccessToken
     ): OBWriteInternationalScheduledResponse5 {
         return submitPaymentForConsent(consentId, consentRequest, authorizationToken)
     }
 
     private fun submitPaymentForConsent(
-            consentId: String,
-            consentRequest: OBWriteInternationalScheduledConsent5,
-            authorizationToken: AccessToken
+        consentId: String,
+        consentRequest: OBWriteInternationalScheduledConsent5,
+        authorizationToken: AccessToken
     ): OBWriteInternationalScheduledResponse5 {
         val paymentSubmissionRequest = createPaymentRequest(consentId, consentRequest)
         return paymentApiClient.submitPayment(
-                createPaymentUrl,
-                authorizationToken,
-                paymentSubmissionRequest
+            createPaymentUrl,
+            authorizationToken,
+            paymentSubmissionRequest
         )
     }
 
     private fun createPaymentRequest(
-            consentId: String,
-            consentRequest: OBWriteInternationalScheduledConsent5
+        consentId: String,
+        consentRequest: OBWriteInternationalScheduledConsent5
     ): OBWriteInternationalScheduled3 {
         return OBWriteInternationalScheduled3().data(
-                OBWriteInternationalScheduled3Data()
-                        .consentId(consentId)
-                        .initiation(PaymentFactory.copyOBWriteInternationalScheduled3DataInitiation(consentRequest.data.initiation))
+            OBWriteInternationalScheduled3Data()
+                .consentId(consentId)
+                .initiation(PaymentFactory.copyOBWriteInternationalScheduled3DataInitiation(consentRequest.data.initiation))
         ).risk(consentRequest.risk)
     }
 }

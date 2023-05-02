@@ -9,8 +9,8 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderResponse6
@@ -72,7 +72,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(
-                consent.data.consentId, consentRequest, accessTokenAuthorizationCode
+            consent.data.consentId, consentRequest, accessTokenAuthorizationCode
         )
 
         // When

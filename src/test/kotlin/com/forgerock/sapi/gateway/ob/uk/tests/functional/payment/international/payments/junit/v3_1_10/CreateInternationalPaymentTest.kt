@@ -2,8 +2,8 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.payments.api.v3_1_8.CreateInternationalPayment
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -39,10 +39,10 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-            apis = ["international-payments", "international-payment-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_throwsInvalidInitiation_v3_1_10() {
@@ -50,10 +50,10 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
     }
 
     @EnabledIfVersion(
-            type = "payments",
-            apiVersion = "v3.1.10",
-            operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
-            apis = ["international-payments", "international-payment-consents"]
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+        apis = ["international-payments", "international-payment-consents"]
     )
     @Test
     fun createInternationalPayment_withDebtorAccount_v3_1_10() {

@@ -10,21 +10,21 @@ import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 
 class GetInternationalScheduledPaymentsConsents(
-        val version: OBVersion,
-        val tppResource: CreateTppCallback.TppResource
+    val version: OBVersion,
+    val tppResource: CreateTppCallback.TppResource
 ) {
     private val createInternationalScheduledPaymentsConsents =
-            CreateInternationalScheduledPaymentsConsents(version, tppResource)
+        CreateInternationalScheduledPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_AGREED_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         // When
         val consentResponse =
-                createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
+            createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
         // Then
         assertThat(consentResponse).isNotNull()
@@ -36,13 +36,13 @@ class GetInternationalScheduledPaymentsConsents(
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         // When
         val consentResponse =
-                createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
+            createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
         // Then
         assertThat(consentResponse).isNotNull()
@@ -54,14 +54,14 @@ class GetInternationalScheduledPaymentsConsents(
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest =
-                OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
         // When
         val consentResponse =
-                createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
+            createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
         // Then
         assertThat(consentResponse).isNotNull()
