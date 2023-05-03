@@ -3,12 +3,12 @@ package com.forgerock.sapi.gateway.ob.uk.support.payment
 import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory.Companion.urlSubstituted
 import com.google.common.base.Preconditions
 import org.apache.commons.io.FileUtils
+import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.common.OBCashAccount3
 import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPInstruction
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPInitiation
 import uk.org.openbanking.testsupport.payment.OBWriteFileConsentTestDataFactory
 import java.io.File
 import java.io.StringReader
@@ -84,23 +84,41 @@ class PaymentFactory {
         fun createOBWriteFileConsent3WithFileInfo(fileContent: String, fileType: String): OBWriteFileConsent3 {
             val document = JAXB.unmarshal(
                 StringReader(fileContent),
-                    com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108.Document::class.java
+                com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108.Document::class.java
             )
             val numberOfTransactions = document.cstmrCdtTrfInitn.grpHdr.nbOfTxs.toString()
             val fileHashString = computeSHA256FullHash(fileContent)
             val controlSum = document.cstmrCdtTrfInitn.grpHdr.ctrlSum
-            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(fileType, fileHashString, numberOfTransactions, controlSum)
+            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(
+                fileType,
+                fileHashString,
+                numberOfTransactions,
+                controlSum
+            )
         }
 
-        fun createJsonOBWriteFileConsent3WithFileInfo(fileHash: String, controlSum: String, numberOfPayments: String, fileType: String): OBWriteFileConsent3 {
+        fun createJsonOBWriteFileConsent3WithFileInfo(
+            fileHash: String,
+            controlSum: String,
+            numberOfPayments: String,
+            fileType: String
+        ): OBWriteFileConsent3 {
 
-            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(fileType, fileHash, numberOfPayments, controlSum.toBigDecimal())
+            return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(
+                fileType,
+                fileHash,
+                numberOfPayments,
+                controlSum.toBigDecimal()
+            )
         }
 
-        fun createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(fileContent: String, fileType: String): OBWriteFileConsent3 {
+        fun createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(
+            fileContent: String,
+            fileType: String
+        ): OBWriteFileConsent3 {
             val document = JAXB.unmarshal(
                 StringReader(fileContent),
-                    com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108.Document::class.java
+                com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108.Document::class.java
             )
             val fileHashString = computeSHA256FullHash(fileContent)
             return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3MandatoryFields(fileType, fileHashString)
@@ -108,45 +126,45 @@ class PaymentFactory {
 
         fun mapOBDomestic2ToOBWriteDomestic2DataInitiation(obDomestic2: OBDomestic2): OBWriteDomestic2DataInitiation {
             val initiation = OBWriteDomestic2DataInitiation()
-                    .instructionIdentification(obDomestic2.instructionIdentification)
-                    .endToEndIdentification(obDomestic2.endToEndIdentification)
-                    .localInstrument(obDomestic2.localInstrument)
-                    .creditorPostalAddress(obDomestic2.creditorPostalAddress)
-                    .supplementaryData(obDomestic2.supplementaryData)
+                .instructionIdentification(obDomestic2.instructionIdentification)
+                .endToEndIdentification(obDomestic2.endToEndIdentification)
+                .localInstrument(obDomestic2.localInstrument)
+                .creditorPostalAddress(obDomestic2.creditorPostalAddress)
+                .supplementaryData(obDomestic2.supplementaryData)
 
             if (obDomestic2.instructedAmount != null) {
                 initiation.instructedAmount(
-                        OBWriteDomestic2DataInitiationInstructedAmount()
-                                .amount(obDomestic2.instructedAmount?.amount)
-                                .currency(obDomestic2.instructedAmount?.currency)
+                    OBWriteDomestic2DataInitiationInstructedAmount()
+                        .amount(obDomestic2.instructedAmount?.amount)
+                        .currency(obDomestic2.instructedAmount?.currency)
                 )
             }
 
             if (obDomestic2.debtorAccount != null) {
                 initiation.debtorAccount(
-                        OBWriteDomestic2DataInitiationDebtorAccount()
-                                .schemeName(obDomestic2.debtorAccount?.schemeName)
-                                .identification(obDomestic2.debtorAccount?.identification)
-                                .name(obDomestic2.debtorAccount?.name)
-                                .secondaryIdentification(obDomestic2.debtorAccount?.secondaryIdentification)
+                    OBWriteDomestic2DataInitiationDebtorAccount()
+                        .schemeName(obDomestic2.debtorAccount?.schemeName)
+                        .identification(obDomestic2.debtorAccount?.identification)
+                        .name(obDomestic2.debtorAccount?.name)
+                        .secondaryIdentification(obDomestic2.debtorAccount?.secondaryIdentification)
                 )
             }
 
             if (obDomestic2.creditorAccount != null) {
                 initiation.creditorAccount(
-                        OBWriteDomestic2DataInitiationCreditorAccount()
-                                .schemeName(obDomestic2.creditorAccount?.schemeName)
-                                .identification(obDomestic2.creditorAccount?.identification)
-                                .name(obDomestic2.creditorAccount?.name)
-                                .secondaryIdentification(obDomestic2.creditorAccount?.secondaryIdentification)
+                    OBWriteDomestic2DataInitiationCreditorAccount()
+                        .schemeName(obDomestic2.creditorAccount?.schemeName)
+                        .identification(obDomestic2.creditorAccount?.identification)
+                        .name(obDomestic2.creditorAccount?.name)
+                        .secondaryIdentification(obDomestic2.creditorAccount?.secondaryIdentification)
                 )
             }
 
             if (obDomestic2.remittanceInformation != null) {
                 initiation.remittanceInformation(
-                        OBWriteDomestic2DataInitiationRemittanceInformation()
-                                .unstructured(obDomestic2.remittanceInformation?.unstructured)
-                                .reference(obDomestic2.remittanceInformation?.reference)
+                    OBWriteDomestic2DataInitiationRemittanceInformation()
+                        .unstructured(obDomestic2.remittanceInformation?.unstructured)
+                        .reference(obDomestic2.remittanceInformation?.reference)
                 )
             }
 
@@ -259,30 +277,43 @@ class PaymentFactory {
         }
 
         fun copyOBWriteDomestic2DataInitiation(initiation: OBWriteDomestic2DataInitiation): OBWriteDomestic2DataInitiation {
-            val result = OBWriteDomestic2DataInitiation()
-                    .instructionIdentification(initiation.instructionIdentification)
-                    .endToEndIdentification(initiation.endToEndIdentification)
-                    .localInstrument(initiation.localInstrument)
-                    .debtorAccount(initiation.debtorAccount)
-                    .creditorAccount(initiation.creditorAccount)
-                    .creditorPostalAddress(initiation.creditorPostalAddress)
-                    .remittanceInformation(initiation.remittanceInformation)
-                    .supplementaryData(initiation.supplementaryData)
+            val copy = OBWriteDomestic2DataInitiation()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .debtorAccount(initiation.debtorAccount)
+                .creditorAccount(initiation.creditorAccount)
+                .creditorPostalAddress(initiation.creditorPostalAddress)
+                .remittanceInformation(initiation.remittanceInformation)
+                .supplementaryData(initiation.supplementaryData)
+                .instructedAmount(initiation.instructedAmount)
 
-            if (initiation.instructedAmount != null) {
-                result.instructedAmount(
-                        OBWriteDomestic2DataInitiationInstructedAmount()
-                                .amount(initiation.instructedAmount.amount)
-                                .currency(initiation.instructedAmount.currency)
-                )
-            }
-
-            return result
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
 
         }
 
+        fun copyOBWriteDomesticStandingOrder3DataInitiation(initiation: OBWriteDomesticStandingOrder3DataInitiation): OBWriteDomesticStandingOrder3DataInitiation {
+            val copy = OBWriteDomesticStandingOrder3DataInitiation()
+                .frequency(initiation.frequency)
+                .reference(initiation.reference)
+                .numberOfPayments(initiation.numberOfPayments)
+                .firstPaymentDateTime(initiation.firstPaymentDateTime)
+                .recurringPaymentDateTime(initiation.recurringPaymentDateTime)
+                .finalPaymentDateTime(initiation.finalPaymentDateTime)
+                .firstPaymentAmount(initiation.firstPaymentAmount)
+                .recurringPaymentAmount(initiation.recurringPaymentAmount)
+                .finalPaymentAmount((initiation.finalPaymentAmount))
+                .debtorAccount(initiation.debtorAccount)
+                .creditorAccount(initiation.creditorAccount)
+                .supplementaryData(initiation.supplementaryData)
+
+            assertThat(copy.equals(initiation))
+            return copy
+        }
+
         fun copyOBWriteDomesticScheduled2DataInitiation(initiation: OBWriteDomesticScheduled2DataInitiation): OBWriteDomesticScheduled2DataInitiation {
-            val domesticScheduledPayment = OBWriteDomesticScheduled2DataInitiation()
+            val copy = OBWriteDomesticScheduled2DataInitiation()
                 .instructionIdentification(initiation.instructionIdentification)
                 .endToEndIdentification(initiation.endToEndIdentification)
                 .localInstrument(initiation.localInstrument)
@@ -292,16 +323,11 @@ class PaymentFactory {
                 .creditorPostalAddress(initiation.creditorPostalAddress)
                 .remittanceInformation(initiation.remittanceInformation)
                 .supplementaryData(initiation.supplementaryData)
+                .instructedAmount(initiation.instructedAmount)
 
-            if (initiation.instructedAmount != null) {
-                domesticScheduledPayment.instructedAmount(
-                    OBWriteDomestic2DataInitiationInstructedAmount()
-                        .amount(initiation.instructedAmount.amount)
-                        .currency(initiation.instructedAmount.currency)
-                )
-            }
+            assertThat(copy.equals(initiation)).isTrue
 
-            return domesticScheduledPayment
+            return copy
         }
 
         fun mapOBWriteInternational2DataInitiationToOBInternational2(initiation: OBWriteInternational2DataInitiation): OBInternational2 {
@@ -375,7 +401,7 @@ class PaymentFactory {
         }
 
         fun copyOBWriteInternational3DataInitiation(initiation: OBWriteInternational3DataInitiation): OBWriteInternational3DataInitiation {
-            val internationalPayment = OBWriteInternational3DataInitiation()
+            val copy = OBWriteInternational3DataInitiation()
                 .instructionIdentification(initiation.instructionIdentification)
                 .endToEndIdentification(initiation.endToEndIdentification)
                 .localInstrument(initiation.localInstrument)
@@ -391,20 +417,36 @@ class PaymentFactory {
                 .creditorAccount(initiation.creditorAccount)
                 .remittanceInformation(initiation.remittanceInformation)
                 .supplementaryData(initiation.supplementaryData)
+                .exchangeRateInformation(initiation.exchangeRateInformation)
+                .instructedAmount(initiation.instructedAmount)
 
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
+        }
 
+        fun copyOBWriteInternationalScheduled3DataInitiation(initiation: OBWriteInternationalScheduled3DataInitiation): OBWriteInternationalScheduled3DataInitiation {
+            val copy = OBWriteInternationalScheduled3DataInitiation()
+                .instructionIdentification(initiation.instructionIdentification)
+                .endToEndIdentification(initiation.endToEndIdentification)
+                .localInstrument(initiation.localInstrument)
+                .instructionPriority(initiation.instructionPriority)
+                .purpose(initiation.purpose)
+                .extendedPurpose(initiation.extendedPurpose)
+                .chargeBearer(initiation.chargeBearer)
+                .currencyOfTransfer(initiation.currencyOfTransfer)
+                .destinationCountryCode(initiation.destinationCountryCode)
+                .debtorAccount(initiation.debtorAccount)
+                .creditor(initiation.creditor)
+                .creditorAgent(initiation.creditorAgent)
+                .creditorAccount(initiation.creditorAccount)
+                .remittanceInformation(initiation.remittanceInformation)
+                .supplementaryData(initiation.supplementaryData)
+                .exchangeRateInformation(initiation.exchangeRateInformation)
+                .requestedExecutionDateTime(initiation.requestedExecutionDateTime)
+                .instructedAmount(initiation.instructedAmount)
 
-            if (initiation.exchangeRateInformation != null) {
-                internationalPayment.exchangeRateInformation(
-                    OBWriteInternational3DataInitiationExchangeRateInformation()
-                        .unitCurrency(initiation.exchangeRateInformation?.unitCurrency)
-                        .exchangeRate(initiation.exchangeRateInformation?.exchangeRate)
-                        .rateType(initiation.exchangeRateInformation?.rateType)
-                        .contractIdentification(initiation.exchangeRateInformation?.contractIdentification)
-                )
-            }
-
-            return internationalPayment
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
         }
 
         fun mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
@@ -570,63 +612,67 @@ class PaymentFactory {
             return internationalScheduledPayment
         }
 
-        fun mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation(inputInitiation: OBWriteDomesticStandingOrderConsentResponse6DataInitiation): OBWriteDomesticStandingOrder3DataInitiation {
+        fun mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation(
+            inputInitiation: OBWriteDomesticStandingOrderConsentResponse6DataInitiation
+        ): OBWriteDomesticStandingOrder3DataInitiation {
             val outputInitiation = OBWriteDomesticStandingOrder3DataInitiation()
-                    .frequency(inputInitiation.frequency)
-                    .reference(inputInitiation.reference)
-                    .numberOfPayments(inputInitiation.numberOfPayments)
-                    .firstPaymentDateTime(inputInitiation.firstPaymentDateTime)
-                    .recurringPaymentDateTime(inputInitiation.recurringPaymentDateTime)
-                    .finalPaymentDateTime(inputInitiation.finalPaymentDateTime)
-                    .supplementaryData(inputInitiation.supplementaryData)
+                .frequency(inputInitiation.frequency)
+                .reference(inputInitiation.reference)
+                .numberOfPayments(inputInitiation.numberOfPayments)
+                .firstPaymentDateTime(inputInitiation.firstPaymentDateTime)
+                .recurringPaymentDateTime(inputInitiation.recurringPaymentDateTime)
+                .finalPaymentDateTime(inputInitiation.finalPaymentDateTime)
+                .supplementaryData(inputInitiation.supplementaryData)
 
             if (inputInitiation.firstPaymentAmount != null) {
                 outputInitiation.firstPaymentAmount(
-                        OBWriteDomesticStandingOrder3DataInitiationFirstPaymentAmount()
-                                .amount(inputInitiation.firstPaymentAmount?.amount)
-                                .currency(inputInitiation.firstPaymentAmount?.currency)
+                    OBWriteDomesticStandingOrder3DataInitiationFirstPaymentAmount()
+                        .amount(inputInitiation.firstPaymentAmount?.amount)
+                        .currency(inputInitiation.firstPaymentAmount?.currency)
                 )
             }
 
             if (inputInitiation.recurringPaymentAmount != null) {
                 outputInitiation.recurringPaymentAmount(
-                        OBWriteDomesticStandingOrder3DataInitiationRecurringPaymentAmount()
-                                .amount(inputInitiation.recurringPaymentAmount?.amount)
-                                .currency(inputInitiation.recurringPaymentAmount?.currency)
+                    OBWriteDomesticStandingOrder3DataInitiationRecurringPaymentAmount()
+                        .amount(inputInitiation.recurringPaymentAmount?.amount)
+                        .currency(inputInitiation.recurringPaymentAmount?.currency)
                 )
             }
 
             if (inputInitiation.finalPaymentAmount != null) {
                 outputInitiation.finalPaymentAmount(
-                        OBWriteDomesticStandingOrder3DataInitiationFinalPaymentAmount()
-                                .amount(inputInitiation.finalPaymentAmount?.amount)
-                                .currency(inputInitiation.finalPaymentAmount?.currency)
+                    OBWriteDomesticStandingOrder3DataInitiationFinalPaymentAmount()
+                        .amount(inputInitiation.finalPaymentAmount?.amount)
+                        .currency(inputInitiation.finalPaymentAmount?.currency)
                 )
             }
 
             if (inputInitiation.debtorAccount != null) {
                 outputInitiation.debtorAccount(
-                        OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
-                                .schemeName(inputInitiation.debtorAccount?.schemeName)
-                                .identification(inputInitiation.debtorAccount?.identification)
-                                .name(inputInitiation.debtorAccount?.name)
-                                .secondaryIdentification(inputInitiation.debtorAccount?.secondaryIdentification)
+                    OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
+                        .schemeName(inputInitiation.debtorAccount?.schemeName)
+                        .identification(inputInitiation.debtorAccount?.identification)
+                        .name(inputInitiation.debtorAccount?.name)
+                        .secondaryIdentification(inputInitiation.debtorAccount?.secondaryIdentification)
                 )
             }
 
             if (inputInitiation.creditorAccount != null) {
                 outputInitiation.creditorAccount(
-                        OBWriteDomesticStandingOrder3DataInitiationCreditorAccount()
-                                .schemeName(inputInitiation.creditorAccount?.schemeName)
-                                .identification(inputInitiation.creditorAccount?.identification)
-                                .name(inputInitiation.creditorAccount?.name)
-                                .secondaryIdentification(inputInitiation.creditorAccount?.secondaryIdentification)
+                    OBWriteDomesticStandingOrder3DataInitiationCreditorAccount()
+                        .schemeName(inputInitiation.creditorAccount?.schemeName)
+                        .identification(inputInitiation.creditorAccount?.identification)
+                        .name(inputInitiation.creditorAccount?.name)
+                        .secondaryIdentification(inputInitiation.creditorAccount?.secondaryIdentification)
                 )
             }
             return outputInitiation
         }
 
-        fun mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(inputInitiation: OBWriteInternationalStandingOrderConsentResponse7DataInitiation): OBWriteInternationalStandingOrder4DataInitiation? {
+        fun mapOBWriteInternationalStandingOrderConsentResponse7DataInitiationToOBWriteInternationalStandingOrder3DataInitiation(
+            inputInitiation: OBWriteInternationalStandingOrderConsentResponse7DataInitiation
+        ): OBWriteInternationalStandingOrder4DataInitiation? {
             val outputInitiation = OBWriteInternationalStandingOrder4DataInitiation()
                 .frequency(inputInitiation.frequency)
                 .reference(inputInitiation.reference)
@@ -704,8 +750,7 @@ class PaymentFactory {
             return outputInitiation
         }
 
-        fun mapOBWriteFileConsentResponse4DataInitiationToOBWriteFile2DataInitiation
-                    (inputInitiation:  OBWriteFile2DataInitiation): OBWriteFile2DataInitiation? {
+        fun mapOBWriteFileConsentResponse4DataInitiationToOBWriteFile2DataInitiation(inputInitiation: OBWriteFile2DataInitiation): OBWriteFile2DataInitiation? {
             val outputInitiation = OBWriteFile2DataInitiation()
                 .fileHash(inputInitiation.fileHash)
                 .fileReference(inputInitiation.fileReference)
@@ -743,14 +788,55 @@ class PaymentFactory {
             return outputInitiation
         }
 
-        fun buildVrpInstruction(patchedConsent: OBDomesticVRPConsentResponse): OBDomesticVRPInstruction? {
-            val instruction = OBDomesticVRPInstruction().creditorAccount(patchedConsent.data.initiation.creditorAccount)
-                .instructedAmount(patchedConsent.data.controlParameters.maximumIndividualAmount);
-            if (patchedConsent.data.initiation.creditorPostalAddress != null) {
-                instruction.creditorPostalAddress = patchedConsent.data.initiation.creditorPostalAddress
-            }
-            return instruction;
+        fun copyOBWriteFile2DataInitiation(initiation: OBWriteFile2DataInitiation): OBWriteFile2DataInitiation? {
+            val copy = OBWriteFile2DataInitiation()
+                .fileHash(initiation.fileHash)
+                .fileReference(initiation.fileReference)
+                .fileType(initiation.fileType)
+                .numberOfTransactions(initiation.numberOfTransactions)
+                .requestedExecutionDateTime(initiation.requestedExecutionDateTime)
+                .localInstrument(initiation.localInstrument)
+                .controlSum(initiation.controlSum)
+                .debtorAccount(initiation.debtorAccount)
+                .remittanceInformation(initiation.remittanceInformation)
+                .supplementaryData(initiation.supplementaryData)
+
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
         }
 
+        fun copyOBWriteInternationalStandingOrder4DataInitiation(initiation: OBWriteInternationalStandingOrder4DataInitiation): OBWriteInternationalStandingOrder4DataInitiation? {
+            val copy = OBWriteInternationalStandingOrder4DataInitiation()
+                .frequency(initiation.frequency)
+                .reference(initiation.reference)
+                .numberOfPayments(initiation.numberOfPayments)
+                .firstPaymentDateTime(initiation.firstPaymentDateTime)
+                .finalPaymentDateTime(initiation.finalPaymentDateTime)
+                .supplementaryData(initiation.supplementaryData)
+                .instructedAmount(initiation.instructedAmount)
+                .debtorAccount(initiation.debtorAccount)
+                .creditorAccount(initiation.creditorAccount)
+                .purpose(initiation.purpose)
+                .extendedPurpose(initiation.extendedPurpose)
+                .chargeBearer(initiation.chargeBearer)
+                .currencyOfTransfer(initiation.currencyOfTransfer)
+                .destinationCountryCode(initiation.destinationCountryCode)
+                .creditor(initiation.creditor)
+                .creditorAgent(initiation.creditorAgent)
+
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
+        }
+
+        fun copyOBDomesticVRPInitiation(initiation: OBDomesticVRPInitiation): OBDomesticVRPInitiation {
+            val copy = OBDomesticVRPInitiation()
+                .creditorAccount(initiation.creditorAccount)
+                .creditorPostalAddress(initiation.creditorPostalAddress)
+                .debtorAccount(initiation.debtorAccount)
+                .remittanceInformation(initiation.remittanceInformation)
+
+            assertThat(copy.equals(initiation)).isTrue
+            return copy
+        }
     }
 }

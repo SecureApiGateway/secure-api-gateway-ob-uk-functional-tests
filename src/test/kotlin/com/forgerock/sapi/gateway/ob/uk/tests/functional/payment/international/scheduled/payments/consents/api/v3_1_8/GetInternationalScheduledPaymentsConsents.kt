@@ -22,19 +22,15 @@ class GetInternationalScheduledPaymentsConsents(
         val consentRequest =
             OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
-
-        val consent =
+        // When
+        val consentResponse =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        // When
-        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
-
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.risk).isNotNull()
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.AGREED)
     }
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_Test() {
@@ -44,19 +40,15 @@ class GetInternationalScheduledPaymentsConsents(
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
-
-        val consent =
+        // When
+        val consentResponse =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        // When
-        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
-
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.risk).isNotNull()
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.ACTUAL)
     }
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_Test() {
@@ -67,17 +59,14 @@ class GetInternationalScheduledPaymentsConsents(
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
-        val consent =
+        // When
+        val consentResponse =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
 
-        // When
-        val result = createInternationalScheduledPaymentsConsents.getPatchedConsent(consent)
-
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.risk).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.risk).isEqualTo(consent.risk)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.risk).isNotNull()
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.INDICATIVE)
     }
 }

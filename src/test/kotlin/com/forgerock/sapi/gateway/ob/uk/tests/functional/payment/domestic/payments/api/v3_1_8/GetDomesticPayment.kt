@@ -57,7 +57,7 @@ class GetDomesticPayment(
         assertThat(consent.data.readRefundAccount).isEqualTo(OBReadRefundAccountEnum.YES)
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentResponse = createDomesticPaymentApi.submitPayment(consent, accessTokenAuthorizationCode)
+        val paymentResponse = createDomesticPaymentApi.submitPayment(consent.data.consentId, consentRequest, accessTokenAuthorizationCode)
 
         // When
         val getPaymentResponse = getDomesticPayment(paymentResponse)

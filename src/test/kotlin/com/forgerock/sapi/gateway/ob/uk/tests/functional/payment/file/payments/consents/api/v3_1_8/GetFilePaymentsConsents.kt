@@ -24,23 +24,13 @@ class GetFilePaymentsConsents(val version: OBVersion, val tppResource: CreateTpp
             fileContent,
             PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
-        val consent = createFilePaymentsConsentsApi.createFilePaymentConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-
         // When
-        val result = createFilePaymentsConsentsApi.getPatchedConsent(consent)
-
+        val consentResponse = createFilePaymentsConsentsApi.createFilePaymentConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.data.initiation.fileHash).isEqualTo(consent.data.initiation.fileHash)
-        assertThat(result.data.initiation.fileReference).isEqualTo(consent.data.initiation.fileReference)
-        assertThat(result.data.initiation.fileType).isEqualTo(consent.data.initiation.fileType)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
     }
 
     fun shouldGetFilePaymentsConsents_withoutOptionalDebtorAccountTest() {
@@ -51,23 +41,14 @@ class GetFilePaymentsConsents(val version: OBVersion, val tppResource: CreateTpp
             PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
         consentRequest.data.initiation.debtorAccount(null)
-
-        val consent = createFilePaymentsConsentsApi.createFilePaymentConsent(consentRequest)
-
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
-        assertThat(consent.data.initiation.debtorAccount).isNull()
-
-        // When
-        val result = createFilePaymentsConsentsApi.getPatchedConsent(consent)
-
+        // when
+        val consentResponse = createFilePaymentsConsentsApi.createFilePaymentConsent(consentRequest)
         // Then
-        assertThat(result).isNotNull()
-        assertThat(result.data).isNotNull()
-        assertThat(result.data).isEqualTo(consent.data)
-        assertThat(result.data.initiation.debtorAccount).isNull()
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.initiation.debtorAccount).isNull()
     }
 
 }

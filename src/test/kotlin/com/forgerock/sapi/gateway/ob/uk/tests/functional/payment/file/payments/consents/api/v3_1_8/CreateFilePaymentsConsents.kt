@@ -12,6 +12,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.apache.http.entity.ContentType
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteFileConsent3
 import uk.org.openbanking.datamodel.payment.OBWriteFileConsentResponse4
 import java.math.BigDecimal
@@ -30,6 +31,31 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
             PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+        val consent = createFilePaymentConsent(consentRequest)
+
+        // Then
+        assertThat(consent).isNotNull()
+        assertThat(consent.data).isNotNull()
+        assertThat(consent.data.consentId).isNotEmpty()
+        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+    }
+
+    fun createFilePaymentsConsentsWithDebtorAccountTest() {
+        // Given
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        )
+        // optional debtor account
+        val debtorAccount = PsuData().getDebtorAccount()
+        consentRequest.data.initiation.debtorAccount(
+            OBWriteDomestic2DataInitiationDebtorAccount()
+                .identification(debtorAccount?.Identification)
+                .name(debtorAccount?.Name)
+                .schemeName(debtorAccount?.SchemeName)
+                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
         )
         val consent = createFilePaymentConsent(consentRequest)
 
@@ -378,19 +404,6 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
             "Rejected"
         )
         return consent to accessTokenAuthorizationCode
-    }
-
-    fun getPatchedConsent(consent: OBWriteFileConsentResponse4): OBWriteFileConsentResponse4 {
-        val patchedConsent = paymentApiClient.getConsent<OBWriteFileConsentResponse4>(
-            paymentLinks.GetFilePaymentConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
     }
 
 }

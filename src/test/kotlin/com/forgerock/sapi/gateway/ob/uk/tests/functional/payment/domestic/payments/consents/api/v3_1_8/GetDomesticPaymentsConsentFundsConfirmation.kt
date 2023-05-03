@@ -62,11 +62,11 @@ class GetDomesticPaymentsConsentFundsConfirmation(
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
         val consentRequest = aValidOBWriteDomesticConsent4()
-        val (consent, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
-        val patchedConsent = createDomesticPaymentsConsentsApi.getPatchedConsent(consent)
-        val paymentSubmissionRequest = createPaymentRequest(patchedConsent)
+
+        val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
         val payment: OBWriteDomesticResponse5 = paymentApiClient.submitPayment(
             paymentLinks.CreateDomesticPayment,
@@ -79,7 +79,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenAuthorizationCode)
+            getFundsConfirmation(consentResponse, accessTokenAuthorizationCode)
         }
 
         // Then
@@ -125,11 +125,11 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBWriteDomesticConsentResponse5): OBWriteDomestic2 {
+    private fun createPaymentRequest(consentId:  String, consentRequest: OBWriteDomesticConsent4): OBWriteDomestic2 {
         return OBWriteDomestic2().data(
                 OBWriteDomestic2Data()
-                        .consentId(patchedConsent.data.consentId)
-                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(patchedConsent.data.initiation))
-        ).risk(patchedConsent.risk)
+                        .consentId(consentId)
+                        .initiation(PaymentFactory.copyOBWriteDomestic2DataInitiation(consentRequest.data.initiation))
+        ).risk(consentRequest.risk)
     }
 }

@@ -29,6 +29,17 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
     }
 
     @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticVrpPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],
+            apis = ["domestic-vrps", "domestic-vrp-consents"]
+    )
+    @Test
+    fun createDomesticVrpPaymentWithDebtorAccount_v3_1_10() {
+        createDomesticVrpPayment.createDomesticVrpPaymentWithDebtorAccountTest()
+    }
+
+    @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
         operations = ["CreateDomesticVrpPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],

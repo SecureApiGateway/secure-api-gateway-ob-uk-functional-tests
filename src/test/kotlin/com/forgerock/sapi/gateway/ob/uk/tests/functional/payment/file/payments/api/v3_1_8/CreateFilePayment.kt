@@ -28,8 +28,8 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
         // When
         val result = submitFilePayment(consentRequest)
@@ -47,8 +47,8 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
         // When
         val result = submitFilePayment(consentRequest)
@@ -70,28 +70,27 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
-        val patchedConsent = getPatchedConsent(consent)
         // Submit first payment
-        submitFilePaymentForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+        submitFilePaymentForConsent(consentResponse.data.consentId, consentRequest, accessTokenAuthorizationCode)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             // Verify we fail to submit a second payment
-            submitFilePaymentForPatchedConsent(patchedConsent, accessTokenAuthorizationCode)
+            submitFilePaymentForConsent(consentResponse.data.consentId, consentRequest, accessTokenAuthorizationCode)
         }
 
         // Then
@@ -103,29 +102,29 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createFilePaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                paymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    paymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer()).sendRequest()
         }
 
         // Then
@@ -137,29 +136,29 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createFilePaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                paymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    paymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(null).sendRequest()
+                    .configureJwsSignatureProducer(null).sendRequest()
         }
 
         // Then
@@ -171,29 +170,29 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createFilePaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                paymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    paymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
+                    .configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
         }
 
         // Then
@@ -205,29 +204,29 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val paymentSubmissionRequest = createFilePaymentRequest(getPatchedConsent(consent))
+        val paymentSubmissionRequest = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                paymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    paymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
+                    .configureJwsSignatureProducer(InvalidKidJwsSignatureProducer(tppResource.tpp)).sendRequest()
         }
 
         // Then
@@ -239,37 +238,40 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val filePaymentSubmissionRequest = createFilePaymentRequest(patchedConsent)
+        val filePaymentSubmissionRequest = createFilePaymentRequest(
+                consentResponse.data.consentId, consentRequest
+        )
 
-        patchedConsent.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
-        val filePaymentSubmissionRequestWithInvalidConsentId = createFilePaymentRequest(patchedConsent)
+        consentResponse.data.consentId = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
+        val filePaymentSubmissionRequestWithInvalidConsentId = createFilePaymentRequest(
+                consentResponse.data.consentId, consentRequest
+        )
 
         val signatureWithInvalidConsentId = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-            defaultMapper.writeValueAsString(filePaymentSubmissionRequestWithInvalidConsentId)
+                defaultMapper.writeValueAsString(filePaymentSubmissionRequestWithInvalidConsentId)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                filePaymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    filePaymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidConsentId)).sendRequest()
         }
 
         // Then
@@ -281,37 +283,36 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-            fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileContent,
+                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
         )
 
-        val (consent, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
 
-        assertThat(consent).isNotNull()
-        assertThat(consent.data).isNotNull()
-        assertThat(consent.data.consentId).isNotEmpty()
-        Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val patchedConsent = getPatchedConsent(consent)
-        val paymentSubmissionRequest = createFilePaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
 
-        patchedConsent.data.initiation.controlSum = BigDecimal("123123")
-        val paymentSubmissionInvalidAmount = createFilePaymentRequest(patchedConsent)
+        val paymentSubmissionInvalidAmount = createFilePaymentRequest(consentResponse.data.consentId, consentRequest)
+        paymentSubmissionInvalidAmount.data.initiation.controlSum = BigDecimal("123123")
 
         val signatureWithInvalidAmount = DefaultJwsSignatureProducer(tppResource.tpp).createDetachedSignature(
-            defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
+                defaultMapper.writeValueAsString(paymentSubmissionInvalidAmount)
         )
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.buildSubmitPaymentRequest(
-                createPaymentUrl,
-                accessTokenAuthorizationCode,
-                paymentSubmissionRequest
+                    createPaymentUrl,
+                    accessTokenAuthorizationCode,
+                    paymentSubmissionRequest
             )
-                .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
+                    .configureJwsSignatureProducer(BadJwsSignatureProducer(signatureWithInvalidAmount)).sendRequest()
         }
 
         // Then
@@ -320,41 +321,41 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     }
 
     fun submitFilePayment(consentRequest: OBWriteFileConsent3): OBWriteFileResponse3 {
-        val (consent, authorizationToken) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-            consentRequest
+        val (consentResponse, authorizationToken) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+                consentRequest
         )
-        return submitFilePayment(consent, authorizationToken)
+        return submitFilePayment(consentResponse.data.consentId, consentRequest, authorizationToken)
     }
 
     private fun submitFilePayment(
-        consentResponse: OBWriteFileConsentResponse4,
-        authorizationToken: AccessToken
+            consentId: String,
+            consentRequest: OBWriteFileConsent3,
+            authorizationToken: AccessToken
     ): OBWriteFileResponse3 {
-        val patchedConsent = getPatchedConsent(consentResponse)
-        return submitFilePaymentForPatchedConsent(patchedConsent, authorizationToken)
+        return submitFilePaymentForConsent(consentId, consentRequest, authorizationToken)
     }
 
-    private fun getPatchedConsent(consent: OBWriteFileConsentResponse4): OBWriteFileConsentResponse4 {
-        return createFilePaymentConsentsApi.getPatchedConsent(consent)
-    }
-
-    private fun submitFilePaymentForPatchedConsent(
-        patchedConsent: OBWriteFileConsentResponse4,
-        authorizationToken: AccessToken
+    private fun submitFilePaymentForConsent(
+            consentId: String,
+            consentRequest: OBWriteFileConsent3,
+            authorizationToken: AccessToken
     ): OBWriteFileResponse3 {
-        val paymentSubmissionRequest = createFilePaymentRequest(patchedConsent)
+        val paymentSubmissionRequest = createFilePaymentRequest(consentId, consentRequest)
         return paymentApiClient.submitPayment(
-            createPaymentUrl,
-            authorizationToken,
-            paymentSubmissionRequest
+                createPaymentUrl,
+                authorizationToken,
+                paymentSubmissionRequest
         )
     }
 
-    private fun createFilePaymentRequest(patchedConsent: OBWriteFileConsentResponse4): OBWriteFile2 {
+    private fun createFilePaymentRequest(
+            consentId: String,
+            consentRequest: OBWriteFileConsent3
+    ): OBWriteFile2 {
         return OBWriteFile2().data(
-            OBWriteFile2Data()
-                .consentId(patchedConsent.data.consentId)
-                .initiation(mapOBWriteFileConsentResponse4DataInitiationToOBWriteFile2DataInitiation(patchedConsent.data.initiation))
+                OBWriteFile2Data()
+                        .consentId(consentId)
+                        .initiation(PaymentFactory.copyOBWriteFile2DataInitiation(consentRequest.data.initiation))
         )
     }
 }

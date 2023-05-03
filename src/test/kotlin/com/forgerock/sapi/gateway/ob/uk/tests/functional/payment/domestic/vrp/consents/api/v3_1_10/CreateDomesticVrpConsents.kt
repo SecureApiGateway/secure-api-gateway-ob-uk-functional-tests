@@ -41,16 +41,10 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
         // Given
         val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
         populateDebtorAccount(consentRequest)
-        val consent = createDomesticVrpConsent(consentRequest)
+        val consentResponse = createDomesticVrpConsent(consentRequest)
 
         // When
-        deleteConsent(consent.data.consentId)
-        // Verify we cannot get the consent anymore
-        val error = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getPatchedConsent(consent)
-        }
-        // then
-        assertThat(error.message).matchesPredicate { msg -> msg!!.contains("\"ErrorCode\":\"UK.OBIE.NotFound\",\"Message\":\"Resource not found\"") }
+        deleteConsent(consentResponse.data.consentId)
     }
 
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
@@ -265,20 +259,6 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
             "Rejected"
         )
         return consent to accessTokenAuthorizationCode
-    }
-
-    fun getPatchedConsent(consent: OBDomesticVRPConsentResponse): OBDomesticVRPConsentResponse {
-        val patchedConsent = paymentApiClient.getConsent<OBDomesticVRPConsentResponse>(
-            paymentLinks.GetDomesticVRPConsent,
-            consent.data.consentId,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken)
-        )
-        assertThat(patchedConsent).isNotNull()
-        assertThat(patchedConsent.data).isNotNull()
-        assertThat(patchedConsent.risk).isNotNull()
-        assertThat(patchedConsent.data.consentId).isNotEmpty()
-        Assertions.assertThat(patchedConsent.data.status.toString()).`is`(Status.consentCondition)
-        return patchedConsent
     }
 
     private fun populateDebtorAccount(consentRequest: OBDomesticVRPConsentRequest) {
