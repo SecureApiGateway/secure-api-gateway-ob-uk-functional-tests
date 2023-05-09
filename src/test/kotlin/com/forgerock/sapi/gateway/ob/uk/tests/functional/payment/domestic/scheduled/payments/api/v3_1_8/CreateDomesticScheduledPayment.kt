@@ -17,7 +17,6 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.schedu
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
@@ -77,9 +76,9 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse.data.consentId).isNotEmpty()
         Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val supplementaryData1 = OBSupplementaryData1()
-        supplementaryData1.data = "{\"value\":\"initiation validation must fails\"}"
-        consentRequest.data.initiation.supplementaryData = supplementaryData1
+        consentRequest.data.initiation.instructedAmount = OBWriteDomestic2DataInitiationInstructedAmount()
+            .amount("123123")
+            .currency("EUR")
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             submitPaymentForConsent(consentResponse.data.consentId, consentRequest, accessTokenAuthorizationCode)

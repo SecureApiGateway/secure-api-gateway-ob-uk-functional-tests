@@ -80,9 +80,9 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         assertThat(consentResponse.data.consentId).isNotEmpty()
         Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
-        val supplementaryData1 = OBSupplementaryData1()
-        supplementaryData1.data = "{\"value\":\"initiation validation must fails\"}"
-        consentRequest.data.initiation.supplementaryData = supplementaryData1
+        consentRequest.data.initiation.recurringPaymentAmount = OBWriteDomesticStandingOrder3DataInitiationRecurringPaymentAmount()
+            .amount("123123")
+            .currency("EUR")
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
