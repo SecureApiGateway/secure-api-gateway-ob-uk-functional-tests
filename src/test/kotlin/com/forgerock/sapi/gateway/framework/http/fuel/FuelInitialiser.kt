@@ -30,8 +30,8 @@ import io.r2.simplepemkeystore.MultiFileConcatSource
 import io.r2.simplepemkeystore.SimplePemKeyStoreProvider
 import org.apache.http.ssl.SSLContextBuilder
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.format.ISODateTimeFormat
-import uk.org.openbanking.jackson.DateTimeSerializer.DATE_TIME_FORMATTER
 import java.io.InputStream
 import java.lang.reflect.Type
 import java.security.KeyStore
@@ -50,22 +50,24 @@ class DateTimeDeserializer : StdDeserializer<DateTime>(DateTime::class.java) {
         je: JsonElement, type: Type?,
         jdc: JsonDeserializationContext?
     ): DateTime? {
-        return if (je.asString.isEmpty()) null else DATE_TIME_FORMATTER.parseDateTime(
-            ISODateTimeFormat.dateTimeNoMillis().toString()
-        )
+        return if (je.asString.isEmpty()) null
+        else
+            ISODateTimeFormat.dateTimeParser().parseDateTime(je.asString).withZone(DateTimeZone.UTC)
     }
 }
 
 class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
     override fun serialize(value: DateTime?, gen: JsonGenerator?, provider: SerializerProvider?) {
-        gen?.writeString(value?.toDateTimeISO()?.toString(DATE_TIME_FORMATTER))
+        gen?.writeString(value?.toDateTimeISO()?.withZone(DateTimeZone.UTC).toString())
     }
 
     fun serialize(
         src: DateTime?, typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement? {
-        return JsonPrimitive(if (src == null) EMPTY.toString() else DATE_TIME_FORMATTER.print(src))
+        return JsonPrimitive(if (src == null) EMPTY.toString()
+        else
+            src?.toDateTimeISO()?.withZone(DateTimeZone.UTC).toString())
     }
 }
 
@@ -118,8 +120,8 @@ private fun initFuel(
  * @param publicPem pem certificate
  */
 fun initFuel(
-        privatePem: String = OB_TPP_EIDAS_TRANSPORT_KEY_PATH,
-        publicPem: String = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
+    privatePem: String = OB_TPP_EIDAS_TRANSPORT_KEY_PATH,
+    publicPem: String = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
 ) {
     val privatePemStream = FileUtils().getInputStream(privatePem)
     val publicPemStream = FileUtils().getInputStream(publicPem)
