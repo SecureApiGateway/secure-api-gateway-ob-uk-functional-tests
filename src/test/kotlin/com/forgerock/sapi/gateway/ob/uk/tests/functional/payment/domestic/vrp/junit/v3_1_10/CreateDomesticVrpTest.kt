@@ -148,4 +148,15 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldCreateDomesticVrp_throwsPolicyValidationErrorConsent_v3_1_10() {
         createDomesticVrpPayment.shouldCreateDomesticVrp_throwsPolicyValidationErrorTest()
     }
+
+    @EnabledIfVersion(
+            type = "payments",
+            apiVersion = "v3.1.10",
+            operations = ["CreateDomesticVrpPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],
+            apis = ["domestic-vrps", "domestic-vrp-consents"]
+    )
+    @Test
+    fun shouldFailToCreateVrpWhenMaxIndividualAmountBreachedTest_v3_1_10() {
+        createDomesticVrpPayment.shouldFailToCreateVrpWhenMaxIndividualAmountBreachedTest()
+    }
 }
