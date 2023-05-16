@@ -19,6 +19,7 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
+import java.math.BigDecimal
 
 
 class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -324,6 +325,32 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.BAD_REQUEST)
+    }
+
+    fun shouldFailToCreateVrpWhenMaxIndividualAmountBreachedTest() {
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+
+        val (consent, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+                consentRequest
+        )
+
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        // Attempt to create a payment with instructedAmount equal to maximumIndividualAmount + 1
+        val instructedAmount = consentRequest.data.controlParameters.maximumIndividualAmount
+        instructedAmount.amount = BigDecimal(instructedAmount.amount).plus(BigDecimal.ONE).toString()
+        paymentSubmissionRequest.data.instruction.instructedAmount(instructedAmount)
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            paymentApiClient.submitPayment(
+                    createPaymentUrl,
+                    authorizationToken,
+                    paymentSubmissionRequest)
+        }
+
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message!!).contains("\"ErrorCode\":\"UK.OBIE.Rules.FailsControlParameters\"")
+        assertThat(exception.message!!).contains("\"Message\":\"The field 'InstructedAmount' breaches a limitation set by 'MaximumIndividualAmount'\"")
     }
 
     fun submitPayment(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPResponse {
