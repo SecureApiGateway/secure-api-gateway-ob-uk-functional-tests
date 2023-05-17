@@ -3,8 +3,10 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
@@ -15,10 +17,12 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
+import java.math.BigDecimal
 import java.util.*
 
 class CreateInternationalScheduledPaymentsConsents(
@@ -157,6 +161,17 @@ class CreateInternationalScheduledPaymentsConsents(
         assertThat(consent.data.consentId).isNotEmpty()
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consent.risk).isNotNull()
+
+        assertThat(consentRequest.data.initiation.exchangeRateInformation).isNull() // ExchangeRateInformation omitted from request
+        assertThat(consent.data.initiation.exchangeRateInformation).isNull() // Verify response initiation is unchanged
+
+        // Validate ASPSP has generated ExchangeRateInformation in the response data section
+        val exchangeRateInformation = consent.data.exchangeRateInformation
+        assertThat(exchangeRateInformation).isNotNull()
+        assertThat(exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.INDICATIVE)
+        assertThat(exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.instructedAmount.currency)
+        assertThat(exchangeRateInformation.exchangeRate).isGreaterThan(BigDecimal.ZERO)
+
     }
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsSendInvalidFormatDetachedJws_Test() {
