@@ -124,14 +124,20 @@ class CreateInternationalPayment(
             OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields()
 
         // When
-        val result = submitPayment(consentRequest)
+        val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+                consentRequest
+        )
+        val result =  submitPayment(consentResponse.data.consentId, consentRequest, authorizationToken)
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
-        assertThat(result.data.exchangeRateInformation).isNull()
+        assertThat(result.data.exchangeRateInformation).isNotNull()
+        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentResponse.data.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentResponse.data.exchangeRateInformation.rateType)
+        assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentResponse.data.exchangeRateInformation.unitCurrency)
     }
 
     fun shouldCreateInternationalPayment_throwsInvalidInitiation_Test() {
