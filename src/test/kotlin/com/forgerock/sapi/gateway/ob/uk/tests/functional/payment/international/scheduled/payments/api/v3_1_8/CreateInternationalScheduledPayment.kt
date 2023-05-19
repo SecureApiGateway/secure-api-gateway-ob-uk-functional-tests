@@ -43,7 +43,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     fun shouldCreateInternationalScheduledPayment_throwsInvalidInitiation_Test() {
@@ -100,7 +100,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     fun createInternationalScheduledPayment_rateType_ACTUAL_Test() {
@@ -164,7 +164,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consentResponse.data.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentResponse.data.exchangeRateInformation.exchangeRate)).isEqualTo(0)
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentResponse.data.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentResponse.data.exchangeRateInformation.unitCurrency)
     }

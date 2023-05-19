@@ -121,7 +121,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consent.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     @EnabledIfVersion(
@@ -1100,7 +1100,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consent.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     @EnabledIfVersion(
@@ -2164,7 +2164,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consent.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     @EnabledIfVersion(
@@ -3229,7 +3229,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consent.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     @EnabledIfVersion(
@@ -4298,7 +4298,7 @@ class LegacyCreateInternationalPaymentTest(val tppResource: CreateTppCallback.Tp
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consent.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consent.data.initiation.exchangeRateInformation.unitCurrency)
-        assertThat(result.data.exchangeRateInformation.exchangeRate).isEqualTo(consent.data.initiation.exchangeRateInformation.exchangeRate)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consent.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
     }
 
     @EnabledIfVersion(
