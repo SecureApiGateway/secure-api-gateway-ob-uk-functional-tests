@@ -1,5 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.consents.api.v3_1_8
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
@@ -46,17 +47,11 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
         val idempotencyKey = UUID.randomUUID().toString()
         // When
         // First request
-        val consentResponse1 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
-            consentRequest
-        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
+        val consentResponse1 = buildCreateConsentRequest(consentRequest).addIdempotencyKeyHeader(idempotencyKey)
+                                    .sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
         // second request with the same idempotencyKey
-        val consentResponse2 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
-            tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
-            consentRequest
-        ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
+        val consentResponse2 = buildCreateConsentRequest(consentRequest).addIdempotencyKeyHeader(idempotencyKey)
+                                    .sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
 
         // Then
         assertThat(consentResponse1).isNotNull()
@@ -71,7 +66,7 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
         Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consentResponse2.risk).isNotNull()
 
-        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
+        assertThat(consentResponse1.data.consentId).isEqualTo(consentResponse2.data.consentId)
     }
 
     fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
@@ -80,11 +75,7 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
             OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
 
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            paymentApiClient.newPostRequestBuilder(
-                paymentLinks.CreateDomesticPaymentConsent,
-                tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
-                consentRequest
-            ).deleteIdempotencyKeyHeader().sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
+            buildCreateConsentRequest(consentRequest).deleteIdempotencyKeyHeader().sendRequest<OBWriteInternationalStandingOrderConsentResponse7>()
         }
 
         // Then
@@ -167,7 +158,10 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_FREQUENCY_VALUE)
+        assertThat(exception.message.toString()).all {
+            contains("ErrorCode\":\"UK.OBIE.Field.Invalid\"")
+            contains("Path\":\"data.initiation.frequency\"")
+        }
     }
 
     fun shouldCreateInternationalStandingOrdersConsents_throwsSendInvalidFormatDetachedJwsTest() {

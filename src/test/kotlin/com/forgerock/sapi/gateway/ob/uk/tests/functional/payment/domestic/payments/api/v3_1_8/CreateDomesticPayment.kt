@@ -11,7 +11,6 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.paymen
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
-import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 
@@ -296,7 +295,7 @@ class CreateDomesticPayment(
         // When
 
         // Alter Risk Merchant
-        consentRequest.risk.merchantCategoryCode = "wrongMerchant"
+        consentRequest.risk.merchantCategoryCode = "zzzz"
 
         // Submit payment
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

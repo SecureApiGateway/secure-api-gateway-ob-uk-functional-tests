@@ -394,15 +394,19 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     ): OBDomesticVRPRequest {
         return OBDomesticVRPRequest().data(
             OBDomesticVRPRequestData()
-                .consentId(consentId)
-                .initiation(PaymentFactory.copyOBDomesticVRPInitiation(consentRequest.data.initiation))
-                .instruction(buildVrpInstruction(consentRequest))
+                    .consentId(consentId)
+                    .initiation(PaymentFactory.copyOBDomesticVRPInitiation(consentRequest.data.initiation))
+                    .instruction(buildVrpInstruction(consentRequest))
+                    .psUAuthenticationMethod(consentRequest.data.controlParameters.psUAuthenticationMethods.first())
         ).risk(consentRequest.risk)
     }
 
     private fun buildVrpInstruction(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPInstruction? {
         val instruction = OBDomesticVRPInstruction().creditorAccount(consentRequest.data.initiation.creditorAccount)
-            .instructedAmount(consentRequest.data.controlParameters.maximumIndividualAmount);
+                                                    .instructedAmount(consentRequest.data.controlParameters.maximumIndividualAmount)
+                                                    .instructionIdentification(System.nanoTime().toString())
+                                                    .endToEndIdentification(System.nanoTime().toString())
+
         if (consentRequest.data.initiation.creditorPostalAddress != null) {
             instruction.creditorPostalAddress = consentRequest.data.initiation.creditorPostalAddress
         }
