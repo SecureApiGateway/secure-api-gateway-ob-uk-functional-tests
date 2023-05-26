@@ -75,7 +75,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:1.0.2"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:1.0.4"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
