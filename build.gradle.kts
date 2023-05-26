@@ -11,9 +11,9 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  */
 // project version
 // pom artifact version used when the built artifact is published
-version = "1.0.2"
+version = "1.0.3"
 // Test jar library version used in the task 'generateTestJar'
-val release = "1.0.2"
+val release = "1.0.3"
 val jaxbVersion = "2.2.11"
 
 plugins {
