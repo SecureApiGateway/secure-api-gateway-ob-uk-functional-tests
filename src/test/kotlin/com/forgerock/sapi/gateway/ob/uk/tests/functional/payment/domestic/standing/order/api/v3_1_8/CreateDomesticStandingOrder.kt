@@ -12,12 +12,10 @@ import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
-import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory.Companion.mapOBWriteDomesticStandingOrderConsentResponse6DataInitiationToOBWriteDomesticStandingOrder3DataInitiation
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
@@ -353,7 +351,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // When
 
         // Alter Risk Merchant
-        consentRequest.risk.merchantCategoryCode = "wrongMerchant"
+        consentRequest.risk.merchantCategoryCode = "zzzz"
 
         // Submit standing order
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

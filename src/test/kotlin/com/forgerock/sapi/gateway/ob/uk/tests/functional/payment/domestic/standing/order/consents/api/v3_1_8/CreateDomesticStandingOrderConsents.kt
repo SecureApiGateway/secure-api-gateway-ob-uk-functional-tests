@@ -1,5 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
@@ -72,7 +73,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
         Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consentResponse2.risk).isNotNull()
 
-        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
+        assertThat(consentResponse1.data.consentId).isEqualTo(consentResponse2.data.consentId)
     }
 
     fun createDomesticStandingOrdersConsents_NoIdempotencyKey_throwsBadRequestTest() {
@@ -169,7 +170,10 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_FREQUENCY_VALUE)
+        assertThat(exception.message.toString()).all {
+            contains("ErrorCode\":\"UK.OBIE.Field.Invalid\"")
+            contains("Path\":\"data.initiation.frequency\"")
+        }
     }
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidFormatDetachedJwsTest() {

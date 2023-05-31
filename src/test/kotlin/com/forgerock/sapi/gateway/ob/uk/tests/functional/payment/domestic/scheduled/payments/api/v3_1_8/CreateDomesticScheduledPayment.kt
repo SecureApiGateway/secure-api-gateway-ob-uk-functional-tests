@@ -320,7 +320,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // When
 
         // Alter Risk Merchant
-        consentRequest.risk.merchantCategoryCode = "wrongMerchant"
+        consentRequest.risk.merchantCategoryCode = "zzzz"
 
         // Submit payment
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

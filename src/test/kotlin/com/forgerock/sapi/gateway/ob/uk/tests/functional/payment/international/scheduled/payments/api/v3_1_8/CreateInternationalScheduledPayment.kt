@@ -13,7 +13,6 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.s
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBSupplementaryData1
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
@@ -392,7 +391,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // When
 
         // Alter Risk Merchant
-        consentRequest.risk.merchantCategoryCode = "wrongMerchant"
+        consentRequest.risk.merchantCategoryCode = "zzzz"
 
         // Submit payment
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
