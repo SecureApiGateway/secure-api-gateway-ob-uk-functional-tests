@@ -89,7 +89,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun createDomesticPaymentsConsents_withDebtorAccountTest() {
