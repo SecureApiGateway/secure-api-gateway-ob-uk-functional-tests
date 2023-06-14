@@ -68,7 +68,7 @@ class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppRe
         apis = ["domestic-payment-consents"]
     )
     @Test
-    @Disabled
+    @Disabled("This has not been implemented in the RS impl of the Consent API")
     fun createDomesticPaymentsConsents_withNonExistentDebtorAccount_v3_1_10() {
         createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_throwsInvalidDebtorAccountTest()
     }
