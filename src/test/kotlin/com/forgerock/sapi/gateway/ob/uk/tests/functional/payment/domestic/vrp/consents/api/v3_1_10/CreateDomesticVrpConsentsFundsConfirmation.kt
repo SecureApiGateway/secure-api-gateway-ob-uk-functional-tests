@@ -21,7 +21,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_NotAvailable() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_NotAvailable() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("1000000")
@@ -37,7 +37,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsWrongGrantType() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_throwsWrongGrantType() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         val (consent, _) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
@@ -57,7 +57,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_available() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")

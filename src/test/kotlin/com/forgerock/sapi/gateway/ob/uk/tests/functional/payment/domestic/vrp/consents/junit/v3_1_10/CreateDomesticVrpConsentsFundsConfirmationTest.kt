@@ -24,8 +24,8 @@ class CreateDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppC
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_NotAvailable_v3_1_10() {
-        createDomesticVrpConsentsFundsConfirmationApi.shouldGetDomesticVrpPaymentConsentsFundsConfirmation_NotAvailable()
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_NotAvailable_v3_1_10() {
+        createDomesticVrpConsentsFundsConfirmationApi.shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_NotAvailable()
     }
 
     @EnabledIfVersion(
@@ -35,8 +35,8 @@ class CreateDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppC
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsWrongGrantType_v3_1_10() {
-        createDomesticVrpConsentsFundsConfirmationApi.shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsWrongGrantType()
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_throwsWrongGrantType_v3_1_10() {
+        createDomesticVrpConsentsFundsConfirmationApi.shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_throwsWrongGrantType()
     }
 
     @EnabledIfVersion(
@@ -46,8 +46,8 @@ class CreateDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppC
         apis = ["domestic-vrp-consents"]
     )
     @Test
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_available_v3_1_10() {
-        createDomesticVrpConsentsFundsConfirmationApi.shouldGetDomesticVrpPaymentConsentsFundsConfirmation_available()
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available_v3_1_10() {
+        createDomesticVrpConsentsFundsConfirmationApi.shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available()
     }
 }
 
