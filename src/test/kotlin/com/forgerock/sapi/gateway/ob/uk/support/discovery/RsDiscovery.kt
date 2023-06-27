@@ -332,7 +332,7 @@ data class RsDiscovery(
                     val DeleteDomesticVRPConsent: String,
                     val GetDomesticVRP: String,
                     val GetDomesticVrpPaymentDetails: String,
-                    val GetDomesticVRPConsentsConsentIdFundsConfirmation: String,
+                    val CreateDomesticVRPConsentsConsentIdFundsConfirmation: String,
                     val GetDomesticVrpPayment: String
                 )
             }
