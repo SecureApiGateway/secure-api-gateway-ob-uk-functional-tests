@@ -2,9 +2,7 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.vrp.c
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
-import assertk.assertions.isTrue
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
@@ -12,14 +10,10 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.OBWriteFundsConfirmationResponse1
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPRequest
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPRequestData
+import uk.org.openbanking.datamodel.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
-class GetDomesticVrpConsentsFundsConfirmation(
+class CreateDomesticVrpConsentsFundsConfirmation(
     val version: OBVersion,
     val tppResource: CreateTppCallback.TppResource
 ) {
@@ -27,27 +21,23 @@ class GetDomesticVrpConsentsFundsConfirmation(
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_false() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_NotAvailable() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("1000000")
 
         // When
-        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndPostFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable).isFalse()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.NOTAVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
-        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticVRPConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-        ))
     }
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_throwsWrongGrantType() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_throwsWrongGrantType() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         val (consent, _) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
@@ -60,58 +50,57 @@ class GetDomesticVrpConsentsFundsConfirmation(
         )
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            getFundsConfirmation(consent, accessTokenClientCredentials)
+            postFundsConfirmation(consent, accessTokenClientCredentials)
         }
         // Then
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
-    fun shouldGetDomesticVrpPaymentConsentsFundsConfirmation_true() {
+    fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available() {
         // Given
         val consentRequest = aValidOBDomesticVRPConsentRequest()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")
         // When
-        val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
+        val (result, consent) = createConsentAndPostFundsConfirmation(consentRequest)
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable).isTrue()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.AVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
-        assertThat(result.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticVRPConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-        ))
     }
 
-    private fun createConsentAndGetFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): Pair<OBWriteFundsConfirmationResponse1, OBDomesticVRPConsentResponse> {
-        val (consent, accessTokenAuthorizationCode) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+    private fun createConsentAndPostFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): Pair<OBVRPFundsConfirmationResponse, OBDomesticVRPConsentResponse> {
+        val (consentResponse, accessTokenAuthorizationCode) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
             consentRequest
         )
-        return getFundsConfirmation(consent, accessTokenAuthorizationCode) to consent
+        return postFundsConfirmation(consentResponse, accessTokenAuthorizationCode) to consentResponse
     }
 
-    private fun getFundsConfirmation(
-        consent: OBDomesticVRPConsentResponse,
+    private fun postFundsConfirmation(
+        consentResponse: OBDomesticVRPConsentResponse,
         accessTokenAuthorizationCode: AccessToken
-    ): OBWriteFundsConfirmationResponse1 {
-        return paymentApiClient.sendGetRequest(
+    ): OBVRPFundsConfirmationResponse {
+
+        return paymentApiClient.sendPostRequest(
             PaymentFactory.urlWithConsentId(
-                paymentLinks.GetDomesticVRPConsentsConsentIdFundsConfirmation,
-                consent.data.consentId
-            ), accessTokenAuthorizationCode
+                paymentLinks.CreateDomesticVRPConsentsConsentIdFundsConfirmation,
+                consentResponse.data.consentId
+            ),
+            accessTokenAuthorizationCode,
+            createFundsConfirmationRequest(consentResponse)
         )
     }
 
-    private fun createPaymentRequest(patchedConsent: OBDomesticVRPConsentResponse): OBDomesticVRPRequest {
-        return OBDomesticVRPRequest().data(
-            OBDomesticVRPRequestData()
-                .consentId(patchedConsent.data.consentId)
-                //.initiation(PaymentFactory.OBDomesticVRPInitiation(patchedConsent.data.initiation))
-                .initiation(patchedConsent.data.initiation)
-        ).risk(patchedConsent.risk)
+    private fun createFundsConfirmationRequest(consentResponse: OBDomesticVRPConsentResponse): OBVRPFundsConfirmationRequest {
+        return OBVRPFundsConfirmationRequest().data(
+            OBVRPFundsConfirmationRequestData().consentId(consentResponse.data.consentId)
+                .instructedAmount(
+                    consentResponse.data.controlParameters.maximumIndividualAmount
+                )
+        )
     }
 
 }
