@@ -67,6 +67,7 @@ class GetDomesticPayment(
         assertThat(getPaymentResponse.data.domesticPaymentId).isNotEmpty()
         assertThat(getPaymentResponse.data.creationDateTime).isNotNull()
         assertThat(getPaymentResponse.data.refund).isNotNull()
+        assertThat(getPaymentResponse.data.refund.account).isNotNull()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 
