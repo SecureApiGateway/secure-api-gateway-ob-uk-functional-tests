@@ -67,7 +67,6 @@ class GetInternationalPaymentTest(val tppResource: CreateTppCallback.TppResource
         operations = ["GetInternationalPayment", "CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
         apis = ["international-payments", "international-payment-consents"]
     )
-    @Disabled
     @Test
     fun shouldGetInternationalPayments_withReadRefund_v3_1_9() {
         getInternationalPayment.shouldGetInternationalPayments_withReadRefund_Test()

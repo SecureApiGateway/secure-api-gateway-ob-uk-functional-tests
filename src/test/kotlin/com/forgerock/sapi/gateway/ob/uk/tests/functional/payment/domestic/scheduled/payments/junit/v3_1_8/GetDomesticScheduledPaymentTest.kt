@@ -36,7 +36,6 @@ class GetDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppReso
         apis = ["domestic-scheduled-payments", "domestic-scheduled-payment-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
-    @Disabled
     @Test
     fun shouldGetDomesticScheduledPayments_withReadRefund_v3_1_8() {
         getDomesticScheduledPayment.shouldGetDomesticScheduledPayments_withReadRefundTest()

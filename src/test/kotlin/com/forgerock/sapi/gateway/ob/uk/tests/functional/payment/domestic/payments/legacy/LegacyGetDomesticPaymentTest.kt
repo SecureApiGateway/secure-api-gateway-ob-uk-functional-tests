@@ -139,7 +139,6 @@ class LegacyGetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResourc
         operations = ["GetDomesticPayment", "CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
         apis = ["domestic-payments", "domestic-payment-consents"]
     )
-    @Disabled
     @Test
     fun shouldGetDomesticPayments_withReadRefund_v3_1_4() {
         // Given
@@ -239,8 +238,8 @@ class LegacyGetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResourc
         assertThat(paymentResult).isNotNull()
         assertThat(paymentResult.data.domesticPaymentId).isNotEmpty()
         assertThat(paymentResult.data.creationDateTime).isNotNull()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-//        assertThat(paymentResult.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(paymentResult.data.refund).isNotNull()
+        assertThat(paymentResult.data.refund.account).isNotNull()
         Assertions.assertThat(paymentResult.data.status.toString()).`is`(Status.paymentCondition)
     }
 

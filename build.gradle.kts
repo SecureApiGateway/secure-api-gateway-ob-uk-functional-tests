@@ -344,4 +344,5 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
 
 tasks.register<Test>("singleTest") {
     description = "Runs open banking single functional tests"
+    failFast = false
 }

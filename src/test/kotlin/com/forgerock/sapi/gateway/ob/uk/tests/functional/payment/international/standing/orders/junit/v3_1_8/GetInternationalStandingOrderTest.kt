@@ -48,7 +48,6 @@ class GetInternationalStandingOrderTest(val tppResource: CreateTppCallback.TppRe
         apis = ["international-standing-orders", "international-standing-order-consents"],
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
-    @Disabled
     @Test
     fun shouldGetInternationalStandingOrders_withReadRefund_v3_1_8() {
         getInternationalStandingOrder.shouldGetInternationalStandingOrders_withReadRefundTest()
