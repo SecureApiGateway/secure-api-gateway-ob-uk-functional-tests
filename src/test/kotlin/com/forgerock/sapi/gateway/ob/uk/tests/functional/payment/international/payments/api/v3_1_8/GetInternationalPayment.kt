@@ -112,8 +112,8 @@ class GetInternationalPayment(
         assertThat(result.data.internationalPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
         assertThat(result.data.charges).isNotNull().isNotEmpty()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-//        assertThat(result.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(result.data.refund).isNotNull()
+        assertThat(result.data.refund.account).isNotNull()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
     }
 

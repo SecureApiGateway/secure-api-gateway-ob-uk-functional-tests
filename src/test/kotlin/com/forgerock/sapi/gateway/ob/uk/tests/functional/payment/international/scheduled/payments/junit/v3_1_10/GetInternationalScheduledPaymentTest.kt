@@ -67,7 +67,6 @@ class GetInternationalScheduledPaymentTest(val tppResource: CreateTppCallback.Tp
         operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
         apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
     )
-    @Disabled
     @Test
     fun shouldGetInternationalScheduledPayments_withReadRefund_v3_1_10() {
         getInternationalScheduledPayment.shouldGetInternationalScheduledPayments_withReadRefund_Test()

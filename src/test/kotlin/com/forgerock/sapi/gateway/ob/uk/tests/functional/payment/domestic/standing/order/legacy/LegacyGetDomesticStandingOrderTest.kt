@@ -246,7 +246,6 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         operations = ["GetDomesticStandingOrder", "CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
-    @Disabled
     @Test
     fun shouldGetDomesticStandingOrders_withReadRefund_v3_1_4() {
         // Given
@@ -346,8 +345,8 @@ class LegacyGetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppR
         assertThat(result).isNotNull()
         assertThat(result.data.domesticStandingOrderId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-//        assertThat(result.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(result.data.refund).isNotNull()
+        assertThat(result.data.refund.account).isNotNull()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
     }
 

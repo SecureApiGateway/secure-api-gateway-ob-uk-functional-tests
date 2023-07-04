@@ -45,7 +45,6 @@ class GetDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppResourc
         operations = ["GetDomesticStandingOrder", "CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
         apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
     )
-    @Disabled
     @Test
     fun shouldGetDomesticStandingOrders_withReadRefund_v3_1_10() {
         getDomesticStandingOrder.shouldGetDomesticStandingOrders_withReadRefundTest()

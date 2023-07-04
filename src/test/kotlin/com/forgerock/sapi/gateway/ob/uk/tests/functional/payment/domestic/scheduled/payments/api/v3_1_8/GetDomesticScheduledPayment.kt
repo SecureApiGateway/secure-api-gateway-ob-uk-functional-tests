@@ -60,8 +60,8 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
         assertThat(getPaymentResponse).isNotNull()
         assertThat(getPaymentResponse.data.domesticScheduledPaymentId).isNotEmpty()
         assertThat(getPaymentResponse.data.creationDateTime).isNotNull()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-//        assertThat(paymentResult.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(getPaymentResponse.data.refund).isNotNull()
+        assertThat(getPaymentResponse.data.refund.account).isNotNull()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 

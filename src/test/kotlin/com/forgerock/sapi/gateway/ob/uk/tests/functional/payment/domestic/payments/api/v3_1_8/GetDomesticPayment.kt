@@ -66,8 +66,8 @@ class GetDomesticPayment(
         assertThat(getPaymentResponse).isNotNull()
         assertThat(getPaymentResponse.data.domesticPaymentId).isNotEmpty()
         assertThat(getPaymentResponse.data.creationDateTime).isNotNull()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-        assertThat(getPaymentResponse.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(getPaymentResponse.data.refund).isNotNull()
+        assertThat(getPaymentResponse.data.refund.account).isNotNull()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 

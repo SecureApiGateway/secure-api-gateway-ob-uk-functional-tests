@@ -82,8 +82,8 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
         assertThat(getStandingOrderResponse).isNotNull()
         assertThat(getStandingOrderResponse.data.domesticStandingOrderId).isNotEmpty()
         assertThat(getStandingOrderResponse.data.creationDateTime).isNotNull()
-        //TODO: Waiting for the fix from the issue: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/241
-//        assertThat(result.data.refund.account.identification).isEqualTo(consent.data.initiation.debtorAccount.identification)
+        assertThat(getStandingOrderResponse.data.refund).isNotNull()
+        assertThat(getStandingOrderResponse.data.refund.account).isNotNull()
         Assertions.assertThat(getStandingOrderResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 

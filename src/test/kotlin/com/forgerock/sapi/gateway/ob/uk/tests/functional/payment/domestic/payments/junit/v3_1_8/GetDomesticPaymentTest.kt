@@ -37,7 +37,6 @@ class GetDomesticPaymentTest(val tppResource: CreateTppCallback.TppResource) {
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    @Disabled("Issue to fix this test: https://github.com/SecureBankingAccessToolkit/SecureBankingAccessToolkit/issues/492")
     fun shouldGetDomesticPayments_withReadRefund_v3_1_8() {
         getDomesticPaymentApi.shouldGetDomesticPayments_withReadRefundTest()
     }
