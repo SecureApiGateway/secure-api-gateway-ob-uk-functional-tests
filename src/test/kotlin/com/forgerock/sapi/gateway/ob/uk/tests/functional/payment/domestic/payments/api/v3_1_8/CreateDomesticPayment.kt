@@ -5,6 +5,8 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS
+import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_ACTION_FOR_AUTHORISED_CONSENT_ERROR
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
@@ -33,7 +35,7 @@ class CreateDomesticPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isEmpty()
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticPaymentId)
     }
 
@@ -81,7 +83,7 @@ class CreateDomesticPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isEmpty()
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticPaymentId)
     }
 
@@ -108,8 +110,8 @@ class CreateDomesticPayment(
         }
 
         // Then
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat(exception.message.toString()).contains(INVALID_CONSENT_STATUS).contains(PAYMENT_ACTION_FOR_AUTHORISED_CONSENT_ERROR)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun shouldCreateDomesticPayments_throwsSendInvalidFormatDetachedJwsTest() {

@@ -34,8 +34,8 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
-    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_9(){
-        createInternationalPaymentsConsents.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
+    fun createInternationalPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_9(){
+        createInternationalPaymentsConsents.createInternationalPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
 
     @EnabledIfVersion(
@@ -45,8 +45,8 @@ class CreateInternationalPaymentsConsentsTest(val tppResource: CreateTppCallback
         apis = ["international-payment-consents"]
     )
     @Test
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_9(){
-        createInternationalPaymentsConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    fun createInternationalPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_9(){
+        createInternationalPaymentsConsents.createInternationalPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
     }
 
     @EnabledIfVersion(

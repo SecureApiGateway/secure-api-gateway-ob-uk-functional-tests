@@ -37,8 +37,8 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_8(){
-        createInternationalScheduledPaymentsConsents.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    fun createInternationalScheduledPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_8(){
+        createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
     }
 
     @EnabledIfVersion(
@@ -49,8 +49,8 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
-    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_8(){
-        createInternationalScheduledPaymentsConsents.createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
+    fun createInternationalScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_8(){
+        createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
 
     @EnabledIfVersion(

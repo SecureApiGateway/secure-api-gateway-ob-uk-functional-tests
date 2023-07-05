@@ -46,7 +46,7 @@ class CreateInternationalScheduledPaymentsConsents(
         assertThat(consent.risk).isNotNull()
     }
 
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+    fun createInternationalScheduledPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
         val consentRequest =
             OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
@@ -55,13 +55,13 @@ class CreateInternationalScheduledPaymentsConsents(
         // When
         // first request
         val consentResponse1 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
+            paymentLinks.CreateInternationalScheduledPaymentConsent,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
             consentRequest
         ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalScheduledConsentResponse6>()
         // second request with the same idempotencyKey
         val consentResponse2 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
+            paymentLinks.CreateInternationalScheduledPaymentConsent,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
             consentRequest
         ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalScheduledConsentResponse6>()
@@ -83,14 +83,14 @@ class CreateInternationalScheduledPaymentsConsents(
 
     }
 
-    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
+    fun createInternationalScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
         val consentRequest =
             OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.newPostRequestBuilder(
-                paymentLinks.CreateDomesticPaymentConsent,
+                paymentLinks.CreateInternationalScheduledPaymentConsent,
                 tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
                 consentRequest
             ).deleteIdempotencyKeyHeader().sendRequest<OBWriteInternationalScheduledConsentResponse6>()

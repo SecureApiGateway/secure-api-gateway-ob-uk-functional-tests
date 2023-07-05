@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -67,6 +68,7 @@ class CreateDomesticPaymentConsentsTest(val tppResource: CreateTppCallback.TppRe
         apis = ["domestic-payment-consents"]
     )
     @Test
+    @Disabled("This has not been implemented in the RS impl of the Consent API")
     fun createDomesticPaymentsConsents_withNonExistentDebtorAccount_v3_1_10() {
         createDomesticPaymentsConsentsApi.createDomesticPaymentsConsents_throwsInvalidDebtorAccountTest()
     }

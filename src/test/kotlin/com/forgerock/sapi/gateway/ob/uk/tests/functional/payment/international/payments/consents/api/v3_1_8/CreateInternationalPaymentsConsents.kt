@@ -42,7 +42,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         assertThat(consent.risk).isNotNull()
     }
 
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+    fun createInternationalPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
         val idempotencyKey = UUID.randomUUID().toString()
@@ -50,13 +50,13 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         // When
         // first request
         val consentResponse1 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
             consentRequest
         ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalConsentResponse6>()
         // second request with the same idempotencyKey
         val consentResponse2 = paymentApiClient.newPostRequestBuilder(
-            paymentLinks.CreateDomesticPaymentConsent,
+            paymentLinks.CreateInternationalPaymentConsent,
             tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
             consentRequest
         ).addIdempotencyKeyHeader(idempotencyKey).sendRequest<OBWriteInternationalConsentResponse6>()
@@ -77,14 +77,14 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
-    fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
+    fun createInternationalPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
 
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.newPostRequestBuilder(
-                paymentLinks.CreateDomesticPaymentConsent,
+                paymentLinks.CreateInternationalPaymentConsent,
                 tppResource.tpp.getClientCredentialsAccessToken(defaultPaymentScopesForAccessToken),
                 consentRequest
             ).deleteIdempotencyKeyHeader().sendRequest<OBWriteInternationalConsentResponse6>()
@@ -95,6 +95,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
         assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
     }
+
     fun createInternationalPaymentsConsents_withDebtorAccountTest() {
         // Given
         val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
