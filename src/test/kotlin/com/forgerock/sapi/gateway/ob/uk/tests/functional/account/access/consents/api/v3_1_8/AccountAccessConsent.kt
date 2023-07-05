@@ -47,7 +47,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
                 consent.data.consentId
             )
         }
-        assertThat(error.message).matchesPredicate { msg -> msg!!.contains("\"ErrorCode\":\"UK.OBIE.NotFound\",\"Message\":\"Resource not found\"") }
+        assertThat(error.message).matchesPredicate { msg -> msg!!.contains("\"ErrorCode\":\"OBRI.Consent.Not.Found\",\"Message\":\"Consent not found\"") }
     }
 
     fun getAccountAccessConsentTest() {
