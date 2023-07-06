@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.vrp.consents.api.v3_1_10.CreateDomesticVrpConsents
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -67,6 +68,7 @@ class CreateDomesticVrpConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["domestic-vrp-consents"]
     )
     @Test
+    @Disabled("Functionality not yet implemented in the RS Consent API - issue: https://github.com/SecureApiGateway/SecureApiGateway/issues/1041")
     fun createDomesticVrpConsents_throwsInvalidDebtorAccount_v3_1_10() {
         createDomesticVrpConsents.createDomesticVrpConsent_throwsInvalidDebtorAccountTest()
     }
