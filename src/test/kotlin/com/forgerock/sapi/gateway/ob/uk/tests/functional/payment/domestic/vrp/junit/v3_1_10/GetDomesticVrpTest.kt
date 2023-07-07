@@ -28,4 +28,15 @@ class GetDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
         getDomesticVrpPaymentApi.getDomesticVrpPaymentsTest()
     }
 
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["GetDomesticVrpPayment", "CreateDomesticVrpPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],
+        apis = ["domestic-vrps", "domestic-vrp-consents"]
+    )
+    @Test
+    fun getDomesticVrpPaymentsWithRefundAccount_v3_1_10() {
+        getDomesticVrpPaymentApi.getDomesticVrpPaymentsWithRefundAccountTest()
+    }
+
 }
