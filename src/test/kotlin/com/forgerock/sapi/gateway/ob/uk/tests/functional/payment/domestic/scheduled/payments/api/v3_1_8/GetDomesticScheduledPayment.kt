@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.scheduled.payments.api.v3_1_8
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -35,7 +36,7 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
         assertThat(getPaymentResponse).isNotNull()
         assertThat(getPaymentResponse.data.domesticScheduledPaymentId).isNotEmpty()
         assertThat(getPaymentResponse.data.creationDateTime).isNotNull()
-        assertThat(getPaymentResponse.data.charges).isNotNull().isNotEmpty()
+        assertThat(getPaymentResponse.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 

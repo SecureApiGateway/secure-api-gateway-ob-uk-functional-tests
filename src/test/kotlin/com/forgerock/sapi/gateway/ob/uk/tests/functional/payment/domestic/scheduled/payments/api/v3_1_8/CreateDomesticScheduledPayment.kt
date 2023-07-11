@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.sched
 
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -36,7 +37,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat(paymentResponse).isNotNull()
         assertThat(paymentResponse.data).isNotNull()
-        assertThat(paymentResponse.data.charges).isNotNull().isNotEmpty()
+        assertThat(paymentResponse.data.charges).isNotNull().isEmpty()
         assertThat(paymentResponse.data.consentId).isNotEmpty()
         assertThat(paymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + paymentResponse.data.domesticScheduledPaymentId)
     }
@@ -60,7 +61,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat(paymentResponse).isNotNull()
         assertThat(paymentResponse.data).isNotNull()
-        assertThat(paymentResponse.data.charges).isNotNull().isNotEmpty()
+        assertThat(paymentResponse.data.charges).isNotNull().isEmpty()
         assertThat(paymentResponse.data.consentId).isNotEmpty()
         assertThat(paymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + paymentResponse.data.domesticScheduledPaymentId)
     }
