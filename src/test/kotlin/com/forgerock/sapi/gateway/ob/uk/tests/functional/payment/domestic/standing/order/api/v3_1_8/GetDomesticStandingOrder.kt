@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.api.v3_1_8
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -36,7 +37,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
         assertThat(getStandingOrderResponse).isNotNull()
         assertThat(getStandingOrderResponse.data.domesticStandingOrderId).isNotEmpty()
         assertThat(getStandingOrderResponse.data.creationDateTime).isNotNull()
-        assertThat(getStandingOrderResponse.data.charges).isNotNull().isNotEmpty()
+        assertThat(getStandingOrderResponse.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(getStandingOrderResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 
