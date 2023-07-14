@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.stand
 
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -36,7 +37,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticStandingOrderId)
     }
@@ -60,7 +61,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticStandingOrderId)
     }

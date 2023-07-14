@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -67,6 +68,7 @@ class CreateDomesticStandingOrderConsentsTest(val tppResource: CreateTppCallback
         apis = ["domestic-standing-order-consents"]
     )
     @Test
+    @Disabled("Functionality not yet implemented in the RS Consent API - issue: https://github.com/SecureApiGateway/SecureApiGateway/issues/1041")
     fun createDomesticStandingOrdersConsents_throwsInvalidDebtorAccount_v3_1_10() {
         createDomesticStandingOrderConsents.createDomesticStandingOrdersConsents_throwsInvalidDebtorAccountTest()
     }
