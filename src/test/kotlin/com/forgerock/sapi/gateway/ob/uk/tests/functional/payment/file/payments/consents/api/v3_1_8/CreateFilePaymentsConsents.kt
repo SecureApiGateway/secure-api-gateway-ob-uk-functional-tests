@@ -66,7 +66,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
     }
 
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+    fun createFilePaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
@@ -102,7 +102,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
-    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {
+    fun createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
@@ -122,7 +122,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun submitFile_SameIdempotencyKeyMultipleRequestTest() {
@@ -185,7 +185,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun submitXMLFileTest() {

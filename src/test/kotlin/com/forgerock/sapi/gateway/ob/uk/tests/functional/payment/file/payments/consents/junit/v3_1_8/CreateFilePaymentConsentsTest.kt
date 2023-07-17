@@ -37,7 +37,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
     )
     @Test
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_8(){
-        createFilePaymentsConsentsApi.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+        createFilePaymentsConsentsApi.createFilePaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
     }
 
     @EnabledIfVersion(
@@ -49,7 +49,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
     )
     @Test
     fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_8() {
-        createFilePaymentsConsentsApi.createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest()
+        createFilePaymentsConsentsApi.createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
 
     @EnabledIfVersion(

@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.file.payments.consents.api.v3_1_8.CreateFilePaymentsConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -34,8 +35,8 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10() {
-        createFilePaymentsConsentsApi.createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
+    fun createFilePaymentsConsents_SameIdempotencyKeyMultipleRequestTest_v3_1_10() {
+        createFilePaymentsConsentsApi.createFilePaymentsConsents_SameIdempotencyKeyMultipleRequestTest()
     }
 
     @EnabledIfVersion(
@@ -45,8 +46,8 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10() {
-        createFilePaymentsConsentsApi.createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest()
+    fun createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest_v3_1_10() {
+        createFilePaymentsConsentsApi.createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest()
     }
 
     @EnabledIfVersion(
@@ -167,6 +168,7 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
+    @Disabled("https://github.com/SecureApiGateway/SecureApiGateway/issues/1073")
     fun shouldCreateFilePaymentsConsents_throwsRejectedConsent_v3_1_10() {
         createFilePaymentsConsentsApi.shouldCreateFilePaymentsConsents_throwsRejectedConsentTest()
     }
