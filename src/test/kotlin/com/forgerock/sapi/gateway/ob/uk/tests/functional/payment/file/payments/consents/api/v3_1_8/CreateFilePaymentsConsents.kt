@@ -387,15 +387,17 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         contentType
     )
 
-    fun createFilePaymentConsentAndAuthorize(consentRequest: OBWriteFileConsent3): Pair<OBWriteFileConsentResponse4, AccessToken> {
-        val consent = createFilePaymentConsent(consentRequest)
+    fun createFilePaymentConsentAndAuthorize(consentRequest: OBWriteFileConsent3, fileContent: String,
+                                             contentType: String): Pair<OBWriteFileConsentResponse4, AccessToken> {
+
+        val consentResponse = sendSubmitFileRequest(consentRequest, fileContent, contentType)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
-            consent.data.consentId,
+            consentResponse.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
-        return consent to accessTokenAuthorizationCode
+        return consentResponse to accessTokenAuthorizationCode
     }
 
 }

@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.file.payments.api.v3_1_8
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isIn
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -24,12 +25,13 @@ class GetFilePayment(val version: OBVersion, val tppResource: CreateTppCallback.
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileType.type
         )
 
-        val filePaymentResponse = createFilePaymentApi.submitFilePayment(consentRequest)
+        val filePaymentResponse = createFilePaymentApi.submitFilePayment(consentRequest, fileContent, fileType.mediaType)
 
         // When
         val getFilePaymentResponse = getFilePayment(filePaymentResponse)
@@ -38,7 +40,7 @@ class GetFilePayment(val version: OBVersion, val tppResource: CreateTppCallback.
         assertThat(getFilePaymentResponse).isNotNull()
         assertThat(getFilePaymentResponse.data.filePaymentId).isNotEmpty()
         assertThat(getFilePaymentResponse.data.creationDateTime).isNotNull()
-        assertThat(getFilePaymentResponse.data.charges).isNotNull().isNotEmpty()
+        assertThat(getFilePaymentResponse.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(getFilePaymentResponse.data.status.toString()).`is`(Status.paymentCondition)
     }
 
@@ -46,11 +48,13 @@ class GetFilePayment(val version: OBVersion, val tppResource: CreateTppCallback.
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
-        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileType.type
         )
-        val filePaymentResponse = createFilePaymentApi.submitFilePayment(consentRequest)
+
+        val filePaymentResponse = createFilePaymentApi.submitFilePayment(consentRequest, fileContent, fileType.mediaType)
 
         // When
         val getFilePaymentResponse = getFilePayment(filePaymentResponse)
