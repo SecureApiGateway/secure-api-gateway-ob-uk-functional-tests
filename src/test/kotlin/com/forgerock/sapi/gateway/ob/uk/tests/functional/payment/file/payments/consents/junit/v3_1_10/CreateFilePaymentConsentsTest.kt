@@ -168,7 +168,6 @@ class CreateFilePaymentConsentsTest(val tppResource: CreateTppCallback.TppResour
         apis = ["file-payment-consents"]
     )
     @Test
-    @Disabled("https://github.com/SecureApiGateway/SecureApiGateway/issues/1073")
     fun shouldCreateFilePaymentsConsents_throwsRejectedConsent_v3_1_10() {
         createFilePaymentsConsentsApi.shouldCreateFilePaymentsConsents_throwsRejectedConsentTest()
     }

@@ -13,15 +13,14 @@ class GetFilePaymentsConsentsTest(val tppResource: CreateTppCallback.TppResource
 
     @BeforeEach
     fun setUp() {
-        getFilePaymentsConsentsApi = GetFilePaymentsConsents(OBVersion.v3_1_8, tppResource)
+        getFilePaymentsConsentsApi = GetFilePaymentsConsents(OBVersion.v3_1_10, tppResource)
     }
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.10",
         operations = ["CreateFilePaymentConsent", "GetFilePaymentConsent"],
         apis = ["file-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
     fun shouldGetFilePaymentsConsents_v3_1_8() {
@@ -30,10 +29,9 @@ class GetFilePaymentsConsentsTest(val tppResource: CreateTppCallback.TppResource
 
     @EnabledIfVersion(
         type = "payments",
-        apiVersion = "v3.1.8",
+        apiVersion = "v3.1.10",
         operations = ["CreateFilePaymentConsent", "GetFilePaymentConsent"],
         apis = ["file-payment-consents"],
-        compatibleVersions = ["v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
     fun shouldGetFilePaymentsConsents_withoutOptionalDebtorAccount_v3_1_8() {
