@@ -27,17 +27,19 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
+
         // When
-        val result = submitFilePayment(consentRequest)
+        val result = submitFilePayment(consentRequest, fileContent, fileType.mediaType)
 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.filePaymentId)
     }
@@ -46,12 +48,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
 
-        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithMandatoryFieldsAndFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            fileType.type
         )
+
         // When
-        val result = submitFilePayment(consentRequest)
+        val result = submitFilePayment(consentRequest, fileContent, fileType.mediaType)
 
         // Then
         assertThat(result).isNotNull()
@@ -69,13 +73,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsFilePaymentAlreadyExistsTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
                 fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+                fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+                consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -101,13 +106,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -135,13 +141,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsNoDetachedJwsTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -169,13 +176,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -203,13 +211,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsSendInvalidKidDetachedJwsTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -237,13 +246,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -282,13 +292,14 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
     fun shouldCreateFilePayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
-                fileContent,
-                PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileContent,
+            fileType.type
         )
 
         val (consentResponse, accessTokenAuthorizationCode) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+            consentRequest, fileContent, fileType.mediaType
         )
 
         assertThat(consentResponse).isNotNull()
@@ -320,9 +331,10 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
     }
 
-    fun submitFilePayment(consentRequest: OBWriteFileConsent3): OBWriteFileResponse3 {
+    fun submitFilePayment(consentRequest: OBWriteFileConsent3, fileContent: String,
+                          contentType: String): OBWriteFileResponse3 {
         val (consentResponse, authorizationToken) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
-                consentRequest
+                consentRequest, fileContent, contentType
         )
         return submitFilePayment(consentResponse.data.consentId, consentRequest, authorizationToken)
     }

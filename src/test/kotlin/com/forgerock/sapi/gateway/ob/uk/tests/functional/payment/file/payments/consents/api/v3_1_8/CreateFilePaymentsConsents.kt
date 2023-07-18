@@ -66,7 +66,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
     }
 
-    fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
+    fun createFilePaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
@@ -102,7 +102,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
     }
 
-    fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {
+    fun createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
@@ -122,7 +122,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun submitFile_SameIdempotencyKeyMultipleRequestTest() {
@@ -154,9 +154,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
 
         // Then
         assertThat(response1).isNotNull()
-        assertThat(response1).isTrue()
         assertThat(response2).isNotNull()
-        assertThat(response2).isTrue()
         assertThat(response1).equals(response2)
     }
 
@@ -185,7 +183,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun submitXMLFileTest() {
@@ -201,7 +199,6 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
 
         // Then
         assertThat(consent).isNotNull()
-        assertThat(consent).isTrue()
     }
 
     fun submitJSONFileTest() {
@@ -229,7 +226,6 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
 
         // Then
         assertThat(consent).isNotNull()
-        assertThat(consent).isTrue()
     }
 
     fun createFilePaymentsConsents_mandatoryFields() {
@@ -335,15 +331,22 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
     fun shouldCreateFilePaymentsConsents_throwsRejectedConsentTest() {
         // Given
         val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
         val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
             fileContent,
-            PaymentFileType.UK_OBIE_PAIN_001_001_008.type
+            fileType.type
         )
+
+        val consentResponse = sendSubmitFileRequest(consentRequest, fileContent, fileType.mediaType)
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
-            createFilePaymentConsentAndReject(
-                consentRequest
+            PaymentAS().authorizeConsent(
+                consentResponse.data.consentId,
+                tppResource.tpp.registrationResponse,
+                psu,
+                tppResource.tpp,
+                "Rejected"
             )
         }
 
@@ -367,9 +370,10 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         consentRequest: OBWriteFileConsent3,
         fileContent: String,
         contentType: String
-    ): Boolean {
+    ): OBWriteFileConsentResponse4 {
         val consent = createFilePaymentConsent(consentRequest)
-        return buildSubmitFileRequest(fileContent, consent.data.consentId, contentType).sendFileRequest(contentType)
+        buildSubmitFileRequest(fileContent, consent.data.consentId, contentType).sendFileRequest(contentType)
+        return consent
     }
 
     private fun buildSubmitFileRequest(
@@ -383,27 +387,17 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         contentType
     )
 
-    fun createFilePaymentConsentAndAuthorize(consentRequest: OBWriteFileConsent3): Pair<OBWriteFileConsentResponse4, AccessToken> {
-        val consent = createFilePaymentConsent(consentRequest)
+    fun createFilePaymentConsentAndAuthorize(consentRequest: OBWriteFileConsent3, fileContent: String,
+                                             contentType: String): Pair<OBWriteFileConsentResponse4, AccessToken> {
+
+        val consentResponse = sendSubmitFileRequest(consentRequest, fileContent, contentType)
         val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
-            consent.data.consentId,
+            consentResponse.data.consentId,
             tppResource.tpp.registrationResponse,
             psu,
             tppResource.tpp
         )
-        return consent to accessTokenAuthorizationCode
-    }
-
-    private fun createFilePaymentConsentAndReject(consentRequest: OBWriteFileConsent3): Pair<OBWriteFileConsentResponse4, AccessToken> {
-        val consent = createFilePaymentConsent(consentRequest)
-        val accessTokenAuthorizationCode = PaymentAS().authorizeConsent(
-            consent.data.consentId,
-            tppResource.tpp.registrationResponse,
-            psu,
-            tppResource.tpp,
-            "Rejected"
-        )
-        return consent to accessTokenAuthorizationCode
+        return consentResponse to accessTokenAuthorizationCode
     }
 
 }

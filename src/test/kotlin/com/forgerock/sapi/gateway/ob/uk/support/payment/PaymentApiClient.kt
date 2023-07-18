@@ -126,7 +126,7 @@ class PaymentApiClient(val tpp: Tpp) {
             }
         }
 
-        inline fun sendFileRequest(contentType: String): Boolean {
+        inline fun sendFileRequest(contentType: String) {
             if (jwsSignatureProducer != null && jsonBody != null) {
                 val detachedSignature = jwsSignatureProducer?.createDetachedSignature(jsonBody!!)
                 if (detachedSignature != null) {
@@ -135,10 +135,6 @@ class PaymentApiClient(val tpp: Tpp) {
             }
 
             request.header(Headers.CONTENT_TYPE, contentType)
-
-
-
-
 
             val (_, response, result) = request.response()
 
@@ -155,7 +151,6 @@ class PaymentApiClient(val tpp: Tpp) {
                     "The response should have 'x-jws-signature' header for the consent : ${result.get()}"
                 )
             }
-            return response.isSuccessful
         }
     }
 
