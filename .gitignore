@@ -11,6 +11,7 @@ build
 .idea/
 gradle/profiles/*
 !gradle/profiles/profile-dev.gradle.kts
+!gradle/profiles/profile-fritss-itssdev.gradle.kts
 !gradle/profiles/profile-devops.gradle.kts
 !gradle/profiles/profile-nightly.gradle.kts
 
