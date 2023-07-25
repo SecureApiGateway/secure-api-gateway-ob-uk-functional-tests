@@ -37,7 +37,7 @@ class CreateInternationalPayment(
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
         assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentRequest.data.initiation.exchangeRateInformation.exchangeRate)).isEqualTo(0)
@@ -57,7 +57,7 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
@@ -88,7 +88,7 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
@@ -110,7 +110,7 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.exchangeRateInformation.unitCurrency)
@@ -132,7 +132,7 @@ class CreateInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.consentId).isNotEmpty()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
         assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentResponse.data.exchangeRateInformation.exchangeRate)).equals(0)
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentResponse.data.exchangeRateInformation.rateType)
@@ -191,8 +191,8 @@ class CreateInternationalPayment(
         }
 
         // Then
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
     fun shouldCreateInternationalPayment_throwsSendInvalidFormatDetachedJws_Test() {

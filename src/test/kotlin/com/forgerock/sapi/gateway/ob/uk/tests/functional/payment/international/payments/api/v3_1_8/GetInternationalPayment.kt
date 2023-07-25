@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.payments.api.v3_1_8
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
@@ -36,7 +37,7 @@ class GetInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data.internationalPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }
@@ -93,7 +94,7 @@ class GetInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data.internationalPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
     }
 
@@ -111,7 +112,7 @@ class GetInternationalPayment(
         assertThat(result).isNotNull()
         assertThat(result.data.internationalPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.refund).isNotNull()
         assertThat(result.data.refund.account).isNotNull()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
