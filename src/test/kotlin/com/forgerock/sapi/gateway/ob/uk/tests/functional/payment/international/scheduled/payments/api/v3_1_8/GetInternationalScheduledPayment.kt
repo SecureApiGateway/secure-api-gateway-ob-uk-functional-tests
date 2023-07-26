@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.scheduled.payments.api.v3_1_8
 
 import assertk.assertThat
+import assertk.assertions.isEmpty
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
@@ -36,7 +37,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
         assertThat(result).isNotNull()
         assertThat(result.data.internationalScheduledPaymentId).isNotEmpty()
         assertThat(result.data.creationDateTime).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
         assertThat(result.data.exchangeRateInformation.exchangeRate).isNotNull()
     }

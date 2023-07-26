@@ -99,7 +99,7 @@ class CreateInternationalScheduledPaymentsConsents(
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("Bad request [Failed to get create the resource, 'x-idempotency-key' header / value expected]")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
     }
 
     fun createInternationalScheduledPaymentsConsents_withDebtorAccountTest() {
@@ -256,7 +256,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.REQUEST_EXECUTION_TIME_IN_THE_PAST)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.REQUESTED_EXECUTION_TIME_MUST_BE_IN_FUTURE)
     }
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsRejectedConsent_Test() {
