@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8.CreateInternationalScheduledPaymentsConsents
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -68,6 +69,7 @@ class CreateInternationalScheduledPaymentsConsentsTest(val tppResource: CreateTp
         apis = ["international-scheduled-payment-consents"]
     )
     @Test
+    @Disabled("This has not been implemented in the RS impl of the Consent API")
     fun createInternationalScheduledPaymentsConsents_throwsInvalidDebtorAccount_v3_1_10() {
         createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentsConsents_throwsInvalidDebtorAccountTest()
     }
