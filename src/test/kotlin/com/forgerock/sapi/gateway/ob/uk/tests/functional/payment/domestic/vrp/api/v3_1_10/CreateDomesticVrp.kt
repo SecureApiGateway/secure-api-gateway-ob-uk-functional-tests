@@ -291,7 +291,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
 
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.BAD_REQUEST)
-        assertThat(exception.message.toString()).contains("[Invalid VRP type, only Sweeping payments are supported.]")
+        assertThat(exception.message.toString()).contains("Your data request is invalid: reason VRPType specified is not supported, only the following types are supported: UK.OBIE.VRPType.Sweeping")
 
     }
 
