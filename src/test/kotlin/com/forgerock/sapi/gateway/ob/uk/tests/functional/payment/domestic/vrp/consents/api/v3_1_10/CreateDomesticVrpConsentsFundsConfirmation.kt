@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.vrp.c
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
@@ -10,7 +11,12 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.vrp.*
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
+import uk.org.openbanking.datamodel.vrp.OBPAFundsAvailableResult1
+import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequest
+import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequestData
+import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationResponse
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
 class CreateDomesticVrpConsentsFundsConfirmation(
@@ -70,6 +76,35 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat(result.data.fundsAvailableResult).isNotNull()
         assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.AVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+    }
+
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchFundsConfPostRequestConsentId() {
+        // Submit a valid funds conf request first
+        val consentRequest = aValidOBDomesticVRPConsentRequest()
+        consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")
+        val (result, firstConsentResponse) = createConsentAndPostFundsConfirmation(consentRequest)
+        assertThat(result).isNotNull()
+        assertThat(result.data).isNotNull()
+        assertThat(result.data.fundsAvailableResult).isNotNull()
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.AVAILABLE)
+        assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+
+        // Create and authorise a second consent
+        val (secondConsentResponse, secondConsentAccessToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+            consentRequest
+        )
+
+        // sanity check that consentIds are different
+        assertThat(firstConsentResponse.data.consentId).isNotEqualTo(secondConsentResponse.data.consentId);
+
+        // When
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            // Attempt to get funds conf for the first consent using an accessToken for the second
+            postFundsConfirmation(firstConsentResponse, secondConsentAccessToken)
+        }
+        // Then
+        assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
     }
 
     private fun createConsentAndPostFundsConfirmation(consentRequest: OBDomesticVRPConsentRequest): Pair<OBVRPFundsConfirmationResponse, OBDomesticVRPConsentResponse> {
