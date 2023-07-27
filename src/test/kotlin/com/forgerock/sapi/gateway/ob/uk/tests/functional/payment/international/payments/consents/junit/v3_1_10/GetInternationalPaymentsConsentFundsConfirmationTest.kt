@@ -105,4 +105,15 @@ class GetInternationalPaymentsConsentFundsConfirmationTest(val tppResource: Crea
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_10() {
         getInternationalPaymentsConsentFundsConfirmation.shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalPaymentConsent", "GetInternationalPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-payment-consents"]
+    )
+    @Test
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId_v3_1_10() {
+        getInternationalPaymentsConsentFundsConfirmation.shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId()
+    }
 }

@@ -49,5 +49,16 @@ class CreateDomesticVrpConsentsFundsConfirmationTest(val tppResource: CreateTppC
     fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available_v3_1_10() {
         createDomesticVrpConsentsFundsConfirmationApi.shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticVRPConsent", "CreateDomesticVRPConsentsConsentIdFundsConfirmation"],
+        apis = ["domestic-vrp-consents"]
+    )
+    @Test
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestConsentId_3_1_10() {
+        createDomesticVrpConsentsFundsConfirmationApi.shouldFailIfAccessTokenConsentIdDoesNotMatchFundsConfPostRequestConsentId()
+    }
 }
 
