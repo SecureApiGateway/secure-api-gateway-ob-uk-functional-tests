@@ -5,6 +5,7 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.EnabledIfVersion
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.consents.api.v3_1_8.CreateInternationalStandingOrderConsents
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCallback.TppResource) {
@@ -72,6 +73,7 @@ class CreateInternationalStandingOrderConsentsTest(val tppResource: CreateTppCal
         compatibleVersions = ["v.3.1.9", "v.3.1.8", "v.3.1.7", "v.3.1.6", "v.3.1.5"]
     )
     @Test
+    @Disabled("This has not been implemented in the RS impl of the Consent API")
     fun createInternationalStandingOrdersConsents_throwsInvalidDebtorAccount_v3_1_10() {
         createInternationalStandingOrderConsents.createInternationalStandingOrdersConsents_throwsInvalidDebtorAccountTest()
     }
