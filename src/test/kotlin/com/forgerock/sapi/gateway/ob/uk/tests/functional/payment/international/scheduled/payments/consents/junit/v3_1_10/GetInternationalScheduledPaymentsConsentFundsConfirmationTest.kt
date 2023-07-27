@@ -104,4 +104,16 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmationTest(val tppResou
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_v3_1_10() {
         getInternationalScheduledPaymentsConsentFundsConfirmation.shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsentsConsentIdFundsConfirmation"],
+        apis = ["international-scheduled-payment-consents"]
+    )
+    @Test
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId_v3_1_10() {
+        getInternationalScheduledPaymentsConsentFundsConfirmation.shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId()
+    }
+
 }

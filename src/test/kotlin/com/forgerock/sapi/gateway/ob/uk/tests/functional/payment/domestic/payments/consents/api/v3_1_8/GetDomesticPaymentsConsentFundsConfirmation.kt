@@ -106,6 +106,40 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         ))
     }
 
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId() {
+        val consentRequest = aValidOBWriteDomesticConsent4()
+        consentRequest.data.initiation.instructedAmount.amount("3")
+        val (firstConsent, firstAccessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+            consentRequest
+        )
+        val fundsConfirmationResult = getFundsConfirmation(firstConsent, firstAccessToken)
+
+        assertThat(fundsConfirmationResult).isNotNull()
+        assertThat(fundsConfirmationResult.data).isNotNull()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult).isNotNull()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult.fundsAvailable).isTrue()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+        assertThat(fundsConfirmationResult.links.self.toString()).isEqualTo( PaymentFactory.urlWithConsentId(
+            paymentLinks.GetDomesticPaymentConsentsConsentIdFundsConfirmation,
+            firstConsent.data.consentId
+        ))
+
+        // Create a second consent and get a second access token
+        val (secondConsent, secondAccessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+            consentRequest
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            // Attempt to get a funds confirmation using the wrong access token (contains the secondConsentId)
+            getFundsConfirmation(firstConsent, secondAccessToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains("consentId from the request does not match the openbanking_intent_id claim from the access token")
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
+
+    }
+
     private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteDomesticConsent4): Pair<OBWriteFundsConfirmationResponse1, OBWriteDomesticConsentResponse5> {
         val (consent, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest

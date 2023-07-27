@@ -9,6 +9,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
 
 class GetInternationalScheduledPaymentsConsentFundsConfirmation(
@@ -176,6 +177,36 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId() {
+        val consentRequest = aValidOBWriteInternationalScheduledConsent5()
+        consentRequest.data.initiation.instructedAmount.amount("3")
+        val (firstConsent, firstAccessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        val fundsConfirmationResult = getFundsConfirmation(firstConsent, firstAccessToken)
+
+        assertThat(fundsConfirmationResult).isNotNull()
+        assertThat(fundsConfirmationResult.data).isNotNull()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult).isNotNull()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult.fundsAvailable).isTrue()
+        assertThat(fundsConfirmationResult.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
+
+        // Create a second consent and get a second access token
+        val (secondConsent, secondAccessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            // Attempt to get a funds confirmation using the wrong access token (contains the secondConsentId)
+            getFundsConfirmation(firstConsent, secondAccessToken)
+        }
+
+        // Then
+        assertThat(exception.message.toString()).contains("consentId from the request does not match the openbanking_intent_id claim from the access token")
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
+
     }
 
     private fun createConsentAndGetFundsConfirmation(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteFundsConfirmationResponse1 {
