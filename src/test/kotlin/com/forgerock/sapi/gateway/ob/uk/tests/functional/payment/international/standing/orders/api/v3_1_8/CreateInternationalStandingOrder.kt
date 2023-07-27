@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -37,7 +38,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.consentId).isNotEmpty()
     }
 
@@ -88,7 +89,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Then
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
-        assertThat(result.data.charges).isNotNull().isNotEmpty()
+        assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.consentId).isNotEmpty()
     }
 
