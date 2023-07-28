@@ -63,7 +63,7 @@ class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.
 
     private fun getDomesticVrpPayment(paymentResponse: OBDomesticVRPResponse): OBDomesticVRPResponse {
         val getDomesticVrpPaymentUrl = PaymentFactory.urlWithDomesticVrpPaymentId(
-            paymentLinks.GetDomesticVrpPayment,
+            paymentLinks.GetDomesticVRPPayment,
             paymentResponse.data.domesticVRPId
         )
         return paymentApiClient.sendGetRequest(
