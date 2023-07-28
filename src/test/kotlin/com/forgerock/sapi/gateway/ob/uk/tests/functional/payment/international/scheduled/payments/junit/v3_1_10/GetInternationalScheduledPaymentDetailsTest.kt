@@ -20,7 +20,7 @@ class GetInternationalScheduledPaymentDetailsTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -31,7 +31,7 @@ class GetInternationalScheduledPaymentDetailsTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -42,7 +42,7 @@ class GetInternationalScheduledPaymentDetailsTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
@@ -53,7 +53,7 @@ class GetInternationalScheduledPaymentDetailsTest(val tppResource: CreateTppCall
     @EnabledIfVersion(
         type = "payments",
         apiVersion = "v3.1.10",
-        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentInternationalScheduledPaymentIdPaymentDetails"],
+        operations = ["GetInternationalScheduledPayment", "CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentPaymentIdPaymentDetails"],
         apis = ["international-payments", "international-payment-consents"]
     )
     @Test
