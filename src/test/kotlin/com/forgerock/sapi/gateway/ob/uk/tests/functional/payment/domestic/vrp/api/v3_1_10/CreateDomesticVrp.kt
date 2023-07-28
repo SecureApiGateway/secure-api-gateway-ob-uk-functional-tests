@@ -27,7 +27,7 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
     private val createDomesticVrpConsentsApi = CreateDomesticVrpConsents(version, tppResource)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
-    private val createPaymentUrl = paymentLinks.CreateDomesticVrpPayment
+    private val createPaymentUrl = paymentLinks.CreateDomesticVRPPayment
 
     fun createDomesticVrpPaymentTest() {
         // Given

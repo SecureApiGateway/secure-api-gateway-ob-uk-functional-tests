@@ -72,7 +72,7 @@ class GetDomesticVrpDetails(
 
     private fun getDomesticVrpDetails(domesticVrpResponse: OBDomesticVRPResponse): OBWritePaymentDetailsResponse1 {
         val getDomesticVrpDetailsUrl = PaymentFactory.urlWithDomesticVrpPaymentId(
-            paymentLinks.GetDomesticVrpPaymentDetails,
+            paymentLinks.GetDomesticVRPPaymentDetails,
             domesticVrpResponse.data.domesticVRPId
         )
         return paymentApiClient.sendGetRequest(
