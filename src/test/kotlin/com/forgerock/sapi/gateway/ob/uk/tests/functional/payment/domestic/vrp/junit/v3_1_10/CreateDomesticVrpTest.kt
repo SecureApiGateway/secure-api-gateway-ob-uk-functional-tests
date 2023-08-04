@@ -171,5 +171,15 @@ class CreateDomesticVrpTest(val tppResource: CreateTppCallback.TppResource) {
         createDomesticVrpPayment.testCreatingPaymentIsIdempotent()
     }
 
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticVRPPayment", "CreateDomesticVRPConsent", "GetDomesticVRPConsent"],
+        apis = ["domestic-vrps", "domestic-vrp-consents"]
+    )
+    @Test
+    fun shouldCreateMultiplePaymentsForConsent_v3_1_10() {
+        createDomesticVrpPayment.shouldCreateMultiplePaymentsForConsent()
+    }
 
 }
