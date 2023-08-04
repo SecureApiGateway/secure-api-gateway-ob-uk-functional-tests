@@ -20,6 +20,7 @@ import uk.org.openbanking.datamodel.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 import java.math.BigDecimal
+import java.util.UUID
 
 
 class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -351,6 +352,31 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat(exception.message!!).contains("\"ErrorCode\":\"UK.OBIE.Rules.FailsControlParameters\"")
         assertThat(exception.message!!).contains("\"Message\":\"The field 'InstructedAmount' breaches a limitation set by 'MaximumIndividualAmount'\"")
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val (consent, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse: OBDomesticVRPResponse = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(firstPaymentResponse).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.domesticVRPId)
+
+        // Submit again with same key
+        val secondPaymentResponse: OBDomesticVRPResponse = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitPayment(consentRequest: OBDomesticVRPConsentRequest): OBDomesticVRPResponse {

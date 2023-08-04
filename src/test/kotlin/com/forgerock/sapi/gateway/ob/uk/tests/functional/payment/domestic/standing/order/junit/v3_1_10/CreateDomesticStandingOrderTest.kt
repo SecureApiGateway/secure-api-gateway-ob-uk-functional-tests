@@ -150,4 +150,15 @@ class CreateDomesticStandingOrderTest(val tppResource: CreateTppCallback.TppReso
     fun shouldCreateDomesticStandingOrder_throwsInvalidRiskTest_v3_1_10() {
         createDomesticStandingOrder.shouldCreateDomesticStandingOrder_throwsInvalidRiskTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticStandingOrder", "CreateDomesticStandingOrderConsent", "GetDomesticStandingOrderConsent"],
+        apis = ["domestic-standing-orders", "domestic-standing-order-consents"]
+    )
+    @Test
+    fun testCreatingPaymentIsIdempotent_v3_1_10() {
+        createDomesticStandingOrder.testCreatingPaymentIsIdempotent()
+    }
 }

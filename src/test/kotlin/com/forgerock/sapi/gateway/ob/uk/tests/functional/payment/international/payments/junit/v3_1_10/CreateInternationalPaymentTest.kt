@@ -169,4 +169,15 @@ class CreateInternationalPaymentTest(val tppResource: CreateTppCallback.TppResou
     fun shouldCreateInternationalPayments_throwsInvalidRiskTest_v3_1_10() {
         createInternationalPayment.shouldCreateInternationalPayments_throwsInvalidRiskTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalPayment", "CreateInternationalPaymentConsent", "GetInternationalPaymentConsent"],
+        apis = ["international-payments", "international-payment-consents"]
+    )
+    @Test
+    fun testCreatingPaymentIsIdempotent_v3_1_10() {
+        createInternationalPayment.testCreatingPaymentIsIdempotent()
+    }
 }

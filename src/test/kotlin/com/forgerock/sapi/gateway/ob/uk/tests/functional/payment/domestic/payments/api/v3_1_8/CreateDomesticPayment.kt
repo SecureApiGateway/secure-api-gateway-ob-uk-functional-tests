@@ -5,8 +5,7 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
-import com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS
-import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_ACTION_FOR_AUTHORISED_CONSENT_ERROR
+import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.payments.consents.api.v3_1_8.CreateDomesticPaymentsConsents
@@ -15,6 +14,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
+import java.util.UUID
 
 class CreateDomesticPayment(
     val version: OBVersion,
@@ -110,8 +110,8 @@ class CreateDomesticPayment(
         }
 
         // Then
-        assertThat(exception.message.toString()).contains(INVALID_CONSENT_STATUS).contains(PAYMENT_ACTION_FOR_AUTHORISED_CONSENT_ERROR)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(PAYMENT_SUBMISSION_ALREADY_EXISTS)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
     }
 
     fun shouldCreateDomesticPayments_throwsSendInvalidFormatDetachedJwsTest() {
@@ -307,6 +307,32 @@ class CreateDomesticPayment(
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val (consent, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteDomesticResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+                                                                       .addIdempotencyKeyHeader(idempotencyKey)
+                                                                       .sendRequest()
+
+        assertThat(firstPaymentResponse).isNotNull()
+        assertThat(firstPaymentResponse.data).isNotNull()
+        assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        assertThat(firstPaymentResponse.data.charges).isEmpty()
+        assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.domesticPaymentId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteDomesticResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitPayment(consentRequest: OBWriteDomesticConsent4): OBWriteDomesticResponse5 {

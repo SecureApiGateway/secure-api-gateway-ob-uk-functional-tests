@@ -1,20 +1,20 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.payments.api.v3_1_8
 
-import assertk.assertThat
-import assertk.assertions.*
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.payments.consents.api.v3_1_8.CreateInternationalPaymentsConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
+import java.util.UUID
 
 class CreateInternationalPayment(
     val version: OBVersion,
@@ -134,7 +134,7 @@ class CreateInternationalPayment(
         assertThat(result.data.consentId).isNotEmpty()
         assertThat(result.data.charges).isNotNull().isEmpty()
         assertThat(result.data.exchangeRateInformation).isNotNull()
-        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentResponse.data.exchangeRateInformation.exchangeRate)).equals(0)
+        assertThat(result.data.exchangeRateInformation.exchangeRate.compareTo(consentResponse.data.exchangeRateInformation.exchangeRate)).isEqualTo(0)
         assertThat(result.data.exchangeRateInformation.rateType).isEqualTo(consentResponse.data.exchangeRateInformation.rateType)
         assertThat(result.data.exchangeRateInformation.unitCurrency).isEqualTo(consentResponse.data.exchangeRateInformation.unitCurrency)
     }
@@ -150,7 +150,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         consentRequest.data.initiation.instructedAmount = OBWriteDomestic2DataInitiationInstructedAmount()
             .amount("123123")
@@ -178,7 +178,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
         // Submit first payment
@@ -191,8 +191,8 @@ class CreateInternationalPayment(
         }
 
         // Then
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS)
-        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(PAYMENT_SUBMISSION_ALREADY_EXISTS)
+        assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(403)
     }
 
     fun shouldCreateInternationalPayment_throwsSendInvalidFormatDetachedJws_Test() {
@@ -205,7 +205,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -230,7 +230,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -254,7 +254,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -279,7 +279,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -304,7 +304,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -335,7 +335,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -373,7 +373,7 @@ class CreateInternationalPayment(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
 
@@ -388,6 +388,32 @@ class CreateInternationalPayment(
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val (consent, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteInternationalResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        assertThat(firstPaymentResponse).isNotNull()
+        assertThat(firstPaymentResponse.data).isNotNull()
+        assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        assertThat(firstPaymentResponse.data.charges).isEmpty()
+        assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.internationalPaymentId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteInternationalResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitPayment(consentRequest: OBWriteInternationalConsent5): OBWriteInternationalResponse5 {
