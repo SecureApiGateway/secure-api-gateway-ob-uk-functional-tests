@@ -6,7 +6,7 @@
 | Release | [![GitHub release (latest by date)](https://img.shields.io/github/v/release/SecureApiGateway/secure-api-gateway-ob-uk-functional-tests.svg)](https://img.shields.io/github/v/release/SecureApiGateway/secure-api-gateway-ob-uk-functional-tests)                                                              |
 | License | ![license](https://img.shields.io/github/license/ACRA/acra.svg)                                                                                                                                                                                                                                                                                     |
 
-# secure API Gateway functional tests (Open Banking UK)
+# Secure API Gateway functional tests (Open Banking UK)
 Software testing to validate and coverage the implemented open banking functionalities and ensure that these satisfies the functional requirements.
 
 ## Setup
@@ -34,8 +34,8 @@ For more information https://junit.org/junit5/docs/5.7.0/user-guide/index.html#e
 The certificates are protected, and you can't find them in the repository, for that reason to run the functional tests in local environments is necessary set the OB certificates:
 - Create the folder `certificates` in the root project folder
 
-**Forgerock code owners**
-- Get the certificates from [ob-ci-secrets](https://github.com/ForgeCloud/ob-ci-secrets) and decrypt them:
+**ForgeRock code owners**
+- Get the certificates from [sapig-ci-secrets](https://github.com/ForgeCloud/sapig-ci-secrets/tree/main/ob-directory-certs/tpp-SAPIG-automating-testing) and decrypt them:
   - OBWac.key
   - OBWac.pem
   - OBSeal.key
