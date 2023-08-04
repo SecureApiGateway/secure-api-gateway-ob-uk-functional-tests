@@ -64,6 +64,28 @@ class CreateDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallba
         assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticVRPId)
     }
 
+    fun shouldCreateMultiplePaymentsForConsent() {
+        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val (consent, authorizationToken) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
+            consentRequest
+        )
+        val numPaymentsToCreate = 5
+        val paymentIds = HashSet<String>()
+        for (i in 1..numPaymentsToCreate) {
+            val result = submitPayment(consent.data.consentId, consentRequest, authorizationToken)
+
+            // Then
+            assertThat(result).isNotNull()
+            assertThat(result.data).isNotNull()
+            assertThat(result.data.consentId).isNotEmpty()
+            assertThat(result.data.domesticVRPId).isNotEmpty()
+            assertThat(result.data.charges).isNotNull().isNotEmpty()
+            assertThat(result.links.self.toString()).isEqualTo(createPaymentUrl + "/" + result.data.domesticVRPId)
+            paymentIds.add(result.data.domesticVRPId)
+        }
+        assertThat(paymentIds.size).isEqualTo(numPaymentsToCreate)
+    }
+
     fun limitBreachSimulationDomesticVrpPaymentTest() {
         // Given
         val headers = Headers()
