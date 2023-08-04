@@ -11,7 +11,7 @@ val truststorePassword by extra("changeit")
  */
 // OB directory organisation
 val obOrganisationId by extra("0015800001041REAAY")
-val obSoftwareId by extra("ebSqTNqmQXFYz6VtWGXZAa")
+val obSoftwareId by extra("Y6NjA9TOn3aMm9GaPtLwkp")
 
 // OB token scopes
 val scopesTpp by extra("ASPSPReadAccess TPPReadAccess AuthoritiesReadAccess")
@@ -54,7 +54,7 @@ val userDebtorAccountIdentification by extra("01233243245676")
 val userAccountId by extra ("01233243245676")
 
 // Kid's
-val eidasTestSigningKid by extra("zPeFbX7nJokEVpynzayWvgtFBxo")
+val eidasTestSigningKid by extra("qfL4CT5GrVgoyXNQtUjF5TIVOXA")
 val preEidasTestSigningKid by extra("RmQ-EmViYPKXYyGCVnfuMo6ggXE")
 val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
 
