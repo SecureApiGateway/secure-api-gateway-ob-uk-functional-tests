@@ -19,6 +19,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderConsentTestDataFactory
+import java.util.UUID
 
 class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -362,6 +363,33 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest =
+            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val (consent, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createStandingOrderRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteInternationalStandingOrderResponse7 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(firstPaymentResponse).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(firstPaymentResponse.data.charges).isEmpty()
+        Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.internationalStandingOrderId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteInternationalStandingOrderResponse7 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitStandingOrder(consentRequest: OBWriteInternationalStandingOrderConsent6): OBWriteInternationalStandingOrderResponse7 {

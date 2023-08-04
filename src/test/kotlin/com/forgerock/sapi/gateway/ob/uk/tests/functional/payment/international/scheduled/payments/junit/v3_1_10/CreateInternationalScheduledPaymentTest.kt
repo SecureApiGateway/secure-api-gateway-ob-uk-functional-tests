@@ -171,4 +171,15 @@ class CreateInternationalScheduledPaymentTest(val tppResource: CreateTppCallback
     fun shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest_v3_1_10() {
         createInternationalScheduledPayment.shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateInternationalScheduledPayment", "CreateInternationalScheduledPaymentConsent", "GetInternationalScheduledPaymentConsent"],
+        apis = ["international-scheduled-payments", "international-scheduled-payment-consents"]
+    )
+    @Test
+    fun testCreatingPaymentIsIdempotent_v3_1_10() {
+        createInternationalScheduledPayment.testCreatingPaymentIsIdempotent()
+    }
 }

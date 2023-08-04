@@ -139,4 +139,15 @@ class CreateDomesticScheduledPaymentTest(val tppResource: CreateTppCallback.TppR
     fun shouldCreateDomesticPayments_throwsInvalidRisk_v3_1_10() {
         createDomesticScheduledPayment.shouldCreateDomesticScheduledPayments_throwsInvalidRiskTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateDomesticPayment", "CreateDomesticPaymentConsent", "GetDomesticPaymentConsent"],
+        apis = ["domestic-payments", "domestic-payment-consents"]
+    )
+    @Test
+    fun testCreatingPaymentIsIdempotent_v3_1_10() {
+        createDomesticScheduledPayment.testCreatingPaymentIsIdempotent()
+    }
 }

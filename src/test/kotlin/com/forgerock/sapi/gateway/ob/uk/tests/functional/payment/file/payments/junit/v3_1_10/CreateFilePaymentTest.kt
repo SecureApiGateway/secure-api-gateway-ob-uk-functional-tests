@@ -116,4 +116,15 @@ class CreateFilePaymentTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldCreateFilePayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_v3_1_10() {
         createFilePayment.shouldCreateFilePayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest()
     }
+
+    @EnabledIfVersion(
+        type = "payments",
+        apiVersion = "v3.1.10",
+        operations = ["CreateFilePayment", "CreateFilePaymentConsent", "GetFilePaymentConsent"],
+        apis = ["file-payments", "file-payment-consents"]
+    )
+    @Test
+    fun testCreatingPaymentIsIdempotent_v3_1_10() {
+        createFilePayment.testCreatingPaymentIsIdempotent()
+    }
 }

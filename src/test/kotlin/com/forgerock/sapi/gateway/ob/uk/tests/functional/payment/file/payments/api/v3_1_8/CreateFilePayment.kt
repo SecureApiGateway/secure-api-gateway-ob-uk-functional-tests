@@ -8,13 +8,13 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
-import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory.Companion.mapOBWriteFileConsentResponse4DataInitiationToOBWriteFile2DataInitiation
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.file.payments.consents.api.v3_1_8.CreateFilePaymentsConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
 import java.math.BigDecimal
+import java.util.UUID
 
 class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -329,6 +329,38 @@ class CreateFilePayment(val version: OBVersion, val tppResource: CreateTppCallba
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(401)
         assertThat((exception.cause as FuelError).response.responseMessage).isEqualTo(com.forgerock.sapi.gateway.ob.uk.framework.errors.UNAUTHORIZED)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            fileType.type
+        )
+        val (consent, authorizationToken) = createFilePaymentConsentsApi.createFilePaymentConsentAndAuthorize(
+            consentRequest, fileContent, fileType.mediaType
+        )
+        val paymentSubmissionRequest = createFilePaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteFileResponse3 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(firstPaymentResponse).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(firstPaymentResponse.data.charges).isEmpty()
+        Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.filePaymentId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteFileResponse3 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitFilePayment(consentRequest: OBWriteFileConsent3, fileContent: String,

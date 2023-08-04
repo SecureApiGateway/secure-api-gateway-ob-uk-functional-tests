@@ -16,6 +16,7 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
+import java.util.UUID
 
 class CreateInternationalScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -401,6 +402,32 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteInternationalScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(firstPaymentResponse).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(firstPaymentResponse.data.charges).isEmpty()
+        Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.internationalScheduledPaymentId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteInternationalScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse5 {

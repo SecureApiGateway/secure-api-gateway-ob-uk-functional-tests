@@ -1,11 +1,5 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.scheduled.payments.api.v3_1_8
 
-import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.isEmpty
-import assertk.assertions.isEqualTo
-import assertk.assertions.isNotEmpty
-import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
@@ -17,9 +11,10 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.scheduled.payments.consents.api.v3_1_8.CreateDomesticScheduledPaymentsConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
+import java.util.UUID
 
 class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -75,7 +70,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         consentRequest.data.initiation.instructedAmount = OBWriteDomestic2DataInitiationInstructedAmount()
             .amount("123123")
@@ -100,7 +95,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // Submit first payment
         submitPaymentForConsent(consentResponse.data.consentId, consentRequest, accessTokenAuthorizationCode)
@@ -126,7 +121,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -154,7 +149,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -183,7 +178,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -212,7 +207,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -241,7 +236,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -276,7 +271,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse.data.consentId, consentRequest)
 
@@ -316,7 +311,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.data.consentId).isNotEmpty()
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
+        assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
 
         // When
 
@@ -331,6 +326,32 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val (consent, authorizationToken) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteDomesticScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        assertThat(firstPaymentResponse).isNotNull()
+        assertThat(firstPaymentResponse.data).isNotNull()
+        assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        assertThat(firstPaymentResponse.data.charges).isEmpty()
+        assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.domesticScheduledPaymentId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteDomesticScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitPayment(consentRequest: OBWriteDomesticScheduledConsent4): OBWriteDomesticScheduledResponse5 {

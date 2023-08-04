@@ -19,6 +19,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
+import java.util.UUID
 
 class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -362,6 +363,32 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_RISK)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+    }
+
+    fun testCreatingPaymentIsIdempotent() {
+        val consentRequest =
+            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val (consent, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
+            consentRequest
+        )
+        val paymentSubmissionRequest = createStandingOrderRequest(consent.data.consentId, consentRequest)
+
+        val idempotencyKey = UUID.randomUUID().toString()
+        val firstPaymentResponse:OBWriteDomesticStandingOrderResponse6 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(firstPaymentResponse).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data).isNotNull()
+        Assertions.assertThat(firstPaymentResponse.data.consentId).isNotEmpty()
+        Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.domesticStandingOrderId)
+
+        // Submit again with same key
+        val secondPaymentResponse:OBWriteDomesticStandingOrderResponse6 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+            .addIdempotencyKeyHeader(idempotencyKey)
+            .sendRequest()
+
+        Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
     fun submitStandingOrder(consentRequest: OBWriteDomesticStandingOrderConsent5): OBWriteDomesticStandingOrderResponse6 {
