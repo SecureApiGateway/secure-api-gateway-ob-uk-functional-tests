@@ -99,7 +99,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         assertThat(consentResponse2.data.consentId).isNotEmpty()
         Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
 
-        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
+        assertThat(consentResponse1.data.consentId).isEqualTo(consentResponse2.data.consentId)
     }
 
     fun createFilePaymentConsents_NoIdempotencyKey_throwsBadRequestTest() {
@@ -155,7 +155,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
         // Then
         assertThat(response1).isNotNull()
         assertThat(response2).isNotNull()
-        assertThat(response1).equals(response2)
+        assertThat(response1).isEqualTo(response2)
     }
 
     fun submitFile_NoIdempotencyKey_throwsBadRequestTest() {
@@ -352,6 +352,20 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
 
         // Then
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.CONSENT_NOT_AUTHORISED)
+    }
+
+    fun failToCreateConsentForUnsupportedFileType() {
+        val fileContent = PaymentFactory.getFileAsString(PaymentFactory.FilePaths.XML_FILE_PATH)
+        val fileType = PaymentFileType.UK_OBIE_PAIN_001_001_008
+        val consentRequest = PaymentFactory.createOBWriteFileConsent3WithFileInfo(
+            fileContent,
+            "FR_FORMAT_123"
+        )
+
+        val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
+            sendSubmitFileRequest(consentRequest, fileContent, fileType.mediaType)
+        }
+        assertThat(exception.message.toString()).contains("\"ErrorCode\":\"OBRI.Request.File.Payment.FileType.Not.Supported\"")
     }
 
     fun createFilePaymentConsent(consentRequest: OBWriteFileConsent3): OBWriteFileConsentResponse4 {
