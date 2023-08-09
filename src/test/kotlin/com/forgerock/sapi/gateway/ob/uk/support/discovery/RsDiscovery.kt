@@ -351,8 +351,7 @@ data class RsDiscovery(
                     val CreateFundsConfirmation: String,
                     val GetFundsConfirmationConsent: String,
                     val DeleteFundsConfirmationConsent: String,
-                    val CreateFundsConfirmationConsent: String,
-                    val GetFundsConfirmation: String
+                    val CreateFundsConfirmationConsent: String
                 )
             }
         }

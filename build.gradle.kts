@@ -314,6 +314,16 @@ for (apiVersion in apiVersions) {
         failFast = false
     }
 
+    /* FUNDS CONFIRMATIONS TESTS */
+    tasks.register<Test>("funds_confirmations_$apiVersion") {
+        group = "funds-confirmations-tests"
+        description = "Runs the funds confirmation tests with the version $apiVersion"
+        filter {
+            includeTestsMatching(packagePrefix + "funds" + suffixPattern + apiVersion)
+        }
+        failFast = false
+    }
+
     /* ALL IMPLEMENTED TESTS */
     tasks.register<Test>("tests_$apiVersion") {
         group = "tests"
@@ -328,6 +338,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.international.standing.orders" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "funds" + suffixPattern + apiVersion)
         }
         failFast = false
     }
