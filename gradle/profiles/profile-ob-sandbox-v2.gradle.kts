@@ -42,8 +42,8 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
 // servers
 val environment by extra("ob-sandbox-v2")
 
-val platformServer by extra("https://openam-sapig-relenvs.forgeblocks.com")
-val amCookieName by extra("866fd071376b506")
+val platformServer by extra("https://openam-sapig-relenvsv2.forgeblocks.com")
+val amCookieName by extra("d67f173411915b2")
 val igServer by extra("https://sapig.$environment.forgerock.financial")
 
 // PSU User configuration
