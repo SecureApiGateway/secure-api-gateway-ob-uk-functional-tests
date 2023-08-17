@@ -14,5 +14,5 @@ gradle/profiles/*
 !gradle/profiles/profile-fritss-itssdev.gradle.kts
 !gradle/profiles/profile-devops.gradle.kts
 !gradle/profiles/profile-nightly.gradle.kts
-
+!gradle/profiles/profile-ob-sandbox-v*.kts
 /certificates
