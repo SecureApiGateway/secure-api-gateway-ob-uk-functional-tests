@@ -1,5 +1,5 @@
 /* ************************************************* */
-/* profile for ob-sandbox-v1 (Release Environment)   */
+/* profile for ob-sandbox-v3 (Release Environment)   */
 /* ************************************************* */
 
 // Truststore configuration
