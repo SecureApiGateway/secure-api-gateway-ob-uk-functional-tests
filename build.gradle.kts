@@ -75,13 +75,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:2.0.0"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:2.0.3"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-error")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
+    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-rs-resource-store-datamodel:2.0.2")
 
     testImplementation("org.bouncycastle:bcprov-jdk15on:1.70")
     testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
@@ -339,6 +340,7 @@ for (apiVersion in apiVersions) {
             includeTestsMatching(packagePrefix + "payment.file.payments" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + apiVersion)
             includeTestsMatching(packagePrefix + "funds" + suffixPattern + apiVersion)
+            includeTestsMatching(packagePrefix + "events" + suffixPattern + apiVersion)
         }
         failFast = false
     }
@@ -349,6 +351,15 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
     description = "Runs the domestic vrps tests with the version v3_1_10"
     filter {
         includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v3_1_10")
+    }
+    failFast = false
+}
+
+tasks.register<Test>("events_v3_1_10") {
+    group = "events-tests"
+    description = "Runs the events notification tests with the version v3_1_10"
+    filter {
+        includeTestsMatching(packagePrefix + "events" + suffixPattern + "v3_1_10")
     }
     failFast = false
 }
