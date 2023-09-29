@@ -31,7 +31,12 @@ val OB_TPP_EIDAS_SIGNING_KEY_PATH = System.getenv("eidasOBSealKey") ?: "./certs/
 val OB_TPP_EIDAS_SIGNING_PEM_PATH = System.getenv("eidasOBSealPem") ?: "./certs/OBSeal.pem"
 val OB_TPP_EIDAS_TRANSPORT_KEY_PATH = System.getenv("eidasOBWacKey") ?: "./certs/OBWac.key"
 val OB_TPP_EIDAS_TRANSPORT_PEM_PATH = System.getenv("eidasOBWacPem") ?: "./certs/OBWac.pem"
+val OB_TPP_EIDAS_TRANSPORT_CERT_SUBJECT_DN: String? = System.getenv("eidasOBWacSubjectDN")
 
 val ISS_CLAIM_VALUE = System.getenv("obOrganisationId") + "/" + System.getenv("obSoftwareId")
 
 val REDIRECT_URI = System.getenv("redirectUri") ?: "https://www.google.co.uk"
+
+const val AUTH_METHOD_TLS_CLIENT = "tls_client_auth"
+const val AUTH_METHOD_PRIVATE_KEY_JWT = "private_key_jwt"
+val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVATE_KEY_JWT
