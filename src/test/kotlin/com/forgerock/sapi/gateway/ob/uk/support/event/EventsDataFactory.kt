@@ -25,9 +25,9 @@ class EventsDataFactory {
 
         fun aValidFRDataEvent(
                 events: List<OBEventNotification1>,
-                apiClientId: String
+                client_id: String
         ): FRDataEvent {
-            return FRDataEvent(apiClientId, events)
+            return FRDataEvent(client_id, events)
         }
 
         fun aValidOBEventNotification1(version: OBVersion): OBEventNotification1 {
@@ -63,7 +63,7 @@ class EventsDataFactory {
         }
 
         data class FRDataEvent(
-                val apiClientId: String,
+                val client_id: String,
                 val events: List<OBEventNotification1>
         )
     }
