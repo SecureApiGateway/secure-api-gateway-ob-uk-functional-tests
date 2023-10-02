@@ -63,6 +63,5 @@ val eidasOBSealKey by extra("./certificates/OBSeal.key")
 val eidasOBSealPem by extra("./certificates/OBSeal.pem")
 val eidasOBWacKey by extra("./certificates/OBWac.key")
 val eidasOBWacPem by extra("./certificates/OBWac.pem")
-val eidasOBWacSubjectDN by extra("CN=0015800001041REAAY, OID.2.5.4.97=PSDGB-OB-Unknown0015800001041REAAY, O=FORGEROCK LIMITED, C=GB")
 
 val redirectUri by extra("https://www.google.co.uk")

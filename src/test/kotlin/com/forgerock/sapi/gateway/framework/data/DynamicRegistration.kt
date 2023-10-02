@@ -1,8 +1,6 @@
 package com.forgerock.sapi.gateway.framework.data
 
-import com.forgerock.sapi.gateway.framework.configuration.AUTH_METHOD_TLS_CLIENT
 import com.forgerock.sapi.gateway.framework.configuration.CLIENT_AUTH_METHOD
-import com.forgerock.sapi.gateway.framework.configuration.OB_TPP_EIDAS_TRANSPORT_CERT_SUBJECT_DN
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.asDiscovery
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
@@ -30,7 +28,7 @@ data class RegistrationRequest(
         val subject_type: String = "pairwise",
         val token_endpoint_auth_method: String = CLIENT_AUTH_METHOD,
         val token_endpoint_auth_signing_alg: String = "PS256",
-        val tls_client_auth_subject_dn: String? = if (token_endpoint_auth_method == AUTH_METHOD_TLS_CLIENT) OB_TPP_EIDAS_TRANSPORT_CERT_SUBJECT_DN else null
+        val tls_client_auth_subject_dn: String
 )
 
 data class RegistrationResponse(
