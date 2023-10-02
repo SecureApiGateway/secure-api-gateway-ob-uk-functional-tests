@@ -33,6 +33,9 @@ import com.nimbusds.jwt.SignedJWT
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import java.io.File
+import java.io.InputStream
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
 import java.util.*
 
 
@@ -42,10 +45,18 @@ data class Tpp(
         val publicCert: String, val signingKid: String, val signingKeyPath: String
 ) {
 
+    private val transportCertSubjectDn = getTransportCertSubjectDN()
     var signingKey = com.forgerock.sapi.gateway.ob.uk.support.getRsaPrivateKey(signingKeyPath)!!
     var paymentApiClient = PaymentApiClient(this)
     lateinit var registrationResponse: RegistrationResponse
     lateinit var accessToken: String
+
+    private fun getTransportCertSubjectDN(): String {
+        val certStream: InputStream = File(publicCert).inputStream()
+        val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
+        val cert: X509Certificate = cf.generateCertificate(certStream) as X509Certificate
+        return cert.subjectX500Principal.name
+    }
 
     fun generateSsa(): String {
         val jws = getJWS()
@@ -85,7 +96,8 @@ data class Tpp(
     fun dynamicRegistration(
         registrationRequest: RegistrationRequest = RegistrationRequest(
             software_statement = generateSsa(),
-            iss = OB_SOFTWARE_ID
+            iss = OB_SOFTWARE_ID,
+            tls_client_auth_subject_dn = transportCertSubjectDn
         )
     ): RegistrationResponse {
         val signed = signRegistrationRequest(registrationRequest)
