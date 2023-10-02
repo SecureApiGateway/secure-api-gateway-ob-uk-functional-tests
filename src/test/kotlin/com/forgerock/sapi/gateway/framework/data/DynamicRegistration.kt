@@ -6,27 +6,27 @@ import com.forgerock.sapi.gateway.framework.configuration.OB_TPP_EIDAS_TRANSPORT
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.asDiscovery
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
-
 data class RegistrationRequest(
+        val software_statement: String,
         val iss: String = com.forgerock.sapi.gateway.ob.uk.framework.configuration.OB_SOFTWARE_ID,
         val exp: Long = (System.currentTimeMillis() / 1000) + 180,
         val grant_types: List<String> = asDiscovery.grant_types_supported,
         val id_token_signed_response_alg: String = "PS256",
         val redirect_uris: List<String> = listOf(REDIRECT_URI),
         val request_object_encryption_alg: String = "RSA-OAEP-256",
-        val request_object_encryption_enc: String? = asDiscovery.request_object_encryption_enc_values_supported[3],
+        val request_object_encryption_enc: String? = null,
         val request_object_signing_alg: String = "PS256",
         val response_types: List<String> = listOf("code id_token"),
         val scope: String = asDiscovery.scopes_supported.intersect(
-        listOf(
-            OBConstants.Scope.OPENID,
-            OBConstants.Scope.ACCOUNTS,
-            OBConstants.Scope.PAYMENTS,
-            OBConstants.Scope.FUNDS_CONFIRMATIONS,
-            OBConstants.Scope.EVENT_POLLING
-        )
-    ).joinToString(separator = " "),
-        val software_statement: String,
+            listOf(
+                OBConstants.Scope.OPENID,
+                OBConstants.Scope.ACCOUNTS,
+                OBConstants.Scope.PAYMENTS,
+                OBConstants.Scope.FUNDS_CONFIRMATIONS,
+                OBConstants.Scope.EVENT_POLLING
+            )
+        ).joinToString(separator = " "),
+
         val subject_type: String = "pairwise",
         val token_endpoint_auth_method: String = CLIENT_AUTH_METHOD,
         val token_endpoint_auth_signing_alg: String = "PS256",

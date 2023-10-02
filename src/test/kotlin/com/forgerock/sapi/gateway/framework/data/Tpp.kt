@@ -102,7 +102,7 @@ data class Tpp(
         return Jwts.builder()
             .setHeaderParam("kid", signingKid)
             .setPayload(GsonUtils.gson.toJson(registrationRequest))
-            .signWith(signingKey, SignatureAlgorithm.forName(asDiscovery.request_object_signing_alg_values_supported[0]))
+            .signWith(signingKey, SignatureAlgorithm.forName(registrationRequest.request_object_signing_alg))
             .compact()
     }
 
