@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.framework.data
 
 import com.forgerock.sapi.gateway.framework.cert.loadRsaPrivateKey
+import com.forgerock.sapi.gateway.framework.configuration.AUTH_METHOD_PRIVATE_KEY_JWT
 import com.forgerock.sapi.gateway.framework.configuration.OB_TPP_EIDAS_SIGNING_KEY_PATH
 import com.forgerock.sapi.gateway.framework.configuration.OB_TPP_OB_EIDAS_TEST_SIGNING_KID
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
@@ -20,7 +21,6 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.Response
-import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.result.Result
 import com.nimbusds.jose.JOSEObjectType
@@ -102,7 +102,7 @@ data class Tpp(
         return Jwts.builder()
             .setHeaderParam("kid", signingKid)
             .setPayload(GsonUtils.gson.toJson(registrationRequest))
-            .signWith(signingKey, SignatureAlgorithm.forName(asDiscovery.request_object_signing_alg_values_supported[0]))
+            .signWith(signingKey, SignatureAlgorithm.forName(registrationRequest.request_object_signing_alg))
             .compact()
     }
 
@@ -164,23 +164,27 @@ data class Tpp(
     }
 
     fun getClientCredentialsAccessToken(scopes: String): AccessToken {
-        val requestParameters = ClientCredentialData(
-            sub = registrationResponse.client_id,
-            iss = registrationResponse.client_id,
-            aud = asDiscovery.issuer
-        )
-        val signedPayload = signPayload(requestParameters, signingKey, signingKid)
-        val body = listOf(
+        val body = mutableListOf(
+            "client_id" to registrationResponse.client_id,
             "grant_type" to GrantTypes.CLIENT_CREDENTIALS,
             "redirect_uri" to REDIRECT_URI,
-            "client_assertion_type" to Companion.CLIENT_ASSERTION_TYPE,
             "scope" to scopes,
-            "client_assertion" to signedPayload
         )
-        val (_, accessTokenResponse, result) = Fuel.post(asDiscovery.token_endpoint, parameters = body)
-            .authentication()
-            .basic(registrationResponse.client_id, registrationResponse.client_secret!!)
-            .responseObject<AccessToken>()
+
+        if (registrationResponse.token_endpoint_auth_method == AUTH_METHOD_PRIVATE_KEY_JWT) {
+            val requestParameters = ClientCredentialData(
+                sub = registrationResponse.client_id,
+                iss = registrationResponse.client_id,
+                aud = asDiscovery.issuer
+            )
+            val signedPayload = signPayload(requestParameters, signingKey, signingKid)
+            body.addAll(
+                listOf("client_assertion_type" to Companion.CLIENT_ASSERTION_TYPE,
+                       "client_assertion" to signedPayload)
+            )
+        }
+
+        val (_, accessTokenResponse, result) = Fuel.post(asDiscovery.token_endpoint, parameters = body).responseObject<AccessToken>()
         if (!accessTokenResponse.isSuccessful) throw AssertionError(
             "Could not get access token: \n" + result.component2()?.errorData?.toString(
                 Charsets.UTF_8

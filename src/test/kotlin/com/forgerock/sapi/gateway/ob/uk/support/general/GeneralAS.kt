@@ -1,5 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.support.general
 
+import com.forgerock.sapi.gateway.framework.configuration.AUTH_METHOD_PRIVATE_KEY_JWT
 import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
 import com.forgerock.sapi.gateway.framework.configuration.PLATFORM_SERVER
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
@@ -169,16 +170,21 @@ open class GeneralAS {
             iss = registrationResponse.client_id,
             aud = asDiscovery.issuer
         )
-        val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
-
-        val body = listOf(
-            "grant_type" to "authorization_code",
+        val body = mutableListOf(
+            "client_id" to registrationResponse.client_id,
+            "grant_type" to GrantTypes.AUTHORIZATION_CODE,
             "code" to authCode,
             "redirect_uri" to REDIRECT_URI,
-            "client_assertion_type" to CLIENT_ASSERTION_TYPE,
-            "client_assertion" to signedPayload,
-            "gateway_assertion" to GATEAWAY_ASSERTION
         )
+
+        if (registrationResponse.token_endpoint_auth_method == AUTH_METHOD_PRIVATE_KEY_JWT) {
+            val signedPayload = signPayload(requestParameters, tpp.signingKey, tpp.signingKid)
+            body.addAll(
+                listOf("client_assertion_type" to CLIENT_ASSERTION_TYPE,
+                       "client_assertion" to signedPayload)
+            )
+        }
+
         val (_, response, result) = Fuel.post(asDiscovery.token_endpoint, body)
             .header("Content-Type", "application/x-www-form-urlencoded")
             .responseObject<AccessToken>()
@@ -206,8 +212,6 @@ open class GeneralAS {
     }
 
     companion object {
-        const val GATEAWAY_ASSERTION =
-            "eyJ0eXAiOiJKV1QiLCJraWQiOiJTbzZlSUR2NEozbEE4OEo5cE9jeFlFeExBVk09IiwiYWxnIjoiUFMyNTYifQ.eyJzdWIiOiJiNjg0MTQ2Zi1mYWE2LTQ2NGQtODA0ZS1iMjUyZmFiYTllMzgiLCJjdHMiOiJPQVVUSDJfR1JBTlRfU0VUIiwiYXV0aF9sZXZlbCI6MCwiYXVkaXRUcmFja2luZ0lkIjoiMWIyOWFhN2YtYjExMC00ODI2LTgwNWQtYjgxYzI1YTk0MDYyLTI4Mjg3NzkiLCJzdWJuYW1lIjoiYjY4NDE0NmYtZmFhNi00NjRkLTgwNGUtYjI1MmZhYmE5ZTM4IiwiaXNzIjoiaHR0cHM6Ly9vcGVuYW0tZm9yZ2Vyb2NrLXNlY3VyZWJhbmtpbmdhY2NlbGVyYXRvLmZvcmdlYmxvY2tzLmNvbS9hbS9vYXV0aDIvcmVhbG1zL3Jvb3QvcmVhbG1zL2FscGhhIiwidG9rZW5OYW1lIjoiYWNjZXNzX3Rva2VuIiwidG9rZW5fdHlwZSI6IkJlYXJlciIsImF1dGhHcmFudElkIjoicnhSZlBFZzBoWWZITHJ6Y21VY2VZdjB6YngwLmkxUElpcUhUeEl1Uy1lblozUEJ2SXJUeDM2OCIsIm5vbmNlIjoiMTBkMjYwYmYtYTdkOS00NDRhLTkyZDktN2I3YTVmMDg4MjA4IiwiYXVkIjoiZmUzYzI2ZTEtNzcwZS00ZmY5LThiM2EtMTg2YjhiZGMyNDA0IiwibmJmIjoxNjM2NTM5ODUwLCJncmFudF90eXBlIjoiYXV0aG9yaXphdGlvbl9jb2RlIiwic2NvcGUiOlsib3BlbmlkIiwiYWNjb3VudHMiXSwiYXV0aF90aW1lIjoxNjM2NTM5ODI5LCJjbGFpbXMiOiJ7XCJpZF90b2tlblwiOntcImFjclwiOntcInZhbHVlXCI6XCJ1cm46b3BlbmJhbmtpbmc6cHNkMjpjYVwiLFwiZXNzZW50aWFsXCI6dHJ1ZX0sXCJvcGVuYmFua2luZ19pbnRlbnRfaWRcIjp7XCJ2YWx1ZVwiOlwiQUFDXzM0NWJlMTA2LWMwNTAtNDg4OC1iYjliLWZhZGQwMTkzYTY3Y1wiLFwiZXNzZW50aWFsXCI6dHJ1ZX19fSIsInJlYWxtIjoiL2FscGhhIiwiY25mIjp7Ing1dCNTMjU2IjoickxvQnJmcHJhZVZMeXh1V0szWUgyUFZURVJ6VnhrY1FRelV6bXNIQmZvNCJ9LCJleHAiOjE2MzY4OTk4NTAsImlhdCI6MTYzNjUzOTg1MCwiZXhwaXJlc19pbiI6MzYwMDAwLCJqdGkiOiJyeFJmUEVnMGhZZkhMcnpjbVVjZVl2MHpieDAuTU5pMVhDMll5akw4TW5SakZHU1VCLTctcFdNIn0.Qj-qpvZXfmGVlBdgIYZbqqAvk8wc3-FISaA99o4govcWvlDWeLDEBBx5CS8bnTIe7vG8QuXVtk80qI2FE8XH4H556FQlFPQ-PMAnwpVltraZ4_YoSP_BZ6z8cZDzp8mJgefnLqr_zajZLaj_xxFAP5G1Xbm_IBpJeZvd8RO6hNYCiMJ0chvz-61p1k-vjmJgWsnfjmKtO3b65nP5qUgDp0s2HtiD0dY-f5u2ONsgCzwTdyKNiivYsoloPw-CLRGSnH6rf98eAXnJo7pvR9BGZ1Njn-2McRRMc4kFneNyNOS7BSpfAXm4ivCv31sVzxrd5nv4rnoGdGKXFGY7NdEEUw"
         const val CLIENT_ASSERTION_TYPE = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
     }
 }
