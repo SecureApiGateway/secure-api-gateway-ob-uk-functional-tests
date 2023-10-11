@@ -5,7 +5,7 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.http.fuel.jsonBody
 import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
-import com.forgerock.sapi.gateway.rs.resource.store.datamodel.events.FREventMessages
+import com.forgerock.sapi.gateway.ob.uk.common.datamodel.event.FREventMessages
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import uk.org.openbanking.datamodel.event.OBEventPolling1
@@ -53,7 +53,7 @@ class EventNotificationRS {
 
     fun deleteImportedEvents(events: FREventMessages, adminAccessToken: String) {
         val apiClientId = events.apiClientId
-        events.events.forEach { event ->
+        events.obEventNotification1List.forEach { event ->
             deleteEvent(event.jti, apiClientId, adminAccessToken)
         }
     }

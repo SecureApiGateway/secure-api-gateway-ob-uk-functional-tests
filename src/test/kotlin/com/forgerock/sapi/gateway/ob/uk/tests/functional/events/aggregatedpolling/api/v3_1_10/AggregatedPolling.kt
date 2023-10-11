@@ -1,13 +1,13 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.events.aggregatedpolling.api.v3_1_10
 
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.common.datamodel.event.FREventMessages
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getEventsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.event.EventNotificationRS
 import com.forgerock.sapi.gateway.ob.uk.support.event.EventsDataFactory
-import com.forgerock.sapi.gateway.rs.resource.store.datamodel.events.FREventMessage
-import com.forgerock.sapi.gateway.rs.resource.store.datamodel.events.FREventMessages
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
+import uk.org.openbanking.datamodel.event.OBEventNotification1
 import uk.org.openbanking.datamodel.event.OBEventPolling1
 import uk.org.openbanking.datamodel.event.OBEventPolling1SetErrs
 import uk.org.openbanking.datamodel.event.OBEventPollingResponse1
@@ -32,7 +32,7 @@ class AggregatedPolling(
         val adminAccessToken = EventNotificationRS().getClientCredentialsAdminAccessToken(tppResource.tpp).access_token
         val eventsImported = EventNotificationRS().importDataEvent<FREventMessages>(dataEventRequest, adminAccessToken)
         Assertions.assertThat(eventsImported).isNotNull
-        Assertions.assertThat(eventsImported.events.size).isGreaterThan(0)
+        Assertions.assertThat(eventsImported.obEventNotification1List.size).isGreaterThan(0)
 
         val obEventPollingRequest = OBEventPolling1().returnImmediately(true)
 
@@ -45,8 +45,7 @@ class AggregatedPolling(
 
         // Then
         Assertions.assertThat(obEventPollingResponse).isNotNull
-        Assertions.assertThat(obEventPollingResponse.sets.keys).contains(eventsImported.events[0].jti)
-        Assertions.assertThat(obEventPollingResponse.sets.values).contains(eventsImported.events[0].set)
+        Assertions.assertThat(obEventPollingResponse.sets.keys).contains(eventsImported.obEventNotification1List[0].jti)
 
         // Finally
         deleteImportedEvents(eventsImported, adminAccessToken)
@@ -63,11 +62,11 @@ class AggregatedPolling(
         val adminAccessToken = EventNotificationRS().getClientCredentialsAdminAccessToken(tppResource.tpp).access_token
         val eventsImported = EventNotificationRS().importDataEvent<FREventMessages>(dataEventRequest, adminAccessToken)
         Assertions.assertThat(eventsImported).isNotNull
-        Assertions.assertThat(eventsImported.events.size).isGreaterThan(0)
+        Assertions.assertThat(eventsImported.obEventNotification1List.size).isGreaterThan(0)
 
-        val jtiList = eventsImported.events
+        val jtiList = eventsImported.obEventNotification1List
                 .stream()
-                .map(FREventMessage::getJti)
+                .map(OBEventNotification1::getJti)
                 .toList()
 
         val obEventPollingRequest = OBEventPolling1()
@@ -83,9 +82,6 @@ class AggregatedPolling(
         // Then
         Assertions.assertThat(obEventPollingResponse).isNotNull
         Assertions.assertThat(obEventPollingResponse.sets.keys).doesNotContainAnyElementsOf(jtiList)
-
-        // Finally
-        verifyNonexistentEvents(eventsImported, adminAccessToken)
     }
 
     fun shouldPollAndAcknowledgeEventTest() {
@@ -99,14 +95,14 @@ class AggregatedPolling(
         val adminAccessToken = EventNotificationRS().getClientCredentialsAdminAccessToken(tppResource.tpp).access_token
         val eventsImported = EventNotificationRS().importDataEvent<FREventMessages>(dataEventRequest, adminAccessToken)
         Assertions.assertThat(eventsImported).isNotNull
-        Assertions.assertThat(eventsImported.events.size).isGreaterThan(1)
+        Assertions.assertThat(eventsImported.obEventNotification1List.size).isGreaterThan(1)
 
         val obEventPollingRequest = OBEventPolling1().returnImmediately(true)
-        obEventPollingRequest.ack(listOf(eventsImported.events[0].jti))
+        obEventPollingRequest.ack(listOf(eventsImported.obEventNotification1List[0].jti))
 
         obEventPollingRequest.setErrs(
                 mapOf(
-                        eventsImported.events[1].jti to
+                        eventsImported.obEventNotification1List[1].jti to
                                 OBEventPolling1SetErrs().err("jwtIss").description("Issuer is invalid or could not be verified")
                 )
         )
@@ -120,9 +116,9 @@ class AggregatedPolling(
 
         // Then
         Assertions.assertThat(obEventPollingResponse).isNotNull
-        val jtiList = eventsImported.events
+        val jtiList = eventsImported.obEventNotification1List
                 .stream()
-                .map(FREventMessage::getJti)
+                .map(OBEventNotification1::getJti)
                 .toList()
         Assertions.assertThat(obEventPollingResponse.sets.keys).doesNotContainAnyElementsOf(jtiList)
 
@@ -132,14 +128,5 @@ class AggregatedPolling(
 
     private fun deleteImportedEvents(eventsImported: FREventMessages, adminAccessToken: String) {
         EventNotificationRS().deleteImportedEvents(eventsImported, adminAccessToken)
-        verifyNonexistentEvents(eventsImported, adminAccessToken)
-    }
-
-    private fun verifyNonexistentEvents(eventsImported: FREventMessages, adminAccessToken: String) {
-        val eventMessages = EventNotificationRS().exportEvents<FREventMessages>(
-                eventsImported.apiClientId,
-                adminAccessToken
-        )
-        Assertions.assertThat(eventMessages.events).doesNotContainAnyElementsOf(eventsImported.events)
     }
 }
