@@ -82,7 +82,6 @@ dependencies {
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-error")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
     testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
-//    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-rs-resource-store-datamodel:2.0.2")
 
     testImplementation("org.bouncycastle:bcprov-jdk15on:1.70")
     testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
