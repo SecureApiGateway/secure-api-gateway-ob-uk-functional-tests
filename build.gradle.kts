@@ -48,7 +48,7 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven("https://www.jitpack.io")
-    maven("https://maven.forgerock.org/repo/community")
+    maven("https://maven.forgerock.org/artifactory/community")
 }
 
 configurations.all {
