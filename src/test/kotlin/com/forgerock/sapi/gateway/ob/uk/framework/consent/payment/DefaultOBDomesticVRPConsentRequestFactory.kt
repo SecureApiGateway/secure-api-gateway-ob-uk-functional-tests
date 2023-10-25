@@ -1,8 +1,7 @@
-package com.forgerock.sapi.gateway.ob.uk.framework.consent
+package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
-import kotlin.reflect.KClass
 
 /**
  * Default factory implementation which is used by the functional tests OOTB.

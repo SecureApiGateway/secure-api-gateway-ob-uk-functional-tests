@@ -1,4 +1,4 @@
-package com.forgerock.sapi.gateway.ob.uk.framework.consent
+package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
 
@@ -8,7 +8,7 @@ import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
 interface OBDomesticVRPConsentRequestFactory {
 
     /**
-     * Creates a valid consent request object that can be created in the test faciltiy bank system
+     * Creates a valid consent request object that can be created in the test facility bank system
      */
     fun createConsent(): OBDomesticVRPConsentRequest
 

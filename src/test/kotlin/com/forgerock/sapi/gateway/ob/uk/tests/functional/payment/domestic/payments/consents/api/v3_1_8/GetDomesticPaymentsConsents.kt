@@ -6,6 +6,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
@@ -15,10 +17,12 @@ class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: Creat
 
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
+    private val consentFactory: OBWriteDomesticConsent4Factory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticConsent4Factory::class.java)
 
     fun shouldGetDomesticPaymentsConsents() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         // When
         val consentResponse = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)
         // Then
@@ -31,7 +35,7 @@ class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: Creat
 
     fun shouldGetDomesticPaymentsConsents_withoutOptionalDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.debtorAccount(null)
         // when
         val consentResponse = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsent(consentRequest)

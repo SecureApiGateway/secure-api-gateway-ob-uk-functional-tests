@@ -7,7 +7,7 @@ import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
-import com.forgerock.sapi.gateway.ob.uk.framework.consent.OBDomesticVRPConsentRequestFactory
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBDomesticVRPConsentRequestFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -22,7 +22,8 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
-    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBDomesticVRPConsentRequestFactory::class.java)
+    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBDomesticVRPConsentRequestFactory::class.java)
 
     fun createDomesticVrpConsent() {
         // Given

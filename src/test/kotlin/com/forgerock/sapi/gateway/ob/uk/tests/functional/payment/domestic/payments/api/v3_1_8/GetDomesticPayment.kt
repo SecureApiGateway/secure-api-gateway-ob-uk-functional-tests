@@ -7,6 +7,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -26,10 +28,12 @@ class GetDomesticPayment(
     private val createDomesticPaymentApi = CreateDomesticPayment(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBWriteDomesticConsent4Factory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticConsent4Factory::class.java)
 
     fun getDomesticPaymentsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val paymentResponse = createDomesticPaymentApi.submitPayment(consentRequest)
 
         // When
@@ -45,7 +49,7 @@ class GetDomesticPayment(
 
     fun shouldGetDomesticPayments_withReadRefundTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
 
         val (consent, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(

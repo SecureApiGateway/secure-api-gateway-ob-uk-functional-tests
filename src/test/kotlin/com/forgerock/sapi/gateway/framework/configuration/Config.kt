@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.framework.configuration
 
 import com.forgerock.sapi.gateway.ob.uk.support.registerPSU
 import com.forgerock.sapi.gateway.ob.uk.support.registration.UserRegistrationRequest
+import java.lang.Boolean
 
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
 val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financial"
@@ -41,4 +42,8 @@ const val AUTH_METHOD_PRIVATE_KEY_JWT = "private_key_jwt"
 val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVATE_KEY_JWT
 
 // Fully qualified class name of the class to use to create OBDomesticVRPConsentRequest objects
-val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.DefaultOBDomesticVRPConsentRequestFactory"
+val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBDomesticVRPConsentRequestFactory"
+val OBWriteDomesticConsent4FactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticConsent4Factory"
+
+val paymentContextCodeIsRequired = Boolean.parseBoolean(System.getenv("paymentContextCodeIsRequired"))
+
