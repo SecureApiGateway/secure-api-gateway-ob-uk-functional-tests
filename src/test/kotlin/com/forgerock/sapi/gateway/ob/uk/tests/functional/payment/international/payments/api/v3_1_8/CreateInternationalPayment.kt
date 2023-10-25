@@ -5,6 +5,8 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
@@ -13,7 +15,6 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 import java.util.UUID
 
 class CreateInternationalPayment(
@@ -24,10 +25,13 @@ class CreateInternationalPayment(
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateInternationalPayment
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalConsent5Factory::class.java
+    )
 
     fun createInternationalPayment_rateType_AGREED_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         // When
         val result = submitPayment(consentRequest)
@@ -45,7 +49,7 @@ class CreateInternationalPayment(
 
     fun createInternationalPayment_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -67,7 +71,7 @@ class CreateInternationalPayment(
 
     fun createInternationalPayment_withDebtorAccount_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -98,7 +102,7 @@ class CreateInternationalPayment(
 
     fun createInternationalPayment_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -120,7 +124,7 @@ class CreateInternationalPayment(
     fun createInternationalPayment_mandatoryFields_Test() {
         // Given
         val consentRequest =
-            OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
 
         // When
         val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
@@ -141,7 +145,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsInvalidInitiation_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
@@ -169,7 +173,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsInternationalPaymentAlreadyExists_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
@@ -197,7 +201,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsSendInvalidFormatDetachedJws_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -222,7 +226,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsNoDetachedJws_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -246,7 +250,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -271,7 +275,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsSendInvalidKidDetachedJws_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -296,7 +300,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -327,7 +331,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -365,7 +369,7 @@ class CreateInternationalPayment(
 
     fun shouldCreateInternationalPayments_throwsInvalidRiskTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -391,7 +395,7 @@ class CreateInternationalPayment(
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )

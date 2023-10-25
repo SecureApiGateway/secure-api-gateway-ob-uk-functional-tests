@@ -6,11 +6,12 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class GetInternationalPaymentsConsents(
     val version: OBVersion,
@@ -18,10 +19,13 @@ class GetInternationalPaymentsConsents(
 ) {
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalConsent5Factory::class.java
+    )
 
     fun shouldGetInternationalPaymentsConsents_rateType_AGREED_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         // When
         val consentResponse = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
@@ -36,7 +40,7 @@ class GetInternationalPaymentsConsents(
 
     fun shouldGetInternationalPaymentsConsents_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -52,7 +56,7 @@ class GetInternationalPaymentsConsents(
 
     fun shouldGetInternationalPaymentsConsents_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null

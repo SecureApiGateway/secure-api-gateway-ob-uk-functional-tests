@@ -6,6 +6,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -14,7 +16,6 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 
 class GetInternationalPayment(
     val version: OBVersion,
@@ -23,10 +24,13 @@ class GetInternationalPayment(
     private val createInternationalPayment = CreateInternationalPayment(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalConsent5Factory::class.java
+    )
 
     fun getInternationalPayments_rateType_AGREED_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         val paymentResponse = createInternationalPayment.submitPayment(consentRequest)
 
@@ -44,7 +48,7 @@ class GetInternationalPayment(
 
     fun getInternationalPayments_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -63,7 +67,7 @@ class GetInternationalPayment(
 
     fun getInternationalPayments_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -83,7 +87,7 @@ class GetInternationalPayment(
     fun getInternationalPayments_mandatoryFields_Test() {
         // Given
         val consentRequest =
-            OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
 
         val paymentResponse = createInternationalPayment.submitPayment(consentRequest)
 
@@ -100,7 +104,7 @@ class GetInternationalPayment(
 
     fun shouldGetInternationalPayments_withReadRefund_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
 
         val paymentResponse = createInternationalPayment.submitPayment(consentRequest)
