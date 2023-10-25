@@ -26,7 +26,8 @@ class CreateDomesticPayment(
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateDomesticPayment
-    private val consentFactory: OBWriteDomesticConsent4Factory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticConsent4Factory::class.java)
+    private val consentFactory: OBWriteDomesticConsent4Factory =
+        ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticConsent4Factory::class.java)
 
     fun createDomesticPaymentsTest() {
         // Given

@@ -5,6 +5,9 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
@@ -22,10 +25,12 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateDomesticScheduledPayment
+    private val consentFactory =
+        ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticScheduledConsent4Factory::class.java)
 
     fun createDomesticScheduledPaymentsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         // When
         val paymentResponse = submitPayment(consentRequest)
 
@@ -39,7 +44,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun createDomesticScheduledPaymentsWithDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -63,7 +68,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsInvalidInitiation() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -88,7 +93,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsPaymentAlreadyExists() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -113,7 +118,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidFormatDetachedJws() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -141,7 +146,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -170,7 +175,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -199,7 +204,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -228,7 +233,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -263,7 +268,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -303,7 +308,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticScheduledPayments_throwsInvalidRiskTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -329,7 +334,7 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
