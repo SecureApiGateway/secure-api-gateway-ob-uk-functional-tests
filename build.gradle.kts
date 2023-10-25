@@ -161,6 +161,12 @@ project.extra.properties.forEach { (key, _) ->
     }
 }
 
+configure<SourceSetContainer> {
+    named("test") {
+        java.srcDir("src/test/kotlin")
+    }
+}
+
 /**
  ********************************************************************
  * TASKS

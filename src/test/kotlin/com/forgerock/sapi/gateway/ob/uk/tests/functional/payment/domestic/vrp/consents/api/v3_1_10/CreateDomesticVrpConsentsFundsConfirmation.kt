@@ -6,6 +6,8 @@ import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.OBDomesticVRPConsentRequestFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -17,7 +19,6 @@ import uk.org.openbanking.datamodel.vrp.OBPAFundsAvailableResult1
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequest
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequestData
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationResponse
-import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 
 class CreateDomesticVrpConsentsFundsConfirmation(
     val version: OBVersion,
@@ -26,10 +27,11 @@ class CreateDomesticVrpConsentsFundsConfirmation(
     private val createDomesticVrpConsentsApi = CreateDomesticVrpConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBDomesticVRPConsentRequestFactory::class.java)
 
     fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_NotAvailable() {
         // Given
-        val consentRequest = aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("1000000")
 
         // When
@@ -45,7 +47,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
 
     fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_throwsWrongGrantType() {
         // Given
-        val consentRequest = aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         val (consent, _) = createDomesticVrpConsentsApi.createDomesticVrpConsentAndAuthorize(
             consentRequest
         )
@@ -65,7 +67,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
 
     fun shouldCreateDomesticVRPConsentsConsentIdFundsConfirmation_available() {
         // Given
-        val consentRequest = aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")
         // When
         val (result, consent) = createConsentAndPostFundsConfirmation(consentRequest)
@@ -80,7 +82,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
 
     fun shouldFailIfAccessTokenConsentIdDoesNotMatchFundsConfPostRequestConsentId() {
         // Submit a valid funds conf request first
-        val consentRequest = aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.controlParameters.maximumIndividualAmount.amount("5")
         val (result, firstConsentResponse) = createConsentAndPostFundsConfirmation(consentRequest)
         assertThat(result).isNotNull()

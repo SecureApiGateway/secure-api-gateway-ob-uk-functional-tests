@@ -39,3 +39,6 @@ val REDIRECT_URI = System.getenv("redirectUri") ?: "https://www.google.co.uk"
 const val AUTH_METHOD_TLS_CLIENT = "tls_client_auth"
 const val AUTH_METHOD_PRIVATE_KEY_JWT = "private_key_jwt"
 val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVATE_KEY_JWT
+
+// Fully qualified class name of the class to use to create OBDomesticVRPConsentRequest objects
+val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.DefaultOBDomesticVRPConsentRequestFactory"
