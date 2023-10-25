@@ -47,6 +47,7 @@ val OBWriteDomesticConsent4FactoryClass = System.getenv("OBWriteDomesticConsent4
 val OBWriteDomesticScheduledConsent4Class = System.getenv("OBWriteDomesticScheduledConsent4Class") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticScheduledConsent4Factory"
 val OBWriteDomesticStandingOrderConsent5FactoryClass = System.getenv("OBWriteDomesticStandingOrderConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticStandingOrderConsent5Factory"
 val OBWriteInternationalConsent5FactoryClass = System.getenv("OBWriteInternationalConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalConsent5Factory"
+val OBWriteInternationalScheduledConsent5FactoryClass = System.getenv("OBWriteInternationalScheduledConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalScheduledConsent5Factory"
 
 
 

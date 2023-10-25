@@ -11,6 +11,8 @@ import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalScheduledConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -21,7 +23,6 @@ import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 import java.math.BigDecimal
 import java.util.*
 
@@ -31,11 +32,14 @@ class CreateInternationalScheduledPaymentsConsents(
 ) {
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalScheduledConsent5Factory::class.java
+    )
+
 
     fun createInternationalScheduledPaymentsConsentsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val consent = createInternationalScheduledPaymentConsent(consentRequest)
 
         // Then
@@ -48,8 +52,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun createInternationalScheduledPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val idempotencyKey = UUID.randomUUID().toString()
 
         // When
@@ -85,8 +88,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun createInternationalScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             paymentApiClient.newPostRequestBuilder(
@@ -104,8 +106,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun createInternationalScheduledPaymentsConsents_withDebtorAccountTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -128,8 +129,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun createInternationalScheduledPaymentsConsents_throwsInvalidDebtorAccountTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account (wrong debtor account)
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
@@ -151,8 +151,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun createInternationalScheduledPaymentsConsents_mandatoryFields_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val consent = createInternationalScheduledPaymentConsent(consentRequest)
 
         // Then
@@ -176,8 +175,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsSendInvalidFormatDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -192,8 +190,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsNoDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -207,8 +204,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -227,8 +223,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsSendInvalidKidDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -246,8 +241,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsRequestExecutionTimeInThePast_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.requestedExecutionDateTime = DateTime.now().minusDays(1)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -261,8 +255,7 @@ class CreateInternationalScheduledPaymentsConsents(
 
     fun shouldCreateInternationalScheduledPaymentConsents_throwsRejectedConsent_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
