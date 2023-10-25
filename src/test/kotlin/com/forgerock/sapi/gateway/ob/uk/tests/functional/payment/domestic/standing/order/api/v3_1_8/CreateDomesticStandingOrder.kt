@@ -34,8 +34,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun createDomesticStandingOrderTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         // When
         val result = submitStandingOrder(consentRequest)
 
@@ -49,8 +48,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun createDomesticStandingOrderWithDebtorAccountTest() {
         // Given
-        val consentRequest =
-                consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -73,8 +71,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsInvalidInitiationTest() {
         // Given
-        val consentRequest =
-                consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
                 consentRequest
         )
@@ -100,8 +97,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun createDomesticStandingOrder_mandatoryFieldsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         // When
         val result = submitStandingOrder(consentRequest)
 
@@ -113,8 +109,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsStandingOrderAlreadyExistsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -141,8 +136,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -171,8 +165,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -201,8 +194,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -231,8 +223,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -261,8 +252,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -302,8 +292,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -343,8 +332,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
 
     fun shouldCreateDomesticStandingOrder_throwsInvalidRiskTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -370,8 +358,7 @@ class CreateDomesticStandingOrder(val version: OBVersion, val tppResource: Creat
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
         )
