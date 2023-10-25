@@ -43,7 +43,10 @@ val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVAT
 
 // Fully qualified class name of the class to use to create OBDomesticVRPConsentRequest objects
 val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBDomesticVRPConsentRequestFactory"
-val OBWriteDomesticConsent4FactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticConsent4Factory"
+val OBWriteDomesticConsent4FactoryClass = System.getenv("OBWriteDomesticConsent4FactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticConsent4Factory"
+val OBWriteDomesticScheduledConsent4Class = System.getenv("OBWriteDomesticScheduledConsent4Class") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticScheduledConsent4Factory"
+val OBWriteDomesticStandingOrderConsent5Factory = System.getenv("OBWriteDomesticStandingOrderConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticStandingOrderConsent5Factory"
 
+// Controls whether the OBRisk1.paymentContextCode field is always set or not in the consents created by the factories, defaults to false.
 val paymentContextCodeIsRequired = Boolean.parseBoolean(System.getenv("paymentContextCodeIsRequired"))
 

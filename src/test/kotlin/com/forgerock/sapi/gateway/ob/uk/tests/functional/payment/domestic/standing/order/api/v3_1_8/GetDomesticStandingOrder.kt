@@ -7,6 +7,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticStandingOrderConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -15,7 +17,6 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderResponse6
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
 class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -23,11 +24,14 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
     private val createDomesticStandingOrderApi = CreateDomesticStandingOrder(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticStandingOrderConsent5Factory::class.java
+    )
 
     fun getDomesticStandingOrdersTest() {
         // Given
         val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+            consentFactory.createConsent()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -44,7 +48,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
     fun getDomesticStandingOrders_mandatoryFieldsTest() {
         // Given
         val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -60,7 +64,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
     fun shouldGetDomesticStandingOrders_withReadRefundTest() {
         // Given
         val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+            consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
         val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest
