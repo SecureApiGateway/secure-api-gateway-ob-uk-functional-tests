@@ -6,6 +6,7 @@ import com.forgerock.sapi.gateway.framework.configuration.OBWriteDomesticSchedul
 import com.forgerock.sapi.gateway.framework.configuration.OBWriteDomesticStandingOrderConsent5FactoryClass
 import com.forgerock.sapi.gateway.framework.configuration.OBWriteInternationalConsent5FactoryClass
 import com.forgerock.sapi.gateway.framework.configuration.OBWriteInternationalScheduledConsent5FactoryClass
+import com.forgerock.sapi.gateway.framework.configuration.OBWriteInternationalStandingOrderConsent6FactoryClass
 
 /**
  * Bridges the Java ConsentFactoryRegistry into Kotlin as a singleton.
@@ -20,7 +21,8 @@ object ConsentFactoryRegistryHolder {
                 OBWriteDomesticScheduledConsent4Class,
                 OBWriteDomesticStandingOrderConsent5FactoryClass,
                 OBWriteInternationalConsent5FactoryClass,
-                OBWriteInternationalScheduledConsent5FactoryClass
+                OBWriteInternationalScheduledConsent5FactoryClass,
+                OBWriteInternationalStandingOrderConsent6FactoryClass
             )
         )
 

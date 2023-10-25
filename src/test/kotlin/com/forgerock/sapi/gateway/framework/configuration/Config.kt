@@ -48,8 +48,7 @@ val OBWriteDomesticScheduledConsent4Class = System.getenv("OBWriteDomesticSchedu
 val OBWriteDomesticStandingOrderConsent5FactoryClass = System.getenv("OBWriteDomesticStandingOrderConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticStandingOrderConsent5Factory"
 val OBWriteInternationalConsent5FactoryClass = System.getenv("OBWriteInternationalConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalConsent5Factory"
 val OBWriteInternationalScheduledConsent5FactoryClass = System.getenv("OBWriteInternationalScheduledConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalScheduledConsent5Factory"
-
-
+val OBWriteInternationalStandingOrderConsent6FactoryClass = System.getenv("OBWriteInternationalStandingOrderConsent6Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalStandingOrderConsent6Factory"
 
 // Controls whether the OBRisk1.paymentContextCode field is always set or not in the consents created by the factories, defaults to false.
 val paymentContextCodeIsRequired = Boolean.parseBoolean(System.getenv("paymentContextCodeIsRequired"))

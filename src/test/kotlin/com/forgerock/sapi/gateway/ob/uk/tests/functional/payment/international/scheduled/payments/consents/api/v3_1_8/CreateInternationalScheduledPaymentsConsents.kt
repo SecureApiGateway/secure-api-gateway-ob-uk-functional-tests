@@ -36,7 +36,6 @@ class CreateInternationalScheduledPaymentsConsents(
         OBWriteInternationalScheduledConsent5Factory::class.java
     )
 
-
     fun createInternationalScheduledPaymentsConsentsTest() {
         // Given
         val consentRequest = consentFactory.createConsent()

@@ -7,6 +7,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalStandingOrderConsent6Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -15,7 +17,6 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.s
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderResponse7
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderConsentTestDataFactory
 
 class GetInternationalStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -23,11 +24,13 @@ class GetInternationalStandingOrder(val version: OBVersion, val tppResource: Cre
     private val createInternationalStandingOrderApi = CreateInternationalStandingOrder(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalStandingOrderConsent6Factory::class.java
+    )
 
     fun getInternationalStandingOrdersTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val standingOrderResponse = createInternationalStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -43,8 +46,7 @@ class GetInternationalStandingOrder(val version: OBVersion, val tppResource: Cre
 
     fun getInternationalStandingOrders_mandatoryFieldsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6MandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val standingOrderResponse = createInternationalStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -59,8 +61,7 @@ class GetInternationalStandingOrder(val version: OBVersion, val tppResource: Cre
 
     fun shouldGetInternationalStandingOrders_withReadRefundTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
         val (consent, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
