@@ -19,8 +19,7 @@ class GetDomesticStandingOrderConsents(val version: OBVersion, val tppResource: 
 
     fun shouldGetDomesticStandingOrdersConsents_Test() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         // When
         val consentResponse =
             createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsent(consentRequest)

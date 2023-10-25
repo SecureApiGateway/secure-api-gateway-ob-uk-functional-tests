@@ -30,8 +30,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
 
     fun getDomesticStandingOrdersTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -63,8 +62,7 @@ class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTp
 
     fun shouldGetDomesticStandingOrders_withReadRefundTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
         val (consent, accessTokenAuthorizationCode) = createDomesticStandingOrderConsentsApi.createDomesticStandingOrderConsentAndAuthorize(
             consentRequest

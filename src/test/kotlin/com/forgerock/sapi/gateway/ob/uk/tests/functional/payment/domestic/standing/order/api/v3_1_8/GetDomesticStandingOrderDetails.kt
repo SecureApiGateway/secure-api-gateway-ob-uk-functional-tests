@@ -25,8 +25,7 @@ class GetDomesticStandingOrderDetails(
 
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest() {
         // Given
-        val consentRequest =
-            consentFactory.createConsent()
+        val consentRequest = consentFactory.createConsent()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
