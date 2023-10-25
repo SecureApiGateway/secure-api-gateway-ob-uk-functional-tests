@@ -6,6 +6,10 @@ import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields
 
+/**
+ * Default factory implementation which is used by the functional tests OOTB.
+ * Delegates creating consents to the static factory: OBWriteInternationalConsentTestDataFactory
+ */
 class DefaultOBWriteInternationalConsent5Factory: OBWriteInternationalConsent5Factory {
 
     override fun createConsent(): OBWriteInternationalConsent5 {

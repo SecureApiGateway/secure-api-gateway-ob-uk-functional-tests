@@ -10,6 +10,8 @@ import com.forgerock.sapi.gateway.framework.configuration.OBWriteInternationalSt
 
 /**
  * Bridges the Java ConsentFactoryRegistry into Kotlin as a singleton.
+ *
+ * Responsible for creating the registry using the configuration found in Config.kt
  */
 object ConsentFactoryRegistryHolder {
 

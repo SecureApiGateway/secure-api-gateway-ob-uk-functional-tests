@@ -8,7 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Registry of factories for creating OB Consent objects
+ * Registry of factories for creating OB Consent objects.
+ *
+ * Factories are registered by passing a list of factory class names to the constructor, instances of these classes
+ * are then created via reflection by invoking a default (no-args) constructor.
+ *
+ * If any factory fails to be created then the registry fails to be created and throws the exception onwards.
  */
 public class ConsentFactoryRegistry {
 
@@ -29,6 +34,15 @@ public class ConsentFactoryRegistry {
         }
     }
 
+    /**
+     * Finds the first factory in the registry that is an instance of the requested factory class. This allows the
+     * registry to be queried with the interface class and return an implementation class.
+     *
+     * @param factoryClass the class of the factory to retrieve
+     * @return the first registered factory that is an instance of the factoryClass
+     * @param <T>
+     * @throws IllegalStateException if no factory is found
+     */
     public <T> T getConsentFactory(Class<T> factoryClass) {
         return  registry.stream()
                         .filter(factoryClass::isInstance)
