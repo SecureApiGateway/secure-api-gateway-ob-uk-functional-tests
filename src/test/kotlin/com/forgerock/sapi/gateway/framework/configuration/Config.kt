@@ -41,7 +41,7 @@ const val AUTH_METHOD_TLS_CLIENT = "tls_client_auth"
 const val AUTH_METHOD_PRIVATE_KEY_JWT = "private_key_jwt"
 val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVATE_KEY_JWT
 
-// Fully qualified class name of the class to use to create OBDomesticVRPConsentRequest objects
+// Fully qualified class names of the factories to use to create OB schema objects
 val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBDomesticVRPConsentRequestFactory"
 val OBWriteDomesticConsent4FactoryClass = System.getenv("OBWriteDomesticConsent4FactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticConsent4Factory"
 val OBWriteDomesticScheduledConsent4Class = System.getenv("OBWriteDomesticScheduledConsent4Class") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticScheduledConsent4Factory"
