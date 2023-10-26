@@ -80,32 +80,31 @@ dependencies {
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-error")
-    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
-    testImplementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
+    implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
 
-    testImplementation("org.bouncycastle:bcprov-jdk15on:1.70")
-    testImplementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    testImplementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
+    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    implementation("com.github.kittinunf.fuel:fuel:2.2.1")
+    implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
+    implementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
+    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
+    implementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
+    implementation("io.jsonwebtoken:jjwt-api:0.10.7")
+    implementation("io.jsonwebtoken:jjwt-impl:0.10.7")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
+    implementation("io.r2:simple-pem-keystore:0.1")
+    implementation("org.apache.httpcomponents:httpclient:4.5.9")
+    implementation("org.assertj:assertj-core:3.13.2")
+    implementation("com.nimbusds:nimbus-jose-jwt:9.0.1")
+    implementation("commons-io:commons-io:2.6")
 
-    // Test libraries
-    testImplementation("com.github.kittinunf.fuel:fuel:2.2.1")
-    testImplementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
-    testImplementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
-    testImplementation("com.google.code.gson:gson:2.9.0")
-    testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8")
-    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
-    testImplementation("io.jsonwebtoken:jjwt-api:0.10.7")
-    testImplementation("io.jsonwebtoken:jjwt-impl:0.10.7")
-    testImplementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
-    testImplementation("io.r2:simple-pem-keystore:0.1")
-    testImplementation("org.apache.httpcomponents:httpclient:4.5.9")
-    testImplementation("org.assertj:assertj-core:3.13.2")
-    testImplementation("com.nimbusds:nimbus-jose-jwt:9.0.1")
-    testImplementation("commons-io:commons-io:2.6")
+    implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
 }
 
 /*
@@ -117,7 +116,7 @@ xjcGeneration {
     schemas {
         "schema-pain.001.001.08" {
             taskName = "gen-pain00100108-source"
-            schemaRootDir = "src/test/resources/com/forgerock/sapi/gateway/ob/uk/payment/file"
+            schemaRootDir = "src/main/resources/com/forgerock/sapi/gateway/ob/uk/payment/file"
             schemaFile = "pain.001.001.08.xsd"
             // In local environment run first the task schemaGen-xxx or xjcGeneration to generate the objects
             // Remember use this package in kotlin test to resolve the object reference
@@ -162,8 +161,8 @@ project.extra.properties.forEach { (key, _) ->
 }
 
 configure<SourceSetContainer> {
-    named("test") {
-        java.srcDir("src/test/kotlin")
+    named("main") {
+        java.srcDir("src/main/kotlin")
     }
 }
 
