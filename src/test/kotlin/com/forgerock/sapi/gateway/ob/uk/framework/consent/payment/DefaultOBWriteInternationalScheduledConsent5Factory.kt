@@ -1,6 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
-import com.forgerock.sapi.gateway.framework.configuration.paymentContextCodeIsRequired
+import com.forgerock.sapi.gateway.framework.configuration.requirePaymentContextCode
 import uk.org.openbanking.datamodel.common.OBExternalPaymentContext1Code
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
@@ -21,7 +21,7 @@ class DefaultOBWriteInternationalScheduledConsent5Factory: OBWriteInternationalS
     }
 
     private fun addPaymentContextCodeIfRequired(consent: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledConsent5 {
-        if (paymentContextCodeIsRequired) {
+        if (requirePaymentContextCode) {
             consent.risk.paymentContextCode = consent.risk.paymentContextCode ?: OBExternalPaymentContext1Code.OTHER
         }
         return consent

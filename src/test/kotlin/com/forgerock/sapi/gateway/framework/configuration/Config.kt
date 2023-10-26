@@ -51,5 +51,5 @@ val OBWriteInternationalScheduledConsent5FactoryClass = System.getenv("OBWriteIn
 val OBWriteInternationalStandingOrderConsent6FactoryClass = System.getenv("OBWriteInternationalStandingOrderConsent6Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalStandingOrderConsent6Factory"
 
 // Controls whether the OBRisk1.paymentContextCode field is always set or not in the consents created by the factories, defaults to false.
-val paymentContextCodeIsRequired = Boolean.parseBoolean(System.getenv("paymentContextCodeIsRequired"))
+val requirePaymentContextCode = Boolean.parseBoolean(System.getenv("requirePaymentContextCode"))
 

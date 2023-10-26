@@ -68,4 +68,4 @@ val redirectUri by extra("https://www.google.co.uk")
 
 val clientAuthMethod by extra("tls_client_auth")
 
-val paymentContextCodeIsRequired by extra("true")
+val requirePaymentContextCode by extra("true")

@@ -1,6 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
-import com.forgerock.sapi.gateway.framework.configuration.paymentContextCodeIsRequired
+import com.forgerock.sapi.gateway.framework.configuration.requirePaymentContextCode
 import uk.org.openbanking.datamodel.common.OBExternalPaymentContext1Code
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5
@@ -21,7 +21,7 @@ class DefaultOBWriteDomesticStandingOrderConsent5Factory: OBWriteDomesticStandin
     }
 
     private fun addPaymentContextCodeIfRequired(consent: OBWriteDomesticStandingOrderConsent5): OBWriteDomesticStandingOrderConsent5 {
-        if (paymentContextCodeIsRequired) {
+        if (requirePaymentContextCode) {
             consent.risk.paymentContextCode = consent.risk.paymentContextCode ?: OBExternalPaymentContext1Code.OTHER
         }
         return consent
