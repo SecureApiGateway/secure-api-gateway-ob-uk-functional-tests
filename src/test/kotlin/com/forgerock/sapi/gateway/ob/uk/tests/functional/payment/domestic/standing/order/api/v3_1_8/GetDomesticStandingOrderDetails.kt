@@ -3,13 +3,14 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.stand
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticStandingOrderConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderResponse6
 import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 
 class GetDomesticStandingOrderDetails(
     val version: OBVersion,
@@ -18,11 +19,13 @@ class GetDomesticStandingOrderDetails(
     private val createDomesticStandingOrderApi = CreateDomesticStandingOrder(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticStandingOrderConsent5Factory::class.java
+    )
 
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetailsTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -37,7 +40,7 @@ class GetDomesticStandingOrderDetails(
     fun getDomesticStandingOrderDomesticStandingOrderIdPaymentDetails_mandatoryFieldsTest() {
         // Given
         val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val standingOrderResponse = createDomesticStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When

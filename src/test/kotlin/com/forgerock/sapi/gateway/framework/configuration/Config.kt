@@ -2,6 +2,7 @@ package com.forgerock.sapi.gateway.framework.configuration
 
 import com.forgerock.sapi.gateway.ob.uk.support.registerPSU
 import com.forgerock.sapi.gateway.ob.uk.support.registration.UserRegistrationRequest
+import java.lang.Boolean
 
 val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
 val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financial"
@@ -39,3 +40,16 @@ val REDIRECT_URI = System.getenv("redirectUri") ?: "https://www.google.co.uk"
 const val AUTH_METHOD_TLS_CLIENT = "tls_client_auth"
 const val AUTH_METHOD_PRIVATE_KEY_JWT = "private_key_jwt"
 val CLIENT_AUTH_METHOD = System.getenv("clientAuthMethod") ?: AUTH_METHOD_PRIVATE_KEY_JWT
+
+// Fully qualified class names of the factories to use to create OB schema objects
+val OBDomesticVRPConsentRequestFactoryClass = System.getenv("OBDomesticVRPConsentRequestFactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBDomesticVRPConsentRequestFactory"
+val OBWriteDomesticConsent4FactoryClass = System.getenv("OBWriteDomesticConsent4FactoryClass") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticConsent4Factory"
+val OBWriteDomesticScheduledConsent4Class = System.getenv("OBWriteDomesticScheduledConsent4Class") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticScheduledConsent4Factory"
+val OBWriteDomesticStandingOrderConsent5FactoryClass = System.getenv("OBWriteDomesticStandingOrderConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteDomesticStandingOrderConsent5Factory"
+val OBWriteInternationalConsent5FactoryClass = System.getenv("OBWriteInternationalConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalConsent5Factory"
+val OBWriteInternationalScheduledConsent5FactoryClass = System.getenv("OBWriteInternationalScheduledConsent5Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalScheduledConsent5Factory"
+val OBWriteInternationalStandingOrderConsent6FactoryClass = System.getenv("OBWriteInternationalStandingOrderConsent6Factory") ?: "com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.DefaultOBWriteInternationalStandingOrderConsent6Factory"
+
+// Controls whether the OBRisk1.paymentContextCode field is always set or not in the consents created by the factories, defaults to false.
+val requirePaymentContextCode = Boolean.parseBoolean(System.getenv("requirePaymentContextCode"))
+

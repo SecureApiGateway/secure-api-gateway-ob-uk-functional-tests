@@ -10,6 +10,8 @@ import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticStandingOrderConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -18,18 +20,19 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderConsentResponse6
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticStandingOrderConsentTestDataFactory
 import java.util.*
 
 class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticStandingOrderConsent5Factory::class.java
+    )
 
     fun createDomesticStandingOrdersConsentsTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         val consent = createDomesticStandingOrderConsent(consentRequest)
 
         // Then
@@ -42,8 +45,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         val idempotencyKey = UUID.randomUUID().toString()
 
         // when
@@ -78,8 +80,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun createDomesticStandingOrdersConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -98,8 +99,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun createDomesticStandingOrdersConsents_withDebtorAccountTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -122,8 +122,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun createDomesticStandingOrdersConsents_throwsInvalidDebtorAccountTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account (wrong debtor account)
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
@@ -146,7 +145,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
     fun createDomesticStandingOrdersConsents_mandatoryFields() {
         // Given
         val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val consent = createDomesticStandingOrderConsent(consentRequest)
 
         // Then
@@ -159,8 +158,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsInvalidFrequencyValue() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.frequency = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_FREQUENCY
 
         // When
@@ -178,8 +176,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -194,8 +191,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsNoDetachedJws() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -209,8 +205,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -229,8 +224,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -248,8 +242,7 @@ class CreateDomesticStandingOrderConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateDomesticStandingOrdersConsents_throwsRejectedConsentTest() {
         // Given
-        val consentRequest =
-            OBWriteDomesticStandingOrderConsentTestDataFactory.aValidOBWriteDomesticStandingOrderConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

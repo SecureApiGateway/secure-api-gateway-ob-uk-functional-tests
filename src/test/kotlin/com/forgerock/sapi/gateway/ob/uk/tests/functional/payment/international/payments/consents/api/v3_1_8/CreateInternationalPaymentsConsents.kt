@@ -11,6 +11,8 @@ import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -20,7 +22,6 @@ import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory
 import java.math.BigDecimal
 import java.util.*
 
@@ -28,10 +29,13 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalConsent5Factory::class.java
+    )
 
     fun createInternationalPaymentsConsents() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val consent = createInternationalPaymentConsent(consentRequest)
 
         // Then
@@ -44,7 +48,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun createInternationalPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val idempotencyKey = UUID.randomUUID().toString()
 
         // When
@@ -79,7 +83,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun createInternationalPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -98,7 +102,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun createInternationalPaymentsConsents_withDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -121,7 +125,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun createInternationalPaymentsConsents_throwsInvalidDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account (wrong debtor account)
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
@@ -144,7 +148,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
     fun createInternationalPaymentsConsents_mandatoryFieldsTest() {
         // Given
         val consentRequest =
-            OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields()
+            consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val consent = createInternationalPaymentConsent(consentRequest)
 
         // Then
@@ -166,7 +170,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -181,7 +185,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalPaymentConsents_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -195,7 +199,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalPaymentConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -214,7 +218,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalPaymentConsents_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -232,7 +236,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalPaymentConsents_throwsRejectedConsent_Test() {
         // Given
-        val consentRequest = OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

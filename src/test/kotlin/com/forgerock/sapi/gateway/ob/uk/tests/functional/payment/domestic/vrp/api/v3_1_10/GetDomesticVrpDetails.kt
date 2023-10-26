@@ -4,13 +4,14 @@ import assertk.assertThat
 import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBDomesticVRPConsentRequestFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPResponse
-import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 
 class GetDomesticVrpDetails(
     val version: OBVersion,
@@ -19,10 +20,12 @@ class GetDomesticVrpDetails(
     private val createDomesticVrpApi = CreateDomesticVrp(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBDomesticVRPConsentRequestFactory::class.java)
 
     fun getDomesticVrpDetailsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         val result = createDomesticVrpApi.submitPayment(consentRequest)
 
         // When
@@ -36,7 +39,7 @@ class GetDomesticVrpDetails(
 
     fun getDomesticVrpDetailsWithMultiplePaymentsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         val payment1 = createDomesticVrpApi.submitPayment(consentRequest)
         val payment2 = createDomesticVrpApi.submitPayment(consentRequest)
 
@@ -58,7 +61,7 @@ class GetDomesticVrpDetails(
 
     fun getDomesticVrpDetails_mandatoryFieldsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         val result = createDomesticVrpApi.submitPayment(consentRequest)
 
         // When

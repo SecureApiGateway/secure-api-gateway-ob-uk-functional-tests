@@ -5,6 +5,8 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_SUBMISSION_ALREADY_EXISTS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
@@ -13,7 +15,6 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 import java.util.UUID
 
 class CreateDomesticPayment(
@@ -25,10 +26,12 @@ class CreateDomesticPayment(
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateDomesticPayment
+    private val consentFactory: OBWriteDomesticConsent4Factory =
+        ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticConsent4Factory::class.java)
 
     fun createDomesticPaymentsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val result = submitPayment(consentRequest)
 
         // Then
@@ -41,7 +44,7 @@ class CreateDomesticPayment(
 
     fun createDomesticPayments_throwsInvalidInitiationTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -67,7 +70,7 @@ class CreateDomesticPayment(
 
     fun createDomesticPaymentsWithDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -89,7 +92,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsPaymentAlreadyExistsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -116,7 +119,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -141,7 +144,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -166,7 +169,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -191,7 +194,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -216,7 +219,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -248,7 +251,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -284,7 +287,7 @@ class CreateDomesticPayment(
 
     fun shouldCreateDomesticPayments_throwsInvalidRiskTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -310,7 +313,7 @@ class CreateDomesticPayment(
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )

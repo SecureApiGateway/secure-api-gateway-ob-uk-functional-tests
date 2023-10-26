@@ -7,6 +7,8 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalScheduledConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.scheduled.payments.consents.api.v3_1_8.CreateInternationalScheduledPaymentsConsents
@@ -14,8 +16,6 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
 import java.util.UUID
 
 class CreateInternationalScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -25,11 +25,14 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateInternationalScheduledPayment
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalScheduledConsent5Factory::class.java
+    )
+
 
     fun createInternationalScheduledPayment_rateType_AGREED_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
 
         // When
@@ -48,8 +51,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsInvalidInitiation_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -76,8 +78,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun createInternationalScheduledPayment_withDebtorAccount_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
@@ -105,8 +106,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun createInternationalScheduledPayment_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -128,8 +128,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun createInternationalScheduledPayment_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -150,7 +149,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun createInternationalScheduledPayment_mandatoryFields_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalScheduledConsent5MandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
 
         // When
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
@@ -171,8 +170,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsInternationalScheduledPaymentAlreadyExists_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -199,8 +197,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidFormatDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -226,8 +223,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsNoDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -253,8 +249,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsNotPermittedB64HeaderAddedInTheDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -280,8 +275,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsSendInvalidKidDetachedJws_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -307,8 +301,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBody_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -341,8 +334,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayment_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBody_Test() {
         // Given
-        val consentRequest =
-            OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
 
         val (consentResponse, accessToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
@@ -379,7 +371,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
 
     fun shouldCreateInternationalScheduledPayments_throwsInvalidRiskTest() {
         // Given
-        val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -405,7 +397,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest = OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )

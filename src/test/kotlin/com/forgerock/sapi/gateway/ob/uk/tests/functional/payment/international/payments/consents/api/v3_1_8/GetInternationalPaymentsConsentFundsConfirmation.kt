@@ -4,13 +4,13 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory
 
 class GetInternationalPaymentsConsentFundsConfirmation(
     val version: OBVersion,
@@ -19,10 +19,13 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     private val createInternationalPaymentsConsents = CreateInternationalPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalConsent5Factory::class.java
+    )
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
@@ -39,7 +42,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -58,7 +61,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -77,7 +80,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_AGREED_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
@@ -94,7 +97,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -113,7 +116,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
@@ -132,7 +135,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
 
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsWrongGrantType_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, _) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -153,7 +156,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     
     fun shouldGetInternationalPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
-        val consentRequest = aValidOBWriteInternationalConsent5()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -180,7 +183,7 @@ class GetInternationalPaymentsConsentFundsConfirmation(
     }
 
     fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId() {
-        val consentRequest =  aValidOBWriteInternationalConsent5()
+        val consentRequest =  consentFactory.createConsent()
         consentRequest.data.initiation.instructedAmount.amount("3")
         val (firstConsent, firstAccessToken) = createInternationalPaymentsConsents.createInternationalPaymentConsentAndAuthorize(
             consentRequest

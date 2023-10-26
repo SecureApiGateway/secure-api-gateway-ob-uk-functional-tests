@@ -7,6 +7,8 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -23,10 +25,12 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
     private val createDomesticScheduledPayment = CreateDomesticScheduledPayment(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory =
+        ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticScheduledConsent4Factory::class.java)
 
     fun getDomesticScheduledPaymentsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val paymentResponse = createDomesticScheduledPayment.submitPayment(consentRequest)
 
         // When
@@ -42,7 +46,7 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
 
     fun shouldGetDomesticScheduledPayments_withReadRefundTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
         val (consent, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest

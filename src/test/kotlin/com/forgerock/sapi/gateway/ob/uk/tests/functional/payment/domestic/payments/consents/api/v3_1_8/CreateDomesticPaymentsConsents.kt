@@ -9,6 +9,8 @@ import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -17,17 +19,18 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
 import java.util.*
 
 class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBWriteDomesticConsent4Factory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticConsent4Factory::class.java)
 
     fun createDomesticPaymentsConsentsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val consent = createDomesticPaymentsConsent(consentRequest)
 
         // Then
@@ -40,7 +43,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val idempotencyKey = UUID.randomUUID().toString()
 
         // when
@@ -75,7 +78,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
 
         // when
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -94,7 +97,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun createDomesticPaymentsConsents_withDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -117,7 +120,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun createDomesticPaymentsConsents_throwsInvalidDebtorAccountTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account (wrong debtor account)
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
@@ -139,7 +142,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticPaymentsConsents_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -153,7 +156,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticPaymentsConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
             buildCreateConsentRequest(consentRequest).configureJwsSignatureProducer(DefaultJwsSignatureProducer(tppResource.tpp, false)).sendRequest()
@@ -165,7 +168,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -179,7 +182,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticPaymentsConsents_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -193,7 +196,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
     fun shouldCreateDomesticPaymentsConsents_throwsRejectedConsent_Test() {
         // Given
-        val consentRequest = OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
 
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {

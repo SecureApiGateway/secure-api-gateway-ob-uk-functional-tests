@@ -6,6 +6,8 @@ import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBDomesticVRPConsentRequestFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
@@ -14,17 +16,18 @@ import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.vrp.OBCashAccountDebtorWithName
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
-import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 import java.util.*
 
 class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBDomesticVRPConsentRequestFactory::class.java)
 
     fun createDomesticVrpConsent() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
 
         val consent = createDomesticVrpConsent(consentRequest)
@@ -39,7 +42,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun deleteDomesticVrpConsent(){
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         val consentResponse = createDomesticVrpConsent(consentRequest)
 
@@ -49,7 +52,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun createDomesticPaymentsConsents_SameIdempotencyKeyMultipleRequestTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         val idempotencyKey = UUID.randomUUID().toString()
 
@@ -85,7 +88,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun createDomesticVrpConsents_NoIdempotencyKey_throwsBadRequestTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
 
         // when
@@ -105,7 +108,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun createDomesticVrpConsent_throwsInvalidDebtorAccountTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account (wrong debtor account)
         consentRequest.data.initiation.debtorAccount(
             OBCashAccountDebtorWithName()
@@ -127,8 +130,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun createDomesticVrpConsents_mandatoryFieldsTest() {
         // Given
-        val consentRequest =
-            OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         populateDebtorAccount(consentRequest)
         val consent = createDomesticVrpConsent(consentRequest)
 
@@ -142,7 +144,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun shouldCreateDomesticVrpConsents_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -157,7 +159,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun shouldCreateDomesticVrpConsents_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -171,7 +173,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun shouldCreateDomesticVrpConsents_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -190,7 +192,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun shouldCreateDomesticVrpConsents_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
         // When
         val exception = org.junit.jupiter.api.Assertions.assertThrows(AssertionError::class.java) {
@@ -208,7 +210,7 @@ class CreateDomesticVrpConsents(val version: OBVersion, val tppResource: CreateT
 
     fun shouldCreateDomesticVrpConsents_throwsRejectedConsent_Test() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         populateDebtorAccount(consentRequest)
 
         // When

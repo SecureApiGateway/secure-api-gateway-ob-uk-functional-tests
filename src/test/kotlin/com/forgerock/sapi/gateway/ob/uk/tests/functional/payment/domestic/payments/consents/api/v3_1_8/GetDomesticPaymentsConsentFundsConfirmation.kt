@@ -4,6 +4,8 @@ import assertk.assertThat
 import assertk.assertions.*
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -19,10 +21,12 @@ class GetDomesticPaymentsConsentFundsConfirmation(
     private val createDomesticPaymentsConsentsApi = CreateDomesticPaymentsConsents(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBWriteDomesticConsent4Factory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteDomesticConsent4Factory::class.java)
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_false() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.instructedAmount.amount("1000000")
         // When
         val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
@@ -41,7 +45,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsWrongGrantType() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consent, _) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -61,7 +65,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_throwsInvalidConsentStatus_Test() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest
         )
@@ -89,7 +93,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
 
     fun shouldGetDomesticPaymentConsentsFundsConfirmation_true() {
         // Given
-        val consentRequest = aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.instructedAmount.amount("3")
         // When
         val (result, consent) = createConsentAndGetFundsConfirmation(consentRequest)
@@ -107,7 +111,7 @@ class GetDomesticPaymentsConsentFundsConfirmation(
     }
 
     fun shouldFailIfAccessTokenConsentIdDoesNotMatchRequestUriPathParamConsentId() {
-        val consentRequest = aValidOBWriteDomesticConsent4()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.initiation.instructedAmount.amount("3")
         val (firstConsent, firstAccessToken) = createDomesticPaymentsConsentsApi.createDomesticPaymentsConsentAndAuthorize(
             consentRequest

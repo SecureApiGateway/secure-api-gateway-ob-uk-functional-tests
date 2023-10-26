@@ -3,6 +3,8 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.sched
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -17,10 +19,12 @@ class GetDomesticScheduledPaymentDetails(
     private val createDomesticScheduledPayments = CreateDomesticScheduledPayment(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory =
+        ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(OBWriteDomesticScheduledConsent4Factory::class.java)
 
     fun getDomesticScheduledPaymentDomesticPaymentIdPaymentDetailsTest() {
         // Given
-        val consentRequest = OBWriteDomesticScheduledConsentTestDataFactory.aValidOBWriteDomesticScheduledConsent4()
+        val consentRequest = consentFactory.createConsent()
         val paymentResponse = createDomesticScheduledPayments.submitPayment(consentRequest)
 
         // When

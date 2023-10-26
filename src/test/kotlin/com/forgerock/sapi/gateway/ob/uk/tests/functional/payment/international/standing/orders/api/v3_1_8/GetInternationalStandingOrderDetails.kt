@@ -3,13 +3,14 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalStandingOrderConsent6Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderResponse7
 import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderConsentTestDataFactory
 
 class GetInternationalStandingOrderDetails(
     val version: OBVersion,
@@ -18,11 +19,13 @@ class GetInternationalStandingOrderDetails(
     private val createInternationalStandingOrderApi = CreateInternationalStandingOrder(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalStandingOrderConsent6Factory::class.java
+    )
 
     fun getInternationalStandingOrderInternationalStandingOrderIdPaymentDetailsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val internationalStandingOrderResponse = createInternationalStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When
@@ -36,8 +39,7 @@ class GetInternationalStandingOrderDetails(
 
     fun getInternationalStandingOrderInternationalStandingOrderIdPaymentDetails_mandatoryFieldsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6MandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         val internationalStandingOrderResponse = createInternationalStandingOrderApi.submitStandingOrder(consentRequest)
 
         // When

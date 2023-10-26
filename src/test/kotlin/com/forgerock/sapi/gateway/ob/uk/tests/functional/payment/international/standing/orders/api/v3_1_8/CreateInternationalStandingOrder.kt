@@ -11,6 +11,8 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalStandingOrderConsent6Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.consents.api.v3_1_8.CreateInternationalStandingOrderConsents
@@ -18,7 +20,6 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteInternationalStandingOrderConsentTestDataFactory
 import java.util.UUID
 
 class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -28,11 +29,13 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
     private val paymentApiClient = tppResource.tpp.paymentApiClient
     private val paymentLinks = getPaymentsApiLinks(version)
     private val createPaymentUrl = paymentLinks.CreateInternationalStandingOrder
+    private val consentFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBWriteInternationalStandingOrderConsent6Factory::class.java
+    )
 
     fun createInternationalStandingOrderTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         // When
         val result = submitStandingOrder(consentRequest)
 
@@ -45,8 +48,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsInvalidInitiationTest() {
         // Given
-        val consentRequest =
-                OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
                 consentRequest
         )
@@ -73,8 +75,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun createInternationalStandingOrderWithDebtorAccountTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -96,8 +97,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun createInternationalStandingOrder_mandatoryFieldsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6MandatoryFields()
+        val consentRequest = consentFactory.createConsentWithOnlyMandatoryFieldsPopulated()
         // When
         val result = submitStandingOrder(consentRequest)
 
@@ -109,8 +109,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsStandingOrderAlreadyExistsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -137,8 +136,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsSendInvalidFormatDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -167,8 +165,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsNoDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -197,8 +194,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsNotPermittedB64HeaderAddedInTheDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -227,8 +223,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsSendInvalidKidDetachedJwsTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -257,8 +252,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentConsentIdThanTheBodyTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -298,8 +292,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsInvalidDetachedJws_detachedJwsHasDifferentAmountThanTheBodyTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, accessTokenAuthorizationCode) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -339,8 +332,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
 
     fun shouldCreateInternationalStandingOrder_throwsInvalidRiskTest() {
         // Given
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consentResponse, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )
@@ -366,8 +358,7 @@ class CreateInternationalStandingOrder(val version: OBVersion, val tppResource: 
     }
 
     fun testCreatingPaymentIsIdempotent() {
-        val consentRequest =
-            OBWriteInternationalStandingOrderConsentTestDataFactory.aValidOBWriteInternationalStandingOrderConsent6()
+        val consentRequest = consentFactory.createConsent()
         val (consent, authorizationToken) = createInternationalStandingOrderConsentsApi.createInternationalStandingOrderConsentAndAuthorize(
             consentRequest
         )

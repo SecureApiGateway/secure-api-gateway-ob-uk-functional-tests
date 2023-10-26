@@ -9,6 +9,8 @@ import assertk.assertions.isNull
 import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.configuration.PSU_DEBTOR_ACCOUNT_IDENTIFICATION
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
+import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBDomesticVRPConsentRequestFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
@@ -16,17 +18,18 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPResponse
-import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory
 
 class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
     private val createDomesticVrpPaymentApi = CreateDomesticVrp(version, tppResource)
     private val paymentLinks = getPaymentsApiLinks(version)
     private val paymentApiClient = tppResource.tpp.paymentApiClient
+    private val consentFactory: OBDomesticVRPConsentRequestFactory = ConsentFactoryRegistryHolder.consentFactoryRegistry.getConsentFactory(
+        OBDomesticVRPConsentRequestFactory::class.java)
 
     fun getDomesticVrpPaymentsWithRefundAccountTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount(OBReadRefundAccountEnum.YES)
         val paymentResponse = createDomesticVrpPaymentApi.submitPayment(consentRequest)
 
@@ -45,7 +48,7 @@ class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.
 
     fun getDomesticVrpPaymentsTest() {
         // Given
-        val consentRequest = OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest()
+        val consentRequest = consentFactory.createConsent()
         consentRequest.data.readRefundAccount(OBReadRefundAccountEnum.NO)
         val paymentResponse = createDomesticVrpPaymentApi.submitPayment(consentRequest)
 
