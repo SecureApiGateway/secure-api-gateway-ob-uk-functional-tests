@@ -12,8 +12,8 @@ import com.forgerock.sapi.gateway.framework.configuration.*
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.utils.FileUtils
 import com.forgerock.sapi.gateway.ob.uk.support.directory.createSoftwareStatement
-import com.forgerock.sapi.gateway.ob.uk.support.login
-import com.forgerock.sapi.gateway.ob.uk.support.registerDirectoryUser
+//import com.forgerock.sapi.gateway.ob.uk.support.login
+//import com.forgerock.sapi.gateway.ob.uk.support.registerDirectoryUser
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.ResponseResultOf
@@ -138,13 +138,11 @@ fun initFuelAsNewTpp(): Tpp {
     val privateCert = OB_TPP_EIDAS_TRANSPORT_KEY_PATH
     val publicCert = OB_TPP_EIDAS_TRANSPORT_PEM_PATH
 
-    val directoryUser = registerDirectoryUser()
-    val sessionToken = login(directoryUser.user.userName, directoryUser.user.password)
     val softwareStatement = createSoftwareStatement()
 
     val signingKid = OB_TPP_OB_EIDAS_TEST_SIGNING_KID
     val signingKey = OB_TPP_EIDAS_SIGNING_KEY_PATH
-    return Tpp(sessionToken, directoryUser, softwareStatement, privateCert, publicCert, signingKid, signingKey)
+    return Tpp(softwareStatement, privateCert, publicCert, signingKid, signingKey)
 }
 
 private fun loadKeystore(privatePem: InputStream, publicPem: InputStream): KeyStore {

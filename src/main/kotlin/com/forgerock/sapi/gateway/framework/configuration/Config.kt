@@ -4,7 +4,6 @@ import com.forgerock.sapi.gateway.ob.uk.support.registerPSU
 import com.forgerock.sapi.gateway.ob.uk.support.registration.UserRegistrationRequest
 import java.lang.Boolean
 
-val PLATFORM_SERVER = System.getenv("platformServer") ?: "https://iam.dev.forgerock.financial"
 val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financial"
 // mtls is a subdomain of the gateway domain
 val MTLS_SERVER = IG_SERVER.replace("https://", "https://mtls.")

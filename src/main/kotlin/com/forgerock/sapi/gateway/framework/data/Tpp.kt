@@ -40,7 +40,6 @@ import java.util.*
 
 
 data class Tpp(
-        val sessionToken: String, val directoryUser: UserRegistrationRequest,
         val softwareStatement: SoftwareStatement, val privateCert: String,
         val publicCert: String, val signingKid: String, val signingKeyPath: String
 ) {
