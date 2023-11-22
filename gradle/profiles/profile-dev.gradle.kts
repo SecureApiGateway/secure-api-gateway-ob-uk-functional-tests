@@ -41,7 +41,6 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  */
 // servers
 val environment by extra("dev")
-val platformServer by extra("https://iam.$environment.forgerock.financial")
 val amCookieName by extra("iPlanetDirectoryPro")
 val igServer by extra("https://sapig.$environment.forgerock.financial")
 

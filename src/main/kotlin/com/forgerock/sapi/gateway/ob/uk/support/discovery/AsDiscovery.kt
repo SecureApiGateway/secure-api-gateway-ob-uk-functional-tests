@@ -41,10 +41,8 @@ val asDiscovery by lazy { getAsConfiguration() }
 
 private fun getAsConfiguration(): AsDiscovery {
     val (_, response, result) = Fuel.get("$IG_SERVER/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
-        .responseObject<AsDiscovery>()
+            .responseObject<AsDiscovery>()
     if (!response.isSuccessful) throw AssertionError("Failed to load As Discovery", result.component2())
 
-    //TODO: change the access token route to go to iam.dev.forgerock.financial
-    val asDiscovery = result.get()
-    return asDiscovery
+    return result.get()
 }
