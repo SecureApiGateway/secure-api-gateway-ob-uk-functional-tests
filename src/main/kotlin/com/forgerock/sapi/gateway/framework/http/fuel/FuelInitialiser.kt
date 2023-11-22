@@ -12,8 +12,6 @@ import com.forgerock.sapi.gateway.framework.configuration.*
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.utils.FileUtils
 import com.forgerock.sapi.gateway.ob.uk.support.directory.createSoftwareStatement
-//import com.forgerock.sapi.gateway.ob.uk.support.login
-//import com.forgerock.sapi.gateway.ob.uk.support.registerDirectoryUser
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.Request
 import com.github.kittinunf.fuel.core.ResponseResultOf
