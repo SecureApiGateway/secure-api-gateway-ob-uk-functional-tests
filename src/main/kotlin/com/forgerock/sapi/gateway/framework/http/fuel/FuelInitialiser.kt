@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.fasterxml.jackson.datatype.joda.JodaModule
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.forgerock.sapi.gateway.framework.configuration.*
 import com.forgerock.sapi.gateway.framework.data.Tpp
@@ -29,7 +30,9 @@ import io.r2.simplepemkeystore.SimplePemKeyStoreProvider
 import org.apache.http.ssl.SSLContextBuilder
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import org.joda.time.LocalDate
 import org.joda.time.format.ISODateTimeFormat
+import uk.org.openbanking.jackson.LocalDateDeserializer
 import java.io.InputStream
 import java.lang.reflect.Type
 import java.security.KeyStore
@@ -72,6 +75,8 @@ class DateTimeSerializer : StdSerializer<DateTime>(DateTime::class.java) {
 val serializers: SimpleModule = SimpleModule("CustomSerializer")
     .addDeserializer(DateTime::class.java, DateTimeDeserializer())
     .addSerializer(DateTime::class.java, DateTimeSerializer())
+    .addSerializer(LocalDate::class.java, LocalDateSerializer())
+    .addDeserializer(LocalDate::class.java, LocalDateDeserializer())
 
 val defaultMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
