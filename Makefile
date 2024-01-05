@@ -1,7 +1,7 @@
-name := uk-functional-tests
-repo := sbat-gcr-develop
+name := pr/uk-functional-tests
+repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 tag  := latest
 
 docker:
-	docker build -t eu.gcr.io/${repo}/securebanking/tests/${name}:${tag} .
-	docker push eu.gcr.io/${repo}/securebanking/tests/${name}:${tag}
+	docker build -t ${repo}/securebanking/${name}:${tag} .
+	docker push ${repo}/securebanking/${name}:${tag}
