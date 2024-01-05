@@ -30,6 +30,6 @@ jobs:
       - name: Build Docker Image
         run: |
           make docker tag=${{ env.GIT_SHA_SHORT }} name=${{ env.SERVICE_NAME }}
-          docker tag ${{ secrets.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ secrets.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:latest
-          docker push ${{ secrets.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:latest
+          docker tag ${{ vars.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ vars.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:latest
+          docker push ${{ vars.GAR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME}}:latest
 
