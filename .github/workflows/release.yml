@@ -64,7 +64,7 @@ jobs:
       - name: Build Docker Image
         id: build_docker
         run: |
-          make docker tag=${{ env.GIT_SHA_SHORT }} repo=${{ secrets.GCR_RELEASE_REPO }} name=${{ env.SERVICE_NAME }}
+          make docker tag=${{ env.GIT_SHA_SHORT }} repo=${{ vars.GAR_RELEASE_REPO }} name=${{ env.SERVICE_NAME }}
           docker tag ${{ secrets.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ secrets.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:latest
           docker tag ${{ secrets.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ secrets.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
           docker push --all-tags ${{ secrets.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}
