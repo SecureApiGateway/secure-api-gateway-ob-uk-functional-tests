@@ -42,19 +42,19 @@ jobs:
         with:
           ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
 
-      - uses: google-github-actions/auth@v0
+      - uses: google-github-actions/auth@v2
         id: gcloud_auth
         with:
-          credentials_json: ${{ secrets.GCR_CREDENTIALS_JSON }}
+          credentials_json: ${{ secrets.DEV_GAR_KEY }}
 
       - name: Set up Cloud SDK
         id: gcloud_sdk
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v1.1.1
 
       - name: Set up docker auth
         id: gcloud_docker_auth
         run: |
-          gcloud auth configure-docker
+          gcloud auth configure-docker europe-west4-docker.pkg.dev
 
       - name: prepare context
         id: prepare_context
@@ -65,9 +65,9 @@ jobs:
         id: build_docker
         run: |
           make docker tag=${{ env.GIT_SHA_SHORT }} repo=${{ secrets.GCR_RELEASE_REPO }}
-          docker tag eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:latest
-          docker tag eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
-          docker push --all-tags eu.gcr.io/${{ secrets.GCR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}
+          docker tag ${{ secrets.GAR_RELEASE_REPO }}/securebanking/pr/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ secrets.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:latest
+          docker tag ${{ secrets.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ secrets.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
+          docker push --all-tags ${{ secrets.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}
 
   release_draft:
     name: Call publish release draft
