@@ -1,4 +1,4 @@
-name := /pr/uk-functional-tests
+name := pr/uk-functional-tests
 repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 tag  := latest
 
