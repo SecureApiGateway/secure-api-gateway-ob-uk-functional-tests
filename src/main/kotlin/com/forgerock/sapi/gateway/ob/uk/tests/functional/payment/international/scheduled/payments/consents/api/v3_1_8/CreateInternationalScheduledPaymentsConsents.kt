@@ -100,7 +100,7 @@ class CreateInternationalScheduledPaymentsConsents(
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Missing request header 'x-idempotency-key'")
+        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Required request header 'x-idempotency-key' for method parameter type String is not present")
     }
 
     fun createInternationalScheduledPaymentsConsents_withDebtorAccountTest() {
