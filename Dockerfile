@@ -1,5 +1,4 @@
-
-FROM adoptopenjdk/openjdk14:jdk-14.0.2_12-alpine-slim
+FROM azul/zulu-openjdk-alpine:17-latest
 
 COPY src /opt/functional-tests/src
 COPY build.gradle.kts /opt/functional-tests/build.gradle.kts
@@ -11,4 +10,4 @@ WORKDIR /opt/functional-tests
 
 RUN ./gradlew compileTestKotlin
 
-CMD ["./gradlew", "cleanTest", "tests_v3_1_8", "-i", "-Djunit.jupiter.extensions.autodetection.enabled=true"]
+CMD ["./gradlew", "cleanTest", "tests_v3_1_10", "-i", "-Djunit.jupiter.extensions.autodetection.enabled=true"]
