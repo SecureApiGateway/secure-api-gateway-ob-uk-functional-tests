@@ -18,7 +18,7 @@ val jaxbVersion = "2.2.11"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
     // https://github.com/edeandrea/xjc-generation-gradle-plugin
     id("com.github.edeandrea.xjc-generation") version "1.6"
     id("maven-publish")
