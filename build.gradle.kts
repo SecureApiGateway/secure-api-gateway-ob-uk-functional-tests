@@ -24,9 +24,11 @@ plugins {
     id("maven-publish")
 }
 
-/*
-* skip unused tasks
-*/
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
 
 /*
  * In case that we publish the artifact
@@ -70,9 +72,6 @@ dependencies {
     xjc("com.sun.xml.bind:jaxb-core:${jaxbVersion}")
     xjc("javax.activation:activation:1.1.1")
 
-    // Align versions of all Kotlin components
-    // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:2.2.0"))
@@ -124,14 +123,6 @@ xjcGeneration {
             javaPackageName = "com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108"
         }
     }
-}
-
-/*
- * Java definitions
- */
-java {
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
 }
 
 /** ************************************************* */
