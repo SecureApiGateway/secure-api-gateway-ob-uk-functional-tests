@@ -2,7 +2,6 @@ package com.forgerock.sapi.gateway.ob.uk.support.general
 
 import com.forgerock.sapi.gateway.framework.configuration.AUTH_METHOD_PRIVATE_KEY_JWT
 import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
-//import com.forgerock.sapi.gateway.framework.configuration.PLATFORM_SERVER
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
 import com.forgerock.sapi.gateway.framework.data.*
 import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
@@ -128,7 +127,7 @@ open class GeneralAS {
     }
 
     protected fun getConsentDetails(consentRequest: String, cookie: String): String {
-        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/details/")
+        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/details")
             .header("Cookie", cookie)
             .body(consentRequest)
             .header("Content-Type", "application/jwt")

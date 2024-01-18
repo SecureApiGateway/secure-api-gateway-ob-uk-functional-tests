@@ -8,6 +8,8 @@ val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financ
 // mtls is a subdomain of the gateway domain
 val MTLS_SERVER = IG_SERVER.replace("https://", "https://mtls.")
 
+val RCS_DECISION_API_URI = "$IG_SERVER/rcs/api/consent/decision"
+
 val TRUSTSTORE_PATH = System.getenv("truststorePath") ?: "/com/forgerock/sapi/gateway/ob/uk/truststore.jks"
 val TRUSTSTORE_PASSWORD = System.getenv("truststorePassword") ?: "changeit"
 
