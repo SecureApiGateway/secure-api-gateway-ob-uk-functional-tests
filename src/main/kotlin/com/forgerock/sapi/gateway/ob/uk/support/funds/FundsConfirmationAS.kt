@@ -1,7 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.funds
 
 import com.forgerock.sapi.gateway.framework.configuration.AM_COOKIE_NAME
-import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RCS_DECISION_API_URI
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.data.RegistrationResponse
 import com.forgerock.sapi.gateway.framework.data.Tpp
@@ -83,7 +83,7 @@ class FundsConfirmationAS : GeneralAS() {
             cookie: String
     ): SendConsentDecisionResponseBody {
         val body = SendConsentDecisionRequestBody(consentRequest, decision, consentedAccount)
-        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/decision/")
+        val (_, response, result) = Fuel.post(RCS_DECISION_API_URI)
                 .header("Cookie", cookie)
                 .jsonBody(body)
                 .responseObject<SendConsentDecisionResponseBody>()
