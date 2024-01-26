@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
-import javax.xml.bind.JAXB
+import jakarta.xml.bind.JAXB
 
 /**
  * Generate common OB payment URLs

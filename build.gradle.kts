@@ -14,7 +14,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 version = "2.2.0"
 // Test jar library version used in the task 'generateTestJar'
 val release = "2.2.0"
-val jaxbVersion = "2.2.11"
+val jaxbVersion = "4.0.1"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
@@ -66,13 +66,10 @@ configurations.all {
 
 dependencies {
     // xjc generation plugin dependencies
-    xjc("javax.xml.bind:jaxb-api:${jaxbVersion}")
+    xjc("jakarta.xml.bind:jakarta.xml.bind-api:${jaxbVersion}")
     xjc("com.sun.xml.bind:jaxb-impl:${jaxbVersion}")
     xjc("com.sun.xml.bind:jaxb-xjc:${jaxbVersion}")
-    xjc("com.sun.xml.bind:jaxb-core:${jaxbVersion}")
-    xjc("javax.activation:activation:1.1.1")
 
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:2.3.0-SNAPSHOT"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
@@ -84,7 +81,9 @@ dependencies {
 
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("org.glassfish.jaxb:jaxb-runtime:2.3.0")
+
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:${jaxbVersion}")
+    implementation("com.sun.xml.bind:jaxb-impl:${jaxbVersion}")
 
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
     implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.1")
