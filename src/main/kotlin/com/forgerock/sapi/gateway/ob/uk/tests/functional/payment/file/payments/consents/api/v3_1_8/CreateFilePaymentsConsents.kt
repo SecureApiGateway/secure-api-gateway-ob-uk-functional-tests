@@ -17,8 +17,6 @@ import uk.org.openbanking.datamodel.payment.OBWriteFileConsent3
 import uk.org.openbanking.datamodel.payment.OBWriteFileConsentResponse4
 import java.math.BigDecimal
 import java.util.*
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
 
 class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -392,7 +390,7 @@ class CreateFilePaymentsConsents(val version: OBVersion, val tppResource: Create
 
     private fun buildSubmitFileRequest(
         fileContent: String,
-        consentId: @NotNull @Size(max = 128, min = 1) String,
+        consentId: String,
         contentType: String
     ) = paymentApiClient.newFilePostRequestBuilder(
         PaymentFactory.urlWithFilePaymentSubmitFileId(paymentLinks.CreateFilePaymentFile, consentId),

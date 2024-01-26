@@ -8,7 +8,7 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistry
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalScheduledConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
 
 class GetInternationalScheduledPaymentsConsents(
     val version: OBVersion,
@@ -26,7 +26,7 @@ class GetInternationalScheduledPaymentsConsents(
         // Given
         val consentRequest =
             consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         // When
         val consentResponse =
             createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsent(consentRequest)
@@ -35,14 +35,14 @@ class GetInternationalScheduledPaymentsConsents(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.risk).isNotNull()
-        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.AGREED)
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType.AGREED)
     }
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_ACTUAL_Test() {
         // Given
         val consentRequest =
             consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         // When
@@ -53,14 +53,14 @@ class GetInternationalScheduledPaymentsConsents(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.risk).isNotNull()
-        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.ACTUAL)
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType.ACTUAL)
     }
 
     fun shouldGetInternationalScheduledPaymentsConsents_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest =
             consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -72,6 +72,6 @@ class GetInternationalScheduledPaymentsConsents(
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertThat(consentResponse.risk).isNotNull()
-        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.INDICATIVE)
+        assertThat(consentResponse.data.initiation.exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType.INDICATIVE)
     }
 }

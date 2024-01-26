@@ -8,7 +8,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.BaseAccountApi3_1_8
 import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
-import uk.org.openbanking.datamodel.account.OBReadAccount3
+import uk.org.openbanking.datamodel.account.OBReadAccount6
 import uk.org.openbanking.datamodel.account.OBReadStatement2
 
 class GetAccountStatements(version: OBVersion, tppResource: CreateTppCallback.TppResource) :
@@ -23,7 +23,7 @@ class GetAccountStatements(version: OBVersion, tppResource: CreateTppCallback.Tp
         )
         val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
         val accounts =
-            AccountRS().getAccountsData<OBReadAccount3>(accountsApiLinks.GetAccounts, accessToken)
+            AccountRS().getAccountsData<OBReadAccount6>(accountsApiLinks.GetAccounts, accessToken)
 
         assertThat(accounts.data).isNotNull()
         assertThat(accounts.data.account[0].accountId).isNotNull()

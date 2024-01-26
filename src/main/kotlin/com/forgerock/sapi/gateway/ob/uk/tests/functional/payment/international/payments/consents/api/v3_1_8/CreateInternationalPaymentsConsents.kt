@@ -18,7 +18,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
@@ -163,7 +163,7 @@ class CreateInternationalPaymentsConsents(val version: OBVersion, val tppResourc
         // Validate ASPSP has generated ExchangeRateInformation in the response data section
         val exchangeRateInformation = consent.data.exchangeRateInformation
         assertThat(exchangeRateInformation).isNotNull()
-        assertThat(exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.INDICATIVE)
+        assertThat(exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType.INDICATIVE)
         assertThat(exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.instructedAmount.currency)
         assertThat(exchangeRateInformation.exchangeRate).isGreaterThan(BigDecimal.ZERO)
     }

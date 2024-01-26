@@ -13,8 +13,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
+import uk.org.openbanking.datamodel.common.OBReadRefundAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalResponse5
 
 class GetInternationalPayment(
@@ -31,7 +31,7 @@ class GetInternationalPayment(
     fun getInternationalPayments_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         val paymentResponse = createInternationalPayment.submitPayment(consentRequest)
 
         // When
@@ -49,7 +49,7 @@ class GetInternationalPayment(
     fun getInternationalPayments_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -68,7 +68,7 @@ class GetInternationalPayment(
     fun getInternationalPayments_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -105,7 +105,7 @@ class GetInternationalPayment(
     fun shouldGetInternationalPayments_withReadRefund_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
+        consentRequest.data.readRefundAccount = OBReadRefundAccount.YES
 
         val paymentResponse = createInternationalPayment.submitPayment(consentRequest)
 

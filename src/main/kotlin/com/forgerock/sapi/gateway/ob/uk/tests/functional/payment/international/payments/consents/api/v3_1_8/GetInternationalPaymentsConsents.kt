@@ -11,7 +11,7 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInterna
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
 
 class GetInternationalPaymentsConsents(
     val version: OBVersion,
@@ -26,7 +26,7 @@ class GetInternationalPaymentsConsents(
     fun shouldGetInternationalPaymentsConsents_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         // When
         val consentResponse = createInternationalPaymentsConsents.createInternationalPaymentConsent(consentRequest)
         // Then
@@ -41,7 +41,7 @@ class GetInternationalPaymentsConsents(
     fun shouldGetInternationalPaymentsConsents_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         // When
@@ -57,7 +57,7 @@ class GetInternationalPaymentsConsents(
     fun shouldGetInternationalPaymentsConsents_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         // When

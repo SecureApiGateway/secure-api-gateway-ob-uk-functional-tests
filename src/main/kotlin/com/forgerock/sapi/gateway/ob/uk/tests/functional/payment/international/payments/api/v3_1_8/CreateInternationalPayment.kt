@@ -32,7 +32,7 @@ class CreateInternationalPayment(
     fun createInternationalPayment_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         // When
         val result = submitPayment(consentRequest)
 
@@ -50,7 +50,7 @@ class CreateInternationalPayment(
     fun createInternationalPayment_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -72,7 +72,7 @@ class CreateInternationalPayment(
     fun createInternationalPayment_withDebtorAccount_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         // optional debtor account
@@ -103,7 +103,7 @@ class CreateInternationalPayment(
     fun createInternationalPayment_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 

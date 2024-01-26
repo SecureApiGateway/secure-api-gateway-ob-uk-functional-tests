@@ -1,8 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.support.funds
 
-import uk.org.openbanking.datamodel.common.OBActiveOrHistoricCurrencyAndAmount
 import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationData1
+import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1Data
+import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1DataInstructedAmount
 
 class FundsConfirmationFactory {
     companion object {
@@ -10,12 +10,11 @@ class FundsConfirmationFactory {
         fun obFundsConfirmation1(consentId: String): OBFundsConfirmation1 {
             return OBFundsConfirmation1()
                     .data(
-
-                            OBFundsConfirmationData1()
+                        OBFundsConfirmation1Data()
                                     .consentId(consentId)
                                     .reference("funds-reference-01")
                                     .instructedAmount(
-                                            OBActiveOrHistoricCurrencyAndAmount()
+                                        OBFundsConfirmation1DataInstructedAmount()
                                                     .amount("20.00")
                                                     .currency("GBP")
                                     )

@@ -15,7 +15,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
-import uk.org.openbanking.datamodel.vrp.OBPAFundsAvailableResult1
+import uk.org.openbanking.datamodel.vrp.OBPAFundsAvailableResult1FundsAvailable
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequest
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequestData
 import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationResponse
@@ -42,7 +42,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.NOTAVAILABLE)
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1FundsAvailable.NOTAVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -77,7 +77,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.AVAILABLE)
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1FundsAvailable.AVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
     }
 
@@ -89,7 +89,7 @@ class CreateDomesticVrpConsentsFundsConfirmation(
         assertThat(result).isNotNull()
         assertThat(result.data).isNotNull()
         assertThat(result.data.fundsAvailableResult).isNotNull()
-        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1.FundsAvailableEnum.AVAILABLE)
+        assertThat(result.data.fundsAvailableResult.fundsAvailable).isEqualTo(OBPAFundsAvailableResult1FundsAvailable.AVAILABLE)
         assertThat(result.data.fundsAvailableResult.fundsAvailableDateTime).isNotNull()
 
         // Create and authorise a second consent

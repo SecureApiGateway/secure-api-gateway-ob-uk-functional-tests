@@ -4,9 +4,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.org.openbanking.datamodel.common.OBCashAccount3
 import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsentData1
+import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1Data
+import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1DataDebtorAccount
 
 class FundsConfirmationConsentFactory {
 
@@ -16,10 +16,10 @@ class FundsConfirmationConsentFactory {
             val debtorAccount = PsuData().getDebtorAccount()
             return OBFundsConfirmationConsent1()
                     .data(
-                            OBFundsConfirmationConsentData1()
+                            OBFundsConfirmationConsent1Data()
                                     .expirationDateTime(DateTime.now().plusMonths(5).withZone(DateTimeZone.UTC))
                                     .debtorAccount(
-                                            OBCashAccount3()
+                                        OBFundsConfirmationConsent1DataDebtorAccount()
                                                     .identification(debtorAccount?.Identification)
                                                     .name(debtorAccount?.Name)
                                                     .schemeName(debtorAccount?.SchemeName)

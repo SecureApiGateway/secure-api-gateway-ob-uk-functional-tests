@@ -16,7 +16,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.common.OBReadRefundAccount
 import uk.org.openbanking.datamodel.vrp.OBDomesticVRPResponse
 
 class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -30,7 +30,7 @@ class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.
     fun getDomesticVrpPaymentsWithRefundAccountTest() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.readRefundAccount(OBReadRefundAccountEnum.YES)
+        consentRequest.data.readRefundAccount(OBReadRefundAccount.YES)
         val paymentResponse = createDomesticVrpPaymentApi.submitPayment(consentRequest)
 
         // When
@@ -49,7 +49,7 @@ class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.
     fun getDomesticVrpPaymentsTest() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.readRefundAccount(OBReadRefundAccountEnum.NO)
+        consentRequest.data.readRefundAccount(OBReadRefundAccount.NO)
         val paymentResponse = createDomesticVrpPaymentApi.submitPayment(consentRequest)
 
         // When

@@ -28,7 +28,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         consentRequest.data.initiation.instructedAmount.amount("3")
 
         // When
@@ -45,7 +45,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("3")
@@ -64,7 +64,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_true_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("3")
@@ -83,7 +83,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         consentRequest.data.initiation.instructedAmount.amount("1000000")
 
         // When
@@ -100,7 +100,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("1000000")
@@ -119,7 +119,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
     fun shouldGetInternationalScheduledPaymentConsentsFundsConfirmation_false_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
         consentRequest.data.initiation.instructedAmount.amount("1000000")
@@ -164,7 +164,7 @@ class GetInternationalScheduledPaymentsConsentFundsConfirmation(
 
         val paymentSubmissionRequest = createPaymentRequest(consentResponse)
 
-        val payment: OBWriteInternationalScheduledResponse5 = paymentApiClient.submitPayment(
+        val payment: OBWriteInternationalScheduledResponse6 = paymentApiClient.submitPayment(
             paymentLinks.CreateInternationalScheduledPayment,
             authorizationToken,
             paymentSubmissionRequest
