@@ -13,9 +13,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
-import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledResponse5
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
+import uk.org.openbanking.datamodel.common.OBReadRefundAccount
+import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledResponse6
 
 class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -31,7 +31,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
     fun getInternationalScheduledPayments_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         val paymentResponse = createInternationalScheduledPayment.submitPayment(consentRequest)
 
         // When
@@ -49,7 +49,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
     fun getInternationalScheduledPayments_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -68,7 +68,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
     fun getInternationalScheduledPayments_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -103,7 +103,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
     fun shouldGetInternationalScheduledPayments_withReadRefund_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
+        consentRequest.data.readRefundAccount = OBReadRefundAccount.YES
 
         val paymentResponse = createInternationalScheduledPayment.submitPayment(consentRequest)
 
@@ -119,7 +119,7 @@ class GetInternationalScheduledPayment(val version: OBVersion, val tppResource: 
         Assertions.assertThat(result.data.status.toString()).`is`(Status.paymentCondition)
     }
 
-    private fun getInternationalScheduledPayment(paymentResponse: OBWriteInternationalScheduledResponse5): OBWriteInternationalScheduledResponse5 {
+    private fun getInternationalScheduledPayment(paymentResponse: OBWriteInternationalScheduledResponse6): OBWriteInternationalScheduledResponse6 {
         val getDomesticPaymentUrl = PaymentFactory.urlWithInternationalScheduledPaymentId(
             paymentLinks.GetInternationalScheduledPayment,
             paymentResponse.data.internationalScheduledPaymentId

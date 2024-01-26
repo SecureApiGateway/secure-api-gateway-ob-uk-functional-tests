@@ -15,9 +15,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForA
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.scheduled.payments.consents.api.v3_1_8.CreateDomesticScheduledPaymentsConsents
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBReadRefundAccountEnum
+import uk.org.openbanking.datamodel.common.OBReadRefundAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledResponse5
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
 class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -47,7 +46,7 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
     fun shouldGetDomesticScheduledPayments_withReadRefundTest() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.readRefundAccount = OBReadRefundAccountEnum.YES
+        consentRequest.data.readRefundAccount = OBReadRefundAccount.YES
         val (consent, accessTokenAuthorizationCode) = createDomesticScheduledPaymentsConsents.createDomesticScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -55,7 +54,7 @@ class GetDomesticScheduledPayment(val version: OBVersion, val tppResource: Creat
         assertThat(consent).isNotNull()
         assertThat(consent.data).isNotNull()
         assertThat(consent.data.consentId).isNotEmpty()
-        assertThat(consent.data.readRefundAccount).isEqualTo(OBReadRefundAccountEnum.YES)
+        assertThat(consent.data.readRefundAccount).isEqualTo(OBReadRefundAccount.YES)
         Assertions.assertThat(consent.data.status.toString()).`is`(Status.consentCondition)
 
         val paymentResponse = createDomesticScheduledPayment.submitPayment(consentRequest)

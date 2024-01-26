@@ -5,11 +5,10 @@ import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.http.fuel.jsonBody
 import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
-import com.forgerock.sapi.gateway.ob.uk.support.discovery.rsDiscovery
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.ResponseResultOf
 import com.github.kittinunf.fuel.core.isSuccessful
-import uk.org.openbanking.datamodel.account.OBReadAccount3
+import uk.org.openbanking.datamodel.account.OBReadAccount6
 
 const val HTTP_STATUS_CODE_NO_CONTENT = 204
 
@@ -134,12 +133,12 @@ class AccountRS {
     }
 
     fun getFirstAccountId(accountDataUrl: String, accessToken: AccessToken): String {
-        val accounts = getAccountsData<OBReadAccount3>(accountDataUrl, accessToken)
+        val accounts = getAccountsData<OBReadAccount6>(accountDataUrl, accessToken)
         return accounts.data.account[0].accountId
     }
 
     fun getFirstAccountIdAndPsuId(accountDataUrl: String, accessToken: AccessToken): Pair<String, String> {
-        val accounts = getAccountsData<OBReadAccount3>(accountDataUrl, accessToken)
+        val accounts = getAccountsData<OBReadAccount6>(accountDataUrl, accessToken)
 
         try {
             val accountId = accounts.data.account[0].accountId

@@ -19,7 +19,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType2Code
+import uk.org.openbanking.datamodel.payment.OBExchangeRateType
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
@@ -166,7 +166,7 @@ class CreateInternationalScheduledPaymentsConsents(
         // Validate ASPSP has generated ExchangeRateInformation in the response data section
         val exchangeRateInformation = consent.data.exchangeRateInformation
         assertThat(exchangeRateInformation).isNotNull()
-        assertThat(exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType2Code.INDICATIVE)
+        assertThat(exchangeRateInformation.rateType).isEqualTo(OBExchangeRateType.INDICATIVE)
         assertThat(exchangeRateInformation.unitCurrency).isEqualTo(consentRequest.data.initiation.instructedAmount.currency)
         assertThat(exchangeRateInformation.exchangeRate).isGreaterThan(BigDecimal.ZERO)
 

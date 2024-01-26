@@ -9,7 +9,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.event.OBEventNotification1
 import uk.org.openbanking.datamodel.event.OBEventPolling1
-import uk.org.openbanking.datamodel.event.OBEventPolling1SetErrs
+import uk.org.openbanking.datamodel.event.OBEventPolling1SetErrsValue
 import uk.org.openbanking.datamodel.event.OBEventPollingResponse1
 import kotlin.streams.toList
 
@@ -103,7 +103,7 @@ class AggregatedPolling(
         obEventPollingRequest.setErrs(
                 mapOf(
                         eventsImported.obEventNotification1List[1].jti to
-                                OBEventPolling1SetErrs().err("jwtIss").description("Issuer is invalid or could not be verified")
+                                OBEventPolling1SetErrsValue().err("jwtIss").description("Issuer is invalid or could not be verified")
                 )
         )
 

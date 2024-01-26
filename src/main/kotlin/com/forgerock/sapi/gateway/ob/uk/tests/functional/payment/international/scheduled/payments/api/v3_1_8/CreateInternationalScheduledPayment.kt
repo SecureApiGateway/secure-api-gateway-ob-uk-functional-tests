@@ -33,7 +33,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_AGREED_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
 
         // When
         val result = submitPayment(consentRequest)
@@ -79,7 +79,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_withDebtorAccount_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.AGREED
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.AGREED
         // optional debtor account
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
@@ -107,7 +107,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_ACTUAL_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.ACTUAL
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.ACTUAL
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -129,7 +129,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
     fun createInternationalScheduledPayment_rateType_INDICATIVE_Test() {
         // Given
         val consentRequest = consentFactory.createConsent()
-        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType2Code.INDICATIVE
+        consentRequest.data.initiation.exchangeRateInformation.rateType = OBExchangeRateType.INDICATIVE
         consentRequest.data.initiation.exchangeRateInformation.exchangeRate = null
         consentRequest.data.initiation.exchangeRateInformation.contractIdentification = null
 
@@ -404,7 +404,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         val paymentSubmissionRequest = createPaymentRequest(consent.data.consentId, consentRequest)
 
         val idempotencyKey = UUID.randomUUID().toString()
-        val firstPaymentResponse:OBWriteInternationalScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+        val firstPaymentResponse:OBWriteInternationalScheduledResponse6 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
             .addIdempotencyKeyHeader(idempotencyKey)
             .sendRequest()
 
@@ -415,14 +415,14 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         Assertions.assertThat(firstPaymentResponse.links.self.toString()).isEqualTo(createPaymentUrl + "/" + firstPaymentResponse.data.internationalScheduledPaymentId)
 
         // Submit again with same key
-        val secondPaymentResponse:OBWriteInternationalScheduledResponse5 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
+        val secondPaymentResponse:OBWriteInternationalScheduledResponse6 = paymentApiClient.newPostRequestBuilder(createPaymentUrl, authorizationToken, paymentSubmissionRequest)
             .addIdempotencyKeyHeader(idempotencyKey)
             .sendRequest()
 
         Assertions.assertThat(secondPaymentResponse).isEqualTo(firstPaymentResponse)
     }
 
-    fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse5 {
+    fun submitPayment(consentRequest: OBWriteInternationalScheduledConsent5): OBWriteInternationalScheduledResponse6 {
         val (consentResponse, authorizationToken) = createInternationalScheduledPaymentsConsents.createInternationalScheduledPaymentConsentAndAuthorize(
             consentRequest
         )
@@ -433,7 +433,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         consentId: String,
         consentRequest: OBWriteInternationalScheduledConsent5,
         authorizationToken: AccessToken
-    ): OBWriteInternationalScheduledResponse5 {
+    ): OBWriteInternationalScheduledResponse6 {
         return submitPaymentForConsent(consentId, consentRequest, authorizationToken)
     }
 
@@ -441,7 +441,7 @@ class CreateInternationalScheduledPayment(val version: OBVersion, val tppResourc
         consentId: String,
         consentRequest: OBWriteInternationalScheduledConsent5,
         authorizationToken: AccessToken
-    ): OBWriteInternationalScheduledResponse5 {
+    ): OBWriteInternationalScheduledResponse6 {
         val paymentSubmissionRequest = createPaymentRequest(consentId, consentRequest)
         return paymentApiClient.submitPayment(
             createPaymentUrl,
