@@ -1,10 +1,10 @@
 package com.forgerock.sapi.gateway.ob.uk.support.account
 
 import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory.Companion.urlSubstituted
-import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.account.OBReadConsent1
 import uk.org.openbanking.datamodel.account.OBReadConsent1Data
 import uk.org.openbanking.datamodel.account.OBRisk2
+import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
 
 /**
  * Generate common OB account data and URLs
