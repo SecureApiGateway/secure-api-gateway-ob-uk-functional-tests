@@ -16,7 +16,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.funds.FundsConfirmationConsentFa
 import com.forgerock.sapi.gateway.ob.uk.support.funds.FundsConfirmationRS
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.account.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
 import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1
 import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsentResponse1
