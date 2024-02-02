@@ -36,7 +36,7 @@ jobs:
     name: Release docker
     needs: [ release_prepare_no_maven ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         id: checkout_tag
         name: checkout tag
         with:
