@@ -49,7 +49,7 @@ jobs:
 
       - name: Set up Cloud SDK
         id: gcloud_sdk
-        uses: google-github-actions/setup-gcloud@v1.1.1
+        uses: google-github-actions/setup-gcloud@v2.1.0
 
       - name: Set up docker auth
         id: gcloud_docker_auth
