@@ -1,7 +1,7 @@
 name: create-release
 run-name: Create release '${{ inputs.release_version_number }}'
 # What it does:
-# - Call release-prepare-no-maven
+# - Call release-prepare
 # - release_docker job: builds and push the release docker image
 # - Call release-publish-draft-and-pr (skip PR creation)
 on:
@@ -22,11 +22,12 @@ env:
 
 jobs:
 
-  release_prepare_no_maven: # prepare for a release in scm, creates the tag and release branch with the proper release versions
+  release_prepare: # prepare for a release in scm, creates the tag and release branch with the proper release versions
     name: Call release prepare no maven
-    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-prepare-no-maven.yml@master
+    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-prepare.yml@master
     with:
       release_version_number: ${{ inputs.release_version_number }}
+      require_maven: false
     secrets:
       GIT_COMMIT_USERNAME_BOT: ${{ secrets.GIT_COMMIT_USERNAME_BOT }}
       GIT_COMMIT_AUTHOR_EMAIL_BOT: ${{ secrets.GIT_COMMIT_AUTHOR_EMAIL_BOT }}
@@ -35,13 +36,13 @@ jobs:
   release_docker:
     runs-on: ubuntu-latest
     name: Release docker
-    needs: [ release_prepare_no_maven ]
+    needs: [ release_prepare ]
     steps:
       - uses: actions/checkout@v4
         id: checkout_tag
         name: checkout tag
         with:
-          ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
+          ref: ${{ needs.release_prepare.outputs.release_tag_ref }}
 
       - uses: google-github-actions/auth@v2
         id: gcloud_auth
@@ -72,11 +73,11 @@ jobs:
 
   release_draft:
     name: Call publish
-    needs: [release_prepare_no_maven, release_docker ]
+    needs: [release_prepare, release_docker ]
     uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-publish.yml@master
     with:
       release_version_number: ${{ inputs.release_version_number }}
-      release_tag_ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
+      release_tag_ref: ${{ needs.release_prepare.outputs.release_tag_ref }}
       release_notes: ${{ inputs.notes }}
     secrets:
       release_github_token: ${{ secrets.RELEASE_PAT }}
