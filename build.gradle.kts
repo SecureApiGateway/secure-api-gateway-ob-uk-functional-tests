@@ -11,9 +11,8 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  */
 // project version
 // pom artifact version used when the built artifact is published
-version = "2.3.0"
 // Test jar library version used in the task 'generateTestJar'
-val release = "2.3.0"
+version = "2.3.0"
 val jaxbVersion = "4.0.1"
 
 plugins {
@@ -178,7 +177,7 @@ tasks.register<Jar>("generateTestJar") {
     group = "specific"
     description = "Generate a non-executable jar library tests"
     archiveClassifier.set("tests")
-    archiveFileName.set("${project.name}-${project.version}-$release.jar")
+    archiveFileName.set("${project.name}-${project.version}-$version.jar")
     from(sourceSets.test.get().allSource)
     from(sourceSets.main.get().allSource)
     dependsOn("testClasses")
