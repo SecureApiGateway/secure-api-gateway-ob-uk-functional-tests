@@ -30,6 +30,7 @@ jobs:
     secrets:
       GIT_COMMIT_USERNAME_BOT: ${{ secrets.GIT_COMMIT_USERNAME_BOT }}
       GIT_COMMIT_AUTHOR_EMAIL_BOT: ${{ secrets.GIT_COMMIT_AUTHOR_EMAIL_BOT }}
+      release_github_token: ${{ secrets.RELEASE_PAT }}
 
   release_docker:
     runs-on: ubuntu-latest
@@ -70,12 +71,12 @@ jobs:
           docker push --all-tags ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}
 
   release_draft:
-    name: Call publish release draft
+    name: Call publish
     needs: [release_prepare_no_maven, release_docker ]
-    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-publish-draft-and-pr.yml@master
+    uses: SecureApiGateway/secure-api-gateway-parent/.github/workflows/release-publish.yml@master
     with:
       release_version_number: ${{ inputs.release_version_number }}
-      release_branch_ref: ${{ needs.release_prepare_no_maven.outputs.release_branch_ref }}
       release_tag_ref: ${{ needs.release_prepare_no_maven.outputs.release_tag_ref }}
       release_notes: ${{ inputs.notes }}
-      create_pr: false # skip create the pull request
+    secrets:
+      release_github_token: ${{ secrets.RELEASE_PAT }}
