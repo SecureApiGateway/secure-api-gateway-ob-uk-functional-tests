@@ -41,7 +41,7 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  */
 // servers
 val environment by extra ("nightly")
-val amCookieName by extra("80d4a6cdee74c6e")
+val amCookieName by extra("9cc10c563dded16")
 val igServer by extra("https://sapig.$environment.forgerock.financial")
 
 // PSU User configuration
