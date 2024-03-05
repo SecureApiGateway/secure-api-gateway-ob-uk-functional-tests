@@ -44,7 +44,7 @@ jobs:
         with:
           args: '-v IMAGE_REPO=securebanking/pr/${{ env.SERVICE_NAME }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-functional-tests'
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-functional-tests'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-functionaltest
         id: run-tests
