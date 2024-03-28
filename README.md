@@ -208,7 +208,7 @@ To run the codefresh pipeline from a github action add the below step to your ac
     with:
       args: '-v SPEC_IMAGE=uk-functional-tests -v TAG=latest -v TEST_TASK=tests_v3_1_8' # PROFILE isn't mandatory, no profile provided to use the default
     env:
-      PIPELINE_NAME: 'ForgeCloud/sbat-infra/functional-tests'
+      PIPELINE_NAME: 'SAPIG-devenv/functional-tests'
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
     id: run-pipeline
 ```
