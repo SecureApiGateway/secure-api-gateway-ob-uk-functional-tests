@@ -23,7 +23,7 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
     private fun addHeaders(jwtBuilder: JwtBuilder) {
         val headers = HashMap<String, Any>()
         headers["kid"] = getKid()
-        headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000 - 10
+        headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000
         headers["http://openbanking.org.uk/iss"] = ISS_CLAIM_VALUE
         headers["http://openbanking.org.uk/tan"] = com.forgerock.sapi.gateway.ob.uk.framework.constants.TAN
         headers["crit"] = listOf(
@@ -60,13 +60,15 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
 /**
  * Implementation for testing purposes, produces an invalid detached JWS
  */
-class BadJwsSignatureProducer(private val badSignature: String = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_FORMAT_DETACHED_JWS): JwsSignatureProducer {
+class BadJwsSignatureProducer(private val badSignature: String = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_FORMAT_DETACHED_JWS) :
+    JwsSignatureProducer {
     override fun createDetachedSignature(jsonPayload: String) = badSignature
 }
 
 /**
  * Implementation for testing purposes, produces a detached JWS with and invalid kid header value
  */
-class InvalidKidJwsSignatureProducer(tpp: Tpp, b64HeaderValue: Boolean? = null): DefaultJwsSignatureProducer(tpp, b64HeaderValue) {
+class InvalidKidJwsSignatureProducer(tpp: Tpp, b64HeaderValue: Boolean? = null) :
+    DefaultJwsSignatureProducer(tpp, b64HeaderValue) {
     override fun getKid() = com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_SIGNING_KID
 }

@@ -43,7 +43,7 @@ fun signPayloadSubmitPayment(
     }
 
     // The -10 was added because the systems have unsynchronised clocks.
-    headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000 - 10
+    headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000
     headers["http://openbanking.org.uk/iss"] = ISS_CLAIM_VALUE
     headers["http://openbanking.org.uk/tan"] = com.forgerock.sapi.gateway.ob.uk.framework.constants.TAN
     headers["crit"] = listOf(
@@ -84,7 +84,7 @@ fun signPayloadSubmitPaymentInvalidB64ClaimTrue(
     }
 
     // The -10 was added because the systems have unsynchronised clocks.
-    headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000 - 10
+    headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000
     headers["http://openbanking.org.uk/iss"] = ISS_CLAIM_VALUE
     headers["http://openbanking.org.uk/tan"] = com.forgerock.sapi.gateway.ob.uk.framework.constants.TAN
     headers["crit"] = listOf(
