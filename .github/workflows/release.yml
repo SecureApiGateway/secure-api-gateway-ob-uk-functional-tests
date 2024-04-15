@@ -35,6 +35,9 @@ jobs:
   release_docker:
     runs-on: ubuntu-latest
     name: Release docker
+    with:
+      release_version_number: ${{ inputs.release_version_number }}
+
     needs: [ release_prepare_no_maven ]
     steps:
       - uses: actions/checkout@v4
@@ -66,8 +69,8 @@ jobs:
         id: build_docker
         run: |
           make docker tag=${{ env.GIT_SHA_SHORT }} repo=${{ vars.GAR_RELEASE_REPO }} name=${{ env.SERVICE_NAME }}
-          docker tag ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ vars.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:latest
-          docker tag ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ vars.GAR_RELEASE_REPO }}/securebanking/tests/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
+          docker tag ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:latest
+          docker tag ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ env.GIT_SHA_SHORT }} ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}:${{ inputs.release_version_number }}
           docker push --all-tags ${{ vars.GAR_RELEASE_REPO }}/securebanking/${{ env.SERVICE_NAME}}
 
   release_draft:
