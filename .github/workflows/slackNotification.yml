@@ -1,18 +1,10 @@
-name: Check Changes
-
+name: Merge Notification
 on:
   push:
     branches:
       - master
-
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    name: Push Slack Notification
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        if: success()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.WEBHOOK_SBAT_NOTIFY_SLACK }}
-          SLACK_COLOR: ${{ job.status }}
+  run_slack-notification:
+    name: Merge Notification
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-slack-notification.yml@main
+    secrets: inherit

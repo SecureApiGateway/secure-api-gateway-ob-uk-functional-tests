@@ -1,50 +1,15 @@
-name: pull-request
-
+name: PR - Build and Deploy
 on:
   pull_request:
     branches:
       - master
     paths-ignore:
-      - README.md
-
-env:
-  PR_NUMBER: pr-${{ github.event.number }}
-  SERVICE_NAME: uk-functional-tests
-  TEST_TASK: tests_v3_1_10
-
+      - '**/README.md'
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Check PR integrity
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Auth to GCP  
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.DEV_GAR_KEY }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1.1.1
-      
-      - name: Auth Docker
-        run: |
-          gcloud auth configure-docker europe-west4-docker.pkg.dev
-      
-      - name: Build Docker Image
-        run: |
-          make docker tag=${{ env.PR_NUMBER }}
-  test:
-    runs-on: ubuntu-latest
-    name: Test Image
-    needs: build
-    steps:        
-      - name: 'Run Functional Tests'
-        uses: codefresh-io/codefresh-pipeline-runner@master
-        with:
-          args: '-v IMAGE_REPO=securebanking/pr/${{ env.SERVICE_NAME }} -v TAG=${{ env.PR_NUMBER }} -v TEST_TASK=${{ env.TEST_TASK }}'
-        env:
-          PIPELINE_NAME: 'SAPIG-devenv/dev-ob-functional-tests'
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          TRIGGER_NAME: github-actions-trigger-functionaltest
-        id: run-tests
+  run_pr-template:
+    name: PR - Build and Deploy
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-pr.yml@main
+    secrets: inherit
+    with:
+      componentName: secure-api-gateway-ob-uk-functional-tests
+      dockerTag: pr-${{ github.event.number }}
