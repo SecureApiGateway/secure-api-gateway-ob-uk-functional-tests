@@ -8,8 +8,8 @@ on:
 jobs:
   run_pr-template:
     name: PR - Build and Deploy
-    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/pr-template.yml@1389-standard-steps-for-workflows
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-pr.yml@main
     secrets: inherit
     with:
       componentName: secure-api-gateway-ob-uk-functional-tests
-      prNumber: pr-${{ github.event.number }}
+      dockerTag: pr-${{ github.event.number }}

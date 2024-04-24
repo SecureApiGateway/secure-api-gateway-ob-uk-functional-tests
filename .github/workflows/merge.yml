@@ -1,0 +1,15 @@
+name: Merge - Build and Deploy
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**/README.md'
+jobs:
+  run_merge-template:
+    name: Merge - Build and Deploy
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-merge.yml@main
+    secrets: inherit
+    with:
+      componentName: secure-api-gateway-ob-uk-functional-tests
+      dockerTag: $(echo ${{ github.sha }} | cut -c1-7)
