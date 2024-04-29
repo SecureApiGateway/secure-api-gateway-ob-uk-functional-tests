@@ -22,9 +22,6 @@ endif
    		docker push ${repo}/securebanking/${service}:${TAG}; \
    	fi;
 
-convertToLower:
-	$(eval TAG=$(shell echo $(tag) | tr A-Z a-z))
-
 runTests:
 	@echo "Running tests suite '${tests}' against '$(profile)' environment"
 	sleep 5s
