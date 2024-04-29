@@ -18,7 +18,7 @@ endif
 ifneq (,$(findstring RC,$(tag)))
 	$(eval service=rc/uk-functional-tests)
 endif
-	if [ "${setlatest}" = "true" ]; then \
+	@if [ "${setlatest}" = "true" ]; then \
 		docker build -t ${repo}/securebanking/${service}:${TAG} -t ${repo}/securebanking/${service}:latest . ; \
 		docker push ${repo}/securebanking/${service} --all-tags; \
     else \
