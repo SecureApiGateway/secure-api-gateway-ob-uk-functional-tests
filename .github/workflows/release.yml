@@ -8,7 +8,7 @@ on:
         required: false
         type: string
       releaseVersion:
-        description: "The version to be Released (#.#.# | #.#.#-RC#)"
+        description: "The version to be Released (#.#.# | #.#.#-rc#)"
         required: true
         type: string
 jobs:
