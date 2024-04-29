@@ -20,10 +20,10 @@ ifneq (,$(findstring RC,$(tag)))
 endif
 	if [ "${setlatest}" = "true" ]; then \
 		docker build -t ${repo}/securebanking/${service}:${TAG} -t ${repo}/securebanking/${service}:latest . ; \
-		#docker push ${repo}/securebanking/${service} --all-tags; \
+		docker push ${repo}/securebanking/${service} --all-tags; \
     else \
    		docker build  -t ${repo}/securebanking/${service}:${TAG} . ; \
-   		#docker push ${repo}/securebanking/${service}:${TAG}; \
+   		docker push ${repo}/securebanking/${service}:${TAG}; \
    	fi;
 
 convertToLower:
