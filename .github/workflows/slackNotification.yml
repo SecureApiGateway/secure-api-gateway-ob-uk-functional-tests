@@ -1,4 +1,4 @@
-name: Merge Notification
+name: Merge - Notification
 on:
   push:
     branches:
@@ -7,4 +7,8 @@ jobs:
   run_slack-notification:
     name: Merge Notification
     uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-slack-notification.yml@main
-    secrets: inherit
+    with:
+      gcpProject: ${{ vars.SAPIG_PROJECT }}
+      gsmSlackWebhookName: ${{ vars.GSM_PR_WEBOOK_NAME }}
+    secrets:
+      gcpKey: ${{ secrets.DEV_GAR_KEY }}
