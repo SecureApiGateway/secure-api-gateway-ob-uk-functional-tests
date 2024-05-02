@@ -11,4 +11,4 @@ jobs:
       gcpProject: ${{ vars.SAPIG_PROJECT }}
       gsmSlackWebhookName: ${{ vars.GSM_PR_WEBOOK_NAME }}
     secrets:
-      gcpKey: ${{ secrets.DEV_GCP_KEY }}
+      gcpKey: ${{ secrets.GCP_SECRET_READ }}
