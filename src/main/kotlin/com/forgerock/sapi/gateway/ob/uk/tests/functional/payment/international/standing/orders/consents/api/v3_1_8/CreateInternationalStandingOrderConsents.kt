@@ -91,10 +91,9 @@ class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppRe
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomesticStandingOrder3DataInitiationDebtorAccount()
-                .identification(debtorAccount?.Identification)
-                .name(debtorAccount?.Name)
-                .schemeName(debtorAccount?.SchemeName)
-                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+                .identification(debtorAccount.Identification)
+                .schemeName(debtorAccount.SchemeName)
+                .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )
 
         val consent = createInternationalStandingOrderConsent(consentRequest)
