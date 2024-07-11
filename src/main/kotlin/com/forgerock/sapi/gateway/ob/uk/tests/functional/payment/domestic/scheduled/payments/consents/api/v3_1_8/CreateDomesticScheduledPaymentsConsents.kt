@@ -12,7 +12,12 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
-import com.forgerock.sapi.gateway.ob.uk.support.payment.*
+import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentAS
+import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
+import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
@@ -20,8 +25,7 @@ import org.joda.time.DateTime
 import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
 import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
-import java.util.*
+import java.util.UUID
 
 class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
@@ -77,7 +81,7 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consentResponse2.risk).isNotNull()
 
-        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
+        assertThat(consentResponse1.data.consentId).isEqualTo(consentResponse2.data.consentId)
     }
 
     fun createDomesticScheduledPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
@@ -106,10 +110,9 @@ class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppRes
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
-                .identification(debtorAccount?.Identification)
-                .name(debtorAccount?.Name)
-                .schemeName(debtorAccount?.SchemeName)
-                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+                .identification(debtorAccount.Identification)
+                .schemeName(debtorAccount.SchemeName)
+                .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )
 
         val consent = createDomesticScheduledPaymentConsent(consentRequest)

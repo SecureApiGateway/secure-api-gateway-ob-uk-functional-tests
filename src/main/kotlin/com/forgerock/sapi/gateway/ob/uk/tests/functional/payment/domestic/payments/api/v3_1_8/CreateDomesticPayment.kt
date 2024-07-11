@@ -75,10 +75,9 @@ class CreateDomesticPayment(
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
-                .identification(debtorAccount?.Identification)
-                .name(debtorAccount?.Name)
-                .schemeName(debtorAccount?.SchemeName)
-                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+                .identification(debtorAccount.Identification)
+                .schemeName(debtorAccount.SchemeName)
+                .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )
         val result = submitPayment(consentRequest)
 

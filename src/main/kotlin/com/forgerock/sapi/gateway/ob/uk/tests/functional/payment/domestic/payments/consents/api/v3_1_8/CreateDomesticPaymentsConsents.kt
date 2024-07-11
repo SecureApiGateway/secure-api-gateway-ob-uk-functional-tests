@@ -73,7 +73,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         Assertions.assertThat(consentResponse2.data.status.toString()).`is`(Status.consentCondition)
         assertThat(consentResponse2.risk).isNotNull()
 
-        assertThat(consentResponse1.data.consentId).equals(consentResponse2.data.consentId)
+        assertThat(consentResponse1.data.consentId).isEqualTo(consentResponse2.data.consentId)
     }
 
     fun createDomesticPaymentsConsents_NoIdempotencyKey_throwsBadRequestTest() {
@@ -102,10 +102,9 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         val debtorAccount = PsuData().getDebtorAccount()
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
-                .identification(debtorAccount?.Identification)
-                .name(debtorAccount?.Name)
-                .schemeName(debtorAccount?.SchemeName)
-                .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+                .identification(debtorAccount.Identification)
+                .schemeName(debtorAccount.SchemeName)
+                .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )
 
         val consent = createDomesticPaymentsConsent(consentRequest)

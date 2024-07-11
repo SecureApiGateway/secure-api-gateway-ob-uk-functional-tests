@@ -6,17 +6,24 @@ import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.framework.http.fuel.defaultMapper
 import com.forgerock.sapi.gateway.ob.uk.common.error.OBRIErrorType
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistryHolder
-import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.ob.uk.framework.constants.INVALID_CONSENT_ID
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
-import com.forgerock.sapi.gateway.ob.uk.support.payment.*
+import com.forgerock.sapi.gateway.ob.uk.support.payment.BadJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.DefaultJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.InvalidKidJwsSignatureProducer
+import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
+import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.scheduled.payments.consents.api.v3_1_8.CreateDomesticScheduledPaymentsConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
-import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationInstructedAmount
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduled2
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduled2Data
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
+import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledResponse5
 import java.util.UUID
 
 class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
@@ -50,7 +57,6 @@ class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: Cr
         consentRequest.data.initiation.debtorAccount(
             OBWriteDomestic2DataInitiationDebtorAccount()
                 .identification(debtorAccount.Identification)
-                .name(debtorAccount.Name)
                 .schemeName(debtorAccount.SchemeName)
                 .secondaryIdentification(debtorAccount.SecondaryIdentification)
         )

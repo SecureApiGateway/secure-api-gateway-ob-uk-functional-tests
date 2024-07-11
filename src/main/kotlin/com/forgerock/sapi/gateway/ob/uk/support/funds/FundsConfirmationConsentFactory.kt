@@ -20,10 +20,9 @@ class FundsConfirmationConsentFactory {
                                     .expirationDateTime(DateTime.now().plusMonths(5).withZone(DateTimeZone.UTC))
                                     .debtorAccount(
                                         OBFundsConfirmationConsent1DataDebtorAccount()
-                                                    .identification(debtorAccount?.Identification)
-                                                    .name(debtorAccount?.Name)
-                                                    .schemeName(debtorAccount?.SchemeName)
-                                                    .secondaryIdentification(debtorAccount?.SecondaryIdentification)
+                                                    .identification(debtorAccount.Identification)
+                                                    .schemeName(debtorAccount.SchemeName)
+                                                    .secondaryIdentification(debtorAccount.SecondaryIdentification)
                                     )
                     )
         }
