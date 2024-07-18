@@ -14,7 +14,7 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.p
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
-import uk.org.openbanking.datamodel.payment.*
+import uk.org.openbanking.datamodel.v3.payment.*
 import java.util.UUID
 
 class CreateInternationalPayment(

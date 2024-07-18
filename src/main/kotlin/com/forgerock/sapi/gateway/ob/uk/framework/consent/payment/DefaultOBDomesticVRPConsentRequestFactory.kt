@@ -1,8 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
 import com.forgerock.sapi.gateway.framework.configuration.requirePaymentContextCode
-import uk.org.openbanking.datamodel.common.OBExternalPaymentContext1Code
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.v3.common.OBExternalPaymentContext1Code
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPConsentRequest
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequest
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpConsentRequestTestDataFactory.aValidOBDomesticVRPConsentRequestMandatoryFields
 

@@ -15,8 +15,8 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consents.AccountAccessConsentApi
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
-import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
+import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1
 
 class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCallback.TppResource): AccountAccessConsentApi {
 

@@ -10,8 +10,8 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBDomesticVRPC
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.vrp.OBCashAccountDebtorWithName
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.v3.vrp.OBCashAccountDebtorWithName
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPConsentRequest
 
 class GetDomesticVrpConsents(
     val version: OBVersion,

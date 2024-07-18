@@ -12,9 +12,9 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.apache.http.entity.ContentType
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteFileConsent3
-import uk.org.openbanking.datamodel.payment.OBWriteFileConsentResponse4
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteFileConsent3
+import uk.org.openbanking.datamodel.v3.payment.OBWriteFileConsentResponse4
 import java.math.BigDecimal
 import java.util.*
 

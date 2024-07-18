@@ -1,8 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.support.funds
 
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1Data
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1DataInstructedAmount
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmation1
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmation1Data
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmation1DataInstructedAmount
 
 class FundsConfirmationFactory {
     companion object {

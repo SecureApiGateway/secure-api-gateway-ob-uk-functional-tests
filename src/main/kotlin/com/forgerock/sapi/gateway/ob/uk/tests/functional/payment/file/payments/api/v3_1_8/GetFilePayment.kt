@@ -13,7 +13,7 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFileType
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteFileResponse3
+import uk.org.openbanking.datamodel.v3.payment.OBWriteFileResponse3
 
 class GetFilePayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 

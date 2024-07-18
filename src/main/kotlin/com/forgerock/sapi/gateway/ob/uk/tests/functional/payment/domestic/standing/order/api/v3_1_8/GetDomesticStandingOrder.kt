@@ -15,8 +15,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForA
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.standing.order.consents.api.v3_1_8.CreateDomesticStandingOrderConsents
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBReadRefundAccount
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrderResponse6
+import uk.org.openbanking.datamodel.v3.common.OBReadRefundAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticStandingOrderResponse6
 
 class GetDomesticStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 

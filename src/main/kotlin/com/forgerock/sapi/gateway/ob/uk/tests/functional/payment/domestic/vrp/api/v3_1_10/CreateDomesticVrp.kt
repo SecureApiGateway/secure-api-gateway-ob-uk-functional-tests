@@ -18,7 +18,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.vrp.*
+import uk.org.openbanking.datamodel.v3.vrp.*
 import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
 import java.math.BigDecimal
 import java.util.UUID

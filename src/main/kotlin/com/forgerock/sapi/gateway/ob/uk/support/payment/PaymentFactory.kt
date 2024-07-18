@@ -4,9 +4,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory.Companion
 import com.google.common.base.Preconditions
 import org.apache.commons.io.FileUtils
 import org.assertj.core.api.Assertions.assertThat
-import uk.org.openbanking.datamodel.common.OBSupplementaryData1
-import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPInitiation
+import uk.org.openbanking.datamodel.v3.common.OBSupplementaryData1
+import uk.org.openbanking.datamodel.v3.payment.*
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPInitiation
 import uk.org.openbanking.testsupport.payment.OBWriteFileConsentTestDataFactory
 import java.io.File
 import java.io.StringReader

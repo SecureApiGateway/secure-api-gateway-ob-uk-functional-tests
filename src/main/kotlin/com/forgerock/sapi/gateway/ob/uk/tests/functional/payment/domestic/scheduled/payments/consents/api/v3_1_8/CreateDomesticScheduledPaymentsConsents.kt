@@ -22,9 +22,9 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsentResponse5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduledConsent4
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduledConsentResponse5
 import java.util.UUID
 
 class CreateDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
