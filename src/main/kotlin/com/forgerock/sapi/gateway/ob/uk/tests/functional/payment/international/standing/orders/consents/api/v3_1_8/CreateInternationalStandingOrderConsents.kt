@@ -17,9 +17,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticStandingOrder3DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderConsent6
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderConsentResponse7
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticStandingOrder3DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalStandingOrderConsent6
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalStandingOrderConsentResponse7
 import java.util.*
 
 class CreateInternationalStandingOrderConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {

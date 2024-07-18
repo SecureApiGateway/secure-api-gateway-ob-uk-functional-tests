@@ -18,12 +18,12 @@ import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.domestic.schedu
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions.assertThat
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationInstructedAmount
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduled2
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduled2Data
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledConsent4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticScheduledResponse5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationInstructedAmount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduled2
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduled2Data
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduledConsent4
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticScheduledResponse5
 import java.util.UUID
 
 class CreateDomesticScheduledPayment(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {

@@ -1,7 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.event
 
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
-import uk.org.openbanking.datamodel.event.*
+import uk.org.openbanking.datamodel.v3.event.*
 import java.net.URI
 import java.util.UUID
 

@@ -70,7 +70,7 @@ dependencies {
     xjc("com.sun.xml.bind:jaxb-xjc:${jaxbVersion}")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:3.1.0"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:4.0.0-SNAPSHOT"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")

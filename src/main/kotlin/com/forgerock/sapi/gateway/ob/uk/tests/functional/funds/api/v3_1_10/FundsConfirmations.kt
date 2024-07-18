@@ -20,8 +20,8 @@ import org.apache.http.entity.ContentType
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmation1
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationResponse1
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmation1
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmationResponse1
 
 class FundsConfirmations(
         val version: OBVersion,

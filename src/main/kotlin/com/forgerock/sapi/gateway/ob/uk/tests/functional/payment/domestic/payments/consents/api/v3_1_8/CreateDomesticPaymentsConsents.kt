@@ -16,9 +16,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsent4
-import uk.org.openbanking.datamodel.payment.OBWriteDomesticConsentResponse5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticConsent4
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticConsentResponse5
 import java.util.*
 
 class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {

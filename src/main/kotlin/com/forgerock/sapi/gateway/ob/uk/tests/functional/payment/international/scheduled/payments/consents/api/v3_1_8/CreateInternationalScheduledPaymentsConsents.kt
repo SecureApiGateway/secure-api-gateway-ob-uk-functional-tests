@@ -19,10 +19,10 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
 import org.joda.time.DateTime
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsentResponse6
+import uk.org.openbanking.datamodel.v3.payment.OBExchangeRateType
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalScheduledConsent5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalScheduledConsentResponse6
 import java.math.BigDecimal
 import java.util.*
 

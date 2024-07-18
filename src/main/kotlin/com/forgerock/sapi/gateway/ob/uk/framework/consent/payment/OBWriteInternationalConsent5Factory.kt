@@ -1,6 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalConsent5
 
 /**
  * Factory that creates OBWriteInternationalConsent5 objects

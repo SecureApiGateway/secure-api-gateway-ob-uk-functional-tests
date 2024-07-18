@@ -7,10 +7,10 @@ import com.forgerock.sapi.gateway.ob.uk.support.event.EventNotificationRS
 import com.forgerock.sapi.gateway.ob.uk.support.event.EventsDataFactory
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.event.OBEventNotification1
-import uk.org.openbanking.datamodel.event.OBEventPolling1
-import uk.org.openbanking.datamodel.event.OBEventPolling1SetErrsValue
-import uk.org.openbanking.datamodel.event.OBEventPollingResponse1
+import uk.org.openbanking.datamodel.v3.event.OBEventNotification1
+import uk.org.openbanking.datamodel.v3.event.OBEventPolling1
+import uk.org.openbanking.datamodel.v3.event.OBEventPolling1SetErrsValue
+import uk.org.openbanking.datamodel.v3.event.OBEventPollingResponse1
 import kotlin.streams.toList
 
 class AggregatedPolling(
