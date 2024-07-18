@@ -10,8 +10,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.account.AccountFactory
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.BaseAccountApi3_1_8
-import uk.org.openbanking.datamodel.account.*
-import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.v3.account.*
+import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
 
 class GetAccountParty(version: OBVersion, tppResource: CreateTppCallback.TppResource): BaseAccountApi3_1_8(version, tppResource) {
 

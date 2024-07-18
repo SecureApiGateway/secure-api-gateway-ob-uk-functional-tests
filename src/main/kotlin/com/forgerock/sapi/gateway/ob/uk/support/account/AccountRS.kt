@@ -8,7 +8,7 @@ import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.ResponseResultOf
 import com.github.kittinunf.fuel.core.isSuccessful
-import uk.org.openbanking.datamodel.account.OBReadAccount6
+import uk.org.openbanking.datamodel.v3.account.OBReadAccount6
 
 const val HTTP_STATUS_CODE_NO_CONTENT = 204
 

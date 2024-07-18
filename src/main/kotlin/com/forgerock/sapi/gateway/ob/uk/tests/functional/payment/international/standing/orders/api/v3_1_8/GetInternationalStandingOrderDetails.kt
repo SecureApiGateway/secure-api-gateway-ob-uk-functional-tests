@@ -9,8 +9,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderResponse7
-import uk.org.openbanking.datamodel.payment.OBWritePaymentDetailsResponse1
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalStandingOrderResponse7
+import uk.org.openbanking.datamodel.v3.payment.OBWritePaymentDetailsResponse1
 
 class GetInternationalStandingOrderDetails(
     val version: OBVersion,

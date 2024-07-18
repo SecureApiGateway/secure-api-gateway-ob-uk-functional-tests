@@ -1,8 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
 import com.forgerock.sapi.gateway.framework.configuration.requirePaymentContextCode
-import uk.org.openbanking.datamodel.common.OBExternalPaymentContext1Code
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalScheduledConsent5
+import uk.org.openbanking.datamodel.v3.common.OBExternalPaymentContext1Code
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalScheduledConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5
 import uk.org.openbanking.testsupport.payment.OBWriteInternationalScheduledConsentTestDataFactory.aValidOBWriteInternationalScheduledConsent5MandatoryFields
 
