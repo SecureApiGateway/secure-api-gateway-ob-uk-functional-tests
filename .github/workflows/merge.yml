@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - ob-v*
     paths-ignore:
       - '**/README.md'
 jobs:
@@ -12,5 +13,6 @@ jobs:
     uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-merge.yml@main
     secrets: inherit
     with:
+      componentBranch: ${{ github.head_ref || github.ref_name }}
       componentName: secure-api-gateway-ob-uk-functional-tests
       dockerTag: $(echo ${{ github.sha }} | cut -c1-7)
