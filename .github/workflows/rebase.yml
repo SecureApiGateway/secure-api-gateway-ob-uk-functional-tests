@@ -1,0 +1,15 @@
+name: Rebase
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+jobs:
+  run_rebase-template:
+    name: Rebase
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/merge-branch.yml@main
+    secrets: inherit
+    with:
+      componentName: secure-api-gateway-ob-uk-functional-tests
+      sourceBranch: master
+      targetBranch: ob-v4
