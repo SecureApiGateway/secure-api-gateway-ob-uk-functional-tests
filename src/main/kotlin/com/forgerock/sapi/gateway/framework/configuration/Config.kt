@@ -22,7 +22,7 @@ val USER_ACCOUNT_ID = System.getenv("userAccountId") ?: "01233243245676"
 
 val OB_TPP_OB_EIDAS_TEST_SIGNING_KID =
     System.getenv("eidasTestSigningKid") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
-val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("preEidasTestSigningKid") ?: "RmQ-EmViYPKXYyGCVnfuMo6ggXE"
+val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("preEidasTestSigningKid") ?: "ymG3t1EuCt_u2_TORkTAhWaEh0M"
 
 val AM_COOKIE_NAME = System.getenv("amCookieName") ?: "iPlanetDirectoryPro"
 
