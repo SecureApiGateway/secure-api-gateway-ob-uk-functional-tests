@@ -53,8 +53,7 @@ val userDebtorAccountIdentification by extra("01233243245676")
 val userAccountId by extra ("01233243245676")
 
 // Kid's
-val eidasTestSigningKid by extra("qfL4CT5GrVgoyXNQtUjF5TIVOXA")
-val preEidasTestSigningKid by extra("RmQ-EmViYPKXYyGCVnfuMo6ggXE")
+val eidasTestSigningKid by extra("jSlqTZu6fidhnb89-v-rY01TEHY")
 val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
 
 // Expected path to find the Certificates used for test purposes
