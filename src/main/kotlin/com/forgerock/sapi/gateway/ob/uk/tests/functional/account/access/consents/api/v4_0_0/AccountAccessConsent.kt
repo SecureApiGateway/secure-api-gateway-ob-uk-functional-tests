@@ -11,8 +11,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.account.AccountAS
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountFactoryV4
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getAccountsApiLinks
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consents.AccountAccessConsentApiV4
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import uk.org.openbanking.datamodel.v4.account.OBInternalPermissions1Code
