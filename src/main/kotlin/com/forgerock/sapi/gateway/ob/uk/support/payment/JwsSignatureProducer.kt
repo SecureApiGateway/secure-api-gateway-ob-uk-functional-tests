@@ -23,7 +23,7 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
     private fun addHeaders(jwtBuilder: JwtBuilder) {
         val headers = HashMap<String, Any>()
         headers["kid"] = getKid()
-        headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000
+        headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000 - 10000
         headers["http://openbanking.org.uk/iss"] = ISS_CLAIM_VALUE
         headers["http://openbanking.org.uk/tan"] = com.forgerock.sapi.gateway.ob.uk.framework.constants.TAN
         headers["crit"] = listOf(
