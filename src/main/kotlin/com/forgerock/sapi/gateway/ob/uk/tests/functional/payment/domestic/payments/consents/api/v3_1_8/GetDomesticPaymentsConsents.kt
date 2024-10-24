@@ -11,7 +11,7 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesti
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory
+import uk.org.openbanking.testsupport.v3.payment.OBWriteDomesticConsentTestDataFactory
 
 class GetDomesticPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 
