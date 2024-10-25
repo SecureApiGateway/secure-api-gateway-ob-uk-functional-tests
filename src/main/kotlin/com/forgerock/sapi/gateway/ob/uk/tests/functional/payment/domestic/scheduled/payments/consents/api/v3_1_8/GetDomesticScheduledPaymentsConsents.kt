@@ -11,7 +11,7 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistry
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteDomesticScheduledConsent4Factory
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.testsupport.v3.payment.OBWriteDomesticScheduledConsentTestDataFactory
+import uk.org.openbanking.testsupport.payment.OBWriteDomesticScheduledConsentTestDataFactory
 
 class GetDomesticScheduledPaymentsConsents(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 

@@ -3,8 +3,8 @@ package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 import com.forgerock.sapi.gateway.framework.configuration.requirePaymentContextCode
 import uk.org.openbanking.datamodel.v3.common.OBExternalPaymentContext1Code
 import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalConsent5
-import uk.org.openbanking.testsupport.v3.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
-import uk.org.openbanking.testsupport.v3.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields
+import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5
+import uk.org.openbanking.testsupport.payment.OBWriteInternationalConsentTestDataFactory.aValidOBWriteInternationalConsent5MandatoryFields
 
 /**
  * Default factory implementation which is used by the functional tests OOTB.
