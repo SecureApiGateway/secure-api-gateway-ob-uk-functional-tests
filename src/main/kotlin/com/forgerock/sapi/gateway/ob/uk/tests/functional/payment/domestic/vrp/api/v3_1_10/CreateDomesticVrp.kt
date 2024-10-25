@@ -19,7 +19,7 @@ import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.Headers
 import org.assertj.core.api.Assertions
 import uk.org.openbanking.datamodel.v3.vrp.*
-import uk.org.openbanking.testsupport.vrp.OBDomesticVrpCommonTestDataFactory
+import uk.org.openbanking.testsupport.v3.vrp.OBDomesticVrpCommonTestDataFactory
 import java.math.BigDecimal
 import java.util.UUID
 
