@@ -230,7 +230,7 @@ tasks.withType<Test>().configureEach {
 // tests properties
 val packagePrefix = "com.forgerock.sapi.gateway.ob.uk.tests.functional."
 val suffixPattern = ".*"
-val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10")
+val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10", "v4_0_0")
 
 // Add test tasks for each supported apiVersion
 for (apiVersion in apiVersions) {

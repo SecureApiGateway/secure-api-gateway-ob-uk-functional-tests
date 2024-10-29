@@ -1,6 +1,6 @@
-package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
+package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.v4
 
-import uk.org.openbanking.datamodel.v3.payment.OBWriteDomesticConsent4
+import uk.org.openbanking.datamodel.v4.payment.OBWriteDomesticConsent4
 
 /**
  * Factory that creates OBWriteDomesticConsent4 objects

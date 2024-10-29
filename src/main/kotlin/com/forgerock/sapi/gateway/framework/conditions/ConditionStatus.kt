@@ -42,15 +42,32 @@ private val paymentDetailsStatus: LinkedHashSet<String> = Sets.newLinkedHashSet(
     "AcceptedSettlementInProcess",
     "AcceptedSettlementCompleted",
     "AcceptedWithoutPosting",
-    "AcceptedCreditSettlementCompleted",
-    "Cancelled",
-    "NoCancellationProcess",
-    "PartiallyAcceptedCancellationRequest",
-    "PartiallyAcceptedTechnicalCorrect",
-    "PaymentCancelled",
-    "PendingCancellationRequest",
-    "Received",
-    "RejectedCancellationRequest"
+    "AcceptedCreditSettlementCompleted"
+)
+
+// V4 status for consents payment, consents file payment
+private val consentStatusV4: LinkedHashSet<String> = Sets.newLinkedHashSet(
+        "AWAU",
+        "AWUP",
+        "RJCT",
+        "AUTH",
+        "COND"
+)
+
+// V4 payment details status
+private val paymentDetailsStatusV4: LinkedHashSet<String> = Sets.newLinkedHashSet(
+        "PDNG",
+        "ACTC",
+        "PATC",
+        "ACCP",
+        "ACFC",
+        "ACSP",
+        "ACWC",
+        "ACSC",
+        "ACWP",
+        "ACCC",
+        "BLCK",
+        "RJCT"
 )
 
 object Status {
@@ -60,4 +77,13 @@ object Status {
 
     val paymentDetailsCondition =
         Condition(Predicate<String> { paymentDetailsStatus.contains(it) }, paymentDetailsStatus.toString())
+}
+
+object StatusV4 {
+    val consentCondition = Condition(Predicate<String> { consentStatusV4.contains(it) }, consentStatusV4.toString())
+
+    val paymentCondition = Condition(Predicate<String> { paymentDetailsStatusV4.contains(it) }, paymentDetailsStatusV4.toString())
+
+    val paymentDetailsCondition =
+            Condition(Predicate<String> { paymentDetailsStatusV4.contains(it) }, paymentDetailsStatusV4.toString())
 }
