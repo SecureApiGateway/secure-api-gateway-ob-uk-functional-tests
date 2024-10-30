@@ -230,7 +230,7 @@ tasks.withType<Test>().configureEach {
 // tests properties
 val packagePrefix = "com.forgerock.sapi.gateway.ob.uk.tests.functional."
 val suffixPattern = ".*"
-val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10")
+val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10", "v4_0_0")
 
 // Add test tasks for each supported apiVersion
 for (apiVersion in apiVersions) {
@@ -348,7 +348,25 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
     failFast = false
 }
 
+tasks.register<Test>("domestic_vrps_v4_0_0") {
+    group = "payments-tests"
+    description = "Runs the domestic vrps tests with the version v3_1_10"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v3_1_10")
+    }
+    failFast = false
+}
+
 tasks.register<Test>("events_v3_1_10") {
+    group = "events-tests"
+    description = "Runs the events notification tests with the version v3_1_10"
+    filter {
+        includeTestsMatching(packagePrefix + "events" + suffixPattern + "v3_1_10")
+    }
+    failFast = false
+}
+
+tasks.register<Test>("events_v4_0_0") {
     group = "events-tests"
     description = "Runs the events notification tests with the version v3_1_10"
     filter {
