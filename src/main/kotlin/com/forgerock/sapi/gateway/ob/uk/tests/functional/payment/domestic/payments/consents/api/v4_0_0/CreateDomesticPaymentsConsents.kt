@@ -92,7 +92,8 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
         assertThat((exception.cause as FuelError).response.body()).isNotNull()
-        assertThat(exception.message.toString()).contains("\"Errors\":[{\"ErrorCode\":\"UK.OBIE.Header.Missing\",\"Message\":\"Required request header 'x-idempotency-key' for method parameter type String is not present")
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U007)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.MISSING_IDEMPOTENCY_KEY_HEADER)
     }
 
     fun createDomesticPaymentsConsents_withDebtorAccountTest() {
@@ -150,6 +151,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U002)
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.NO_DETACHED_JWS)
     }
 
@@ -176,6 +178,7 @@ class CreateDomesticPaymentsConsents(val version: OBVersion, val tppResource: Cr
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U002)
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR)
     }
 

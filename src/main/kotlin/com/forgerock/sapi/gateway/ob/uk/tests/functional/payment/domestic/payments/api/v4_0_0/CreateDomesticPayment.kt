@@ -143,6 +143,7 @@ class CreateDomesticPayment(
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U002)
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_FORMAT_DETACHED_JWS_ERROR)
     }
 
@@ -168,6 +169,7 @@ class CreateDomesticPayment(
 
         // Then
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U002)
         assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.NO_DETACHED_JWS)
     }
 

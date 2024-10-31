@@ -86,7 +86,8 @@ class GetDomesticPaymentsConsentFundsConfirmation(
         }
 
         // Then
-        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.INVALID_CONSENT_STATUS)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.PAYMENT_ACTION_FOR_AUTHORISED_CONSENT_ERROR)
+        assertThat(exception.message.toString()).contains(com.forgerock.sapi.gateway.ob.uk.framework.errors.ERROR_CODE_U009)
         assertThat((exception.cause as FuelError).response.statusCode).isEqualTo(400)
     }
 
