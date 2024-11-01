@@ -19,3 +19,9 @@ const val CONSENT_NOT_AUTHORISED = "Resource Owner did not authorize the request
 const val BAD_REQUEST = "Bad Request"
 const val INVALID_RISK = "Payment invalid. Payment risk received doesn't match the risk payment request"
 
+// V4 errors
+const val MISSING_IDEMPOTENCY_KEY_HEADER = "Required request header 'x-idempotency-key' for method parameter type String is not present"
+const val ERROR_CODE_U002 = "\"ErrorCode\":\"U002\""
+const val ERROR_CODE_U007 = "\"ErrorCode\":\"U007\""
+const val ERROR_CODE_U009 = "\"ErrorCode\":\"U009\""
+
