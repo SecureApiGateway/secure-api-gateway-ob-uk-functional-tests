@@ -348,6 +348,15 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
     failFast = false
 }
 
+tasks.register<Test>("domestic_vrps_v4_0_0") {
+    group = "payments-tests"
+    description = "Runs the domestic vrps tests with the version v4_0_0"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v4_0_0")
+    }
+    failFast = false
+}
+
 tasks.register<Test>("events_v3_1_10") {
     group = "events-tests"
     description = "Runs the events notification tests with the version v3_1_10"
