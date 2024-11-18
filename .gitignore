@@ -10,9 +10,9 @@ build
 .settings/
 .idea/
 gradle/profiles/*
-!gradle/profiles/profile-dev-ob.gradle.kts
+!gradle/profiles/profile-dev-cdk-ob.gradle.kts
 !gradle/profiles/profile-fritss-itssdev.gradle.kts
 !gradle/profiles/profile-devops-ob.gradle.kts
-!gradle/profiles/profile-nightly-ob.gradle.kts
+!gradle/profiles/profile-dev-aic-ob.gradle.kts
 !gradle/profiles/profile-ob-sandbox-v*.kts
 /certificates

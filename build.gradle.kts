@@ -128,7 +128,7 @@ xjcGeneration {
 /** ************************************************* */
 // @See README file
 // default environment profile
-var profile = "dev-ob"
+var profile = "dev-cdk-ob"
 var profilePath = "gradle/profiles/profile-$profile.gradle.kts"
 
 if (project.hasProperty("profile")) {
