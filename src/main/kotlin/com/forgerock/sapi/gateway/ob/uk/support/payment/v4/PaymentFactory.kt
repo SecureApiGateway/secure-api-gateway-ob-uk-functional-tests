@@ -5,7 +5,8 @@ import com.google.common.base.Preconditions
 import org.apache.commons.io.FileUtils
 import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.v3.common.OBSupplementaryData1
-import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationRemittanceInformation
+import uk.org.openbanking.datamodel.v4.common.OBUltimateCreditor1
+import uk.org.openbanking.datamodel.v4.common.OBUltimateDebtor1
 import uk.org.openbanking.datamodel.v4.payment.*
 import uk.org.openbanking.datamodel.v4.vrp.OBDomesticVRPInitiation
 import java.io.File
@@ -162,6 +163,9 @@ class PaymentFactory {
                     .creditor(initiation.creditor)
                     .creditorAgent(initiation.creditorAgent)
                     .creditorAccount(initiation.creditorAccount)
+                    .ultimateCreditor(initiation.ultimateCreditor)
+                    .ultimateDebtor(initiation.ultimateDebtor)
+                    .regulatoryReporting(initiation.regulatoryReporting)
                     .remittanceInformation(initiation.remittanceInformation)
                     .supplementaryData(initiation.supplementaryData)
                     .exchangeRateInformation(initiation.exchangeRateInformation)
@@ -173,7 +177,7 @@ class PaymentFactory {
         }
 
         fun mapOBWriteInternationalScheduledConsentResponse6DataInitiationToOBWriteInternationalScheduled3DataInitiation(
-                initiation: OBWriteInternationalScheduledConsentResponse6DataInitiation
+                initiation: OBWriteInternationalScheduled3DataInitiation
         ): OBWriteInternationalScheduled3DataInitiation {
             val internationalScheduledPayment = OBWriteInternationalScheduled3DataInitiation()
                     .instructionIdentification(initiation.instructionIdentification)
@@ -219,6 +223,7 @@ class PaymentFactory {
                 internationalScheduledPayment.creditor(
                         OBWriteInternationalConsent5DataInitiationCreditor()
                                 .name(initiation.creditor?.name)
+                                .LEI(initiation.creditor?.lei)
                                 .postalAddress(initiation.creditor?.postalAddress)
                 )
             }
@@ -227,6 +232,7 @@ class PaymentFactory {
                 internationalScheduledPayment.creditorAgent(
                         OBWriteInternationalScheduled3DataInitiationCreditorAgent()
                                 .schemeName(initiation.creditorAgent?.schemeName)
+                                .LEI(initiation.creditorAgent?.lei)
                                 .identification(initiation.creditorAgent?.identification)
                                 .name(initiation.creditorAgent?.name)
                                 .postalAddress(initiation.creditorAgent?.postalAddress)
@@ -243,10 +249,67 @@ class PaymentFactory {
                 )
             }
 
+            if (initiation.ultimateCreditor != null) {
+                internationalScheduledPayment.ultimateCreditor(
+                        OBUltimateCreditor1()
+                                .name(initiation.ultimateCreditor?.name)
+                                .identification(initiation.ultimateCreditor?.identification)
+                                .LEI(initiation.ultimateCreditor?.lei)
+                                .schemeName(initiation.ultimateCreditor?.schemeName)
+                                .postalAddress(initiation.ultimateCreditor?.postalAddress)
+                )
+            }
+
+            if (initiation.ultimateDebtor != null) {
+                internationalScheduledPayment.ultimateDebtor(
+                        OBUltimateDebtor1()
+                                .name(initiation.ultimateDebtor?.name)
+                                .identification(initiation.ultimateDebtor?.identification)
+                                .LEI(initiation.ultimateDebtor?.lei)
+                                .schemeName(initiation.ultimateDebtor?.schemeName)
+                                .postalAddress(initiation.ultimateDebtor?.postalAddress)
+                )
+            }
+
+
+            if (initiation.regulatoryReporting != null) {
+                val regulatoryReportingList = initiation.regulatoryReporting.map {
+                    OBRegulatoryReporting1()
+                            .authority(it.authority)
+                            .debitCreditReportingIndicator(it.debitCreditReportingIndicator)
+                            .details(it.details)
+                }
+                internationalScheduledPayment.regulatoryReporting(regulatoryReportingList)
+            }
+
+
             if (initiation.remittanceInformation != null) {
+                val structuredRemittanceInformationList = initiation.remittanceInformation?.structured?.map {
+                    OBRemittanceInformationStructured()
+                            .referredDocumentAmount(it.referredDocumentAmount)
+                            .invoicer(it.invoicer)
+                            .invoicee(it.invoicee)
+                            .taxRemittance(it.taxRemittance)
+                            .additionalRemittanceInformation(it.additionalRemittanceInformation)
+                            .referredDocumentInformation(it.referredDocumentInformation?.map { docInfo ->
+                                OBReferredDocumentInformation()
+                                        .code(docInfo.code)
+                                        .issuer(docInfo.issuer)
+                                        .number(docInfo.number)
+                                        .relatedDate(docInfo.relatedDate)
+                                        .lineDetails(docInfo.lineDetails)
+                            })
+                            .creditorReferenceInformation(
+                                    OBRemittanceInformationStructuredCreditorReferenceInformation()
+                                            .code(it.creditorReferenceInformation?.code)
+                                            .issuer(it.creditorReferenceInformation?.issuer)
+                                            .reference(it.creditorReferenceInformation?.reference)
+                            )
+                }
                 internationalScheduledPayment.remittanceInformation(
                         OBRemittanceInformation2()
                                 .unstructured(initiation.remittanceInformation?.unstructured)
+                                .structured(structuredRemittanceInformationList)
                 )
             }
 
