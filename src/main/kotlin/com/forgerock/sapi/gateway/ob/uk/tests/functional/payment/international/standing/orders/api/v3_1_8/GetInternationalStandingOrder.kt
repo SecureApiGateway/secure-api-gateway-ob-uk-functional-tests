@@ -15,8 +15,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForA
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.consents.api.v3_1_8.CreateInternationalStandingOrderConsents
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.common.OBReadRefundAccount
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalStandingOrderResponse7
+import uk.org.openbanking.datamodel.v3.common.OBReadRefundAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalStandingOrderResponse7
 
 class GetInternationalStandingOrder(val version: OBVersion, val tppResource: CreateTppCallback.TppResource) {
 

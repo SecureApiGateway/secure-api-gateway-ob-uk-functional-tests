@@ -12,7 +12,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // project version
 // pom artifact version used when the built artifact is published
 // Test jar library version used in the task 'generateTestJar'
-version = "3.2.0"
+version = "4.0.0"
 val jaxbVersion = "4.0.1"
 
 plugins {
@@ -70,7 +70,7 @@ dependencies {
     xjc("com.sun.xml.bind:jaxb-xjc:${jaxbVersion}")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:3.2.0"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:4.0.0-SNAPSHOT"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
@@ -230,7 +230,7 @@ tasks.withType<Test>().configureEach {
 // tests properties
 val packagePrefix = "com.forgerock.sapi.gateway.ob.uk.tests.functional."
 val suffixPattern = ".*"
-val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10")
+val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10", "v4_0_0")
 
 // Add test tasks for each supported apiVersion
 for (apiVersion in apiVersions) {
@@ -344,6 +344,15 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
     description = "Runs the domestic vrps tests with the version v3_1_10"
     filter {
         includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v3_1_10")
+    }
+    failFast = false
+}
+
+tasks.register<Test>("domestic_vrps_v4_0_0") {
+    group = "payments-tests"
+    description = "Runs the domestic vrps tests with the version v4_0_0"
+    filter {
+        includeTestsMatching(packagePrefix + "payment.domestic.vrp" + suffixPattern + "v4_0_0")
     }
     failFast = false
 }

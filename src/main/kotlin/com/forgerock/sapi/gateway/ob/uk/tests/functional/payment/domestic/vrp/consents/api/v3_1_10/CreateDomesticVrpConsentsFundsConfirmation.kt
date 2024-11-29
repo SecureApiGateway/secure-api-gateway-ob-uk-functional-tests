@@ -13,12 +13,12 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentResponse
-import uk.org.openbanking.datamodel.vrp.OBPAFundsAvailableResult1FundsAvailable
-import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequest
-import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationRequestData
-import uk.org.openbanking.datamodel.vrp.OBVRPFundsConfirmationResponse
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPConsentResponse
+import uk.org.openbanking.datamodel.v3.vrp.OBPAFundsAvailableResult1FundsAvailable
+import uk.org.openbanking.datamodel.v3.vrp.OBVRPFundsConfirmationRequest
+import uk.org.openbanking.datamodel.v3.vrp.OBVRPFundsConfirmationRequestData
+import uk.org.openbanking.datamodel.v3.vrp.OBVRPFundsConfirmationResponse
 
 class CreateDomesticVrpConsentsFundsConfirmation(
     val version: OBVersion,

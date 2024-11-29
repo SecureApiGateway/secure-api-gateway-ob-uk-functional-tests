@@ -1,8 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consents
 
 import com.forgerock.sapi.gateway.framework.data.AccessToken
-import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
-import uk.org.openbanking.datamodel.account.OBReadConsentResponse1
+import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1
 
 interface AccountAccessConsentApi {
     fun createConsent(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1

@@ -5,7 +5,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.gsonDeserializer
-import uk.org.openbanking.datamodel.common.OBExternalPermissions1Code
+import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 

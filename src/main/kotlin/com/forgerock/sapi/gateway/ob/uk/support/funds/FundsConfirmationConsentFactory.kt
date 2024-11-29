@@ -4,9 +4,9 @@ import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1Data
-import uk.org.openbanking.datamodel.fund.OBFundsConfirmationConsent1DataDebtorAccount
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmationConsent1
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmationConsent1Data
+import uk.org.openbanking.datamodel.v3.fund.OBFundsConfirmationConsent1DataDebtorAccount
 
 class FundsConfirmationConsentFactory {
 
