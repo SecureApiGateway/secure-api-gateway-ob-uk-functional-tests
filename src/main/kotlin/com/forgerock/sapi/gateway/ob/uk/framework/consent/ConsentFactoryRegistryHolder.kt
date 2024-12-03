@@ -21,7 +21,9 @@ object ConsentFactoryRegistryHolder {
                 OBWriteInternationalStandingOrderConsent6FactoryClass,
                 OBWriteDomesticConsent4FactoryClassV4,
                 OBDomesticVRPConsentRequestFactoryClassV4,
-                OBWriteInternationalScheduledConsent5FactoryClassV4
+                OBWriteInternationalScheduledConsent5FactoryClassV4,
+                OBWriteDomesticScheduledConsent4ClassV4,
+                OBWriteDomesticStandingOrderConsent5FactoryClassV4
             )
         )
 }

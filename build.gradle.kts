@@ -366,6 +366,15 @@ tasks.register<Test>("events_v3_1_10") {
     failFast = false
 }
 
+tasks.register<Test>("events_v4_0_0") {
+    group = "events-tests"
+    description = "Runs the events notification tests with the version v4_0_0"
+    filter {
+        includeTestsMatching(packagePrefix + "events" + suffixPattern + "v4_0_0")
+    }
+    failFast = false
+}
+
 tasks.register<Test>("singleTest") {
     description = "Runs open banking single functional tests"
     failFast = false
