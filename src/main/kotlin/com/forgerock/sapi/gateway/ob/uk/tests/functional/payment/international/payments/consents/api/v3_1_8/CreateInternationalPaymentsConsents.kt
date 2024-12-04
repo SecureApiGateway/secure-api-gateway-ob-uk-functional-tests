@@ -18,10 +18,10 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.*
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
 import org.assertj.core.api.Assertions
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType
-import uk.org.openbanking.datamodel.payment.OBWriteDomestic2DataInitiationDebtorAccount
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsent5
-import uk.org.openbanking.datamodel.payment.OBWriteInternationalConsentResponse6
+import uk.org.openbanking.datamodel.v3.payment.OBExchangeRateType
+import uk.org.openbanking.datamodel.v3.payment.OBWriteDomestic2DataInitiationDebtorAccount
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalConsent5
+import uk.org.openbanking.datamodel.v3.payment.OBWriteInternationalConsentResponse6
 import java.math.BigDecimal
 import java.util.*
 

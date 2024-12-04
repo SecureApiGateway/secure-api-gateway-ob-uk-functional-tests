@@ -1,6 +1,6 @@
 package com.forgerock.sapi.gateway.ob.uk.framework.consent.payment
 
-import uk.org.openbanking.datamodel.vrp.OBDomesticVRPConsentRequest
+import uk.org.openbanking.datamodel.v3.vrp.OBDomesticVRPConsentRequest
 
 /**
  * Factory that creates OBDomesticVRPConsentRequest objects

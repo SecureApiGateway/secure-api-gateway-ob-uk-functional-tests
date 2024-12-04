@@ -11,8 +11,8 @@ import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.forgerock.sapi.gateway.ob.uk.support.payment.defaultPaymentScopesForAccessToken
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.core.FuelError
-import uk.org.openbanking.datamodel.payment.*
-import uk.org.openbanking.testsupport.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4
+import uk.org.openbanking.datamodel.v3.payment.*
+import uk.org.openbanking.testsupport.v3.payment.OBWriteDomesticConsentTestDataFactory.aValidOBWriteDomesticConsent4
 
 class GetDomesticPaymentsConsentFundsConfirmation(
     val version: OBVersion,

@@ -8,7 +8,7 @@ import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
 import com.forgerock.sapi.gateway.ob.uk.common.datamodel.event.FREventMessages
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
-import uk.org.openbanking.datamodel.event.OBEventPolling1
+import uk.org.openbanking.datamodel.v3.event.OBEventPolling1
 
 const val EVENT_ADMIN_API_SCOPES = "openid payments accounts fundsconfirmations"
 

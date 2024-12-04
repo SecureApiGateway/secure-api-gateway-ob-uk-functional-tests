@@ -8,7 +8,7 @@ import com.forgerock.sapi.gateway.ob.uk.framework.consent.ConsentFactoryRegistry
 import com.forgerock.sapi.gateway.ob.uk.framework.consent.payment.OBWriteInternationalScheduledConsent5Factory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getPaymentsApiLinks
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
-import uk.org.openbanking.datamodel.payment.OBExchangeRateType
+import uk.org.openbanking.datamodel.v3.payment.OBExchangeRateType
 
 class GetInternationalScheduledPaymentsConsents(
     val version: OBVersion,
