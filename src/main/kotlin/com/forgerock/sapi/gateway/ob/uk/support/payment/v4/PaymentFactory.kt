@@ -874,8 +874,88 @@ class PaymentFactory {
                     .creditor(initiation.creditor)
                     .creditorAgent(initiation.creditorAgent)
 
+            if (initiation.ultimateCreditor != null) {
+                copy.ultimateCreditor(
+                        OBUltimateCreditor1()
+                                .name(initiation.ultimateCreditor?.name)
+                                .identification(initiation.ultimateCreditor?.identification)
+                                .LEI(initiation.ultimateCreditor?.lei)
+                                .schemeName(initiation.ultimateCreditor?.schemeName)
+                                .postalAddress(initiation.ultimateCreditor?.postalAddress)
+                )
+            }
+
+            if (initiation.ultimateDebtor != null) {
+                copy.ultimateDebtor(
+                        OBUltimateDebtor1()
+                                .name(initiation.ultimateDebtor?.name)
+                                .identification(initiation.ultimateDebtor?.identification)
+                                .LEI(initiation.ultimateDebtor?.lei)
+                                .schemeName(initiation.ultimateDebtor?.schemeName)
+                                .postalAddress(initiation.ultimateDebtor?.postalAddress)
+                )
+            }
+
+
+            if (initiation.regulatoryReporting != null) {
+                val regulatoryReportingList = initiation.regulatoryReporting.map {
+                    OBRegulatoryReporting1()
+                            .authority(it.authority)
+                            .debitCreditReportingIndicator(it.debitCreditReportingIndicator)
+                            .details(it.details)
+                }
+                copy.regulatoryReporting(regulatoryReportingList)
+            }
+
+
+            if (initiation.remittanceInformation != null) {
+                val structuredRemittanceInformationList = initiation.remittanceInformation?.structured?.map {
+                    OBRemittanceInformationStructured()
+                            .referredDocumentAmount(it.referredDocumentAmount)
+                            .invoicer(it.invoicer)
+                            .invoicee(it.invoicee)
+                            .taxRemittance(it.taxRemittance)
+                            .additionalRemittanceInformation(it.additionalRemittanceInformation)
+                            .referredDocumentInformation(it.referredDocumentInformation?.map { docInfo ->
+                                OBReferredDocumentInformation()
+                                        .code(docInfo.code)
+                                        .issuer(docInfo.issuer)
+                                        .number(docInfo.number)
+                                        .relatedDate(docInfo.relatedDate)
+                                        .lineDetails(docInfo.lineDetails)
+                            })
+                            .creditorReferenceInformation(
+                                    OBRemittanceInformationStructuredCreditorReferenceInformation()
+                                            .code(it.creditorReferenceInformation?.code)
+                                            .issuer(it.creditorReferenceInformation?.issuer)
+                                            .reference(it.creditorReferenceInformation?.reference)
+                            )
+                }
+                copy.remittanceInformation(
+                        OBRemittanceInformation2()
+                                .unstructured(initiation.remittanceInformation?.unstructured)
+                                .structured(structuredRemittanceInformationList)
+                )
+            }
+
+            if (initiation.mandateRelatedInformation != null) {
+                copy.mandateRelatedInformation(
+                        OBMandateRelatedInformation1()
+                                .categoryPurposeCode(initiation.mandateRelatedInformation?.categoryPurposeCode)
+                                .classification(initiation.mandateRelatedInformation?.classification)
+                                .finalPaymentDateTime(initiation.mandateRelatedInformation?.finalPaymentDateTime)
+                                .firstPaymentDateTime(initiation.mandateRelatedInformation?.firstPaymentDateTime)
+                                .mandateIdentification(initiation.mandateRelatedInformation?.mandateIdentification)
+                                .reason(initiation.mandateRelatedInformation?.reason)
+                                .recurringPaymentDateTime(initiation.mandateRelatedInformation?.recurringPaymentDateTime)
+                                .frequency(initiation.mandateRelatedInformation?.frequency)
+                )
+            }
+
             assertThat(copy.equals(initiation)).isTrue
             return copy
+
+
         }
 
         fun copyOBDomesticVRPInitiation(initiation: OBDomesticVRPInitiation): OBDomesticVRPInitiation {
