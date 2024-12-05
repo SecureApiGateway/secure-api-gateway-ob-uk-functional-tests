@@ -1,13 +1,11 @@
 package com.forgerock.sapi.gateway.ob.uk.support.payment.v4
 
 import com.forgerock.sapi.gateway.ob.uk.support.general.GeneralFactory.Companion.urlSubstituted
-import com.forgerock.sapi.gateway.ob.uk.support.payment.PaymentFactory
 import com.google.common.base.Preconditions
 import jakarta.xml.bind.JAXB
 import org.apache.commons.io.FileUtils
 import org.assertj.core.api.Assertions.assertThat
 import uk.org.openbanking.datamodel.v3.common.OBSupplementaryData1
-import uk.org.openbanking.datamodel.v4.payment.OBWriteFileConsent3
 import uk.org.openbanking.datamodel.v4.common.OBUltimateCreditor1
 import uk.org.openbanking.datamodel.v4.common.OBUltimateDebtor1
 import uk.org.openbanking.datamodel.v4.payment.*
@@ -89,7 +87,7 @@ class PaymentFactory {
                     com.forgerock.sapi.gateway.ob.uk.generated.xml.model.pain00100108.Document::class.java
             )
             val numberOfTransactions = document.cstmrCdtTrfInitn.grpHdr.nbOfTxs.toString()
-            val fileHashString = PaymentFactory.computeSHA256FullHash(fileContent)
+            val fileHashString = computeSHA256FullHash(fileContent)
             val controlSum = document.cstmrCdtTrfInitn.grpHdr.ctrlSum
             return OBWriteFileConsentTestDataFactory.aValidOBWriteFileConsent3(
                     fileType,
@@ -678,6 +676,58 @@ class PaymentFactory {
                     .debtorAccount(initiation.debtorAccount)
                     .remittanceInformation(initiation.remittanceInformation)
                     .supplementaryData(initiation.supplementaryData)
+
+            if (initiation.creditorAgent != null) {
+                copy.creditorAgent(
+                        OBWriteDomestic2DataInitiationCreditorAgent()
+                                .schemeName(initiation.creditorAgent?.schemeName)
+                                .LEI(initiation.creditorAgent?.lei)
+                                .identification(initiation.creditorAgent?.identification)
+                                .name(initiation.creditorAgent?.name)
+                                .postalAddress(initiation.creditorAgent?.postalAddress)
+                )
+            }
+
+            if (initiation.ultimateDebtor != null) {
+                copy.ultimateDebtor(
+                        OBUltimateDebtor1()
+                                .name(initiation.ultimateDebtor?.name)
+                                .identification(initiation.ultimateDebtor?.identification)
+                                .LEI(initiation.ultimateDebtor?.lei)
+                                .schemeName(initiation.ultimateDebtor?.schemeName)
+                                .postalAddress(initiation.ultimateDebtor?.postalAddress)
+                )
+            }
+
+            if (initiation.remittanceInformation != null) {
+                val structuredRemittanceInformationList = initiation.remittanceInformation?.structured?.map {
+                    OBRemittanceInformationStructured()
+                            .referredDocumentAmount(it.referredDocumentAmount)
+                            .invoicer(it.invoicer)
+                            .invoicee(it.invoicee)
+                            .taxRemittance(it.taxRemittance)
+                            .additionalRemittanceInformation(it.additionalRemittanceInformation)
+                            .referredDocumentInformation(it.referredDocumentInformation?.map { docInfo ->
+                                OBReferredDocumentInformation()
+                                        .code(docInfo.code)
+                                        .issuer(docInfo.issuer)
+                                        .number(docInfo.number)
+                                        .relatedDate(docInfo.relatedDate)
+                                        .lineDetails(docInfo.lineDetails)
+                            })
+                            .creditorReferenceInformation(
+                                    OBRemittanceInformationStructuredCreditorReferenceInformation()
+                                            .code(it.creditorReferenceInformation?.code)
+                                            .issuer(it.creditorReferenceInformation?.issuer)
+                                            .reference(it.creditorReferenceInformation?.reference)
+                            )
+                }
+                copy.remittanceInformation(
+                        OBRemittanceInformation2()
+                                .unstructured(initiation.remittanceInformation?.unstructured)
+                                .structured(structuredRemittanceInformationList)
+                )
+            }
 
             assertThat(copy.equals(initiation)).isTrue
             return copy
