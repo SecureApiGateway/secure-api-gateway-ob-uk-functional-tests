@@ -3,17 +3,17 @@ package com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consent
 import assertk.assertThat
 import assertk.assertions.isNotNull
 import assertk.assertions.matchesPredicate
+import com.forgerock.sapi.gateway.framework.conditions.Status
 import com.forgerock.sapi.gateway.framework.conditions.StatusV4
 import com.forgerock.sapi.gateway.framework.configuration.psu
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.extensions.junit.CreateTppCallback
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountAS
-import com.forgerock.sapi.gateway.ob.uk.support.account.v4.AccountFactory
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
+import com.forgerock.sapi.gateway.ob.uk.support.account.v4.AccountFactory
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getAccountsApiLinks
-import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
-import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consents.v4_0_0.AccountAccessConsentApi
+import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
@@ -37,7 +37,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
     }
 
-    fun createAccountAccessConsentTest_v3tov4() {
+    fun createAccountAccessConsent_consentV3Test() {
         // Given
         val permissions = listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL)
         // When
@@ -47,34 +47,7 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
         assertEquals(consentResponse.data.permissions.toString(), permissions.toString())
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
-    }
-
-    fun shouldCreateAccountAccessConsentTest_v4tov3() {
-        // Given
-        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
-        // When
-        val consentResponse = createConsentV4withV3Response(permissions)
-
-        // Then
-        assertThat(consentResponse).isNotNull()
-        assertThat(consentResponse.data).isNotNull()
-        assertEquals(consentResponse.data.permissions.toString(), permissions.toString())
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
-    }
-
-    fun createAccountAccessConsentTest_checkStatusReason() {
-        // Given
-        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
-        // When
-        val consentResponse = createConsent(permissions)
-
-        // Then
-        assertThat(consentResponse).isNotNull()
-        assertThat(consentResponse.data).isNotNull()
-        assertThat(consentResponse.data.statusReason).isNotNull()
-        assertEquals(consentResponse.data.permissions, permissions)
-        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(Status.consentCondition)
     }
 
     fun deleteAccountAccessConsentTest() {
@@ -110,26 +83,28 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         )
     }
 
-    fun createConsentV3(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1 {
-        val consentRequest = com.forgerock.sapi.gateway.ob.uk.support.account.AccountFactory.obReadConsent1(permissions)
-        return AccountRS().consent(
-            accountsApiLinks.CreateAccountAccessConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-    }
-
-    fun createConsentV4withV3Response(permissions: List<OBInternalPermissions1Code>): uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1 {
-        val consentRequest = AccountFactory.obReadConsent1(permissions)
-        return AccountRS().consent(
-            accountsApiLinks.CreateAccountAccessConsent,
-            consentRequest,
-            tppResource.tpp
-        )
-    }
-
     override fun createConsentAndGetAccessToken(permissions: List<OBInternalPermissions1Code>): Pair<OBReadConsentResponse1, AccessToken> {
         val consent = createConsent(permissions)
+        val accessToken = AccountAS().getAccessToken(
+            consent.data.consentId,
+            tppResource.tpp.registrationResponse,
+            psu,
+            tppResource.tpp
+        )
+        return consent to accessToken
+    }
+
+    fun createConsentV3(permissions: List<OBExternalPermissions1Code>): uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1 {
+        val consentRequest = com.forgerock.sapi.gateway.ob.uk.support.account.AccountFactory.obReadConsent1(permissions)
+        return AccountRS().consent(
+            getAccountsApiLinks(OBVersion.v3_1_10).CreateAccountAccessConsent,
+            consentRequest,
+            tppResource.tpp
+        )
+    }
+
+    fun createConsentAndGetAccessToken_consentV3(): Pair<uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1, AccessToken> {
+        val consent = createConsentV3(listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL))
         val accessToken = AccountAS().getAccessToken(
             consent.data.consentId,
             tppResource.tpp.registrationResponse,

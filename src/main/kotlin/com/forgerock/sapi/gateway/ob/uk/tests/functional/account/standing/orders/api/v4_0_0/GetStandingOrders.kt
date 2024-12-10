@@ -29,4 +29,26 @@ class GetStandingOrders(version: OBVersion, tppResource: CreateTppCallback.TppRe
         assertThat(result).isNotNull()
         assertThat(result.data.standingOrder).isNotEmpty()
     }
+
+    fun shouldGetStandingOrdersTest_getV4Fields() {
+        // Given
+        val permissions =
+                listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL, OBInternalPermissions1Code.READSTANDINGORDERSDETAIL)
+        val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
+
+        // When
+        val result = AccountRS().getAccountsData<OBReadStandingOrder6>(
+                accountsApiLinks.GetStandingOrders,
+                accessToken
+        )
+
+        val allHaveMandateRelatedInformation = result.data.standingOrder.all { it.mandateRelatedInformation != null }
+        val allHaveRemittanceInformation = result.data.standingOrder.all { it.remittanceInformation != null }
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(allHaveMandateRelatedInformation).isNotNull()
+        assertThat(allHaveRemittanceInformation).isNotNull()
+        assertThat(result.data.standingOrder).isNotEmpty()
+    }
 }

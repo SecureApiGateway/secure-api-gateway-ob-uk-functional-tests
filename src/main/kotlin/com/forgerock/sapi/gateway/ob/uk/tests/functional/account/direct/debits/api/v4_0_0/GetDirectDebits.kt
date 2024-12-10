@@ -26,4 +26,23 @@ class GetDirectDebits(version: OBVersion, tppResource: CreateTppCallback.TppReso
         assertThat(result).isNotNull()
         assertThat(result.data.directDebit).isNotEmpty()
     }
+
+    fun shouldGetDirectDebitsTest_mandateRelatedInformation() {
+        // Given
+        val permissions = listOf(OBInternalPermissions1Code.READDIRECTDEBITS)
+        val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
+
+        // When
+        val result = AccountRS().getAccountsData<OBReadDirectDebit2>(
+                accountsApiLinks.GetDirectDebits,
+                accessToken
+        )
+
+        val allHaveMandateRelatedInformation = result.data.directDebit.all { it.mandateRelatedInformation != null }
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(allHaveMandateRelatedInformation).isNotNull()
+        assertThat(result.data.directDebit).isNotEmpty()
+    }
 }

@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.tests.functional.account.accounts.api.v4_0_0
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
@@ -24,5 +25,27 @@ class GetAccounts(version: OBVersion, tppResource: CreateTppCallback.TppResource
         assertThat(result).isNotNull()
         assertThat(result.data.account).isNotEmpty()
         assertThat(result.data.account.size).isGreaterThan(0)
+    }
+
+    fun shouldGetAccountsTest_getV4Fields() {
+        // Given
+        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
+        val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
+
+        // When
+        val result = AccountRS().getAccountsData<OBReadAccount6>(accountsApiLinks.GetAccounts, accessToken)
+
+        val allHaveAccountCategory = result.data.account.all { it.accountCategory != null }
+        val allHaveAccountTypeCode = result.data.account.all { it.accountTypeCode != null }
+        val allHaveStatementFrequencyAndFormat = result.data.account.all { it.statementFrequencyAndFormat != null }
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(allHaveAccountCategory).isEqualTo(true)
+        assertThat(allHaveAccountTypeCode).isEqualTo(true)
+        assertThat(allHaveStatementFrequencyAndFormat).isEqualTo(true)
+        assertThat(result.data.account).isNotEmpty()
+        assertThat(result.data.account.size).isGreaterThan(0)
+        assertThat(result.data.account)
     }
 }

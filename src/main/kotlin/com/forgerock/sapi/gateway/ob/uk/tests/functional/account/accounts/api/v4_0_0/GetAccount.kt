@@ -31,4 +31,28 @@ class GetAccount(version: OBVersion, tppResource: CreateTppCallback.TppResource)
         assertThat(result.data.account.size).isEqualTo(1)
         assertThat(result.data.account[0].accountId).isEqualTo(USER_ACCOUNT_ID)
     }
+
+    fun shouldGetAccount_getV4FieldsTest() {
+        // Given
+        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
+        val (_, accessToken) = accountAccessConsentApi.createConsentAndGetAccessToken(permissions)
+
+        // When
+        val result = AccountRS().getAccountData<OBReadAccount6>(
+            accountsApiLinks.GetAccount,
+            accessToken,
+            USER_ACCOUNT_ID
+        )
+
+        // Then
+        assertThat(result).isNotNull()
+        assertThat(result.data.account).isNotEmpty()
+        assertThat(result.data.account.size).isEqualTo(1)
+        assertThat(result.data.account[0].accountId).isEqualTo(USER_ACCOUNT_ID)
+        assertThat(result.data.account[0].accountCategory).isNotNull()
+        assertThat(result.data.account[0].accountTypeCode).isNotNull()
+        assertThat(result.data.account[0].statementFrequencyAndFormat).isNotNull()
+        assertThat(result.data.account[0].servicer.name).isNotNull()
+        assertThat(result.data.account[0].account[0].lei).isNotNull()
+    }
 }

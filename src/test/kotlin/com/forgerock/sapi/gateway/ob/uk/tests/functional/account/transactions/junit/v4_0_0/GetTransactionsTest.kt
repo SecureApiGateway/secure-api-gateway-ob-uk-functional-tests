@@ -17,4 +17,15 @@ class GetTransactionsTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldGetTransactions_v4_0_0() {
         GetTransactions(OBVersion.v4_0_0, tppResource).shouldGetTransactionsTest()
     }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetTransactions"],
+        apis = ["transactions"]
+    )
+    @Test
+    fun shouldGetTransactionsTest_getV4Fields_v4_0_0() {
+        GetTransactions(OBVersion.v4_0_0, tppResource).shouldGetTransactionsTest_getV4Fields()
+    }
 }

@@ -17,4 +17,15 @@ class GetStandingOrdersTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldGetStandingOrders_v4_0_0() {
         GetStandingOrders(OBVersion.v4_0_0, tppResource).shouldGetStandingOrdersTest()
     }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent", "GetAccounts", "GetStandingOrders"],
+        apis = ["standing-orders"]
+    )
+    @Test
+    fun shouldGetStandingOrdersTest_getV4Fields_v4_0_0() {
+        GetStandingOrders(OBVersion.v4_0_0, tppResource).shouldGetStandingOrdersTest_getV4Fields()
+    }
 }

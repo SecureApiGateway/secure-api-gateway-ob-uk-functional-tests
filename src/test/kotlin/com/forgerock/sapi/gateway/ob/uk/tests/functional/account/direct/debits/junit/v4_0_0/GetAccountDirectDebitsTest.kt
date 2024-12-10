@@ -18,4 +18,15 @@ class GetAccountDirectDebitsTest(val tppResource: CreateTppCallback.TppResource)
     fun shouldGetAccountDirectDebits_v4_0_0() {
         GetAccountDirectDebits(OBVersion.v4_0_0, tppResource).shouldGetAccountDirectDebitsTest()
     }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent", "GetAccountDirectDebits"],
+        apis = ["direct-debits"]
+    )
+    @Test
+    fun shouldGetAccountDirectDebitsTest_mandateRelatedInformation_v4_0_0() {
+        GetAccountDirectDebits(OBVersion.v4_0_0, tppResource).shouldGetAccountDirectDebitsTest_mandateRelatedInformation()
+    }
 }

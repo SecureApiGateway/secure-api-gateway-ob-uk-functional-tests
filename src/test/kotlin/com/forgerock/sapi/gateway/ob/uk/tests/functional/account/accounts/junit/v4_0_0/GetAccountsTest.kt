@@ -19,4 +19,15 @@ class GetAccountsTest(val tppResource: CreateTppCallback.TppResource) {
     fun shouldGetAccounts_v4_0_0() {
         GetAccounts(OBVersion.v4_0_0, tppResource).shouldGetAccountsTest()
     }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent", "GetAccounts"],
+        apis = ["accounts"]
+    )
+    @Test
+    fun shouldGetAccountsTest_getV4Fields_v4_0_0() {
+        GetAccounts(OBVersion.v4_0_0, tppResource).shouldGetAccountsTest_getV4Fields()
+    }
 }
