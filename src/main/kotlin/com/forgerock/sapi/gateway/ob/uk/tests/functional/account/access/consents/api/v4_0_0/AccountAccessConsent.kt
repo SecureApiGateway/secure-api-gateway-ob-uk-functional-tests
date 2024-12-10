@@ -11,10 +11,12 @@ import com.forgerock.sapi.gateway.ob.uk.support.account.AccountAS
 import com.forgerock.sapi.gateway.ob.uk.support.account.v4.AccountFactory
 import com.forgerock.sapi.gateway.ob.uk.support.account.AccountRS
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.getAccountsApiLinks
+import com.forgerock.sapi.gateway.ob.uk.support.payment.PsuData
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.forgerock.sapi.gateway.ob.uk.tests.functional.account.access.consents.v4_0_0.AccountAccessConsentApi
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
+import uk.org.openbanking.datamodel.v3.common.OBExternalPermissions1Code
 import uk.org.openbanking.datamodel.v4.account.OBInternalPermissions1Code
 import uk.org.openbanking.datamodel.v4.account.OBReadConsentResponse1
 
@@ -31,6 +33,46 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
         // Then
         assertThat(consentResponse).isNotNull()
         assertThat(consentResponse.data).isNotNull()
+        assertEquals(consentResponse.data.permissions, permissions)
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
+    }
+
+    fun createAccountAccessConsentTest_v3tov4() {
+        // Given
+        val permissions = listOf(OBExternalPermissions1Code.READACCOUNTSDETAIL)
+        // When
+        val consentResponse = createConsentV3(permissions)
+
+        // Then
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertEquals(consentResponse.data.permissions.toString(), permissions.toString())
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
+    }
+
+    fun shouldCreateAccountAccessConsentTest_v4tov3() {
+        // Given
+        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
+        // When
+        val consentResponse = createConsentV4withV3Response(permissions)
+
+        // Then
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertEquals(consentResponse.data.permissions.toString(), permissions.toString())
+        Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
+    }
+
+    fun createAccountAccessConsentTest_checkStatusReason() {
+        // Given
+        val permissions = listOf(OBInternalPermissions1Code.READACCOUNTSDETAIL)
+        // When
+        val consentResponse = createConsent(permissions)
+
+        // Then
+        assertThat(consentResponse).isNotNull()
+        assertThat(consentResponse.data).isNotNull()
+        assertThat(consentResponse.data.statusReason).isNotNull()
         assertEquals(consentResponse.data.permissions, permissions)
         Assertions.assertThat(consentResponse.data.status.toString()).`is`(StatusV4.consentCondition)
     }
@@ -60,6 +102,24 @@ class AccountAccessConsent(val version: OBVersion, val tppResource: CreateTppCal
     }
 
     override fun createConsent(permissions: List<OBInternalPermissions1Code>): OBReadConsentResponse1 {
+        val consentRequest = AccountFactory.obReadConsent1(permissions)
+        return AccountRS().consent(
+            accountsApiLinks.CreateAccountAccessConsent,
+            consentRequest,
+            tppResource.tpp
+        )
+    }
+
+    fun createConsentV3(permissions: List<OBExternalPermissions1Code>): OBReadConsentResponse1 {
+        val consentRequest = com.forgerock.sapi.gateway.ob.uk.support.account.AccountFactory.obReadConsent1(permissions)
+        return AccountRS().consent(
+            accountsApiLinks.CreateAccountAccessConsent,
+            consentRequest,
+            tppResource.tpp
+        )
+    }
+
+    fun createConsentV4withV3Response(permissions: List<OBInternalPermissions1Code>): uk.org.openbanking.datamodel.v3.account.OBReadConsentResponse1 {
         val consentRequest = AccountFactory.obReadConsent1(permissions)
         return AccountRS().consent(
             accountsApiLinks.CreateAccountAccessConsent,

@@ -29,6 +29,36 @@ class AccountAccessConsentTest(val tppResource: CreateTppCallback.TppResource) {
     @EnabledIfVersion(
         type = "accounts",
         apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent"]
+    )
+    @Test
+    fun createAccountAccessConsentTest_v3_to_v4_v4_0_0() {
+        accountAccessConsentApi.createAccountAccessConsentTest_v3tov4()
+    }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent"]
+    )
+    @Test
+    fun shouldCreateAccountAccessConsentTest_v4tov3_v4_0_0() {
+        accountAccessConsentApi.shouldCreateAccountAccessConsentTest_v4tov3()
+    }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
+        operations = ["CreateAccountAccessConsent"]
+    )
+    @Test
+    fun createAccountAccessConsentTest_checkStatusReason_v4_0_0() {
+        accountAccessConsentApi.createAccountAccessConsentTest_checkStatusReason()
+    }
+
+    @EnabledIfVersion(
+        type = "accounts",
+        apiVersion = "v4.0.0",
         operations = ["DeleteAccountAccessConsent"]
     )
     @Test
