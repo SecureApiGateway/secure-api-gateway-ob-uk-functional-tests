@@ -15,4 +15,5 @@ gradle/profiles/*
 !gradle/profiles/profile-devops-ob.gradle.kts
 !gradle/profiles/profile-dev-aic-ob.gradle.kts
 !gradle/profiles/profile-ob-sandbox-v*.kts
+!gradle/profiles/profile-shaunharrisonfr-ob.gradle.kts
 /certificates
