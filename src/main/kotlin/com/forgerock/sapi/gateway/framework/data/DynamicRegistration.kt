@@ -4,9 +4,12 @@ import com.forgerock.sapi.gateway.framework.configuration.CLIENT_AUTH_METHOD
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
 import com.forgerock.sapi.gateway.ob.uk.support.discovery.asDiscovery
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
+import java.util.*
+
 data class RegistrationRequest(
         val software_statement: String,
         val iss: String = com.forgerock.sapi.gateway.ob.uk.framework.configuration.OB_SOFTWARE_ID,
+        val iat: Date = Date(),
         val exp: Long = (System.currentTimeMillis() / 1000) + 180,
         val grant_types: List<String> = asDiscovery.grant_types_supported,
         val id_token_signed_response_alg: String = "PS256",
