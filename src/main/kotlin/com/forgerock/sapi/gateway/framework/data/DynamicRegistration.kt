@@ -8,6 +8,7 @@ import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBConstants
 data class RegistrationRequest(
         val software_statement: String,
         val iss: String = com.forgerock.sapi.gateway.ob.uk.framework.configuration.OB_SOFTWARE_ID,
+        val iat: Long = (System.currentTimeMillis() / 1000),
         val exp: Long = (System.currentTimeMillis() / 1000) + 180,
         val grant_types: List<String> = asDiscovery.grant_types_supported,
         val id_token_signed_response_alg: String = "PS256",

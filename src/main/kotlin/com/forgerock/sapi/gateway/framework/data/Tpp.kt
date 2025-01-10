@@ -111,7 +111,6 @@ data class Tpp(
     private fun signRegistrationRequest(registrationRequest: RegistrationRequest): String {
         return Jwts.builder()
                 .setHeaderParam("kid", signingKid)
-                .setIssuedAt(Date())
                 .setPayload(GsonUtils.gson.toJson(registrationRequest))
                 .signWith(signingKey, SignatureAlgorithm.forName(registrationRequest.request_object_signing_alg))
                 .compact()
