@@ -27,7 +27,8 @@ data class RegistrationRequest(
                 )
         ).joinToString(separator = " "),
 
-        val subject_type: String = "pairwise",
+        val subject_type: String = if (asDiscovery.subject_types_supported.contains("pairwise")) "pairwise"
+        else asDiscovery.subject_types_supported[0],
         val token_endpoint_auth_method: String = CLIENT_AUTH_METHOD,
         val token_endpoint_auth_signing_alg: String = "PS256",
         val tls_client_auth_subject_dn: String
