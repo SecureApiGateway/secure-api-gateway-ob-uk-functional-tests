@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.event.v4
 
-import com.forgerock.sapi.gateway.framework.configuration.MTLS_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.AS_MTLS_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RS_MTLS_SERVER
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.http.fuel.jsonBody
@@ -23,7 +24,7 @@ class EventNotificationRS {
     }
 
     fun getEventsAdminAPIUrl(): String {
-        return "${MTLS_SERVER}/rs/admin/data/events"
+        return "${RS_MTLS_SERVER}/rs/admin/data/events"
     }
 
     inline fun <reified T : Any> importDataEvent(

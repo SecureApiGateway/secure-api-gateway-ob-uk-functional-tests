@@ -1,7 +1,7 @@
 service := pr/uk-functional-tests
 repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 profile := dev-cdk-ob
-tests := tests_v3_1_10
+tests := tests_v4_0_0
 latesttagversion := latest
 
 docker:

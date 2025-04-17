@@ -1,7 +1,8 @@
 package com.forgerock.sapi.gateway.ob.uk.support.general
 
 import com.forgerock.sapi.gateway.framework.configuration.AUTH_METHOD_PRIVATE_KEY_JWT
-import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.AS_IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RS_IG_SERVER
 import com.forgerock.sapi.gateway.framework.configuration.REDIRECT_URI
 import com.forgerock.sapi.gateway.framework.data.*
 import com.forgerock.sapi.gateway.framework.http.fuel.responseObject
@@ -28,7 +29,7 @@ open class GeneralAS {
     data class SendConsentDecisionResponseBody(val consentJwt: String, val redirectUri: String)
 
     /* DEV
-    https://sapig.dev.forgerock.financial/am/oauth2/realms/root/realms/alpha/authorize?
+    https://as-sapig.dev.forgerock.financial/am/oauth2/realms/root/realms/alpha/authorize?
     redirect_uri=https://google.com&response_type=code%20id_token&client_id=e327d05e-a822-4fee-9989-e294af3b586b&state=10d260bf-a7d9-444a-92d9-7b7a5f088208
     &nonce=10d260bf-a7d9-444a-92d9-7b7a5f088208&request=eyJraWQiOiIyeU5qUE9DanBPOHJjS2c2X2xWdFd6QVFSMFUiLCJhbGciOiJQUzI1NiJ9.eyJhdWQiOiJodHRwczovL2lhbS5kZXYuZm9yZ2Vyb2NrLmZpbmFuY2lhbDo0NDMvYW0vb2F1dGgyL3JlYWxtcy9yb290L3JlYWxtcy9hbHBoYSIsImNsYWltcyI6eyJpZF90b2tlbiI6eyJhY3IiOnsiZXNzZW50aWFsIjp0cnVlLCJ2YWx1ZSI6InVybjpvcGVuYmFua2luZzpwc2QyOmNhIn0sIm9wZW5iYW5raW5nX2ludGVudF9pZCI6eyJlc3NlbnRpYWwiOnRydWUsInZhbHVlIjoiQUFDX2UzMDUxOGUyLTEzMmEtNGExOS04MGUwLTY1NGE4Mzg5ZDgwZiJ9fSwidXNlcmluZm8iOnsib3BlbmJhbmtpbmdfaW50ZW50X2lkIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiJBQUNfZTMwNTE4ZTItMTMyYS00YTE5LTgwZTAtNjU0YTgzODlkODBmIn19fSwiY2xpZW50X2lkIjoiZTMyN2QwNWUtYTgyMi00ZmVlLTk5ODktZTI5NGFmM2I1ODZiIiwiZXhwIjoxNjQ3MjU5ODgwLCJpYXQiOjE2NDcyNTkyODAsImp0aSI6IjAzM2U3ZmM5LTYxNWItNDQ0NS1hZGMzLTNhNDVjYzI5NTc4NyIsImlzcyI6ImUzMjdkMDVlLWE4MjItNGZlZS05OTg5LWUyOTRhZjNiNTg2YiIsIm5vbmNlIjoiMTBkMjYwYmYtYTdkOS00NDRhLTkyZDktN2I3YTVmMDg4MjA4IiwicmVkaXJlY3RfdXJpIjoiaHR0cHM6Ly9nb29nbGUuY29tIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUgaWRfdG9rZW4iLCJzY29wZSI6Im9wZW5pZCBhY2NvdW50cyIsInN0YXRlIjoiMTBkMjYwYmYtYTdkOS00NDRhLTkyZDktN2I3YTVmMDg4MjA4In0.S8HkY6lujZ2LqIZtwnLS6rhlgLTQJFsB0_4r-C5ZrfykR8XCMA1h6b3PndXPrXXBJMFabOEjF-W6eHptberpwj3tm6K0XF7H2wmt303wDlmm_JcU279c7UC0foVvCB0zf7NGIYh7tLBdzp_OF5nAyBc1iDvw7LRL8-qt0M1P-cyt8qDv6DuT_Hauq0M6PYy0Hgj2VrONFmk_1OmNHDdeyiPWPn2TCvOdzQI08Ev2eHzAqpeUljNPhbXkRJTVRrjmW9EuV0q71-F-uauXGxyIuP28oBZXkUatgJ7MUXTvaiZiffO-oMLVEvVPD2KSm7oYR-OLdTJB4xeOPf964RoBpw
     &scope=openid%20accounts&username=psu&password=0penBanking!&acr=urn%3Aopenbanking%3Apsd2%3Aca&acr_sig=ON47-DQ6NP3jdgkGDx9VeYU4OMd5r8QQyJaf37G7pQ4
@@ -85,7 +86,7 @@ open class GeneralAS {
         try {
             val location = getLocationFromHeaders(response)
             val parameters = location.substring(location.indexOf("?"))
-            return "$IG_SERVER/am/json/realms/root/realms/alpha/authenticate$parameters"
+            return "$AS_IG_SERVER/am/json/realms/root/realms/alpha/authenticate$parameters"
         } catch (e: Exception) {
             throw AssertionError("Location header URL doesn't have parameters")
         }
@@ -127,7 +128,7 @@ open class GeneralAS {
     }
 
     protected fun getConsentDetails(consentRequest: String, cookie: String): String {
-        val (_, response, result) = Fuel.post("$IG_SERVER/rcs/api/consent/details")
+        val (_, response, result) = Fuel.post("$RS_IG_SERVER/rcs/api/consent/details")
             .header("Cookie", cookie)
             .body(consentRequest)
             .header("Content-Type", "application/jwt")

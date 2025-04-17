@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.discovery
 
-import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.AS_IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RS_IG_SERVER
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.gson.responseObject
@@ -40,7 +41,7 @@ data class AsDiscovery(
 val asDiscovery by lazy { getAsConfiguration() }
 
 private fun getAsConfiguration(): AsDiscovery {
-    val (_, response, result) = Fuel.get("$IG_SERVER/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
+    val (_, response, result) = Fuel.get("$AS_IG_SERVER/am/oauth2/realms/root/realms/alpha/.well-known/openid-configuration")
             .responseObject<AsDiscovery>()
     if (!response.isSuccessful) throw AssertionError("Failed to load As Discovery", result.component2())
 

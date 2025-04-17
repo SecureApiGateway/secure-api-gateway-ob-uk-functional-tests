@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.account
 
-import com.forgerock.sapi.gateway.framework.configuration.IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.AS_IG_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RS_IG_SERVER
 import com.forgerock.sapi.gateway.framework.data.AccessToken
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import com.forgerock.sapi.gateway.framework.http.fuel.jsonBody
@@ -61,7 +62,7 @@ class AccountRS {
         accountDataUrl: String,
         accessToken: AccessToken
     ): T {
-        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$RS_IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-ob-url", xObURL)
@@ -80,7 +81,7 @@ class AccountRS {
         accountDataUrl: String,
         accessToken: AccessToken
     ): T {
-        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$RS_IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(accountDataUrl)
             .header("Authorization", "Bearer ${accessToken.access_token}")
             .header("x-ob-url", xObURL)
@@ -100,7 +101,7 @@ class AccountRS {
             accessToken: AccessToken,
             accountId: String
     ): T {
-        val xObURL = "$IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
+        val xObURL = "$RS_IG_SERVER/${accountDataUrl.substring(accountDataUrl.indexOf("rs/") + 3)}"
         val (_, accountResult, r) = Fuel.get(
             AccountFactory.urlWithAccountId(
                 accountDataUrl,

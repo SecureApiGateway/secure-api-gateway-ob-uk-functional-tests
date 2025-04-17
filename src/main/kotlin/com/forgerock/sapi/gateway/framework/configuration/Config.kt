@@ -4,11 +4,15 @@ import com.forgerock.sapi.gateway.ob.uk.support.registerPSU
 import com.forgerock.sapi.gateway.ob.uk.support.registration.UserRegistrationRequest
 import java.lang.Boolean
 
-val IG_SERVER = System.getenv("igServer") ?: "https://sapig.dev.forgerock.financial"
-// mtls is a subdomain of the gateway domain
-val MTLS_SERVER = IG_SERVER.replace("https://", "https://mtls.")
+val AS_IG_SERVER = System.getenv("asIGServer") ?: "https://as-sapig.dev-cdk-ob.forgerock.financial"
+val RS_IG_SERVER = System.getenv("rsIGServer") ?: "https://rs-sapig.dev-cdk-ob.forgerock.financial"
 
-val RCS_DECISION_API_URI = "$IG_SERVER/rcs/api/consent/decision"
+// mtls is a subdomain of the gateway domain
+val AS_MTLS_SERVER = AS_IG_SERVER.replace("https://as-", "https://as-mtls.")
+val RS_MTLS_SERVER = RS_IG_SERVER.replace("https://rs-", "https://rs-mtls.")
+
+
+val RCS_DECISION_API_URI = "$RS_IG_SERVER/rcs/api/consent/decision"
 
 val TRUSTSTORE_PATH = System.getenv("truststorePath") ?: "/com/forgerock/sapi/gateway/ob/uk/truststore.jks"
 val TRUSTSTORE_PASSWORD = System.getenv("truststorePassword") ?: "changeit"
