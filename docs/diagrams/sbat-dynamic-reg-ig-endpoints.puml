@@ -134,7 +134,7 @@ group Dynamic registration request
         "introspection_encrypted_response_enc": "A128CBC-HS256",
         "introspection_signed_response_alg": "RS256",
         "userinfo_encrypted_response_enc": "",
-        "registration_client_uri": "https://sapig.dev.forgerock.financial/am/oauth2/realms/root/realms/alpha/register?client_id=fc425638-da2f-465d-b9ec-8bbb34cc75ec",
+        "registration_client_uri": "https://as-sapig.dev.forgerock.financial/am/oauth2/realms/root/realms/alpha/register?client_id=fc425638-da2f-465d-b9ec-8bbb34cc75ec",
         "client_type": "Confidential",
         "userinfo_encrypted_response_alg": "",
         "registration_access_token": "eyJ0eXAi...PgkE2Q",

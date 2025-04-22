@@ -1,6 +1,7 @@
 package com.forgerock.sapi.gateway.ob.uk.support.discovery
 
-import com.forgerock.sapi.gateway.framework.configuration.MTLS_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.AS_MTLS_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.RS_MTLS_SERVER
 import com.forgerock.sapi.gateway.uk.common.shared.api.meta.obie.OBVersion
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.isSuccessful
@@ -259,7 +260,7 @@ val rsDiscoveryEnabledOperationsMap by lazy {
 }
 
 private fun getRsConfiguration(): RsDiscovery {
-    val (_, response, result) = Fuel.get("$MTLS_SERVER/rs/open-banking/discovery")
+    val (_, response, result) = Fuel.get("$RS_MTLS_SERVER/rs/open-banking/discovery")
         .responseObject<RsDiscovery>(gsonDeserializer())
     if (!response.isSuccessful) throw AssertionError("Failed to load RS Discovery", result.component2())
     return result.get()
