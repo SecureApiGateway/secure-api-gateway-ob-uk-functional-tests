@@ -40,7 +40,7 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
  * Functional tests configuration
  */
 // servers
-val environment by extra("dev-cdk-ob")
+val environment by extra("shaunharrisonfr-ob")
 val amCookieName by extra("iPlanetDirectoryPro")
 val asIGServer by extra("https://as-sapig.$environment.forgerock.financial")
 val rsIGServer by extra("https://rs-sapig.$environment.forgerock.financial")
@@ -54,7 +54,7 @@ val userDebtorAccountIdentification by extra("01233243245676")
 val userAccountId by extra ("01233243245676")
 
 // Kid's
-val eidasTestSigningKid by extra("jSlqTZu6fidhnb89-v-rY01TEHY")
+val eidasTestSigningKid by extra("m6ieu1jW72qt2bm9IJYlna8sz_8")
 val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
 
 // Expected path to find the Certificates used for test purposes
