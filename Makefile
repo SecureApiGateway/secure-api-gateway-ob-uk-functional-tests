@@ -24,6 +24,6 @@ endif
    	fi;
 
 runTests:
-	@echo "Running tests suite '${tests}' against '$(profile)' environment"
+	@echo "Running tests suite '${tests}' against '${profile}' environment"
 	sleep 5s
 	./gradlew cleanTest ${tests} -Pprofile=${profile}
