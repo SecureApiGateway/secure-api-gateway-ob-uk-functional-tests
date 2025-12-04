@@ -30,7 +30,8 @@ import com.nimbusds.jose.crypto.RSASSASigner
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.Jwts.SIG
+import io.jsonwebtoken.security.SignatureAlgorithm
 import java.io.File
 import java.io.InputStream
 import java.security.cert.CertificateFactory
@@ -110,10 +111,12 @@ data class Tpp(
 
     private fun signRegistrationRequest(registrationRequest: RegistrationRequest): String {
         return Jwts.builder()
-                .setHeaderParam("kid", signingKid)
-                .setPayload(GsonUtils.gson.toJson(registrationRequest))
-                .signWith(signingKey, SignatureAlgorithm.forName(registrationRequest.request_object_signing_alg))
-                .compact()
+                .header().add("kid", signingKid).and()
+                .content(GsonUtils.gson.toJson(registrationRequest))
+                .signWith(signingKey, SIG.get().forKey(registrationRequest
+                    .request_object_signing_alg) as SignatureAlgorithm
+                )
+                .compact();
     }
 
     private fun register(signedRegistrationRequest: String): RegistrationResponse {
