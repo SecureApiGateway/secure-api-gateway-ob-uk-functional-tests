@@ -16,7 +16,7 @@ val jaxbVersion = "4.0.1"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.kotlin.jvm") version "2.2.21"
     // https://github.com/edeandrea/xjc-generation-gradle-plugin
     id("com.github.edeandrea.xjc-generation") version "1.6"
     id("maven-publish")
@@ -85,8 +85,6 @@ dependencies {
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel:jar:tests")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel:jar:tests")
 
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:${jaxbVersion}")
     implementation("com.sun.xml.bind:jaxb-impl:${jaxbVersion}")
@@ -94,21 +92,23 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
     implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
     implementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
-    implementation("com.google.code.gson:gson:2.9.0")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("com.google.code.gson:gson:2.13.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.20.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.1")
     implementation("com.willowtreeapps.assertk:assertk-jvm:0.17")
-    implementation("io.jsonwebtoken:jjwt-api:0.10.7")
-    implementation("io.jsonwebtoken:jjwt-impl:0.10.7")
-    implementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
+    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    implementation("io.jsonwebtoken:jjwt-impl:0.13.0")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.83")
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.83")
     implementation("io.r2:simple-pem-keystore:0.3")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.assertj:assertj-core:3.27.6")
     implementation("com.nimbusds:nimbus-jose-jwt:10.6")
     implementation("commons-io:commons-io:2.21.0")
 
-    implementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+    implementation("org.junit.jupiter:junit-jupiter:5.14.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 /*
@@ -196,12 +196,13 @@ tasks.register<Jar>("generateTestJar") {
                 "Implementation-Version" to project.version,
                 "Created-by" to "${project.version} (forgerock)",
                 "Built-by" to System.getProperty("user.name"),
-                "Build-Jdk" to JavaVersion.current(),
-                "Source-Compatibility" to project.properties["sourceCompatibility"],
-                "Target-Compatibility" to project.properties["targetCompatibility"]
+                "Build-Jdk" to JavaVersion.current()
             )
         )
     }
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 tasks.withType<Test>().configureEach {
@@ -234,15 +235,19 @@ tasks.withType<Test>().configureEach {
 /* ********************************************* */
 /*                 TEST TASKS                    */
 /* ********************************************* */
+
 // tests properties
 val packagePrefix = "com.forgerock.sapi.gateway.ob.uk.tests.functional."
 val suffixPattern = ".*"
 val apiVersions = arrayOf("v3_1_8", "v3_1_9", "v3_1_10", "v4_0_0")
 
 // Add test tasks for each supported apiVersion
+val test by testing.suites.existing(JvmTestSuite::class)
 for (apiVersion in apiVersions) {
     /* ACCOUNTS */
     tasks.register<Test>("accounts_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "accounts-tests"
         description = "Runs the account tests with the version $apiVersion"
         filter {
@@ -253,6 +258,8 @@ for (apiVersion in apiVersions) {
 
     /* DOMESTIC PAYMENTS */
     tasks.register<Test>("domestic_payments_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the domestic payments tests with the version $apiVersion"
         filter {
@@ -262,6 +269,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("domestic_scheduled_payments_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the domestic scheduled payments tests with the version $apiVersion"
         filter {
@@ -271,6 +280,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("domestic_standing_order_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the domestic standing order tests with the version $apiVersion"
         filter {
@@ -280,6 +291,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("international_payments_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the international payments tests with the version $apiVersion"
         filter {
@@ -289,6 +302,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("international_scheduled_payments_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the international scheduled payments tests with the version $apiVersion"
         filter {
@@ -298,6 +313,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("international_standing_orders_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the international standing order tests with the version $apiVersion"
         filter {
@@ -307,6 +324,8 @@ for (apiVersion in apiVersions) {
     }
 
     tasks.register<Test>("file_payments_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "payments-tests"
         description = "Runs the file payments tests with the version $apiVersion"
         filter {
@@ -317,6 +336,8 @@ for (apiVersion in apiVersions) {
 
     /* FUNDS CONFIRMATIONS TESTS */
     tasks.register<Test>("funds_confirmations_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "funds-confirmations-tests"
         description = "Runs the funds confirmation tests with the version $apiVersion"
         filter {
@@ -327,6 +348,8 @@ for (apiVersion in apiVersions) {
 
     /* ALL IMPLEMENTED TESTS */
     tasks.register<Test>("tests_$apiVersion") {
+        testClassesDirs = files(test.map { it.sources.output.classesDirs })
+        classpath = files(test.map { it.sources.runtimeClasspath })
         group = "tests"
         description = "Runs the tests with the version $apiVersion"
         filter {
@@ -347,6 +370,8 @@ for (apiVersion in apiVersions) {
 }
 
 tasks.register<Test>("domestic_vrps_v3_1_10") {
+    testClassesDirs = files(test.map { it.sources.output.classesDirs })
+    classpath = files(test.map { it.sources.runtimeClasspath })
     group = "payments-tests"
     description = "Runs the domestic vrps tests with the version v3_1_10"
     filter {
@@ -356,6 +381,8 @@ tasks.register<Test>("domestic_vrps_v3_1_10") {
 }
 
 tasks.register<Test>("domestic_vrps_v4_0_0") {
+    testClassesDirs = files(test.map { it.sources.output.classesDirs })
+    classpath = files(test.map { it.sources.runtimeClasspath })
     group = "payments-tests"
     description = "Runs the domestic vrps tests with the version v4_0_0"
     filter {
@@ -365,6 +392,8 @@ tasks.register<Test>("domestic_vrps_v4_0_0") {
 }
 
 tasks.register<Test>("events_v3_1_10") {
+    testClassesDirs = files(test.map { it.sources.output.classesDirs })
+    classpath = files(test.map { it.sources.runtimeClasspath })
     group = "events-tests"
     description = "Runs the events notification tests with the version v3_1_10"
     filter {
@@ -374,6 +403,8 @@ tasks.register<Test>("events_v3_1_10") {
 }
 
 tasks.register<Test>("events_v4_0_0") {
+    testClassesDirs = files(test.map { it.sources.output.classesDirs })
+    classpath = files(test.map { it.sources.runtimeClasspath })
     group = "events-tests"
     description = "Runs the events notification tests with the version v4_0_0"
     filter {
@@ -383,6 +414,8 @@ tasks.register<Test>("events_v4_0_0") {
 }
 
 tasks.register<Test>("singleTest") {
+    testClassesDirs = files(test.map { it.sources.output.classesDirs })
+    classpath = files(test.map { it.sources.runtimeClasspath })
     description = "Runs open banking single functional tests"
     failFast = false
 }
