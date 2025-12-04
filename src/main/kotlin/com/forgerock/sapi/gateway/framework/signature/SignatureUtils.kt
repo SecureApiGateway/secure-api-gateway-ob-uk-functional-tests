@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.core.isSuccessful
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.jwk.JWKSet
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.Jwts.SIG
 import io.jsonwebtoken.SignatureAlgorithm
 import org.bouncycastle.asn1.x500.X500Name
 import java.io.ByteArrayInputStream
@@ -25,9 +26,9 @@ private val DETACHED_SIGNATURE_PATTERN = Pattern.compile("(.*\\.)(\\..*)")
 fun signPayload(payload: Any, signingKey: PrivateKey, signingKid: String?): String {
     val serialisedPayload = GsonUtils.gson.toJson(payload)
     return Jwts.builder()
-        .setHeaderParam("kid", signingKid)
-        .setPayload(serialisedPayload)
-        .signWith(signingKey, SignatureAlgorithm.PS256)
+        .header().add("kid", signingKid).and()
+        .content(serialisedPayload)
+        .signWith(signingKey, SIG.PS256)
         .compact()
 }
 
