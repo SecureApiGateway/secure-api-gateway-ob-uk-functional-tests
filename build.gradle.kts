@@ -50,8 +50,14 @@ repositories {
     mavenCentral()
     maven("https://www.jitpack.io")
     maven("https://maven.forgerock.org/artifactory/community")
-    maven("https://maven.forgerock.org/artifactory/internal-releases")
-    maven("https://maven.forgerock.org/artifactory/internal-snapshots")
+
+    maven {
+        url = uri("https://maven.forgerock.org/artifactory/internal-releases")
+        credentials {
+            username = project.findProperty("artifactoryUser") as String? ?: System.getenv("FR_ARTIFACTORY_USER")
+            password = project.findProperty("artifactoryPassword") as String? ?: System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
+        }
+    }
 }
 
 configurations.all {
