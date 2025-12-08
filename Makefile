@@ -16,10 +16,10 @@ ifndef setlatest
 	$(eval setlatest=false)
 endif
 	@if [ "${setlatest}" = "true" ]; then \
-		docker build --build-arg FR_ARTIFACTORY_USER=$FR_ARTIFACTORY_USER --build-arg FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD=$FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD -t ${repo}/securebanking/${service}:${TAG} -t ${repo}/securebanking/${service}:${latesttagversion} . ; \
+		docker build --build-arg FR_ARTIFACTORY_USER=${FR_ARTIFACTORY_USER} --build-arg FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD=${FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD} -t ${repo}/securebanking/${service}:${TAG} -t ${repo}/securebanking/${service}:${latesttagversion} . ; \
 		docker push ${repo}/securebanking/${service} --all-tags; \
     else \
-   		docker build --build-arg FR_ARTIFACTORY_USER=$FR_ARTIFACTORY_USER --build-arg FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD=$FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD -t ${repo}/securebanking/${service}:${TAG} . ; \
+   		docker build --build-arg FR_ARTIFACTORY_USER=${FR_ARTIFACTORY_USER} --build-arg FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD=${FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD} -t ${repo}/securebanking/${service}:${TAG} . ; \
    		docker push ${repo}/securebanking/${service}:${TAG}; \
    	fi;
 
