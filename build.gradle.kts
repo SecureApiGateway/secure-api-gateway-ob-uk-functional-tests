@@ -50,6 +50,8 @@ repositories {
     mavenCentral()
     maven("https://www.jitpack.io")
     maven("https://maven.forgerock.org/artifactory/community")
+    maven("https://maven.forgerock.org/artifactory/internal-releases")
+    maven("https://maven.forgerock.org/artifactory/internal-snapshots")
 }
 
 configurations.all {
