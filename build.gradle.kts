@@ -54,8 +54,8 @@ repositories {
     maven {
         url = uri("https://maven.forgerock.org/artifactory/internal-releases")
         credentials {
-            username = project.findProperty("artifactoryUser") as String? ?: System.getenv("FR_ARTIFACTORY_USER")
-            password = project.findProperty("artifactoryPassword") as String? ?: System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
+            username = System.getenv("FR_ARTIFACTORY_USER")
+            password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
         }
     }
 }
