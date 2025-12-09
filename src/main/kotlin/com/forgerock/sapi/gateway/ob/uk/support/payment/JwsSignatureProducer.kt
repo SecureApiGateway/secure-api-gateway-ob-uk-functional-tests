@@ -4,7 +4,8 @@ import com.forgerock.sapi.gateway.framework.configuration.ISS_CLAIM_VALUE
 import com.forgerock.sapi.gateway.framework.data.Tpp
 import io.jsonwebtoken.JwtBuilder
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.Jwts.SIG
+import java.nio.charset.StandardCharsets
 
 interface JwsSignatureProducer {
     fun createDetachedSignature(jsonPayload: String): String
@@ -21,21 +22,24 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
     JwsSignatureProducer {
 
     private fun addHeaders(jwtBuilder: JwtBuilder) {
-        val headers = HashMap<String, Any>()
-        headers["kid"] = getKid()
-        headers["http://openbanking.org.uk/iat"] = System.currentTimeMillis() / 1000
-        headers["http://openbanking.org.uk/iss"] = ISS_CLAIM_VALUE
-        headers["http://openbanking.org.uk/tan"] = com.forgerock.sapi.gateway.ob.uk.framework.constants.TAN
-        headers["crit"] = listOf(
+        jwtBuilder.header().add("kid", getKid())
+        jwtBuilder.header().add("http://openbanking.org.uk/iat", System.currentTimeMillis() / 1000)
+        jwtBuilder.header().add("http://openbanking.org.uk/iss", ISS_CLAIM_VALUE)
+        jwtBuilder.header().add(
+            "http://openbanking.org.uk/tan", com.forgerock.sapi.gateway.ob.uk.framework.constants
+                .TAN
+        )
+        jwtBuilder.header().add(
+            "crit", listOf(
             "http://openbanking.org.uk/iat",
             "http://openbanking.org.uk/iss",
             "http://openbanking.org.uk/tan"
+            )
         )
-        headers["typ"] = "JOSE"
+        jwtBuilder.header().add("typ", "JOSE")
         if (b64HeaderValue != null) {
-            headers["b64"] = b64HeaderValue
+            jwtBuilder.header().add("b64", b64HeaderValue)
         }
-        jwtBuilder.setHeaderParams(headers)
     }
 
     protected open fun getKid() = tpp.signingKid
@@ -43,8 +47,9 @@ open class DefaultJwsSignatureProducer(private val tpp: Tpp, private val b64Head
     private fun createSignature(jsonPayload: String): String {
         val jwtBuilder = Jwts.builder()
         addHeaders(jwtBuilder)
-        return jwtBuilder.setPayload(jsonPayload)
-            .signWith(tpp.signingKey, SignatureAlgorithm.PS256)
+        return jwtBuilder
+            .content(jsonPayload.byteInputStream(StandardCharsets.UTF_8))
+            .signWith(tpp.signingKey, SIG.PS256)
             .compact()
     }
 
