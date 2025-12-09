@@ -90,7 +90,7 @@ dependencies {
     implementation("com.sun.xml.bind:jaxb-impl:${jaxbVersion}")
 
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
-    implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
+    implementation("com.github.kittinunf.fuel:fuel-jackson:2.3.1")
     implementation("com.github.kittinunf.fuel:fuel-gson:2.2.1")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.20.1")
