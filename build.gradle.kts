@@ -12,7 +12,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // pom artifact version used when the built artifact is published
 // Test jar library version used in the task 'generateTestJar'
 version = "5.0.6"
-val jaxbVersion = "4.0.1"
+val jaxbVersion = "4.0.4"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
