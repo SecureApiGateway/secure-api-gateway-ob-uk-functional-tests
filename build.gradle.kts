@@ -107,7 +107,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:10.6")
     implementation("commons-io:commons-io:2.21.0")
 
-    implementation("org.junit.jupiter:junit-jupiter:5.14.1")
+    implementation("org.junit.jupiter:junit-jupiter:6.0.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
