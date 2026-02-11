@@ -11,7 +11,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // project version
 // pom artifact version used when the built artifact is published
 // Test jar library version used in the task 'generateTestJar'
-version = "5.0.6"
+version = "5.1.1"
 val jaxbVersion = "4.0.1"
 
 plugins {
@@ -77,7 +77,7 @@ dependencies {
     xjc("com.sun.xml.bind:jaxb-xjc:${jaxbVersion}")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:5.0.6"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:5.1.1"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
