@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - ob-v*
+      - sustaining/*
     paths-ignore:
       - '**/README.md'
 jobs:
