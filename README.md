@@ -186,6 +186,27 @@ gradle all [--rerun-tasks] [-Pprofile]
   ```bash
   gradle test --tests "com.forgerock.sapi.gateway.ob.uk.tests.payment.domestic.SingleDomesticPaymentTest.shouldCreateSingleDomesticPayment_v3_1_2" -Pprofile=my-profile
   ```
+
+## Run gradle tests manually - with `make`
+
+### All test
+  ```bash
+  make runTests [profile=<profile-name>]
+  ```
+  Example
+  ```bash
+  make runTests profile=wmorrison365fr-ob    # Default profile used is dev-cdk-ob
+  ```
+
+### Single test
+  ```bash
+  make runTests ":singleTest --tests x.x.y.y.TestClass.testMethod" [profile=<profile-name>]
+  ```
+  Example
+  ```bash
+  make runTests profile=wmorrison365fr-ob tests=vcom.forgerock.sapi.gateway.ob.uk.tests.functional.payment.international.standing.orders.junit.v4_0_0.GetInternationalStandingOrderTest.shouldGetInternationalStandingOrders_withReadRefund_v4_0_0"
+```
+
 # Pipelines
 ## Codefresh pipeline variables table
 
