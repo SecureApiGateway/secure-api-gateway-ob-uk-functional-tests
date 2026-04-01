@@ -44,6 +44,9 @@ val environment by extra ("devops-ob")
 val amCookieName by extra("iPlanetDirectoryPro")
 val asIGServer by extra("https://as-sapig.$environment.forgerock.financial")
 val rsIGServer by extra("https://rs-sapig.$environment.forgerock.financial")
+  // By default non-mtls hostname is transformed for mtls, but if a non-uniform value is required then provide below
+  // val asIGServerMtls by extra("https://my-as-mtls-sapig-$environment...")
+  // val rsIGServerMtls by extra("https://my-rs-mtls-sapig-$environment...")
 
 // PSU User configuration
 // needs to be a UUID and match with the value set in the use data initialiser

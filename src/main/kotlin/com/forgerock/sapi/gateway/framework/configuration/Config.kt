@@ -8,9 +8,8 @@ val AS_IG_SERVER = System.getenv("asIGServer") ?: "https://as-sapig.dev-cdk-ob.f
 val RS_IG_SERVER = System.getenv("rsIGServer") ?: "https://rs-sapig.dev-cdk-ob.forgerock.financial"
 
 // mtls is a subdomain of the gateway domain
-val AS_MTLS_SERVER = AS_IG_SERVER.replace("https://as-", "https://as-mtls.")
-val RS_MTLS_SERVER = RS_IG_SERVER.replace("https://rs-", "https://rs-mtls.")
-
+val AS_MTLS_SERVER = System.getenv("asIGServerMtls") ?: AS_IG_SERVER.replace("https://as-", "https://as-mtls.")
+val RS_MTLS_SERVER = System.getenv("rsIGServerMtls") ?: RS_IG_SERVER.replace("https://rs-", "https://rs-mtls.")
 
 val RCS_DECISION_API_URI = "$RS_IG_SERVER/rcs/api/consent/decision"
 

@@ -39,14 +39,15 @@ val ssaMatlsUrl by extra("https://matls-dirapi.$obHostSufix/organisation/tpp/{or
 /**
  * Functional tests configuration
  */
-// servers
-val environment by extra ("dev-aic-ob")
-val amCookieName by extra("9cc10c563dded16")
-val asIGServer by extra("https://as-sapig.$environment.forgerock.financial")
-val rsIGServer by extra("https://rs-sapig.$environment.forgerock.financial")
-  // By default non-mtls hostname is transformed for mtls, but if a non-uniform value is required then provide below
-  // val asIGServerMtls by extra("https://my-as-mtls-sapig-$environment...")
-  // val rsIGServerMtls by extra("https://my-rs-mtls-sapig-$environment...")
+// servers - sample sapig-ob-mr1
+val environment by extra("sapig-ob-mr1")
+val amCookieName by extra("cfaba3b41129a6e")
+// as-sapig-ob-mr1.encore.pingidentity.com
+val asIGServer by extra("https://as-$environment.encore.pingidentity.com")
+val rsIGServer by extra("https://rs-$environment.encore.pingidentity.com")
+// non-uniform mtls hostnames provided - e.g. as-mtls-sapig-sapig-ob-mr1.encore.pingidentity.com
+val asIGServerMtls by extra("https://as-mtls-sapig-$environment.encore.pingidentity.com")
+val rsIGServerMtls by extra("https://rs-mtls-sapig-$environment.encore.pingidentity.com")
 
 // PSU User configuration
 // needs to be a UUID and match with the value set in the use data initialiser
@@ -58,7 +59,7 @@ val userAccountId by extra ("01233243245676")
 
 // Kid's
 val eidasTestSigningKid by extra("m6ieu1jW72qt2bm9IJYlna8sz_8")
-val aspspJwtSignerKid by extra("R3MviZ4QUPEDJm7RS3Mw")
+val aspspJwtSignerKid by extra("o5xN09cvkzpLplq1mKQ8CsWabYU")
 
 // Expected path to find the Certificates used for test purposes
 val eidasOBSealKey by extra("./certificates/OBSeal.key")
