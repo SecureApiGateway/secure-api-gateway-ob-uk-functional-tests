@@ -13,6 +13,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // Test jar library version used in the task 'generateTestJar'
 version = "5.2.0-SNAPSHOT"
 val jaxbVersion = "4.0.1"
+val bouncyCastleVersion = "1.84"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
@@ -107,8 +108,8 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.13.0")
     implementation("io.jsonwebtoken:jjwt-impl:0.13.0")
     implementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
-    implementation("org.bouncycastle:bcprov-jdk18on:1.83")
-    implementation("org.bouncycastle:bcpkix-jdk18on:1.83")
+    implementation("org.bouncycastle:bcprov-jdk18on:${bouncyCastleVersion}")
+    implementation("org.bouncycastle:bcpkix-jdk18on:${bouncyCastleVersion}")
     implementation("io.r2:simple-pem-keystore:0.3")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.assertj:assertj-core:3.27.6")
