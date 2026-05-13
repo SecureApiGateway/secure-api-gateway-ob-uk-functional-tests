@@ -11,7 +11,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // project version
 // pom artifact version used when the built artifact is published
 // Test jar library version used in the task 'generateTestJar'
-version = "5.2.0"
+version = "5.2.1-SNAPSHOT"
 val jaxbVersion = "4.0.1"
 val bouncyCastleVersion = "1.84"
 
