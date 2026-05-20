@@ -8,22 +8,22 @@ import org.junit.jupiter.api.extension.*
 
 
 class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolver {
-    override fun supportsParameter(parameterContext: ParameterContext?, extensionContext: ExtensionContext?): Boolean {
-        return TppResource::class.java == parameterContext?.parameter?.type
+    override fun supportsParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Boolean {
+        return TppResource::class.java == parameterContext.parameter.type
     }
 
-    override fun resolveParameter(parameterContext: ParameterContext?, extensionContext: ExtensionContext?): Any {
-        return extensionContext?.root?.getStore(ExtensionContext.Namespace.GLOBAL)
-            ?.getOrComputeIfAbsent<String, TppResource>(
+    override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any? {
+        return extensionContext.root.getStore(ExtensionContext.Namespace.GLOBAL)
+            .getOrComputeIfAbsent<String, TppResource>(
                 "tppResource",
                 { TppResource(initFuelAsNewTpp().apply { dynamicRegistration() }) },
                 TppResource::class.java
-            )!!
+            )
     }
 
-    override fun beforeEach(context: ExtensionContext?) {
-        val tpp: TppResource? = context?.root?.getStore(ExtensionContext.Namespace.GLOBAL)
-            ?.getOrComputeIfAbsent<String, TppResource>(
+    override fun beforeEach(context: ExtensionContext) {
+        val tpp: TppResource? = context.root.getStore(ExtensionContext.Namespace.GLOBAL)
+            .getOrComputeIfAbsent<String, TppResource>(
                 "tppResource",
                 { TppResource(initFuelAsNewTpp().apply { dynamicRegistration() }) },
                 TppResource::class.java
@@ -45,7 +45,7 @@ class CreateTppCallback : BeforeAllCallback, BeforeEachCallback, ParameterResolv
                 "tppResource",
                 { TppResource(initFuelAsNewTpp().apply { dynamicRegistration() }) },
                 TppResource::class.java
-            )
+            )!!
         // Need to init fuel with transport keys as we may load cached result
 
         initFuel(
