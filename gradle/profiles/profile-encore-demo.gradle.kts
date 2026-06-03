@@ -51,11 +51,20 @@ val rsIGServerMtls by extra("https://rs-mtls-sapig-$environment.encore.pingident
 
 // PSU User configuration
 // needs to be a UUID and match with the value set in the use data initialiser
-val userId by extra ("4737f9f9-fa0a-4159-bc61-7da31542e624")
-val userPassword by extra("0penBanking!")
-val username by extra("psu4test")
+//val userId by extra ("4737f9f9-fa0a-4159-bc61-7da31542e624")
+//val userPassword by extra("0penBanking!")
+//val username by extra("psu4test")
 val userDebtorAccountIdentification by extra("01233243245676")
-val userAccountId by extra ("01233243245676")
+val userAccountId by extra ("91655086356625")
+
+// user123
+  //val userId by extra ("19e8ba68-e95c-47a3-a8f8-a9753ebf0785")
+  //val userPassword by extra("Secret12!")
+  //val username by extra("user123")
+// prowl
+val userId by extra ("4e671826-58f1-41de-9264-70be33ce931a")
+val userPassword by extra("Secret12!")
+val username by extra("prowl")
 
 // Kid's
 val eidasTestSigningKid by extra("m6ieu1jW72qt2bm9IJYlna8sz_8")

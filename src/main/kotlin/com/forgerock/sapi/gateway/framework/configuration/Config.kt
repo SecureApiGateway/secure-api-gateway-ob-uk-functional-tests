@@ -29,6 +29,11 @@ val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("preEidasTestSigningKid") ?: "m
 
 val AM_COOKIE_NAME = System.getenv("amCookieName") ?: "iPlanetDirectoryPro"
 
+// IdP tenant (mr2) — used for multi-tenant social authentication PoC
+val IDP_AM_SERVER = System.getenv("idpAmServer") ?: "https://openam-sapig-ob-mr2.forgeblocks.com"
+val IDP_AM_REALM = System.getenv("idpAmRealm") ?: "bravo"
+val IDP_AM_COOKIE_NAME = System.getenv("idpAmCookieName") ?: "41dcf7fcee63108"
+
 val psu: UserRegistrationRequest by lazy { registerPSU() }
 
 // certificates

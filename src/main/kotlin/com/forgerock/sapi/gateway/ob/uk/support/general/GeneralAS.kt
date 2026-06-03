@@ -17,9 +17,17 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import com.forgerock.sapi.gateway.framework.configuration.IDP_AM_SERVER
+import com.forgerock.sapi.gateway.framework.configuration.IDP_AM_REALM
+import com.forgerock.sapi.gateway.framework.configuration.IDP_AM_COOKIE_NAME
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 
 open class GeneralAS {
+
+    // Cookies set by mr1's /authorize response — captured for use in the social auth callback
+    private var mr1AuthorizeCookies: String = ""
 
     object GrantTypes {
         const val CLIENT_CREDENTIALS = "client_credentials"
@@ -83,6 +91,12 @@ open class GeneralAS {
             result.component2()
         )
 
+        // Capture all cookies from the /authorize response (includes OAUTH_REQUEST_ATTRIBUTES)
+        mr1AuthorizeCookies = response.headers["Set-Cookie"]
+            .map { it.substringBefore(";") }
+            .joinToString("; ")
+        println("GeneralAS#generateAuthenticationURL: mr1AuthorizeCookies=$mr1AuthorizeCookies")
+
         try {
             val location = getLocationFromHeaders(response)
             val parameters = location.substring(location.indexOf("?"))
@@ -106,8 +120,114 @@ open class GeneralAS {
             .POST(HttpRequest.BodyPublishers.ofString(""))
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        val gson = Gson()
-        return gson.fromJson(response.body(), AuthenticationResponse::class.java)
+        val parsed = Gson().fromJson(response.body(), AuthenticationResponse::class.java)
+
+        println("GeneralAS#authenticateByHttpClient: parsed=" + parsed)
+        if (parsed.authId != null && parsed.callbacks?.any { it.type == "RedirectCallback" } == true) {
+            println("GeneralAS#authenticateByHttpClient: completing social authn")
+            val mr1SessionCookies = response.headers().allValues("set-cookie")
+                .map { it.substringBefore(";") }
+                .joinToString("; ")
+            println("GeneralAS#authenticateByHttpClient: mr1SessionCookies=$mr1SessionCookies")
+            return completeSocialAuthentication(parsed, psu, mr1SessionCookies)
+        }
+        return parsed
+    }
+
+    private fun completeSocialAuthentication(
+        partial: AuthenticationResponse,
+        psu: UserRegistrationRequest,
+        mr1SessionCookies: String
+    ): AuthenticationResponse {
+        val redirectCallback = partial.callbacks!!.first { it.type == "RedirectCallback" }
+        val mr2AuthorizeUrl = redirectCallback.output!!.first { it.name == "redirectUrl" }.value!!
+
+        // Step 1: GET mr2 /authorize unauthenticated — mr2 will redirect to its Login page with policy advice
+        val (_, mr2UnauthResponse, _) = Fuel.get(mr2AuthorizeUrl)
+            .allowRedirects(false)
+            .responseString()
+        val mr2LoginUrl = mr2UnauthResponse.header("Location").first()
+        println("GeneralAS#completeSocialAuthentication: mr2LoginUrl=$mr2LoginUrl")
+
+        // Step 2: Build mr2 authenticate API URL from the Login redirect
+        // Login URL is: .../am/UI/Login?realm=/bravo&authIndexType=composite_advice&authIndexValue=...&oauthObjectKey=...&goto=...
+        val mr2LoginUri = URI.create(mr2LoginUrl)
+        val loginParams = mr2LoginUri.rawQuery.split("&").associate { kv ->
+            val i = kv.indexOf('='); kv.substring(0, i) to URLDecoder.decode(kv.substring(i + 1), "UTF-8")
+        }
+        val realm = loginParams["realm"] ?: "/$IDP_AM_REALM"
+        val realmPath = realm.trimStart('/')
+        val authIndexType = loginParams["authIndexType"] ?: "composite_advice"
+        val authIndexValue = loginParams["authIndexValue"] ?: ""
+        val oauthObjectKey = loginParams["oauthObjectKey"] ?: ""
+        val gotoUrl = loginParams["goto"] ?: ""
+
+        val authIndexValueEncoded = URLEncoder.encode(authIndexValue, "UTF-8")
+        val oauthObjectKeyEncoded = URLEncoder.encode(oauthObjectKey, "UTF-8")
+        val mr2AuthenticateUrl = "$IDP_AM_SERVER/am/json/realms/root/realms/$realmPath/authenticate" +
+            "?authIndexType=$authIndexType&authIndexValue=$authIndexValueEncoded&oauthObjectKey=$oauthObjectKeyEncoded"
+        println("GeneralAS#completeSocialAuthentication: mr2AuthenticateUrl=$mr2AuthenticateUrl")
+
+        // Step 3: POST credentials to mr2 /authenticate with the policy advice context
+        val mr2Auth = authenticateAtIdp(psu, mr2AuthenticateUrl)
+        val mr2Cookie = "amlbcookie=01; $IDP_AM_COOKIE_NAME=${mr2Auth.tokenId}"
+        println("GeneralAS#completeSocialAuthentication: mr2Auth.tokenId=${mr2Auth.tokenId}")
+
+        // Step 4: GET the goto URL (mr2 /authorize with TxId) with the session — redirects back to mr1 callback
+        val (_, mr2AuthorizeResponse, _) = Fuel.get(gotoUrl)
+            .header("Cookie", mr2Cookie)
+            .allowRedirects(false)
+            .responseString()
+        val callbackUrl = mr2AuthorizeResponse.header("Location").first()
+        println("GeneralAS#completeSocialAuthentication: callbackUrl=$callbackUrl")
+
+        // Step 5: POST back to mr1 /authenticate with callback params as URL query parameters.
+        // The XUI extracts code/iss/state/client_id from the callbackUrl, re-encodes each value,
+        // and appends them to the authenticate URL. The body is authId + original RedirectCallback
+        // (no IDToken1 input). AM returns tokenId + successUrl directly in the JSON response.
+        val callbackUri = URI.create(callbackUrl)
+        val callbackParams = callbackUri.rawQuery.split("&").associate { kv ->
+            val i = kv.indexOf('='); kv.substring(0, i) to kv.substring(i + 1)
+        }
+        val encodedParams = callbackParams.entries.joinToString("&") { (k, v) ->
+            "$k=${URLEncoder.encode(v, "UTF-8")}"
+        }
+        val mr1Base = "${callbackUri.scheme}://${callbackUri.host}"
+        val resumeUrl = "$mr1Base/am/json/realms/root/realms/alpha/authenticate?$encodedParams"
+        println("GeneralAS#completeSocialAuthentication: resumeUrl=$resumeUrl")
+
+        val resumeBody = mapOf(
+            "authId" to partial.authId,
+            "callbacks" to listOf(mapOf(
+                "type" to "RedirectCallback",
+                "output" to (redirectCallback.output ?: emptyList<Any>())
+            ))
+        )
+        val client = HttpClient.newBuilder().build()
+        val request = HttpRequest.newBuilder()
+            .uri(URI.create(resumeUrl))
+            .header("Content-Type", "application/json")
+            .header("Accept-API-Version", "resource=2.1, protocol=1.0")
+            .header("Cookie", mr1SessionCookies)
+            .POST(HttpRequest.BodyPublishers.ofString(Gson().toJson(resumeBody)))
+            .build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        println("GeneralAS#completeSocialAuthentication: step5 response=${response.body()}")
+        return Gson().fromJson(response.body(), AuthenticationResponse::class.java)
+    }
+
+    private fun authenticateAtIdp(psu: UserRegistrationRequest, authenticateUrl: String): AuthenticationResponse {
+        val client = HttpClient.newBuilder().build()
+        val request = HttpRequest.newBuilder()
+            .uri(URI.create(authenticateUrl))
+            .header("X-OpenAM-Username", psu.user.userName)
+            .header("X-OpenAM-Password", psu.user.password)
+            .header("Accept-API-Version", "resource=2.1, protocol=1.0")
+            .POST(HttpRequest.BodyPublishers.ofString(""))
+            .build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        println("GeneralAS#authenticateAtIdp: response body=${response.body()}")
+        return Gson().fromJson(response.body(), AuthenticationResponse::class.java)
     }
 
     protected fun continueAuthorize(authorizeURL: String, cookie: String): String {
