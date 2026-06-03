@@ -46,8 +46,8 @@ class AccountAS : GeneralAS() {
             ).joinToString(separator = " ")
         )
         val response = authenticateByHttpClient(authenticationURL, psu)
-        val authorizeURL = response.successUrl
-        val cookie = "$AM_COOKIE_NAME=${response.tokenId}"
+        val authorizeURL = response.successUrl!!
+        val cookie = "$AM_COOKIE_NAME=${response.tokenId!!}"
         val consentRequest = continueAuthorize(authorizeURL, cookie)
         val consentDetails = getConsentDetails(consentRequest, cookie)
         val accountsIds = getAccountsIdsFromConsentDetails(consentDetails)
