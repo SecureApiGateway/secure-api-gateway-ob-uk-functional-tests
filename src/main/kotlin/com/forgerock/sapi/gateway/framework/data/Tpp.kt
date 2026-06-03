@@ -59,12 +59,12 @@ data class Tpp(
     fun generateSsa(): String {
         val jws = getJWS()
         if (jws != null) {
-            println(jws.serialize())
+            println("Tpp#generateSsa: jws=${jws.serialize()}")
             val accessToken: com.forgerock.sapi.gateway.ob.uk.framework.accesstoken.model.AccessTokenResponse =
                 acquireAccessToken(jws)
-            println(accessToken)
+            println("Tpp#generateSsa: accessToken=${accessToken}")
             val ssa = getSSA(accessToken.access_token)
-            println(ssa)
+            println("Tpp#generateSsa: ssa=${ssa}")
             return ssa
         } else {
             throw AssertionError("Error requesting the signed JWS")
@@ -121,6 +121,7 @@ data class Tpp(
     }
 
     private fun getJWS(): SignedJWT? {
+        println("Tpp#getJWS: OB_TPP_EIDAS_SIGNING_KEY_PATH=$OB_TPP_EIDAS_SIGNING_KEY_PATH, OB_TPP_OB_EIDAS_TEST_SIGNING_KID=$OB_TPP_OB_EIDAS_TEST_SIGNING_KID")
         if (File(OB_TPP_EIDAS_SIGNING_KEY_PATH).exists()) {
             val detachedPayload = Payload(GsonUtils.gson.toJson(com.forgerock.sapi.gateway.ob.uk.framework.accesstoken.model.ClaimsTest()))
 
