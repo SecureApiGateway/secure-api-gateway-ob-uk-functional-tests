@@ -47,6 +47,22 @@ publishing {
 
 repositories {
     mavenLocal()
+
+    // Use Artifactory as a caching Maven Central mirror to avoid 429 rate-limit errors.
+    // Falls back to mavenCentral() when credentials are not set (e.g. local dev without env vars).
+    val artifactoryUser = System.getenv("FR_ARTIFACTORY_USER")
+    val artifactoryPassword = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
+
+    if (!artifactoryUser.isNullOrEmpty() && !artifactoryPassword.isNullOrEmpty()) {
+        maven {
+            url = uri("https://maven.forgerock.org/artifactory/maven-central-remote")
+            credentials {
+                username = artifactoryUser
+                password = artifactoryPassword
+            }
+        }
+    }
+
     mavenCentral()
     maven("https://www.jitpack.io")
     maven("https://maven.forgerock.org/artifactory/community")
