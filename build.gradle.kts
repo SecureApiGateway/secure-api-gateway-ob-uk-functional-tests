@@ -11,7 +11,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 // project version
 // pom artifact version used when the built artifact is published
 // Test jar library version used in the task 'generateTestJar'
-version = "5.3.0-SNAPSHOT"
+version = "5.4.0-SNAPSHOT"
 val jaxbVersion = "4.0.1"
 val bouncyCastleVersion = "1.84"
 
@@ -73,6 +73,7 @@ repositories {
             username = System.getenv("FR_ARTIFACTORY_USER")
             password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
         }
+        mavenContent { releasesOnly() }
     }
 
     maven {
@@ -81,6 +82,16 @@ repositories {
             username = System.getenv("FR_ARTIFACTORY_USER")
             password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
         }
+        mavenContent { snapshotsOnly() }
+    }
+
+    maven {
+        url = uri("https://maven.forgerock.org/artifactory/internal-staging")
+        credentials {
+            username = System.getenv("FR_ARTIFACTORY_USER")
+            password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
+        }
+        mavenContent { releasesOnly() }
     }
 }
 
@@ -102,7 +113,7 @@ dependencies {
     xjc("com.sun.xml.bind:jaxb-xjc:${jaxbVersion}")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:5.3.0-SNAPSHOT"))
+    implementation(platform("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-bom:5.4.0-SNAPSHOT"))
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-shared")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-obie-datamodel")
     implementation("com.forgerock.sapi.gateway:secure-api-gateway-ob-uk-common-datamodel")
