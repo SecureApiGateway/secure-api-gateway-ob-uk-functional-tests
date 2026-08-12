@@ -82,6 +82,16 @@ repositories {
             username = System.getenv("FR_ARTIFACTORY_USER")
             password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
         }
+        mavenContent { snapshotsOnly() }
+    }
+
+    maven {
+        url = uri("https://maven.forgerock.org/artifactory/internal-staging")
+        credentials {
+            username = System.getenv("FR_ARTIFACTORY_USER")
+            password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
+        }
+        mavenContent { releasesOnly() }
     }
 }
 
