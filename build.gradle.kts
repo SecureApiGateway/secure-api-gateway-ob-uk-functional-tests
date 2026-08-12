@@ -73,6 +73,7 @@ repositories {
             username = System.getenv("FR_ARTIFACTORY_USER")
             password = System.getenv("FR_ARTIFACTORY_USER_ENCRYPTED_PASSWORD")
         }
+        mavenContent { releasesOnly() }
     }
 
     maven {
