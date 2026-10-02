@@ -23,9 +23,11 @@ val PSU_USERNAME = System.getenv("username") ?: "username"
 val PSU_DEBTOR_ACCOUNT_IDENTIFICATION = System.getenv("userDebtorAccountIdentification") ?: "01233243245676"
 val USER_ACCOUNT_ID = System.getenv("userAccountId") ?: "01233243245676"
 
+// Signing kid is assigned by the OB directory when the seal key is registered; it changes on
+// certificate renewal, so there is no valid hardcoded fallback — fail fast if unset.
 val OB_TPP_OB_EIDAS_TEST_SIGNING_KID =
-    System.getenv("eidasTestSigningKid") ?: "2yNjPOCjpO8rcKg6_lVtWzAQR0U"
-val OB_TPP_PRE_EIDAS_SIGNING_KID = System.getenv("preEidasTestSigningKid") ?: "mvclNnEzM50-PpSHb_qRtqEZjlw"
+    System.getenv("eidasTestSigningKid") ?: throw IllegalStateException(
+        "eidasTestSigningKid must be set (the OB directory-assigned kid for the OBSeal signing key)")
 
 val AM_COOKIE_NAME = System.getenv("amCookieName") ?: "iPlanetDirectoryPro"
 
