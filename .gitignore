@@ -10,9 +10,11 @@ build
 .settings/
 .idea/
 gradle/profiles/*
+!gradle/profiles/defaults.gradle.kts
 !gradle/profiles/profile-dev-cdk-ob.gradle.kts
 !gradle/profiles/profile-devops-ob.gradle.kts
 !gradle/profiles/profile-dev-aic-ob.gradle.kts
 !gradle/profiles/profile-ob-sandbox-v*.kts
 !gradle/profiles/profile-openig-nightly-ob.gradle.kts
+!gradle/profiles/profile-encore-demo.gradle.kts
 /certificates
