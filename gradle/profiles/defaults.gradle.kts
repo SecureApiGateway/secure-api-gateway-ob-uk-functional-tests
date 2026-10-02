@@ -11,6 +11,38 @@
  * file instead of every profile.
  */
 
+/*
+ * HOW TO AUTHOR A PROFILE
+ * -----------------------
+ * A profile file (gradle/profiles/profile-<name>.gradle.kts) is applied after
+ * this file and needs only the values that differ per environment. The standard
+ * shape (see existing profiles):
+ *
+ * // servers - the environment name is used to derive the gateway hostnames
+ * val environment by extra("dev-aic-ob")
+ * val amCookieName by extra("9cc10c563dded16")
+ * val asIGServer by extra("https://as-sapig.$environment.forgerock.financial")
+ * val rsIGServer by extra("https://rs-sapig.$environment.forgerock.financial")
+ *
+ * // Kid's
+ * val aspspJwtSignerKid by extra("...")   // ASPSP JWT signer kid (environment-specific)
+ *
+ * mTLS hostnames: when a profile does NOT define asIGServerMtls/rsIGServerMtls,
+ * the framework derives them from the non-mtls hostname by replacing the
+ * "https://as-" prefix with "https://as-mtls." (and "https://rs-" with
+ * "https://rs-mtls.") — e.g. as-sapig.dev-aic-ob.forgerock.financial becomes
+ * as-mtls.sapig.dev-aic-ob.forgerock.financial.
+ *
+ * IMPORTANT: this derivation assumes the uniform sapig hostname pattern. If a
+ * deployment uses non-uniform mTLS hostnames (prefix/suffix that the prefix
+ * swap cannot produce), the profile MUST define both mtls values explicitly —
+ * otherwise mTLS calls will target the wrong hostname. Example:
+ *
+ * // non-uniform mtls hostnames - e.g. as-mtls-sapig-sapig-ob-mr1.encore.pingidentity.com
+ * val asIGServerMtls by extra("https://as-mtls-sapig-$environment.encore.pingidentity.com")
+ * val rsIGServerMtls by extra("https://rs-mtls-sapig-$environment.encore.pingidentity.com")
+ */
+
 // OB directory organisation / software statement
 val obOrganisationId by extra("0015800001041REAAY")
 val obSoftwareId by extra("Y6NjA9TOn3aMm9GaPtLwkp")

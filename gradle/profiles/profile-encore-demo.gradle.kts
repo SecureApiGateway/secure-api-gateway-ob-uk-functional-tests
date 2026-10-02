@@ -1,9 +1,6 @@
 /* ************************************************* */
 /* encore-demo profile                               */
 /* ************************************************* */
-/* Values shared by all environments live in gradle/profiles/defaults.gradle.kts,
-   applied before this file; only the environment-specific values are set here. */
-
 // servers - sample sapig-ob-mr1
 // as-sapig-ob-mr1.encore.pingidentity.com
 val environment by extra("sapig-ob-mr1")
