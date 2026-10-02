@@ -177,9 +177,11 @@ var profilePath = "gradle/profiles/profile-$profile.gradle.kts"
 if (project.hasProperty("profile")) {
     profile = project.property("profile").toString()
     profilePath = "gradle/profiles/profile-$profile.gradle.kts"
+    apply(from = "gradle/profiles/defaults.gradle.kts")
     apply(from = profilePath)
     println("Profile has been provided, profile [$profile][$profilePath] applied")
 } else {
+    apply(from = "gradle/profiles/defaults.gradle.kts")
     apply(from = profilePath)
     println("No profile provided, profile [$profile][$profilePath] applied")
 }
