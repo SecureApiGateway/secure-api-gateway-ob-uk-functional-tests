@@ -537,7 +537,7 @@ class PaymentFactory {
 
             if (initiation.creditor != null) {
                 internationalScheduledPayment.creditor(
-                        OBWriteInternationalConsent5DataInitiationCreditor()
+                        OBWriteInternational3DataInitiationCreditor()
                                 .name(initiation.creditor?.name)
                                 .LEI(initiation.creditor?.lei)
                                 .postalAddress(initiation.creditor?.postalAddress)
@@ -736,7 +736,7 @@ class PaymentFactory {
 
             if (inputInitiation.creditor != null) {
                 outputInitiation.creditor(
-                        OBWriteInternationalConsent5DataInitiationCreditor()
+                        OBWriteInternational3DataInitiationCreditor()
                                 .name(inputInitiation.creditor?.name)
                                 .postalAddress(inputInitiation.creditor?.postalAddress)
                 )
