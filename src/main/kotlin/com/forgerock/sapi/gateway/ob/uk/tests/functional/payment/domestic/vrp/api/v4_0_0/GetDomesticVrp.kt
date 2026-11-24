@@ -44,7 +44,7 @@ class GetDomesticVrp(val version: OBVersion, val tppResource: CreateTppCallback.
         assertThat(getPaymentResponse.data.charges).isNotNull().isNotEmpty()
         Assertions.assertThat(getPaymentResponse.data.status.toString()).`is`(StatusV4.paymentCondition)
         assertThat(getPaymentResponse.data.refund).isNotNull()
-        assertThat(getPaymentResponse.data.refund.identification).isEqualTo(PSU_DEBTOR_ACCOUNT_IDENTIFICATION)
+        assertThat(getPaymentResponse.data.refund.account.identification).isEqualTo(PSU_DEBTOR_ACCOUNT_IDENTIFICATION)
     }
 
     fun getDomesticVrpPaymentsTest() {
